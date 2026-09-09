@@ -1,4 +1,4 @@
-// src/components/PreIPOStocks.jsx  (or app/pre-ipo-stocks/page content)
+// src/components/PreIPOStocks.jsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -16,8 +16,6 @@ import {
   BadgeCheck,
 } from "lucide-react";
 
-import { supabase } from "../lib/supabase";
-import { fetchPreIPODetails } from "../api/mockApi";
 import slugify from "../utils/slugify";
 
 const ITEMS_PER_PAGE = 10;
@@ -75,80 +73,12 @@ const faqs = [
   { q: "Should unlisted shares be part of every investor’s portfolio?", a: "Only for investors who understand the risks and have a long-term investment horizon." }
 ];
 
-const PreIPOStocks = () => {
-  const [ipos, setIPOs] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
-  const [loading, setLoading] = useState(true);
+const PreIPOStocks = ({ initialIPOs = [] }) => {
+  const [ipos, setIPOs] = useState(initialIPOs);
+  const [visibleCount, setVisibleCount] = useState(initialIPOs.length);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-
-  useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-
-      const detailedData = await fetchPreIPODetails();
-
-      const { data: dbData, error } = await supabase
-        .from("pre_ipo_companies")
-        .select("name, price, lot_size");
-
-      if (error) console.error("Supabase error:", error);
-
-      const normalizeName = (str = "") => {
-        return str
-          .toLowerCase()
-          .replace(
-            /limited|ltd|llp|private|unlisted|shares?|share/gi,
-            ""
-          )
-          .replace(/[^\w\s]/g, " ")
-          .replace(/\s+/g, " ")
-          .trim();
-      };
-
-      const dbMap = {};
-
-      dbData?.forEach((db) => {
-        const key = normalizeName(db.name);
-        dbMap[key] = db;
-      });
-
-      const merged = detailedData.map((item) => {
-        const key = normalizeName(item.name);
-
-        let dbItem = dbMap[key];
-
-        if (!dbItem) {
-          const bestMatch = Object.keys(dbMap).find(
-            (dbKey) => dbKey.includes(key) || key.includes(dbKey)
-          );
-
-          if (bestMatch) dbItem = dbMap[bestMatch];
-        }
-
-        const lotSize =
-          dbItem?.lot_size != null
-            ? String(dbItem.lot_size)
-            : item.minLotSize || "-";
-
-        return {
-          ...item,
-          price: dbItem?.price ? Number(dbItem.price) : item.price || 0,
-          minLotSize: lotSize,
-          depository:
-            item.shareDetails?.depository ||
-            item.depository ||
-            "NSDL & CDSL",
-        };
-      });
-
-      setIPOs(merged);
-      setVisibleCount(merged.length);
-      setLoading(false);
-    };
-
-    load();
-  }, []);
 
   // Hash scroll (replaces react-router useLocation hash)
   useEffect(() => {
