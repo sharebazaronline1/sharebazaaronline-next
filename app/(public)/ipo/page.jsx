@@ -1,4 +1,4 @@
-import IPODashboard from "@/components/IpoDashboard";
+import IPODashboard from "../../../src/components/IpoDashboard";
 import { fetchIPOs } from "@/api/mockApi";
 
 const siteUrl =
