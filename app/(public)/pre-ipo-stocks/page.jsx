@@ -6,6 +6,9 @@ export const metadata = {
   title: "Pre-IPO & Unlisted Shares | ShareBazaarOnline",
   description:
     "Discover pre-IPO and unlisted companies, track pricing and availability before they list. Find private company opportunities and market insights.",
+  alternates: {
+    canonical: "https://www.sharebazaaronline.com/pre-ipo-stocks",
+  },
   openGraph: {
     title: "Pre-IPO & Unlisted Shares | ShareBazaarOnline",
     description:

@@ -80,7 +80,15 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
 
   const router = useRouter();
 
-  // Hash scroll (replaces react-router useLocation hash)
+  // ✅ Guard: if parent passes new initialIPOs later, sync it
+  useEffect(() => {
+    if (Array.isArray(initialIPOs) && initialIPOs.length > 0) {
+      setIPOs(initialIPOs);
+      setVisibleCount(initialIPOs.length);
+    }
+  }, [initialIPOs]);
+
+  // Hash scroll
   useEffect(() => {
     if (typeof window === "undefined" || ipos.length === 0) return;
 
@@ -92,10 +100,7 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
     const scroll = () => {
       const el = document.getElementById(`preipo-${targetId}`);
       if (el) {
-        el.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     };
 
@@ -119,9 +124,7 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
             }}
           />
         ) : (
-          <span className="text-sm font-bold text-gray-700">
-            {firstLetter}
-          </span>
+          <span className="text-sm font-bold text-gray-700">{firstLetter}</span>
         )}
       </div>
     );
@@ -131,164 +134,98 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
 
   return (
     <div className="w-full bg-[#f5faf7] min-h-screen">
-
       {/* HERO */}
       <section className="relative overflow-hidden border-gray-200 bg-gradient-to-br from-white via-[#f6fffb] to-[#eef8ff] py-16 lg:py-8">
-
-        {/* Glow Effects */}
         <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-green-100/40 blur-3xl rounded-full -translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 right-0 w-[350px] h-[350px] bg-blue-100/40 blur-3xl rounded-full translate-x-1/3 translate-y-1/3"></div>
 
         <div className="relative w-full px-4 lg:px-8">
-
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-14 items-center">
-
-            {/* LEFT */}
             <div className="xl:col-span-6">
-
               <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-5 py-2 rounded-full text-sm font-semibold border border-green-200 shadow-sm">
                 <TrendingUp size={16} />
                 Pre-IPO & Unlisted Shares
               </div>
 
               <h1 className="mt-7 text-5xl md:text-6xl lg:text-7xl font-black tracking-[-3px] leading-[0.95] text-[#0f172a]">
-                Invest in{" "}
-                Tomorrow’s
+                Invest in Tomorrow’s
                 <br />
-                <span className="text-green-600">
-                  Top Companies
-                </span>
+                <span className="text-green-600">Top Companies</span>
               </h1>
 
               <p className="mt-6 text-lg lg:text-[22px] leading-9 text-slate-600 max-w-2xl">
-                Discover high-growth private
-                companies before they go public.
-                Explore pre-IPO opportunities and
-                invest smart.
+                Discover high-growth private companies before they go public.
+                Explore pre-IPO opportunities and invest smart.
               </p>
 
-              {/* FEATURES */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-green-100 flex items-center justify-center">
-                    <TrendingUp
-                      size={22}
-                      className="text-green-600"
-                    />
+                    <TrendingUp size={22} className="text-green-600" />
                   </div>
-
                   <div>
-                    <p className="font-semibold text-gray-900">
-                      High Growth
-                    </p>
-
+                    <p className="font-semibold text-gray-900">High Growth</p>
                     <p className="text-sm text-gray-500 mt-1">
-                      Early access to future
-                      leaders
+                      Early access to future leaders
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <div className="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center">
-                    <ShieldCheck
-                      size={22}
-                      className="text-blue-600"
-                    />
+                    <ShieldCheck size={22} className="text-blue-600" />
                   </div>
-
                   <div>
-                    <p className="font-semibold text-gray-900">
-                      Secure Deals
-                    </p>
-
+                    <p className="font-semibold text-gray-900">Secure Deals</p>
                     <p className="text-sm text-gray-500 mt-1">
-                      Trusted & transparent
-                      investments
+                      Trusted & transparent investments
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <div className="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center">
-                    <BriefcaseBusiness
-                      size={22}
-                      className="text-purple-600"
-                    />
+                    <BriefcaseBusiness size={22} className="text-purple-600" />
                   </div>
-
                   <div>
-                    <p className="font-semibold text-gray-900">
-                      Curated Picks
-                    </p>
-
+                    <p className="font-semibold text-gray-900">Curated Picks</p>
                     <p className="text-sm text-gray-500 mt-1">
                       Handpicked opportunities
                     </p>
                   </div>
                 </div>
-
               </div>
             </div>
 
-            {/* RIGHT ILLUSTRATION */}
             <div className="xl:col-span-6 relative">
-
               <div className="relative flex justify-center">
-
                 <img
                   src="/images/hero-preipo.png"
                   alt="Pre IPO"
                   className="w-full max-w-[780px] object-contain drop-shadow-2xl"
                 />
-
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </section>
 
       {/* MAIN CONTENT */}
       <section className="w-full px-4 lg:px-8 py-10">
-
         <div className="w-full">
-
-          {/* LEFT TABLE */}
-          <div
-            className="
-              w-full
-              bg-white
-              rounded-[28px]
-              border
-              border-slate-200
-              shadow-[0_10px_40px_rgba(15,23,42,0.05)]
-              overflow-hidden
-            "
-          >
-
+          <div className="w-full bg-white rounded-[28px] border border-slate-200 shadow-[0_10px_40px_rgba(15,23,42,0.05)] overflow-hidden">
             {/* HEADER */}
             <div className="px-8 py-7 border-gray-200">
-
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-
                 <div>
                   <h2 className="text-4xl font-black tracking-[-1px] text-[#0f172a]">
                     Pre-IPO & Unlisted Shares
                   </h2>
-
                   <p className="mt-2 text-lg text-gray-500">
-                    Invest early in high-growth
-                    companies before they list
+                    Invest early in high-growth companies before they list
                   </p>
                 </div>
-
               </div>
-
             </div>
 
             {/* MOBILE SWIPE */}
@@ -298,191 +235,122 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
 
             {/* TABLE */}
             <div className="w-full overflow-x-auto">
-
               <table className="w-full min-w-[1100px]">
-
                 <thead>
-
                   <tr className="bg-gray-50 border-gray-200">
-
                     <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
                       Company
                     </th>
-
                     <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">
                       Price / Share
                     </th>
-
                     <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">
                       Min. Lot
                     </th>
-
                     <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">
                       Depository
                     </th>
-
                     <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">
                       Action
                     </th>
-
                   </tr>
-
                 </thead>
 
                 <tbody className="divide-y divide-gray-100">
-
-                  {loading &&
-                    Array.from({
-                      length: ITEMS_PER_PAGE,
-                    }).map((_, i) => (
-                      <tr
-                        key={i}
-                        className="animate-pulse"
-                      >
+                  {/* ✅ FIX: Only show skeletons when there is genuinely no data */}
+                  {loading && ipos.length === 0 &&
+                    Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => (
+                      <tr key={i} className="animate-pulse">
                         <td className="px-6 py-5">
                           <div className="h-5 bg-gray-200 rounded w-52"></div>
                         </td>
                       </tr>
                     ))}
 
-                  {!loading &&
-                    visibleIPOs.map((ipo, i) => (
-                      <motion.tr
-                        key={ipo.id}
-                        id={`preipo-${ipo.id}`}
-                        initial={{
-                          opacity: 0,
-                          y: 8,
-                        }}
-                        animate={{
-                          opacity: 1,
-                          y: 0,
-                        }}
-                        transition={{
-                          delay: i * 0.02,
-                        }}
-                        className="hover:bg-gray-50 transition cursor-pointer"
-                        onClick={() =>
-                          router.push(
-                            `/pre-ipo-stocks/${ipo.id}/${slugify(
-                              ipo.name
-                            )}`
-                          )
-                        }
+                  {visibleIPOs.map((ipo, i) => (
+                    <motion.tr
+                      key={ipo.id}
+                      id={`preipo-${ipo.id}`}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.02 }}
+                      className="hover:bg-gray-50 transition cursor-pointer"
+                      onClick={() =>
+                        router.push(
+                          `/pre-ipo-stocks/${ipo.id}/${slugify(ipo.name)}`
+                        )
+                      }
+                    >
+                      <td className="px-6 py-5">
+                        <div className="flex items-center gap-4 min-w-[280px]">
+                          <CompanyLogo name={ipo.name} logo={ipo.logo} />
+                          <div>
+                            <p className="font-semibold text-gray-900 text-base">
+                              {ipo.name}
+                            </p>
+                            <p className="text-sm text-gray-500 mt-1">
+                              Private Equity • Unlisted Market
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td className="px-6 py-5 text-center">
+                        <div className="font-semibold text-gray-900">
+                          ₹{ipo.price?.toLocaleString("en-IN") || "-"}
+                        </div>
+                      </td>
+
+                      <td className="px-6 py-5 text-center font-semibold text-gray-800">
+                        {ipo.minLotSize || "-"}
+                      </td>
+
+                      <td className="px-6 py-5 text-center text-gray-700 font-medium">
+                        {ipo.depository}
+                      </td>
+
+                      <td
+                        className="px-6 py-5 text-center"
+                        onClick={(e) => e.stopPropagation()}
                       >
+                        <div className="flex items-center justify-center gap-3">
+                          <button
+                            onClick={() => router.push("/login")}
+                            className="h-12 px-5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition"
+                          >
+                            Buy Now
+                          </button>
 
-                        {/* COMPANY */}
-                        <td className="px-6 py-5">
-
-                          <div className="flex items-center gap-4 min-w-[280px]">
-
-                            <CompanyLogo
-                              name={ipo.name}
-                              logo={ipo.logo}
-                            />
-
-                            <div>
-
-                              <p className="font-semibold text-gray-900 text-base">
-                                {ipo.name}
-                              </p>
-
-                              <p className="text-sm text-gray-500 mt-1">
-                                Private Equity •
-                                Unlisted Market
-                              </p>
-
-                            </div>
-
-                          </div>
-
-                        </td>
-
-                        {/* PRICE */}
-                        <td className="px-6 py-5 text-center">
-
-                          <div className="font-semibold text-gray-900 ">
-                            ₹
-                            {ipo.price?.toLocaleString(
-                              "en-IN"
-                            ) || "-"}
-                          </div>
-
-                        </td>
-
-                        {/* LOT */}
-                        <td className="px-6 py-5 text-center font-semibold text-gray-800">
-                          {ipo.minLotSize || "-"}
-                        </td>
-
-                        {/* DEPOSITORY */}
-                        <td className="px-6 py-5 text-center text-gray-700 font-medium">
-                          {ipo.depository}
-                        </td>
-
-                        {/* ACTION */}
-                        <td
-                          className="px-6 py-5 text-center"
-                          onClick={(e) =>
-                            e.stopPropagation()
-                          }
-                        >
-
-                          <div className="flex items-center justify-center gap-3">
-
-                            <button
-                              onClick={() =>
-                                router.push("/login")
-                              }
-                              className="h-12 px-5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition"
-                            >
-                              Buy Now
-                            </button>
-
-                            <button
-                              onClick={() =>
-                                router.push(
-                                  `/pre-ipo-stocks/${ipo.id}/${slugify(
-                                    ipo.name
-                                  )}`
-                                )
-                              }
-                              className="h-12 px-5 rounded-xl border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition"
-                            >
-                              View Details
-                            </button>
-
-                          </div>
-
-                        </td>
-
-                      </motion.tr>
-                    ))}
-
+                          <button
+                            onClick={() =>
+                              router.push(
+                                `/pre-ipo-stocks/${ipo.id}/${slugify(ipo.name)}`
+                              )
+                            }
+                            className="h-12 px-5 rounded-xl border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition"
+                          >
+                            View Details
+                          </button>
+                        </div>
+                      </td>
+                    </motion.tr>
+                  ))}
                 </tbody>
-
               </table>
-
             </div>
 
             {/* FOOTER */}
             {!loading && ipos.length > 0 && (
               <div className="px-6 py-5 border-gray-200 bg-[#f8fcf9]">
-
                 <div className="flex items-center justify-between flex-wrap gap-4">
-
                   <div className="flex items-center gap-3 text-green-700">
-
                     <div className="w-10 h-10 rounded-2xl bg-green-100 flex items-center justify-center">
                       <ShieldCheck size={18} />
                     </div>
-
                     <p className="text-sm font-medium">
-                      All investments are secured
-                      & compliant with SEBI
+                      All investments are secured & compliant with SEBI
                       regulations.
                     </p>
-
                   </div>
 
                   <button
@@ -491,18 +359,12 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
                   >
                     Know More About Safety →
                   </button>
-
                 </div>
-
               </div>
             )}
-
           </div>
-
         </div>
-
       </section>
-
     </div>
   );
 };

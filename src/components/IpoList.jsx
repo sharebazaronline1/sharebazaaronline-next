@@ -26,12 +26,20 @@ const ITEMS_PER_PAGE = 10;
 
 const IPODashboard = ({ initialIpos = [] }) => {
   const [ipos, setIpos] = useState(initialIpos);
-  const [activeTab, setActiveTab] = useState("Upcoming"); // Changed default to Upcoming as per your data
+  const [activeTab, setActiveTab] = useState("Open"); // ✅ Default to "Open"
   const [typeFilter, setTypeFilter] = useState("All");
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [autoTabApplied, setAutoTabApplied] = useState(false);
 
   const router = useRouter();
+
+  // ✅ Sync when parent passes new initialIpos
+  useEffect(() => {
+    if (Array.isArray(initialIpos) && initialIpos.length > 0) {
+      setIpos(initialIpos);
+    }
+  }, [initialIpos]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -50,14 +58,12 @@ const IPODashboard = ({ initialIpos = [] }) => {
   const parseDate = (dateStr) => {
     if (!dateStr) return null;
 
-    // Already a Date
     if (dateStr instanceof Date) {
       return isNaN(dateStr.getTime()) ? null : dateStr;
     }
 
     const str = String(dateStr).trim();
 
-    // Format: "15 Jan 2026" or "15 January 2026"
     const spaceParts = str.split(/\s+/);
     if (spaceParts.length >= 3) {
       const [day, monthStr, year] = spaceParts;
@@ -84,7 +90,6 @@ const IPODashboard = ({ initialIpos = [] }) => {
       }
     }
 
-    // ISO / other parseable formats
     const d = new Date(str);
     return isNaN(d.getTime()) ? null : d;
   };
@@ -119,15 +124,11 @@ const IPODashboard = ({ initialIpos = [] }) => {
 
     const s = String(status).toLowerCase().trim();
 
-    if (
-      ["open", "live", "active", "ongoing", "current"].includes(s)
-    ) {
+    if (["open", "live", "active", "ongoing", "current"].includes(s)) {
       return "Open";
     }
 
-    if (
-      ["closed", "close", "allotted", "listed", "completed"].includes(s)
-    ) {
+    if (["closed", "close", "allotted", "listed", "completed"].includes(s)) {
       return "Closed";
     }
 
@@ -163,33 +164,57 @@ const IPODashboard = ({ initialIpos = [] }) => {
     const openDate = parseDate(openStr);
     const closeDate = parseDate(closeStr);
 
-    // Prefer real dates when available
     if (openDate) {
       const open = new Date(openDate);
       open.setHours(0, 0, 0, 0);
 
       if (closeDate) {
         const close = new Date(closeDate);
-        close.setHours(23, 59, 59, 999); // include full close day
+        close.setHours(23, 59, 59, 999);
 
         if (today < open) return "Upcoming";
         if (today >= open && today <= close) return "Open";
         if (today > close) return "Closed";
       }
 
-      // Only open date present
       if (today < open) return "Upcoming";
 
       return "Open";
     }
 
-    // Fallback: normalized status field
+    // ✅ Fallback to explicit status field
     const fromStatus = normalizeStatus(ipo?.status);
-
     if (fromStatus) return fromStatus;
 
     return "Upcoming";
   };
+
+  // ✅ Auto-select the tab that has data (only once per data load)
+  useEffect(() => {
+    if (autoTabApplied || ipos.length === 0) return;
+
+    const counts = {
+      Open: 0,
+      Closed: 0,
+      Upcoming: 0,
+    };
+
+    ipos.forEach((ipo) => {
+      const status = getIPOStatusByDate(ipo);
+      if (counts[status] !== undefined) counts[status]++;
+    });
+
+    // Pick first tab (in order) that has data
+    const firstWithData = tabs.find((t) => counts[t] > 0);
+    if (firstWithData && firstWithData !== activeTab) {
+      setActiveTab(firstWithData);
+    }
+
+    setAutoTabApplied(true);
+
+    // Debug — remove after confirming
+    console.log("[IPODashboard] Status counts:", counts);
+  }, [ipos, autoTabApplied, activeTab]);
 
   const filteredIPOs = useMemo(() => {
     return ipos.filter((ipo) => {
@@ -206,9 +231,7 @@ const IPODashboard = ({ initialIpos = [] }) => {
     });
   }, [ipos, activeTab, typeFilter]);
 
-  const totalPages = Math.ceil(
-    filteredIPOs.length / ITEMS_PER_PAGE
-  );
+  const totalPages = Math.ceil(filteredIPOs.length / ITEMS_PER_PAGE);
 
   const paginatedIPOs = filteredIPOs.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
@@ -218,9 +241,7 @@ const IPODashboard = ({ initialIpos = [] }) => {
   const getCount = (tab) => {
     if (tab === "All") return ipos.length;
 
-    return ipos.filter(
-      (ipo) => getIPOStatusByDate(ipo) === tab
-    ).length;
+    return ipos.filter((ipo) => getIPOStatusByDate(ipo) === tab).length;
   };
 
   const LetterAvatar = ({ name }) => {
@@ -233,29 +254,22 @@ const IPODashboard = ({ initialIpos = [] }) => {
     );
   };
 
-  if (loading) {
+  // ✅ Only show loading when there's no data at all
+  if (loading && (!ipos || ipos.length === 0)) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-20 text-center bg-white">
         <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-green-600 mx-auto"></div>
-
-        <p className="mt-4 text-gray-600">
-          Loading IPOs...
-        </p>
+        <p className="mt-4 text-gray-600">Loading IPOs...</p>
       </div>
     );
   }
 
   return (
     <div className="w-full bg-white min-h-screen">
-
-      {/* HERO SECTION - Same as before */}
+      {/* HERO SECTION */}
       <section className="relative overflow-hidden border-gray-200 bg-gradient-to-br from-white via-[#f6fffb] to-[#eef8ff] py-16 lg:py-2">
-
-        {/* ... (Hero content remains same) ... */}
-
         <div className="relative max-w-[1800px] mx-auto px-6">
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-14 items-center">
-
             <div className="xl:col-span-6">
               <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-5 py-2 rounded-full text-sm font-semibold border border-green-200 shadow-sm">
                 <TrendingUp size={16} />
@@ -264,9 +278,7 @@ const IPODashboard = ({ initialIpos = [] }) => {
 
               <h1 className="mt-7 text-5xl md:text-6xl lg:text-7xl font-black tracking-[-3px] leading-[0.95] text-[#0f172a]">
                 Track India’s{" "}
-                <span className="text-green-600 block">
-                  Complete IPOs
-                </span>
+                <span className="text-green-600 block">Complete IPOs</span>
               </h1>
 
               <p className="mt-6 text-lg lg:text-[22px] leading-9 text-slate-600 max-w-2xl">
@@ -282,21 +294,16 @@ const IPODashboard = ({ initialIpos = [] }) => {
                 className="w-full max-w-[780px] object-contain drop-shadow-2xl"
               />
             </div>
-
           </div>
         </div>
       </section>
 
       {/* TABLE SECTION */}
       <section className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-
           {/* FILTERS */}
           <div className="px-4 sm:px-8 py-5 border-b border-gray-200 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
-
             <div className="flex flex-wrap gap-3">
-
               {tabs.map((tab) => (
                 <button
                   key={tab}
@@ -308,7 +315,6 @@ const IPODashboard = ({ initialIpos = [] }) => {
                   }`}
                 >
                   {tab}
-
                   <span
                     className={`px-2 py-0.5 rounded-full text-xs font-bold ${
                       activeTab === tab
@@ -320,80 +326,57 @@ const IPODashboard = ({ initialIpos = [] }) => {
                   </span>
                 </button>
               ))}
-
             </div>
 
             <div className="relative w-[180px]">
-
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
                 className="w-full h-12 rounded-2xl border border-gray-300 bg-white px-5 pr-12 text-sm font-semibold text-gray-700 outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 appearance-none"
               >
-                <option value="All">
-                  All Types
-                </option>
-
-                <option value="Mainboard">
-                  Mainboard
-                </option>
-
-                <option value="SME">
-                  SME
-                </option>
+                <option value="All">All Types</option>
+                <option value="Mainboard">Mainboard</option>
+                <option value="SME">SME</option>
               </select>
 
               <ChevronDown
                 size={18}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
               />
-
             </div>
           </div>
 
           {/* TABLE */}
           <div className="overflow-x-auto">
-
             <table className="w-full min-w-[1200px]">
-
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
-
                   <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
                     Company
                   </th>
-
                   <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
                     Open
                   </th>
-
                   <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
                     Close
                   </th>
-
                   <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
                     Price Band
                   </th>
-
                   <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
                     Listing
                   </th>
-
                   <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
                     Lot Size
                   </th>
-
                   <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
                     Action
                   </th>
-
                 </tr>
               </thead>
 
               <tbody className="divide-y divide-gray-100">
-
                 {paginatedIPOs.length === 0 ? (
-
                   <tr>
                     <td
                       colSpan="7"
@@ -402,11 +385,8 @@ const IPODashboard = ({ initialIpos = [] }) => {
                       No {activeTab.toLowerCase()} IPOs found
                     </td>
                   </tr>
-
                 ) : (
-
                   paginatedIPOs.map((ipo, i) => {
-
                     const name =
                       getValue(
                         ipo,
@@ -416,44 +396,29 @@ const IPODashboard = ({ initialIpos = [] }) => {
                         "company_name"
                       ) || "Unknown IPO";
 
-                    const logo =
-                      getValue(
-                        ipo,
-                        "logo",
-                        "company_information.logo",
-                        "image"
-                      );
+                    const logo = getValue(
+                      ipo,
+                      "logo",
+                      "company_information.logo",
+                      "image"
+                    );
 
                     const type = getIPOType(ipo);
 
                     return (
                       <motion.tr
                         key={ipo.id || i}
-                        initial={{
-                          opacity: 0,
-                          y: 8,
-                        }}
-                        animate={{
-                          opacity: 1,
-                          y: 0,
-                        }}
-                        transition={{
-                          delay: i * 0.03,
-                        }}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.03 }}
                         className="hover:bg-gray-50 transition cursor-pointer"
                         onClick={() =>
-                          router.push(
-                            `/ipo/${ipo.id}/${slugify(name)}`
-                          )
+                          router.push(`/ipo/${ipo.id}/${slugify(name)}`)
                         }
                       >
-
                         <td className="px-6 py-5">
-
                           <div className="flex items-center gap-4 min-w-[260px]">
-
                             {logo ? (
-
                               <img
                                 src={logo}
                                 alt={name}
@@ -462,15 +427,11 @@ const IPODashboard = ({ initialIpos = [] }) => {
                                   e.target.style.display = "none";
                                 }}
                               />
-
                             ) : (
-
                               <LetterAvatar name={name} />
-
                             )}
 
                             <div>
-
                               <p className="font-semibold text-gray-900 text-base">
                                 {name}
                               </p>
@@ -492,11 +453,8 @@ const IPODashboard = ({ initialIpos = [] }) => {
                               >
                                 {type}
                               </span>
-
                             </div>
-
                           </div>
-
                         </td>
 
                         <td className="px-6 py-5 text-center text-sm text-gray-700 font-medium">
@@ -518,7 +476,6 @@ const IPODashboard = ({ initialIpos = [] }) => {
                         </td>
 
                         <td className="px-6 py-5 text-center">
-
                           <span className="font-semibold text-gray-900 text-base">
                             ₹
                             {getValue(
@@ -528,7 +485,6 @@ const IPODashboard = ({ initialIpos = [] }) => {
                               "priceBand"
                             ) || "TBA"}
                           </span>
-
                         </td>
 
                         <td className="px-6 py-5 text-center text-sm text-gray-700 font-medium">
@@ -541,21 +497,14 @@ const IPODashboard = ({ initialIpos = [] }) => {
                         </td>
 
                         <td className="px-6 py-5 text-center font-semibold text-gray-900 text-base">
-                          {getValue(
-                            ipo,
-                            "lot",
-                            "lot_size",
-                            "lotSize"
-                          ) || "—"}
+                          {getValue(ipo, "lot", "lot_size", "lotSize") || "—"}
                         </td>
 
                         <td
                           className="px-6 py-5 text-center"
                           onClick={(e) => e.stopPropagation()}
                         >
-
                           <div className="flex justify-center gap-3">
-
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -577,63 +526,38 @@ const IPODashboard = ({ initialIpos = [] }) => {
                             >
                               View
                             </button>
-
                           </div>
-
                         </td>
-
                       </motion.tr>
                     );
                   })
-
                 )}
-
               </tbody>
-
             </table>
-
           </div>
 
           {/* PAGINATION */}
           {totalPages > 1 && (
-
             <div className="px-6 py-5 border-t border-gray-200 flex items-center justify-between text-sm">
-
               <p className="text-gray-500">
-                Showing{" "}
-                {(currentPage - 1) * ITEMS_PER_PAGE + 1}{" "}
-                to{" "}
-                {Math.min(
-                  currentPage * ITEMS_PER_PAGE,
-                  filteredIPOs.length
-                )}{" "}
-                of {filteredIPOs.length}
+                Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1} to{" "}
+                {Math.min(currentPage * ITEMS_PER_PAGE, filteredIPOs.length)} of{" "}
+                {filteredIPOs.length}
               </p>
 
               <div className="flex items-center gap-2">
-
                 <button
                   disabled={currentPage === 1}
-                  onClick={() =>
-                    setCurrentPage((p) => p - 1)
-                  }
+                  onClick={() => setCurrentPage((p) => p - 1)}
                   className="w-10 h-10 rounded-xl border flex items-center justify-center hover:bg-gray-50 disabled:opacity-40"
                 >
-                  <ChevronLeft
-                    size={18}
-                    className="text-gray-700"
-                  />
+                  <ChevronLeft size={18} className="text-gray-700" />
                 </button>
 
-                {Array.from({
-                  length: totalPages,
-                }).map((_, i) => (
-
+                {Array.from({ length: totalPages }).map((_, i) => (
                   <button
                     key={i}
-                    onClick={() =>
-                      setCurrentPage(i + 1)
-                    }
+                    onClick={() => setCurrentPage(i + 1)}
                     className={`w-10 h-10 rounded-xl text-gray-700 font-semibold ${
                       currentPage === i + 1
                         ? "bg-[#16A34A] text-white"
@@ -642,36 +566,24 @@ const IPODashboard = ({ initialIpos = [] }) => {
                   >
                     {i + 1}
                   </button>
-
                 ))}
 
                 <button
                   disabled={currentPage === totalPages}
-                  onClick={() =>
-                    setCurrentPage((p) => p + 1)
-                  }
+                  onClick={() => setCurrentPage((p) => p + 1)}
                   className="w-10 h-10 rounded-xl border flex items-center justify-center hover:bg-gray-50 disabled:opacity-40"
                 >
-                  <ChevronRight
-                    size={18}
-                    className="text-gray-700"
-                  />
+                  <ChevronRight size={18} className="text-gray-700" />
                 </button>
-
               </div>
-
             </div>
-
           )}
-
         </div>
 
         <div className="mt-8">
           <IPOFAQ />
         </div>
-
       </section>
-
     </div>
   );
 };
