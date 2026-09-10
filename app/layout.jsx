@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://sharebazaaronline.com"),
+ metadataBase: new URL("https://www.sharebazaaronline.com"),
 
   title: {
     default: "ShareBazaarOnline",

@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 
 import { fetchIPOs } from '@/api/mockApi';
-import IPODashboard, { IPOCard } from "./IPODashboard";
+import IpoList, { IPOCard } from "./IpoList";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 
 const SITE_URL = "https://sharebazaaronline.com";
@@ -402,7 +402,7 @@ const IPOGuideClient = () => {
                               </div>
 
                               <div className="hidden lg:block">
-                                <IPODashboard ipos={liveIPOs} />
+                                <IpoList ipos={liveIPOs} />
                               </div>
                             </>
                           );

@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { fetchIPOs, fetchPreIPODetails } from '../../api/mockApi';
 import { supabase } from "../../lib/supabase";
-import IPODashboard from "../IPODashboard";
+import IpoList from "../IpoList";
 import Blogs from '../Blogs';
 import slugify from "../../utils/slugify";
 import BrokerAnalyzer from '../BrokerAnalyzer';
@@ -439,7 +439,7 @@ export default function Home() {
                 <div className="animate-spin rounded-full h-14 w-14 border-t-4 border-b-4 border-green-600" />
               </div>
             ) : (
-              <IPODashboard ipos={ipos} />
+              <IpoList ipos={ipos} />
             )}
 
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-t border-slate-100 pt-6">
