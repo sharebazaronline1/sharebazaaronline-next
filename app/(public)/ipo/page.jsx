@@ -1,4 +1,4 @@
-import IPODashboard from "../../../src/components/IpoDashboard";
+import IPODashboard from "../../../src/components/IPODashboard";
 import { fetchIPOs } from "@/api/mockApi";
 
 const siteUrl =
@@ -38,8 +38,7 @@ const MONTHS = {
   Apr: 3, April: 3,
   May: 4,
   Jun: 5, June: 5,
-  Jul: 6, July: 6,
-  Aug: 7, August: 7,
+  Jul: 6, July: 6,  Aug: 7, August: 7,
   Sep: 8, Sept: 8, September: 8,
   Oct: 9, October: 9,
   Nov: 10, November: 10,
