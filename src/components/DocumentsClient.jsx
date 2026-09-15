@@ -152,55 +152,101 @@ const DocumentsClient = ({ user, initialKyc }) => {
     alert("Details saved successfully!");
   };
 
-  // File upload handler
-  const handleFileSelect = async (docType, file) => {
-    if (!user || !file) return;
+ // File upload handler
+const handleFileSelect = async (docType, file) => {
+  if (!user || !file) return;
 
-    const fileExt = file.name.split(".").pop();
+  try {
+    const fileExt = file.name.split(".").pop()?.toLowerCase();
     const filePath = `${user.id}/${docType}_${Date.now()}.${fileExt}`;
 
+    // 1. Upload file to Supabase Storage
     const { error: uploadError } = await supabase.storage
       .from("kyc-documents")
-      .upload(filePath, file, { upsert: true });
+      .upload(filePath, file, {
+        upsert: true,
+      });
 
     if (uploadError) {
       console.error("Upload error:", uploadError);
-      alert("File upload failed");
+      alert("File upload failed: " + uploadError.message);
       return;
     }
 
-    // Column mapping
+    // 2. Map document type to database columns
     const columnMap = {
-      pan: "pan_file",
-      aadhar: "aadhaar_file",
-      cmr: "cmr_file",
-      cheque: "cheque_file",
+      pan: {
+        fileColumn: "pan_file",
+        statusColumn: "pan_status",
+      },
+      aadhar: {
+        fileColumn: "aadhaar_file",
+        statusColumn: "aadhaar_status",
+      },
+      cmr: {
+        fileColumn: "cmr_file",
+        statusColumn: "cmr_status",
+      },
+      cheque: {
+        fileColumn: "cheque_file",
+        statusColumn: "cheque_status",
+      },
     };
 
-    const fileColumn = columnMap[docType];
-    const statusColumn = `${docType === "aadhar" ? "aadhaar" : docType}_status`;
+    const mapping = columnMap[docType];
 
-    const { error: updateError } = await supabase
-      .from("user_kyc")
-      .update({
-        [fileColumn]: filePath,
-        [statusColumn]: "Pending",
-      })
-      .eq("user_id", user.id);
-
-    if (updateError) {
-      console.error("Status update failed:", updateError);
-      alert("Could not update document status: " + updateError.message);
+    if (!mapping) {
+      console.error("Invalid document type:", docType);
       return;
     }
 
-    // Update local state
-    setSelectedFiles((prev) => ({ ...prev, [docType]: { name: file.name } }));
+    // 3. IMPORTANT:
+    // Use UPSERT instead of UPDATE.
+    // This guarantees a user_kyc row exists.
+    const { data, error: dbError } = await supabase
+      .from("user_kyc")
+      .upsert(
+        {
+          user_id: user.id,
+          [mapping.fileColumn]: filePath,
+          [mapping.statusColumn]: "Pending",
+          updated_at: new Date().toISOString(),
+        },
+        {
+          onConflict: "user_id",
+        }
+      )
+      .select()
+      .single();
+
+    if (dbError) {
+      console.error("Database update error:", dbError);
+      alert("File uploaded, but database update failed: " + dbError.message);
+      return;
+    }
+
+    console.log("KYC database updated:", data);
+
+    // 4. Update local state only after database update succeeds
+    setSavedData(data);
+
+    setSelectedFiles((prev) => ({
+      ...prev,
+      [docType]: {
+        name: file.name,
+      },
+    }));
+
     if (docType === "pan") setPanStatus("Pending");
     if (docType === "aadhar") setAadhaarStatus("Pending");
     if (docType === "cmr") setCmrStatus("Pending");
     if (docType === "cheque") setChequeStatus("Pending");
-  };
+
+  } catch (error) {
+    console.error("Unexpected upload error:", error);
+    alert("Something went wrong while uploading the document.");
+  }
+};
 
   const hasAnyData = savedData && (
     savedData.name_as_per_pan ||

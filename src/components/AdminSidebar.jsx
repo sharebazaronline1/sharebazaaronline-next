@@ -31,9 +31,9 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen }) => {
     { href: "/admin/preipo", icon: <TrendingUp size={18} />, label: "Pre IPO" },
     { href: "/admin/orders", icon: <IndianRupee size={18} />, label: "Orders" },
     { href: "/admin/blogs", icon: <Newspaper size={18} />, label: "Blogs" },
-    { href: "/admin/corporate", icon: <Layers size={18} />, label: "Corporate Actions" },
+    { href: "/admin/corporate-actions", icon: <Layers size={18} />, label: "Corporate Actions" },
     { href: "/admin/ipo-upload", icon: <Layers size={18} />, label: "Upload IPOs" },
-    { href: "/admin/add-corporate", icon: <ClipboardList size={18} />, label: "Corporate Upload" },
+    { href: "/admin/corporateupload", icon: <ClipboardList size={18} />, label: "Corporate Upload" },
     { href: "/admin/signals", icon: <Activity size={18} />, label: "Signal Upload" },
     { href: "/admin/settings", icon: <Settings size={18} />, label: "Settings" },
   ];
