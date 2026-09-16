@@ -30,7 +30,6 @@ export const metadata = {
 
 export const revalidate = 300;
 
-// ─── Shared date parser (used by both JSON-LD and defaultTab) ─────────────
 const MONTHS = {
   Jan: 0, January: 0,
   Feb: 1, February: 1,

@@ -10,6 +10,8 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronDown,
+  ChevronUp,
+  X,
 } from "lucide-react";
 
 import IPOFAQ from "./home/IPOFaq";
@@ -64,12 +66,27 @@ function parseDate(dateStr) {
   return isNaN(d.getTime()) ? null : d;
 }
 
+const EMPTY_COLUMN_FILTERS = {
+  company: "",
+  open: "",
+  close: "",
+  price: "",
+  listing: "",
+  lot: "",
+};
+
 const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
   const [ipos, setIpos] = useState(initialIpos);
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [typeFilter, setTypeFilter] = useState("All");
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [columnFilters, setColumnFilters] = useState(EMPTY_COLUMN_FILTERS);
+
+  const [sortConfig, setSortConfig] = useState({
+    key: "open",
+    direction: "asc",
+  });
 
   const router = useRouter();
 
@@ -94,7 +111,7 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [activeTab, typeFilter]);
+  }, [activeTab, typeFilter, columnFilters, sortConfig]);
 
   // ==================== HELPERS ====================
 
@@ -142,8 +159,13 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
     return null;
   };
 
+  /**
+   * Determine status strictly by dates.
+   *
+   * Upcoming = open date is STRICTLY AFTER today.
+   * If the open date is today, the IPO is already "Open" (never Upcoming).
+   */
   const getIPOStatusByDate = (ipo) => {
-    // Copy so setHours doesn't mutate the shared ref
     const today = new Date(nowRef);
 
     const openStr = getValue(
@@ -168,16 +190,24 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
       const open = new Date(openDate);
       open.setHours(0, 0, 0, 0);
 
+      // Strictly future → Upcoming. Today's open date does NOT qualify.
+      if (today < open) return "Upcoming";
+
       if (closeDate) {
         const close = new Date(closeDate);
         close.setHours(23, 59, 59, 999);
-
-        if (today < open) return "Upcoming";
-        if (today >= open && today <= close) return "Open";
-        if (today > close) return "Closed";
+        if (today <= close) return "Open";
+        return "Closed";
       }
 
-      if (today < open) return "Upcoming";
+      return "Open";
+    }
+
+    // Fallback when open date can't be parsed — use close date if available
+    if (closeDate) {
+      const close = new Date(closeDate);
+      close.setHours(23, 59, 59, 999);
+      if (today > close) return "Closed";
       return "Open";
     }
 
@@ -187,20 +217,234 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
     return "Upcoming";
   };
 
+  /**
+   * Centralized display values so filters, sorting, and rendered cells
+   * always agree.
+   */
+  const getDisplayValues = (ipo) => {
+    const name =
+      getValue(
+        ipo,
+        "name",
+        "fullName",
+        "company_information.company_name",
+        "company_name"
+      ) || "Unknown IPO";
+
+    const open =
+      getValue(
+        ipo,
+        "open",
+        "openDate",
+        "subscription_open",
+        "subscription_start_date"
+      ) || "TBA";
+    const close =
+      getValue(
+        ipo,
+        "close",
+        "closeDate",
+        "subscription_close",
+        "subscription_end_date"
+      ) || "TBA";
+    const price = getValue(ipo, "price", "price_band", "priceBand") || "TBA";
+    const listing =
+      getValue(ipo, "listing", "listing_date", "listingDate") || "TBA";
+    const lot = getValue(ipo, "lot", "lot_size", "lotSize") || "—";
+
+    return { name, open, close, price, listing, lot };
+  };
+
+  // ==================== SORTING ====================
+
+  const getPriceNumericValue = (ipo) => {
+    const price = getValue(ipo, "price", "price_band", "priceBand");
+
+    if (price === null) return Number.MAX_SAFE_INTEGER;
+
+    if (typeof price === "number") return price;
+
+    const numbers = String(price)
+      .replace(/₹/g, "")
+      .match(/\d+(?:\.\d+)?/g);
+
+    if (!numbers || numbers.length === 0) {
+      return Number.MAX_SAFE_INTEGER;
+    }
+
+    return Number(numbers[0]);
+  };
+
+  const getLotNumericValue = (ipo) => {
+    const lot = getValue(ipo, "lot", "lot_size", "lotSize");
+
+    if (lot === null) return Number.MAX_SAFE_INTEGER;
+
+    const number = String(lot)
+      .replace(/,/g, "")
+      .match(/\d+/);
+
+    return number ? Number(number[0]) : Number.MAX_SAFE_INTEGER;
+  };
+
+  const getSortValue = (ipo, key) => {
+    switch (key) {
+      case "company":
+        return (
+          getValue(
+            ipo,
+            "name",
+            "fullName",
+            "company_information.company_name",
+            "company_name"
+          ) || ""
+        ).toLowerCase();
+
+      case "open": {
+        const date = parseDate(
+          getValue(
+            ipo,
+            "open",
+            "openDate",
+            "subscription_open",
+            "subscription_start_date"
+          )
+        );
+
+        return date ? date.getTime() : Number.MAX_SAFE_INTEGER;
+      }
+
+      case "close": {
+        const date = parseDate(
+          getValue(
+            ipo,
+            "close",
+            "closeDate",
+            "subscription_close",
+            "subscription_end_date"
+          )
+        );
+
+        return date ? date.getTime() : Number.MAX_SAFE_INTEGER;
+      }
+
+      case "price":
+        return getPriceNumericValue(ipo);
+
+      case "listing": {
+        const date = parseDate(
+          getValue(ipo, "listing", "listing_date", "listingDate")
+        );
+
+        return date ? date.getTime() : Number.MAX_SAFE_INTEGER;
+      }
+
+      case "lot":
+        return getLotNumericValue(ipo);
+
+      default:
+        return "";
+    }
+  };
+
+  const handleSort = (key) => {
+    setSortConfig((prev) => {
+      if (prev.key === key) {
+        return {
+          key,
+          direction: prev.direction === "asc" ? "desc" : "asc",
+        };
+      }
+
+      return {
+        key,
+        direction: "asc",
+      };
+    });
+
+    setCurrentPage(1);
+  };
+
+  // ==================== FILTER + SORT ====================
+
   const filteredIPOs = useMemo(() => {
-    return ipos.filter((ipo) => {
+    const filtered = ipos.filter((ipo) => {
+      // Tab filter
       const ipoStatus = getIPOStatusByDate(ipo);
-      const matchesTab = ipoStatus === activeTab;
+      if (ipoStatus !== activeTab) return false;
 
+      // Type filter
       const ipoType = getIPOType(ipo);
-      const matchesType =
-        typeFilter === "All" ||
-        ipoType.toLowerCase().includes(typeFilter.toLowerCase());
+      if (
+        typeFilter !== "All" &&
+        !ipoType.toLowerCase().includes(typeFilter.toLowerCase())
+      ) {
+        return false;
+      }
 
-      return matchesTab && matchesType;
+      // Column filters (case-insensitive substring match)
+      const d = getDisplayValues(ipo);
+      const f = columnFilters;
+
+      if (
+        f.company &&
+        !String(d.name).toLowerCase().includes(f.company.toLowerCase())
+      )
+        return false;
+      if (
+        f.open &&
+        !String(d.open).toLowerCase().includes(f.open.toLowerCase())
+      )
+        return false;
+      if (
+        f.close &&
+        !String(d.close).toLowerCase().includes(f.close.toLowerCase())
+      )
+        return false;
+      if (
+        f.price &&
+        !String(d.price).toLowerCase().includes(f.price.toLowerCase())
+      )
+        return false;
+      if (
+        f.listing &&
+        !String(d.listing).toLowerCase().includes(f.listing.toLowerCase())
+      )
+        return false;
+      if (
+        f.lot &&
+        !String(d.lot).toLowerCase().includes(f.lot.toLowerCase())
+      )
+        return false;
+
+      return true;
+    });
+
+    return [...filtered].sort((a, b) => {
+      const aValue = getSortValue(a, sortConfig.key);
+      const bValue = getSortValue(b, sortConfig.key);
+
+      if (typeof aValue === "string" && typeof bValue === "string") {
+        const comparison = aValue.localeCompare(bValue, undefined, {
+          numeric: true,
+          sensitivity: "base",
+        });
+
+        return sortConfig.direction === "asc" ? comparison : -comparison;
+      }
+
+      if (aValue < bValue) {
+        return sortConfig.direction === "asc" ? -1 : 1;
+      }
+
+      if (aValue > bValue) {
+        return sortConfig.direction === "asc" ? 1 : -1;
+      }
+
+      return 0;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ipos, activeTab, typeFilter, nowRef]);
+  }, [ipos, activeTab, typeFilter, columnFilters, sortConfig, nowRef]);
 
   const totalPages = Math.ceil(filteredIPOs.length / ITEMS_PER_PAGE);
 
@@ -214,6 +458,54 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
     return ipos.filter((ipo) => getIPOStatusByDate(ipo) === tab).length;
   };
 
+  /**
+   * Windowed pagination range:
+   * Always shows first, last, current, and ±1 around current.
+   * Gaps of 1 page are filled directly; larger gaps become "…".
+   *
+   * Example (current = 10, total = 21):
+   *   [1, "…", 9, 10, 11, "…", 21]
+   */
+  const paginationRange = useMemo(() => {
+    const total = totalPages;
+    const current = currentPage;
+    const delta = 1;
+
+    if (total <= 1) return [1];
+
+    const pages = [];
+
+    for (let i = 1; i <= total; i++) {
+      if (
+        i === 1 ||
+        i === total ||
+        (i >= current - delta && i <= current + delta)
+      ) {
+        pages.push(i);
+      }
+    }
+
+    const withDots = [];
+    let prev = null;
+
+    for (const page of pages) {
+      if (prev !== null) {
+        const gap = page - prev;
+
+        if (gap === 2) {
+          withDots.push(prev + 1);
+        } else if (gap > 2) {
+          withDots.push(`dots-${prev}`);
+        }
+      }
+
+      withDots.push(page);
+      prev = page;
+    }
+
+    return withDots;
+  }, [totalPages, currentPage]);
+
   const LetterAvatar = ({ name }) => {
     const letter = (name?.charAt(0) || "?").toUpperCase();
     return (
@@ -222,6 +514,47 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
       </div>
     );
   };
+
+  const SortableHeader = ({ label, sortKey, align = "center" }) => {
+    const isActive = sortConfig.key === sortKey;
+    const isAscending = sortConfig.direction === "asc";
+
+    return (
+      <th
+        className={`px-6 pt-4 pb-2 text-${align} text-xs font-semibold uppercase tracking-wider text-gray-500`}
+      >
+        <button
+          onClick={() => handleSort(sortKey)}
+          className={`inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider transition ${
+            isActive ? "text-green-700" : "text-gray-500 hover:text-gray-900"
+          }`}
+        >
+          {label}
+
+          <span className="flex flex-col">
+            {isActive ? (
+              isAscending ? (
+                <ChevronUp size={15} strokeWidth={2.5} />
+              ) : (
+                <ChevronDown size={15} strokeWidth={2.5} />
+              )
+            ) : (
+              <ChevronDown size={14} className="text-gray-300" />
+            )}
+          </span>
+        </button>
+      </th>
+    );
+  };
+
+  const setColumnFilter = (key, value) =>
+    setColumnFilters((prev) => ({ ...prev, [key]: value }));
+
+  const clearColumnFilters = () => setColumnFilters(EMPTY_COLUMN_FILTERS);
+
+  const hasActiveColumnFilters = Object.values(columnFilters).some(
+    (v) => v !== ""
+  );
 
   if (loading && (!ipos || ipos.length === 0)) {
     return (
@@ -296,48 +629,59 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
               ))}
             </div>
 
-            <div className="relative w-[180px]">
-              <select
-                value={typeFilter}
-                onChange={(e) => setTypeFilter(e.target.value)}
-                className="w-full h-12 rounded-2xl border border-gray-300 bg-white px-5 pr-12 text-sm font-semibold text-gray-700 outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 appearance-none"
-              >
-                <option value="All">All Types</option>
-                <option value="Mainboard">Mainboard</option>
-                <option value="SME">SME</option>
-              </select>
+            <div className="flex items-center gap-3">
+              {hasActiveColumnFilters && (
+                <button
+                  onClick={clearColumnFilters}
+                  className="inline-flex items-center gap-1.5 h-12 px-4 rounded-2xl border border-gray-300 bg-white text-sm font-semibold text-gray-600 hover:bg-gray-50"
+                >
+                  <X size={16} />
+                  Clear filters
+                </button>
+              )}
 
-              <ChevronDown
-                size={18}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
-              />
+              <div className="relative w-[180px]">
+                <select
+                  value={typeFilter}
+                  onChange={(e) => setTypeFilter(e.target.value)}
+                  className="w-full h-12 rounded-2xl border border-gray-300 bg-white px-5 pr-12 text-sm font-semibold text-gray-700 outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 appearance-none"
+                >
+                  <option value="All">All Types</option>
+                  <option value="Mainboard">Mainboard</option>
+                  <option value="SME">SME</option>
+                </select>
+
+                <ChevronDown
+                  size={18}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                />
+              </div>
             </div>
           </div>
 
           {/* TABLE */}
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[1200px]">
+            <table className="w-full min-w-[1250px]">
               <thead>
-                <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Company
-                  </th>
-                  <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Open
-                  </th>
-                  <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Close
-                  </th>
-                  <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Price Band
-                  </th>
-                  <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Listing
-                  </th>
-                  <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Lot Size
-                  </th>
-                  <th className="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
+                {/* Column labels (sortable) */}
+                <tr className="bg-gray-50">
+                  <SortableHeader
+                    label="Company"
+                    sortKey="company"
+                    align="left"
+                  />
+
+                  <SortableHeader label="Open" sortKey="open" />
+
+                  <SortableHeader label="Close" sortKey="close" />
+
+                  <SortableHeader label="Price Band" sortKey="price" />
+
+                  <SortableHeader label="Listing" sortKey="listing" />
+
+                  <SortableHeader label="Lot Size" sortKey="lot" />
+
+                  <th className="px-6 pt-4 pb-2 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
                     Action
                   </th>
                 </tr>
@@ -355,14 +699,8 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
                   </tr>
                 ) : (
                   paginatedIPOs.map((ipo, i) => {
-                    const name =
-                      getValue(
-                        ipo,
-                        "name",
-                        "fullName",
-                        "company_information.company_name",
-                        "company_name"
-                      ) || "Unknown IPO";
+                    const { name, open, close, price, listing, lot } =
+                      getDisplayValues(ipo);
 
                     const logo = getValue(
                       ipo,
@@ -426,46 +764,25 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
                         </td>
 
                         <td className="px-6 py-5 text-center text-sm text-gray-700 font-medium">
-                          {getValue(
-                            ipo,
-                            "open",
-                            "openDate",
-                            "subscription_open"
-                          ) || "TBA"}
+                          {open}
                         </td>
 
                         <td className="px-6 py-5 text-center text-sm text-gray-700 font-medium">
-                          {getValue(
-                            ipo,
-                            "close",
-                            "closeDate",
-                            "subscription_close"
-                          ) || "TBA"}
+                          {close}
                         </td>
 
                         <td className="px-6 py-5 text-center">
                           <span className="font-semibold text-gray-900 text-base">
-                            ₹
-                            {getValue(
-                              ipo,
-                              "price",
-                              "price_band",
-                              "priceBand"
-                            ) || "TBA"}
+                            ₹{price}
                           </span>
                         </td>
 
                         <td className="px-6 py-5 text-center text-sm text-gray-700 font-medium">
-                          {getValue(
-                            ipo,
-                            "listing",
-                            "listing_date",
-                            "listingDate"
-                          ) || "TBA"}
+                          {listing}
                         </td>
 
                         <td className="px-6 py-5 text-center font-semibold text-gray-900 text-base">
-                          {getValue(ipo, "lot", "lot_size", "lotSize") || "—"}
+                          {lot}
                         </td>
 
                         <td
@@ -506,42 +823,66 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
 
           {/* PAGINATION */}
           {totalPages > 1 && (
-            <div className="px-6 py-5 border-t border-gray-200 flex items-center justify-between text-sm">
-              <p className="text-gray-500">
-                Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1} to{" "}
-                {Math.min(currentPage * ITEMS_PER_PAGE, filteredIPOs.length)} of{" "}
-                {filteredIPOs.length}
+            <div className="px-6 py-5 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
+              <p className="text-gray-500 text-center sm:text-left">
+                Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–
+                {Math.min(
+                  currentPage * ITEMS_PER_PAGE,
+                  filteredIPOs.length
+                )}{" "}
+                of {filteredIPOs.length}
               </p>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 flex-wrap justify-center">
+                {/* Prev */}
                 <button
                   disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => p - 1)}
-                  className="w-10 h-10 rounded-xl border flex items-center justify-center hover:bg-gray-50 disabled:opacity-40"
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  className="h-9 px-3 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium flex items-center gap-1 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                  aria-label="Previous page"
                 >
-                  <ChevronLeft size={18} className="text-gray-700" />
+                  <ChevronLeft size={16} />
+                  <span className="hidden sm:inline">Prev</span>
                 </button>
 
-                {Array.from({ length: totalPages }).map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentPage(i + 1)}
-                    className={`w-10 h-10 rounded-xl text-gray-700 font-semibold ${
-                      currentPage === i + 1
-                        ? "bg-[#16A34A] text-white"
-                        : "border hover:bg-gray-50"
-                    }`}
-                  >
-                    {i + 1}
-                  </button>
-                ))}
+                {/* Windowed page numbers */}
+                {paginationRange.map((item) =>
+                  typeof item === "string" ? (
+                    <span
+                      key={item}
+                      className="w-9 h-9 flex items-center justify-center text-gray-400 text-sm select-none"
+                    >
+                      …
+                    </span>
+                  ) : (
+                    <button
+                      key={item}
+                      onClick={() => setCurrentPage(item)}
+                      className={`min-w-[36px] h-9 px-3 rounded-lg text-sm font-semibold transition ${
+                        currentPage === item
+                          ? "bg-[#16A34A] text-white shadow-sm"
+                          : "border border-gray-300 text-gray-700 hover:bg-gray-50"
+                      }`}
+                      aria-current={
+                        currentPage === item ? "page" : undefined
+                      }
+                    >
+                      {item}
+                    </button>
+                  )
+                )}
 
+                {/* Next */}
                 <button
                   disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => p + 1)}
-                  className="w-10 h-10 rounded-xl border flex items-center justify-center hover:bg-gray-50 disabled:opacity-40"
+                  onClick={() =>
+                    setCurrentPage((p) => Math.min(totalPages, p + 1))
+                  }
+                  className="h-9 px-3 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium flex items-center gap-1 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                  aria-label="Next page"
                 >
-                  <ChevronRight size={18} className="text-gray-700" />
+                  <span className="hidden sm:inline">Next</span>
+                  <ChevronRight size={16} />
                 </button>
               </div>
             </div>
@@ -556,4 +897,4 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
   );
 };
 
-export default IPODashboard; 
+export default IPODashboard;
