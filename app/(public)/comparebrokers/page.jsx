@@ -57,7 +57,7 @@ export async function generateMetadata() {
     },
 
     keywords:
-      "Compare Brokers, Stock Broker Comparison, Brokerage Charges, Best Stock Broker India, Discount Broker, Full Service Broker, Trading Platform, ShareBazaarOnline",
+      "broker comparison, broker app, compare stock brokers, online broker comparison, compare stock broker, brokers with lowest fees, best broker for stock trading, broker comparison india, broker demat account, broker commodity, broker futures, broker options, broker type, demat account broker list, demat account comparison, top brokers comparison, best broker comparison, broker review, broker app, broker account opening, broker customer service, broker currency, broker equity, brokerage account comparison, how to choose the best broker, best brokers for beginner investors, broker for beginners, best demat account broker",
   };
 }
 

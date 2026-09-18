@@ -1,7 +1,7 @@
 // src/components/AdminUsersClient.jsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, Fragment } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import AdminSidebar from "./AdminSidebar";
@@ -24,6 +24,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Download,
+  Search,
 } from "lucide-react";
 import * as XLSX from "xlsx";
 
@@ -50,6 +51,11 @@ const AdminUsersClient = () => {
 
   const [showDownloadDropdown, setShowDownloadDropdown] = useState(false);
   const [referralCommissions, setReferralCommissions] = useState({});
+
+  // ================= USER FILTERS =================
+  const [userSearch, setUserSearch] = useState("");
+  const [kycFilter, setKycFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   const itemsPerPage = 5;
 
@@ -519,6 +525,49 @@ const AdminUsersClient = () => {
     mainCurrentPage * itemsPerPage
   );
 
+  // ================= FILTERED USERS =================
+  const filteredUsers = useMemo(() => {
+    return users.filter((user) => {
+      // Text search across name / email / sb_user_id / mobile
+      if (userSearch.trim()) {
+        const q = userSearch.trim().toLowerCase();
+        const haystack = [
+          user.full_name,
+          user.email,
+          user.sb_user_id,
+          user.mobile,
+        ]
+          .filter(Boolean)
+          .map((v) => String(v).toLowerCase())
+          .join(" ");
+
+        if (!haystack.includes(q)) return false;
+      }
+
+      // KYC filter
+      if (kycFilter !== "All") {
+        if ((user.kycStatus || "Not Uploaded") !== kycFilter) return false;
+      }
+
+      // Account status filter
+      if (statusFilter !== "All") {
+        const status = (user.account_status || "active").toLowerCase();
+        if (status !== statusFilter.toLowerCase()) return false;
+      }
+
+      return true;
+    });
+  }, [users, userSearch, kycFilter, statusFilter]);
+
+  const hasActiveFilters =
+    userSearch.trim() !== "" || kycFilter !== "All" || statusFilter !== "All";
+
+  const clearFilters = () => {
+    setUserSearch("");
+    setKycFilter("All");
+    setStatusFilter("All");
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
@@ -635,10 +684,110 @@ const AdminUsersClient = () => {
             </div>
           )}
 
+          {/* ================= FILTER BAR ================= */}
+          {users.length > 0 && (
+            <div className="mb-6 bg-white rounded-3xl border border-gray-200 shadow-sm p-4 sm:p-5">
+              <div className="flex flex-col lg:flex-row lg:items-center gap-3">
+                {/* Search */}
+                <div className="relative flex-1 min-w-0">
+                  <Search
+                    size={18}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                  />
+                  <input
+                    type="text"
+                    value={userSearch}
+                    onChange={(e) => setUserSearch(e.target.value)}
+                    placeholder="Search by name, email, SB ID or mobile…"
+                    className="w-full h-12 pl-11 pr-10 rounded-2xl border border-gray-300 bg-white text-sm text-gray-800 placeholder-gray-400 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                  />
+                  {userSearch && (
+                    <button
+                      onClick={() => setUserSearch("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-gray-100"
+                      aria-label="Clear search"
+                    >
+                      <X size={16} className="text-gray-500" />
+                    </button>
+                  )}
+                </div>
+
+                {/* KYC filter */}
+                <div className="relative w-full lg:w-[190px]">
+                  <select
+                    value={kycFilter}
+                    onChange={(e) => setKycFilter(e.target.value)}
+                    className="w-full h-12 rounded-2xl border border-gray-300 bg-white px-5 pr-12 text-sm font-semibold text-gray-700 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 appearance-none"
+                  >
+                    <option value="All">All KYC</option>
+                    <option value="Verified">Verified</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Incomplete">Incomplete</option>
+                    <option value="Not Uploaded">Not Uploaded</option>
+                  </select>
+                  <ChevronDown
+                    size={18}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                  />
+                </div>
+
+                {/* Status filter */}
+                <div className="relative w-full lg:w-[180px]">
+                  <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className="w-full h-12 rounded-2xl border border-gray-300 bg-white px-5 pr-12 text-sm font-semibold text-gray-700 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 appearance-none"
+                  >
+                    <option value="All">All Status</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    <option value="Blocked">Blocked</option>
+                    <option value="Suspended">Suspended</option>
+                  </select>
+                  <ChevronDown
+                    size={18}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                  />
+                </div>
+
+                {/* Clear */}
+                {hasActiveFilters && (
+                  <button
+                    onClick={clearFilters}
+                    className="inline-flex items-center justify-center gap-1.5 h-12 px-4 rounded-2xl border border-gray-300 bg-white text-sm font-semibold text-gray-600 hover:bg-gray-50 whitespace-nowrap"
+                  >
+                    <X size={16} />
+                    Clear
+                  </button>
+                )}
+              </div>
+
+              <div className="mt-3 text-xs text-gray-500">
+                Showing <span className="font-semibold text-gray-700">{filteredUsers.length}</span> of{" "}
+                <span className="font-semibold text-gray-700">{users.length}</span> users
+              </div>
+            </div>
+          )}
+
           {users.length === 0 ? (
             <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-20 text-center">
               <Users className="mx-auto text-emerald-600" size={56} />
               <h3 className="text-2xl font-semibold text-gray-800 mt-8">No Users Found</h3>
+            </div>
+          ) : filteredUsers.length === 0 ? (
+            <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-20 text-center">
+              <Search className="mx-auto text-gray-400" size={48} />
+              <h3 className="text-xl font-semibold text-gray-800 mt-6">No users match your filters</h3>
+              <p className="text-sm text-gray-500 mt-2">
+                Try adjusting your search or clearing filters.
+              </p>
+              <button
+                onClick={clearFilters}
+                className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700"
+              >
+                <X size={16} />
+                Clear Filters
+              </button>
             </div>
           ) : (
             <div className="overflow-x-auto rounded-3xl border border-gray-200 shadow-sm bg-white">
@@ -658,10 +807,9 @@ const AdminUsersClient = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {users.map((user) => (
-                    <>
+                  {filteredUsers.map((user) => (
+                    <Fragment key={user.id}>
                       <tr
-                        key={user.id}
                         className="hover:bg-emerald-50/60 transition-colors cursor-pointer group"
                         onClick={() => toggleExpand(user.id)}
                       >
@@ -904,7 +1052,7 @@ const AdminUsersClient = () => {
                           </td>
                         </tr>
                       )}
-                    </>
+                    </Fragment>
                   ))}
                 </tbody>
               </table>

@@ -1,7 +1,7 @@
 // src/components/AdminOrdersClient.jsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { createClient } from "@/lib/supabase/client";
 import AdminSidebar from "./AdminSidebar";
@@ -12,9 +12,11 @@ import {
   Loader2,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   AlertCircle,
   Search,
   Menu,
+  X,
 } from "lucide-react";
 
 const AdminOrdersClient = () => {
@@ -22,13 +24,16 @@ const AdminOrdersClient = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const [allOrders, setAllOrders] = useState([]);
-  const [filteredOrders, setFilteredOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("");
   const [openStatusId, setOpenStatusId] = useState(null);
   const [dropdownPos, setDropdownPos] = useState(null);
+
+  // ================= FILTERS =================
+  const [searchQuery, setSearchQuery] = useState("");
+  const [typeFilter, setTypeFilter] = useState("All");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   const itemsPerPage = 12;
 
@@ -58,12 +63,10 @@ const AdminOrdersClient = () => {
       if (fetchError) throw fetchError;
 
       setAllOrders(data || []);
-      setFilteredOrders(data || []);
     } catch (err) {
       console.error("Failed to fetch orders:", err);
       setError("Failed to load orders. Please try refreshing.");
       setAllOrders([]);
-      setFilteredOrders([]);
     } finally {
       setLoading(false);
     }
@@ -73,22 +76,56 @@ const AdminOrdersClient = () => {
     fetchAllOrders();
   }, []);
 
+  // Reset page whenever filters change
   useEffect(() => {
-    if (!searchQuery.trim()) {
-      setFilteredOrders(allOrders);
-      return;
-    }
-
-    const query = searchQuery.toLowerCase().trim();
-    const filtered = allOrders.filter((order) => {
-      const userName = order.profiles?.full_name?.toLowerCase() || "";
-      const sbId = order.profiles?.sb_user_id?.toLowerCase() || "";
-      return userName.includes(query) || sbId.includes(query);
-    });
-
-    setFilteredOrders(filtered);
     setCurrentPage(1);
-  }, [searchQuery, allOrders]);
+  }, [searchQuery, typeFilter, statusFilter]);
+
+  // ================= FILTERED ORDERS =================
+  const filteredOrders = useMemo(() => {
+    return allOrders.filter((order) => {
+      // Text search: user name, SB ID, or asset name
+      if (searchQuery.trim()) {
+        const q = searchQuery.trim().toLowerCase();
+        const userName = order.profiles?.full_name?.toLowerCase() || "";
+        const sbId = order.profiles?.sb_user_id?.toLowerCase() || "";
+        const asset = order.asset_name?.toLowerCase() || "";
+
+        if (
+          !userName.includes(q) &&
+          !sbId.includes(q) &&
+          !asset.includes(q)
+        ) {
+          return false;
+        }
+      }
+
+      // Order type filter
+      if (typeFilter !== "All") {
+        if ((order.order_type || "").toUpperCase() !== typeFilter) return false;
+      }
+
+      // Status filter
+      if (statusFilter !== "All") {
+        if ((order.status || "PENDING").toUpperCase() !== statusFilter) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [allOrders, searchQuery, typeFilter, statusFilter]);
+
+  const hasActiveFilters =
+    searchQuery.trim() !== "" ||
+    typeFilter !== "All" ||
+    statusFilter !== "All";
+
+  const clearFilters = () => {
+    setSearchQuery("");
+    setTypeFilter("All");
+    setStatusFilter("All");
+  };
 
   const updateOrderStatus = async (orderId, newStatus) => {
     const { error } = await supabase
@@ -165,20 +202,93 @@ const AdminOrdersClient = () => {
         </header>
 
         <div className="px-4 sm:px-6 lg:px-8 py-8 max-w-7xl mx-auto">
-          {/* Search Bar */}
+          {/* ================= FILTER BAR ================= */}
+          <div className="mb-6 bg-white rounded-3xl border border-gray-200 shadow-sm p-4 sm:p-5">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-3">
+              {/* Search */}
+              <div className="relative flex-1 min-w-0">
+                <Search
+                  size={18}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search by user, SB ID or asset…"
+                  className="w-full h-12 pl-11 pr-10 rounded-2xl border border-gray-300 bg-white text-sm text-gray-800 placeholder-gray-400 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-gray-100"
+                    aria-label="Clear search"
+                  >
+                    <X size={16} className="text-gray-500" />
+                  </button>
+                )}
+              </div>
 
-<div className="mb-6">
-  <div className="relative max-w-md">
-    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5 pointer-events-none" />
-    <input
-      type="text"
-      placeholder="Search by user name or SB ID..."
-      value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
-      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm"
-    />
-  </div>
-</div>
+              {/* Type filter */}
+              <div className="relative w-full lg:w-[170px]">
+                <select
+                  value={typeFilter}
+                  onChange={(e) => setTypeFilter(e.target.value)}
+                  className="w-full h-12 rounded-2xl border border-gray-300 bg-white px-5 pr-12 text-sm font-semibold text-gray-700 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 appearance-none"
+                >
+                  <option value="All">All Types</option>
+                  <option value="BUY">Buy</option>
+                  <option value="SELL">Sell</option>
+                </select>
+                <ChevronDown
+                  size={18}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                />
+              </div>
+
+              {/* Status filter */}
+              <div className="relative w-full lg:w-[190px]">
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="w-full h-12 rounded-2xl border border-gray-300 bg-white px-5 pr-12 text-sm font-semibold text-gray-700 outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 appearance-none"
+                >
+                  <option value="All">All Status</option>
+                  <option value="PENDING">Pending</option>
+                  <option value="PROCESSING">Processing</option>
+                  <option value="CONFIRMED">Confirmed</option>
+                  <option value="SETTLED">Settled</option>
+                </select>
+                <ChevronDown
+                  size={18}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                />
+              </div>
+
+              {/* Clear */}
+              {hasActiveFilters && (
+                <button
+                  onClick={clearFilters}
+                  className="inline-flex items-center justify-center gap-1.5 h-12 px-4 rounded-2xl border border-gray-300 bg-white text-sm font-semibold text-gray-600 hover:bg-gray-50 whitespace-nowrap"
+                >
+                  <X size={16} />
+                  Clear
+                </button>
+              )}
+            </div>
+
+            <div className="mt-3 text-xs text-gray-500">
+              Showing{" "}
+              <span className="font-semibold text-gray-700">
+                {filteredOrders.length}
+              </span>{" "}
+              of{" "}
+              <span className="font-semibold text-gray-700">
+                {allOrders.length}
+              </span>{" "}
+              orders
+            </div>
+          </div>
 
           {loading ? (
             <div className="flex justify-center py-20">
@@ -191,8 +301,23 @@ const AdminOrdersClient = () => {
           ) : filteredOrders.length === 0 ? (
             <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-12 text-center">
               <FileText size={64} className="mx-auto text-gray-300 mb-4" />
-              <h3 className="text-xl font-semibold text-gray-700">No Orders Found</h3>
-              <p className="text-gray-500 mt-1">No orders match your search or there are no orders yet.</p>
+              <h3 className="text-xl font-semibold text-gray-700">
+                No Orders Found
+              </h3>
+              <p className="text-gray-500 mt-1">
+                {hasActiveFilters
+                  ? "No orders match your filters."
+                  : "No orders yet."}
+              </p>
+              {hasActiveFilters && (
+                <button
+                  onClick={clearFilters}
+                  className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700"
+                >
+                  <X size={16} />
+                  Clear Filters
+                </button>
+              )}
             </div>
           ) : (
             <div className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-visible">
@@ -214,7 +339,7 @@ const AdminOrdersClient = () => {
 
                   <tbody className="divide-y divide-gray-100">
                     {paginatedOrders.map((order) => (
-                      <tr key={order.id} className="hover:bg-gray-50 transition-colors">
+                      <tr key={order.id} className="hover:bg-emerald-50/60 transition-colors">
                         <td className="px-6 py-5 font-medium text-gray-900">
                           {order.profiles?.full_name || "Unknown"}
                         </td>

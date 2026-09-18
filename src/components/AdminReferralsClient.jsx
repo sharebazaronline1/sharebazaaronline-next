@@ -236,7 +236,7 @@ const AdminReferralsClient = () => {
 
           {referrals.length === 0 ? (
             <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-20 text-center">
-              <User className="mx-auto text-emerald-600" size={56} />
+              <Users className="mx-auto text-emerald-600" size={56} />
               <h3 className="text-2xl font-semibold text-gray-800 mt-8">No Referrals Yet</h3>
             </div>
           ) : (

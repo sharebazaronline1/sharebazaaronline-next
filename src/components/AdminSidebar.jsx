@@ -28,7 +28,7 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen }) => {
     { href: "/admin/users", icon: <Users size={18} />, label: "Users" },
     { href: "/admin/kyc", icon: <FileCheck size={18} />, label: "KYC Verification" },
     { href: "/admin/referrals", icon: <Share2 size={18} />, label: "Referrals" },
-    { href: "/admin/preipo", icon: <TrendingUp size={18} />, label: "Pre IPO" },
+    { href: "/admin/pre-ipo", icon: <TrendingUp size={18} />, label: "Pre IPO" },
     { href: "/admin/orders", icon: <IndianRupee size={18} />, label: "Orders" },
     { href: "/admin/blogs", icon: <Newspaper size={18} />, label: "Blogs" },
     { href: "/admin/corporate-actions", icon: <Layers size={18} />, label: "Corporate Actions" },
