@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import InsightHubDetail from "@/components/InsightHubDetails";
 
-const SITE_URL = "https://sharebazaaronline.com";
+const SITE_URL = "https://www.sharebazaaronline.com";
 
 // Server-side function to fetch blog data
 async function getBlog(id) {
@@ -119,11 +119,99 @@ export default async function Page({ params }) {
     notFound();
   }
 
+  const articleTitle =
+    blog.meta_title ||
+    blog.heading ||
+    blog.title ||
+    "ShareBazaarOnline";
+
+  const articleDescription =
+    blog.meta_description ||
+    blog.excerpt ||
+    "Read the latest market insights on ShareBazaarOnline.";
+
+  const canonicalUrl =
+    `${SITE_URL}/insight-hub/${id}/${slug}`;
+
+  const articleImage =
+    blog.image_url ||
+    `${SITE_URL}/og-image.jpg`;
+
+  const publishedDate =
+    blog.published_at ||
+    blog.created_at;
+
+  const modifiedDate =
+    blog.updated_at ||
+    blog.published_at ||
+    blog.created_at;
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+
+    "@id": `${canonicalUrl}#article`,
+
+    headline: articleTitle,
+
+    description: articleDescription,
+
+    url: canonicalUrl,
+
+    image: [articleImage],
+
+    ...(publishedDate
+      ? { datePublished: publishedDate }
+      : {}),
+
+    ...(modifiedDate
+      ? { dateModified: modifiedDate }
+      : {}),
+
+    articleSection:
+      blog.category || "Market Insight",
+
+    author: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}#organization`,
+      name: "ShareBazaarOnline",
+      url: SITE_URL,
+    },
+
+    publisher: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}#organization`,
+      name: "ShareBazaarOnline",
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/logo.png`,
+      },
+    },
+
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": canonicalUrl,
+    },
+  };
+
   return (
-    <InsightHubDetail
-      blog={blog}
-      id={id}
-      slug={slug}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema).replace(
+            /</g,
+            "\\u003c"
+          ),
+        }}
+      />
+
+      <InsightHubDetail
+        blog={blog}
+        id={id}
+        slug={slug}
+      />
+    </>
   );
 }

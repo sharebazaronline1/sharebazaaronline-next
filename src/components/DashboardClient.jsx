@@ -18,6 +18,8 @@ import {
   CalendarDays,
   Home,
   ChevronRight,
+  Phone,
+  X,
 } from "lucide-react";
 
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
@@ -37,6 +39,9 @@ const DashboardClient = ({
   const [trendingShares, setTrendingShares] = useState(initialTrendingShares || []);
   const [upcomingShares, setUpcomingShares] = useState(initialUpcomingShares || []);
   const [accountStatus, setAccountStatus] = useState(profile?.account_status || "inactive");
+
+  // Show prompt if mobile is missing (always on refresh)
+  const [showMobilePrompt, setShowMobilePrompt] = useState(!profile?.mobile);
 
   // Real-time updates for orders
   useEffect(() => {
@@ -70,6 +75,11 @@ const DashboardClient = ({
       subscription.unsubscribe();
     };
   }, [user]);
+
+  // Close banner (hides it until next page reload)
+  const dismissMobilePrompt = () => {
+    setShowMobilePrompt(false);
+  };
 
   if (!user) {
     return null;
@@ -192,6 +202,40 @@ const DashboardClient = ({
               <UserProfileDropdown />
             </div>
           </header>
+
+          {/* ===== MOBILE NUMBER PROMPT BANNER (always appears if missing) ===== */}
+          {showMobilePrompt && (
+            <div className="mb-6 bg-blue-50 border border-blue-200 rounded-2xl p-4 shadow-sm flex items-center justify-between gap-4 flex-wrap">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 rounded-full text-blue-600">
+                  <Phone size={20} />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-blue-900">
+                    Update Your Mobile Number
+                  </p>
+                  <p className="text-xs text-blue-700">
+                    Please add your mobile number to stay updated and for secure transactions.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => router.push("/kyc")}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl transition"
+                >
+                  Update Now
+                </button>
+                <button
+                  onClick={dismissMobilePrompt}
+                  className="p-2 rounded-full hover:bg-blue-200/50 transition text-blue-600"
+                  aria-label="Dismiss"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-4">

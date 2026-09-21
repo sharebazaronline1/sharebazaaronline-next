@@ -1,4 +1,5 @@
-"use client"
+
+"use client";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -10,22 +11,53 @@ import {
 } from "lucide-react";
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 
-const SITE_URL = "https://sharebazaaronline.com";
+const SITE_URL = "https://www.sharebazaaronline.com";
 
 const InsightHubDetail = ({ blog, id, slug }) => {
   const [openFaqs, setOpenFaqs] = useState({});
 
   const corporateCategories = [
-    "Buyback", "Stock Split", "Bonus Issue", "Dividend", "Rights Issue",
-    "Merger", "Demerger", "Takeover / Acquisition", "Open Offer", "Delisting",
-    "OFS", "QIP", "Preferential Allotment", "Warrants Issue", "ESOP Allotment",
-    "FPO", "Bond Issue", "NCD Issue", "Distribution", "Unit Split",
-    "AGM", "EGM", "Board Meeting", "Postal Ballot", "E-Voting",
-    "Promoter Stake Increase", "Promoter Stake Sale", "Pledge Release",
-    "Scheme of Arrangement", "Insolvency Resolution", "CIRP Process",
-    "Subsidiary Incorporation", "Joint Venture", "Change of Company Name",
-    "IPO Listing", "Change in Director", "CEO Appointment", "Auditor Appointment",
-    "Regulatory Action", "Trading Suspension", "Revocation of Suspension",
+    "Buyback",
+    "Stock Split",
+    "Bonus Issue",
+    "Dividend",
+    "Rights Issue",
+    "Merger",
+    "Demerger",
+    "Takeover / Acquisition",
+    "Open Offer",
+    "Delisting",
+    "OFS",
+    "QIP",
+    "Preferential Allotment",
+    "Warrants Issue",
+    "ESOP Allotment",
+    "FPO",
+    "Bond Issue",
+    "NCD Issue",
+    "Distribution",
+    "Unit Split",
+    "AGM",
+    "EGM",
+    "Board Meeting",
+    "Postal Ballot",
+    "E-Voting",
+    "Promoter Stake Increase",
+    "Promoter Stake Sale",
+    "Pledge Release",
+    "Scheme of Arrangement",
+    "Insolvency Resolution",
+    "CIRP Process",
+    "Subsidiary Incorporation",
+    "Joint Venture",
+    "Change of Company Name",
+    "IPO Listing",
+    "Change in Director",
+    "CEO Appointment",
+    "Auditor Appointment",
+    "Regulatory Action",
+    "Trading Suspension",
+    "Revocation of Suspension",
   ];
 
   if (!blog) {
@@ -33,6 +65,7 @@ const InsightHubDetail = ({ blog, id, slug }) => {
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="text-center">
           <span className="text-gray-600 text-xl">Article not found</span>
+
           <Link
             href="/insight-hub"
             className="block mt-6 text-green-600 hover:underline"
@@ -50,6 +83,7 @@ const InsightHubDetail = ({ blog, id, slug }) => {
 
   const handleShare = async () => {
     const url = window.location.href;
+
     if (navigator.share) {
       try {
         await navigator.share({
@@ -58,7 +92,9 @@ const InsightHubDetail = ({ blog, id, slug }) => {
           url,
         });
       } catch (err) {
-        if (err.name !== "AbortError") console.error("Share failed:", err);
+        if (err.name !== "AbortError") {
+          console.error("Share failed:", err);
+        }
       }
     } else {
       try {
@@ -71,49 +107,127 @@ const InsightHubDetail = ({ blog, id, slug }) => {
     }
   };
 
-  const articleTitle = blog.heading || blog.title || "Article";
-  const articleDescription = blog.meta_description || blog.excerpt || "Read this insightful article on ShareBazaarOnline";
-  const articleImage = blog.image_url || blog.image || `${SITE_URL}/og-image.jpg`;
-  const canonicalPath = `/insight-hub/${id}${slug ? `/${slug}` : ""}`;
+  const articleTitle =
+    blog.heading || blog.title || "Article";
+
+  const articleDescription =
+    blog.meta_description ||
+    blog.excerpt ||
+    "Read this insightful article on ShareBazaarOnline";
+
+  const articleImage =
+    blog.image_url ||
+    blog.image ||
+    `${SITE_URL}/og-image.jpg`;
+
+  const canonicalPath = `/insight-hub/${id}${
+    slug ? `/${slug}` : ""
+  }`;
+
+  const canonicalUrl = `${SITE_URL}${canonicalPath}`;
+
+  const publishedDate =
+    blog.published_at ||
+    blog.created_at ||
+    new Date().toISOString();
+
+  const modifiedDate =
+    blog.updated_at ||
+    blog.published_at ||
+    blog.created_at ||
+    new Date().toISOString();
 
   const breadcrumbItems = [
-    { name: "Home", url: "/" },
-    { name: "Insight Hub", url: "/insight-hub" },
-    { name: articleTitle, url: canonicalPath },
+    {
+      name: "Home",
+      url: "/",
+    },
+    {
+      name: "Insight Hub",
+      url: "/insight-hub",
+    },
+    {
+      name: articleTitle,
+      url: canonicalPath,
+    },
   ];
 
+  /*
+   * JSON-LD structured data
+   *
+   * This describes the dynamic Insight Hub article to search engines.
+   *
+   * BlogPosting is used because these pages are article/blog-style
+   * editorial content.
+   */
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
+
+    "@id": `${canonicalUrl}#article`,
+
     headline: articleTitle,
+
     description: articleDescription,
-    datePublished: blog.published_at || blog.created_at || new Date().toISOString(),
-    dateModified: blog.updated_at || blog.published_at || blog.created_at || new Date().toISOString(),
+
+    url: canonicalUrl,
+
+    image: [articleImage],
+
+    datePublished: publishedDate,
+
+    dateModified: modifiedDate,
+
+    articleSection:
+      blog.category || "Market Insight",
+
     author: {
       "@type": "Organization",
+      "@id": `${SITE_URL}#organization`,
       name: "ShareBazaarOnline",
+      url: SITE_URL,
     },
+
     publisher: {
       "@type": "Organization",
+      "@id": `${SITE_URL}#organization`,
       name: "ShareBazaarOnline",
+      url: SITE_URL,
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/logo.png`,
       },
     },
-    image: articleImage,
+
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${SITE_URL}${canonicalPath}`,
+      "@id": canonicalUrl,
+      url: canonicalUrl,
     },
   };
 
+  /*
+   * Safely serialize JSON-LD.
+   *
+   * Replacing "<" prevents an article field containing "</script>"
+   * from prematurely closing the JSON-LD script tag.
+   */
+  const articleSchemaJson = JSON.stringify(articleSchema).replace(
+    /</g,
+    "\\u003c"
+  );
+
   return (
     <>
+      {/* Article JSON-LD */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: articleSchemaJson,
+        }}
       />
+
+      {/* Breadcrumb JSON-LD */}
       <BreadcrumbSchema items={breadcrumbItems} />
 
       <div className="bg-gray-50 min-h-screen">
@@ -133,7 +247,9 @@ const InsightHubDetail = ({ blog, id, slug }) => {
                   <span>Home</span>
                 </Link>
               </li>
+
               <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+
               <li>
                 <Link
                   href="/insight-hub"
@@ -142,7 +258,9 @@ const InsightHubDetail = ({ blog, id, slug }) => {
                   Insight Hub
                 </Link>
               </li>
+
               <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
+
               <li className="text-slate-900 font-semibold truncate max-w-[200px] sm:max-w-[350px] md:max-w-[500px]">
                 {articleTitle}
               </li>
@@ -172,9 +290,13 @@ const InsightHubDetail = ({ blog, id, slug }) => {
           <div className="w-full max-w-none mx-auto">
             <article
               className={`prose-content ${
-                isCorporateAction ? "corporate-content" : "blog-content"
+                isCorporateAction
+                  ? "corporate-content"
+                  : "blog-content"
               }`}
-              dangerouslySetInnerHTML={{ __html: blog.content || "" }}
+              dangerouslySetInnerHTML={{
+                __html: blog.content || "",
+              }}
             />
           </div>
 
@@ -183,6 +305,7 @@ const InsightHubDetail = ({ blog, id, slug }) => {
               <span className="font-medium text-gray-700">
                 Share this article
               </span>
+
               <button
                 onClick={handleShare}
                 className="p-2 bg-white rounded-full border hover:bg-gray-100 transition"
@@ -341,7 +464,10 @@ const InsightHubDetail = ({ blog, id, slug }) => {
             @media (min-width: 1024px) {
               .prose-content .lg\\:grid-cols-2,
               .prose-content [class*="lg:grid-cols-2"] {
-                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                grid-template-columns: repeat(
+                  2,
+                  minmax(0, 1fr)
+                ) !important;
               }
             }
 
@@ -556,7 +682,10 @@ const InsightHubDetail = ({ blog, id, slug }) => {
             @media (min-width: 1024px) {
               .prose-content .lg\\:grid-cols-2,
               .prose-content [class*="lg:grid-cols-2"] {
-                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                grid-template-columns: repeat(
+                  2,
+                  minmax(0, 1fr)
+                ) !important;
               }
             }
 
@@ -638,3 +767,4 @@ const InsightHubDetail = ({ blog, id, slug }) => {
 };
 
 export default InsightHubDetail;
+

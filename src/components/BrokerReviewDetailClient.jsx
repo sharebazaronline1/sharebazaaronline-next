@@ -11,7 +11,7 @@ import {
 
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 
-const SITE_URL = "https://sharebazaaronline.com";
+const SITE_URL = "https://www.sharebazaaronline.com";
 
 // ==========================================
 // 1. GLOBAL HELPER COMPONENTS & RENDERERS
@@ -125,49 +125,114 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
     { name: `${brokerName} Reviews`, url: `/brokerdetails/${slug}` },
   ];
 
-  // Generate Article JSON-LD Schema
+  // ==========================================
+  // JSON-LD STRUCTURED DATA
+  // ==========================================
+
+  const canonicalUrl = `${SITE_URL}/brokerdetails/${slug}`;
+
+  const articleTitle =
+    review.title || `${brokerName} Review`;
+
+  const articleDescription =
+    review.content?.slice(0, 200) ||
+    `Complete review of ${brokerName} including brokerage charges, platform features, and ratings.`;
+
+  const articleImage = broker?.logo
+    ? (
+        broker.logo.startsWith("http")
+          ? broker.logo
+          : `${SITE_URL}${broker.logo.startsWith("/") ? "" : "/"}${broker.logo}`
+      )
+    : `${SITE_URL}/og-image.jpg`;
+
+  const publishedDate =
+    review.created_at || undefined;
+
+  const modifiedDate =
+    review.updated_at ||
+    review.created_at ||
+    undefined;
+
+  // Article JSON-LD Schema
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: review.title || `${brokerName} Review`,
-    description: review.content?.slice(0, 200) || `Complete review of ${brokerName} including brokerage charges, platform features, and ratings.`,
-    image: broker?.logo ? `${SITE_URL}${broker.logo}` : `${SITE_URL}/og-image.jpg`,
-    datePublished: review.created_at || new Date().toISOString(),
-    dateModified: review.updated_at || new Date().toISOString(),
+
+    "@id": `${canonicalUrl}#article`,
+
+    headline: articleTitle,
+
+    description: articleDescription,
+
+    url: canonicalUrl,
+
+    image: [articleImage],
+
+    ...(publishedDate
+      ? { datePublished: publishedDate }
+      : {}),
+
+    ...(modifiedDate
+      ? { dateModified: modifiedDate }
+      : {}),
+
+    articleSection: "Broker Reviews",
+
     author: {
       "@type": "Organization",
+      "@id": `${SITE_URL}#organization`,
       name: "ShareBazaarOnline",
       url: SITE_URL,
     },
+
     publisher: {
       "@type": "Organization",
+      "@id": `${SITE_URL}#organization`,
       name: "ShareBazaarOnline",
+      url: SITE_URL,
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/logo.png`,
       },
     },
+
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${SITE_URL}/brokerdetails/${slug}`,
+      "@id": canonicalUrl,
+      url: canonicalUrl,
     },
   };
 
-  // Generate Review Schema (Product Review)
+  // Review Schema
   const reviewSchema = {
     "@context": "https://schema.org",
     "@type": "Review",
-    name: review.title || `${brokerName} Review`,
-    reviewBody: review.content?.slice(0, 500) || `Complete review of ${brokerName}.`,
+
+    "@id": `${canonicalUrl}#review`,
+
+    name: articleTitle,
+
+    ...(review.content
+      ? { reviewBody: review.content.slice(0, 500) }
+      : {
+          reviewBody: `Complete review of ${brokerName}.`,
+        }),
+
     reviewRating: {
       "@type": "Rating",
       ratingValue: parseFloat(currentRating).toFixed(1),
       bestRating: "5",
+      worstRating: "1",
     },
+
     author: {
       "@type": "Organization",
+      "@id": `${SITE_URL}#organization`,
       name: "ShareBazaarOnline",
+      url: SITE_URL,
     },
+
     itemReviewed: {
       "@type": "Product",
       name: `${brokerName} Brokerage Services`,
@@ -176,25 +241,53 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
         name: brokerName,
       },
     },
+
+    url: canonicalUrl,
   };
+
+  /*
+   * Safely serialize JSON-LD.
+   *
+   * Prevents a "<" character inside dynamic database content
+   * from interfering with the script element.
+   */
+  const articleSchemaJson = JSON.stringify(articleSchema).replace(
+    /</g,
+    "\\u003c"
+  );
+
+  const reviewSchemaJson = JSON.stringify(reviewSchema).replace(
+    /</g,
+    "\\u003c"
+  );
 
   return (
     <>
       {/* JSON-LD Schemas for SEO */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: articleSchemaJson,
+        }}
       />
+
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(reviewSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: reviewSchemaJson,
+        }}
       />
+
       <BreadcrumbSchema items={breadcrumbItems} />
 
       <div className="min-h-screen bg-white text-slate-900 antialiased w-full overflow-x-hidden">
         
         {/* Visual Breadcrumb */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+      
+
+        {/* SECTION 1: HERO PANEL */}
+        <div className="bg-gradient-to-b from-[#060a22] to-[#0c133a] text-white border-b border-slate-800/60 w-full">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
           <nav aria-label="Breadcrumb" className="text-sm font-medium text-slate-500">
             <ol className="flex items-center space-x-2">
               <li>
@@ -210,16 +303,12 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
                 </Link>
               </li>
               <ChevronRight className="w-4 h-4 text-slate-400" />
-              <li className="text-slate-900 font-semibold truncate max-w-[200px] sm:max-w-none">
+              <li className="hover:text-emerald-600 transition-colors font-semibold truncate max-w-[200px] sm:max-w-none">
                 {brokerName} Reviews
               </li>
             </ol>
           </nav>
-        </div>
-
-        {/* SECTION 1: HERO PANEL */}
-        <div className="bg-gradient-to-b from-[#060a22] to-[#0c133a] text-white border-b border-slate-800/60 w-full">
-          <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl pt-5 pb-10">
+        </div>   <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl pt-5 pb-10">
             
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
               <div className="lg:col-span-8 space-y-3 text-left">
