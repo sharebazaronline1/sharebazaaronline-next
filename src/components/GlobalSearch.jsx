@@ -41,7 +41,6 @@ const GlobalSearch = () => {
     fetchAllData();
   }, []);
 
-  // Close when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchRef.current && !searchRef.current.contains(event.target)) {

@@ -1,10 +1,10 @@
+
 // app/comparebrokers/page.jsx
 import { Suspense } from "react";
 import CompareBrokerClient from "@/components/CompareBrokerClient";
 
-const SITE_URL = "https://sharebazaaronline.com";
+const SITE_URL = "https://www.sharebazaaronline.com";
 
-// Generate metadata for SEO
 export async function generateMetadata() {
   return {
     title:
@@ -30,7 +30,7 @@ export async function generateMetadata() {
         "Make the right choice by comparing brokerage charges, ratings, and features of India's top stock brokers side by side. Find the best broker for your trading needs.",
 
       url: `${SITE_URL}/comparebrokers`,
-      type: "article",
+      type: "website",
 
       images: [
         {
@@ -40,8 +40,6 @@ export async function generateMetadata() {
 
       siteName: "ShareBazaarOnline",
       locale: "en_IN",
-      publishedTime: new Date().toISOString(),
-      modifiedTime: new Date().toISOString(),
     },
 
     twitter: {
@@ -62,9 +60,104 @@ export async function generateMetadata() {
 }
 
 export default function CompareBrokerPage() {
+  const canonicalUrl = `${SITE_URL}/comparebrokers`;
+
+  // ==========================================
+  // JSON-LD STRUCTURED DATA
+  // ==========================================
+
+  const webPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+
+    "@id": `${canonicalUrl}#webpage`,
+
+    url: canonicalUrl,
+
+    name:
+      "Compare Best Stock Brokers in India 2026 - Brokerage Charges & Ratings | ShareBazaarOnline",
+
+    description:
+      "Compare top stock brokers in India side by side. Check brokerage charges, account opening fees, ratings, active users, and trading segments.",
+
+    isPartOf: {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}#website`,
+      name: "ShareBazaarOnline",
+      url: SITE_URL,
+    },
+
+    about: {
+      "@type": "Thing",
+      name: "Stock Broker Comparison",
+    },
+
+    publisher: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}#organization`,
+      name: "ShareBazaarOnline",
+      url: SITE_URL,
+    },
+
+    primaryImageOfPage: {
+      "@type": "ImageObject",
+      url: `${SITE_URL}/og-image.jpg`,
+    },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+
+    "@id": `${canonicalUrl}#breadcrumb`,
+
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${SITE_URL}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Compare Brokers",
+        item: canonicalUrl,
+      },
+    ],
+  };
+
+  const webPageSchemaJson = JSON.stringify(webPageSchema).replace(
+    /</g,
+    "\\u003c"
+  );
+
+  const breadcrumbSchemaJson = JSON.stringify(breadcrumbSchema).replace(
+    /</g,
+    "\\u003c"
+  );
+
   return (
-    <Suspense fallback={null}>
-      <CompareBrokerClient />
-    </Suspense>
+    <>
+      {/* WebPage JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: webPageSchemaJson,
+        }}
+      />
+
+      {/* Breadcrumb JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: breadcrumbSchemaJson,
+        }}
+      />
+
+      <Suspense fallback={null}>
+        <CompareBrokerClient />
+      </Suspense>
+    </>
   );
 }
