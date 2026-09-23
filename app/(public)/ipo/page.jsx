@@ -31,17 +31,30 @@ export const metadata = {
 export const revalidate = 300;
 
 const MONTHS = {
-  Jan: 0, January: 0,
-  Feb: 1, February: 1,
-  Mar: 2, March: 2,
-  Apr: 3, April: 3,
+  Jan: 0,
+  January: 0,
+  Feb: 1,
+  February: 1,
+  Mar: 2,
+  March: 2,
+  Apr: 3,
+  April: 3,
   May: 4,
-  Jun: 5, June: 5,
-  Jul: 6, July: 6,  Aug: 7, August: 7,
-  Sep: 8, Sept: 8, September: 8,
-  Oct: 9, October: 9,
-  Nov: 10, November: 10,
-  Dec: 11, December: 11,
+  Jun: 5,
+  June: 5,
+  Jul: 6,
+  July: 6,
+  Aug: 7,
+  August: 7,
+  Sep: 8,
+  Sept: 8,
+  September: 8,
+  Oct: 9,
+  October: 9,
+  Nov: 10,
+  November: 10,
+  Dec: 11,
+  December: 11,
 };
 
 function parseDate(dateStr) {
@@ -57,6 +70,7 @@ function parseDate(dateStr) {
   if (spaceParts.length >= 3) {
     const [day, monthStr, year] = spaceParts;
     const month = MONTHS[monthStr];
+
     if (month !== undefined && year) {
       const d = new Date(Number(year), month, Number(day));
       return isNaN(d.getTime()) ? null : d;
@@ -70,19 +84,26 @@ function parseDate(dateStr) {
 function getField(obj, ...paths) {
   for (const path of paths) {
     const value = path.split(".").reduce((o, key) => o?.[key], obj);
-    if (value !== undefined && value !== null && value !== "") return value;
+
+    if (value !== undefined && value !== null && value !== "") {
+      return value;
+    }
   }
+
   return null;
 }
 
-// ─── Compute which tab has data, at SSR time ──────────────────────────────
 function computeDefaultTab(ipos) {
   if (!ipos || ipos.length === 0) return "Open";
 
   const now = new Date();
   now.setHours(0, 0, 0, 0);
 
-  const counts = { Open: 0, Closed: 0, Upcoming: 0 };
+  const counts = {
+    Open: 0,
+    Closed: 0,
+    Upcoming: 0,
+  };
 
   for (const ipo of ipos) {
     const openStr = getField(
@@ -92,6 +113,7 @@ function computeDefaultTab(ipos) {
       "subscription_open",
       "subscription_start_date"
     );
+
     const closeStr = getField(
       ipo,
       "close",
@@ -125,17 +147,21 @@ function computeDefaultTab(ipos) {
     }
   }
 
-  return ["Open", "Closed", "Upcoming"].find((t) => counts[t] > 0) || "Open";
+  return (
+    ["Open", "Closed", "Upcoming"].find((t) => counts[t] > 0) ||
+    "Open"
+  );
 }
 
-// ─── JSON-LD ──────────────────────────────────────────────────────────────
 function buildIpoJsonLd(ipos) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
+    "@id": `${siteUrl}/ipo#itemlist`,
     name: "Live & Upcoming IPOs in India",
     description:
       "Current IPO price bands, lot sizes, subscription dates, and listing schedules.",
+    url: `${siteUrl}/ipo`,
     numberOfItems: ipos.length,
     itemListElement: ipos.slice(0, 50).map((ipo, i) => {
       const name =
@@ -147,7 +173,6 @@ function buildIpoJsonLd(ipos) {
           "company_name"
         ) || "Unknown IPO";
 
-      // ── Fixed: no trailing slash when slug is missing ──
       const url = ipo.slug
         ? `${siteUrl}/ipo/${ipo.id}/${ipo.slug}`
         : `${siteUrl}/ipo/${ipo.id}`;
@@ -191,7 +216,6 @@ function buildIpoJsonLd(ipos) {
   };
 }
 
-
 export default async function Page() {
   const ipos = await fetchIPOs();
   const safeIpos = Array.isArray(ipos) ? ipos : [];
@@ -204,8 +228,11 @@ export default async function Page() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
       />
+
       <IPODashboard
         initialIpos={safeIpos}
         defaultTab={defaultTab}

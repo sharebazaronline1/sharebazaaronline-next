@@ -4,8 +4,6 @@
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabase";
-import { fetchInsightDetails } from "../api/mockApi";
 import slugify from "../utils/slugify";
 import {
   BookOpen,
@@ -16,11 +14,11 @@ import {
 
 const CARDS_PER_PAGE = 24;
 
-const InsightHub = () => {
+const InsightHub = ({ initialBlogs = [] }) => {
   const router = useRouter();
-  const [blogs, setBlogs] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(CARDS_PER_PAGE);
-  const [loading, setLoading] = useState(true);
+ const [blogs, setBlogs] = useState(initialBlogs);
+const [visibleCount, setVisibleCount] = useState(CARDS_PER_PAGE);
+const [loading, setLoading] = useState(false);
 
   const corporateActionTypes = [
     "buyback",
@@ -31,64 +29,7 @@ const InsightHub = () => {
     "other",
   ];
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      setLoading(true);
-
-      try {
-        const { data: dbData, error } = await supabase
-          .from("blogs")
-          .select("*")
-          .eq("status", "published");
-
-        if (error) {
-          console.error("Supabase error:", error);
-        }
-
-        const mockData = await fetchInsightDetails();
-
-        const formattedMock = mockData.map((item) => ({
-          id: `mock-${item.id}`,
-          title: item.title,
-          image_url: item.image,
-          published_at: item.date,
-          reading_time: item.readTime,
-          category: item.category,
-          content: item.content,
-          source: "mock",
-        }));
-
-        const formattedDB = (dbData || []).map((item) => ({
-          ...item,
-          source: "db",
-        }));
-
-        let merged = [...formattedDB, ...formattedMock];
-
-        const uniqueMap = new Map();
-        merged.forEach((item) => {
-          if (!uniqueMap.has(item.title)) {
-            uniqueMap.set(item.title, item);
-          }
-        });
-
-        merged = Array.from(uniqueMap.values());
-
-        merged.sort((a, b) => {
-          return new Date(b.published_at || 0) - new Date(a.published_at || 0);
-        });
-
-        setBlogs(merged);
-        setVisibleCount(CARDS_PER_PAGE);
-      } catch (err) {
-        console.error("Error loading blogs:", err);
-      }
-
-      setLoading(false);
-    };
-
-    fetchBlogs();
-  }, []);
+ 
 
   // Preload the first few images before user scrolls
   useEffect(() => {
@@ -214,9 +155,9 @@ const InsightHub = () => {
                     <img
                       src={post.image_url}
                       alt={post.title}
-                      loading={i < 8 ? "eager" : "lazy"}
+                      loading={i < 4 ? "eager" : "lazy"}
+                      fetchPriority={i < 2 ? "high" : "auto"}
                       decoding="async"
-                      fetchPriority={i < 8 ? "high" : "auto"}
                       className="w-full h-full object-cover object-center transition-all duration-300"
                     />
                   </div>

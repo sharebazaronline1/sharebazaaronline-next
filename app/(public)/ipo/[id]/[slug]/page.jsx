@@ -1,4 +1,5 @@
 // app/ipo/[id]/[slug]/page.jsx
+
 import { notFound } from "next/navigation";
 import { fetchIPOs } from "@/api/mockApi";
 import IPODetailsClient from "@/components/IPODetailsClient";
@@ -30,7 +31,6 @@ async function getIPOData(id) {
       return null;
     }
 
-    // Ensure all nested objects are properly structured
     return {
       ...selected,
       about_company: selected.about_company || {},
@@ -68,7 +68,7 @@ export async function generateStaticParams() {
 
       return {
         id: String(ipo.id),
-        slug: slug,
+        slug,
       };
     });
   } catch (error) {
@@ -108,13 +108,15 @@ export async function generateMetadata({ params }) {
   const canonical = `${SITE_URL}/ipo/${id}/${slug}`;
 
   const imageUrl = ipo.logo
-    ? `${SITE_URL}${ipo.logo}`
+    ? ipo.logo.startsWith("http")
+      ? ipo.logo
+      : `${SITE_URL}${ipo.logo.startsWith("/") ? "" : "/"}${ipo.logo}`
     : `${SITE_URL}/og-image.jpg`;
 
   const ipoDate =
     ipo.ipo_basic_details?.issue_open_date ||
     ipo.created_at ||
-    new Date().toISOString();
+    undefined;
 
   return {
     title: `${ipoName} IPO - Price Band ${priceBand}, Lot Size, GMP & Details | ShareBazaarOnline`,
@@ -137,8 +139,8 @@ export async function generateMetadata({ params }) {
       images: [{ url: imageUrl }],
       siteName: "ShareBazaarOnline",
       locale: "en_IN",
-      publishedTime: ipoDate,
-      modifiedTime: ipo.updated_at || ipoDate,
+      ...(ipoDate ? { publishedTime: ipoDate } : {}),
+      ...(ipo.updated_at ? { modifiedTime: ipo.updated_at } : {}),
     },
 
     twitter: {
@@ -160,13 +162,149 @@ export default async function Page({ params }) {
     notFound();
   }
 
-  // Data is fetched on the server and passed
-  // to the client component as initial props.
+  const ipoName = ipo.name || ipo.fullName || "IPO";
+  const canonicalUrl = `${SITE_URL}/ipo/${id}/${slug}`;
+
+  const priceMin = ipo.ipo_basic_details?.price_band_min;
+  const priceMax = ipo.ipo_basic_details?.price_band_max;
+
+  const description =
+    typeof ipo.about_company?.description === "string"
+      ? ipo.about_company.description.slice(0, 160)
+      : `Complete details about ${ipoName} IPO including price band, lot size, GMP, financials, and subscription data.`;
+
+  const imageUrl = ipo.logo
+    ? ipo.logo.startsWith("http")
+      ? ipo.logo
+      : `${SITE_URL}${ipo.logo.startsWith("/") ? "" : "/"}${ipo.logo}`
+    : `${SITE_URL}/og-image.jpg`;
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": `${canonicalUrl}#article`,
+    headline: `${ipoName} IPO - Price, Lot Size, GMP & Details`,
+    description,
+    url: canonicalUrl,
+    image: [imageUrl],
+    articleSection: "IPO",
+    author: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "ShareBazaarOnline",
+      url: SITE_URL,
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "ShareBazaarOnline",
+      url: SITE_URL,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${canonicalUrl}#webpage`,
+    },
+    ...(ipo.ipo_basic_details?.issue_open_date
+      ? {
+          datePublished:
+            ipo.ipo_basic_details.issue_open_date,
+        }
+      : ipo.created_at
+        ? {
+            datePublished: ipo.created_at,
+          }
+        : {}),
+    ...(ipo.updated_at
+      ? {
+          dateModified: ipo.updated_at,
+        }
+      : {}),
+  };
+
+  const financialProductSchema = {
+    "@context": "https://schema.org",
+    "@type": "FinancialProduct",
+    "@id": `${canonicalUrl}#financialproduct`,
+    name: `${ipoName} IPO`,
+    description,
+    url: canonicalUrl,
+    category: "IPO",
+    brand: {
+      "@type": "Brand",
+      name: ipoName,
+    },
+    ...(priceMin && priceMax
+      ? {
+          offers: {
+            "@type": "Offer",
+            priceCurrency: "INR",
+            lowPrice: Number(priceMin),
+            highPrice: Number(priceMax),
+            availability:
+              "https://schema.org/InStock",
+            url: canonicalUrl,
+          },
+        }
+      : {}),
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "@id": `${canonicalUrl}#breadcrumb`,
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${SITE_URL}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "IPO Tracker",
+        item: `${SITE_URL}/ipo`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: `${ipoName} IPO`,
+        item: canonicalUrl,
+      },
+    ],
+  };
+
+  const safeJsonLd = (schema) =>
+    JSON.stringify(schema).replace(/</g, "\\u003c");
+
   return (
-    <IPODetailsClient
-      initialIpo={ipo}
-      id={id}
-      slug={slug}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJsonLd(articleSchema),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJsonLd(financialProductSchema),
+        }}
+      />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJsonLd(breadcrumbSchema),
+        }}
+      />
+
+      <IPODetailsClient
+        initialIpo={ipo}
+        id={id}
+        slug={slug}
+      />
+    </>
   );
 }

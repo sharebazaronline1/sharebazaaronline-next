@@ -1,9 +1,11 @@
 // app/login/page.jsx
+
 import { Suspense } from "react";
 import LoginClient from "@/components/LoginClient";
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_APP_URL || "https://sharebazaaronline.com";
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://www.sharebazaaronline.com";
 
 export async function generateMetadata() {
   return {
