@@ -228,192 +228,243 @@ export const fetchIPOs = async () => {
 },
    {
   "id": 2,
-  "name": "AceVector",
-    "fullName": "Acevector Ltd.",
-  "logo": "/images/ipo/acevector.png",
-  "minInvestment": "TBA",
-  "open": "TBA",
-  "close": "TBA",
-  "listing": "TBA",
-  "price": "TBA",
-  "lot": "TBA",
+  "name": "Acevector Limited",
+ "logo": "/images/ipo/acevector.png",
+  "minInvestment": "₹14,976",
+  "open": "25 Sep 2026",
+  "close": "29 Sep 2026",
+  "listing": "05 Oct 2026",
+  "price": "30 - 32",
+  "lot": 468,
 
   "about_company": {
-    "company_name": "Acevector Ltd.",
-    "industry_sector": "Digital Commerce & E-commerce Enablement",
+    "company_name": "Acevector Limited",
+    "industry_sector": "E-Retail / E-Commerce / Digital Commerce Ecosystem",
     "founded_year": "2007",
-    "promoters": ["Kunal Bahl", "Rohit Kumar Bansal", "Starfish I Pte. Ltd."],
-    "description": "Acevector Ltd. runs an asset-light digital commerce platform that serves value-conscious consumers across India through its subsidiaries. It owns Snapdeal, a marketplace focused on affordable products in Tier-2 and smaller cities reaching over 18,000 pin codes with consistently high customer ratings. It also operates Unicommerce (SaaS tools for warehousing, shipping, and order management) and Stellaro Brands (its own consumer product lines sold across multiple channels)."
+    "promoters": [
+      "Kunal Bahl",
+      "Rohit Kumar Bansal",
+      "Starfish I Pte. Ltd."
+    ],
+    "description": "Acevector Ltd. operates an asset-light digital commerce ecosystem through its subsidiaries, spanning data, technology, and AI-driven businesses. Its operations include a value-focused e-commerce marketplace, e-commerce enablement SaaS platforms, and consumer brand businesses. The ecosystem comprises: (i) Snapdeal, a value-driven lifestyle e-commerce marketplace offering affordable and quality merchandise across lifestyle categories; (ii) Uniware, Convertway, and Shipway, providing a comprehensive suite of e-commerce enablement SaaS products that support end-to-end e-commerce operations; and (iii) Stellaro Brands, an omnichannel portfolio of value-focused consumer brands. In FY 2026, Snapdeal served customers nation-wide across 18,972 pin codes in India, primarily catering to middle-income, value-conscious consumers in Tier 2+ and smaller cities."
   },
 
   "ipo_basic_details": {
-    "company_name": "Acevector Ltd.",
+    "company_name": "Acevector Limited",
     "ipo_type": "Mainboard IPO",
-    "issue_type": "Bookbuilding IPO (Fresh Issue + OFS)",
+    "issue_type": "Book Building Issue",
     "face_value": "₹1 per share",
-    "price_band_min": "TBA",
-    "price_band_max": "TBA",
-    "lot_size": "TBA",
-    "total_issue_size": "₹300 Cr (Fresh) + OFS up to 6.39 Cr shares",
-    "fresh_issue_size": "₹300 Cr",
-    "offer_for_sale": "Up to 6.39 Cr equity shares",
-    "shares_offered": "TBA",
-    "listing_exchange": "BSE & NSE",
-    "issue_price": "TBA",
-    "minimum_investment": "TBA",
-    "market_cap_post_issue": "TBA",
-    "pre_issue_shareholding": "65.31% (Promoters)",
-    "post_issue_shareholding": "TBA"
+    "price_band_min": "₹30",
+    "price_band_max": "₹32",
+    "lot_size": "468 Shares",
+    "total_issue_size": "13,12,50,000 Equity Shares (₹420.00 Cr)",
+    "fresh_issue_size": "8,96,87,500 Equity Shares (₹287.00 Cr)",
+    "offer_for_sale": "4,15,62,500 Equity Shares (₹133.00 Cr)",
+    "shares_offered": "13,12,50,000 Equity Shares",
+    "listing_exchange": "BSE, NSE",
+    "issue_price": "₹30 - ₹32",
+    "minimum_investment": "₹14,976",
+    "market_cap_post_issue": "₹1,741.40 Cr",
+    "pre_issue_shareholding": "45,44,99,270 shares",
+    "post_issue_shareholding": "54,41,86,770 shares"
   },
 
   "company_overview": {
-    "business_model": "Asset-light digital commerce ecosystem combining marketplace, SaaS enablement tools, and owned consumer brands, primarily targeting middle-income buyers in smaller cities.",
+    "business_model": "Asset-light digital commerce ecosystem operating through subsidiaries across a value-focused e-commerce marketplace, e-commerce enablement SaaS platforms, and consumer brand businesses. Revenue is generated through marketplace operations, SaaS subscriptions, and brand sales.",
     "products_services": [
-      "Snapdeal marketplace",
-      "Unicommerce SaaS (Uniware, Convertway, Shipway)",
-      "Stellaro own brands"
+      "Value-Focused E-Commerce Marketplace (Snapdeal)",
+      "E-Commerce Enablement SaaS Platforms (Uniware, Convertway, Shipway)",
+      "Consumer Brands (Stellaro Brands)",
+      "Data, Technology, and AI-Driven Businesses"
     ],
     "competitive_strengths": [
-      "Strong presence in Tier-2+ cities",
-      "High product ratings and trust",
-      "Integrated tech platform for sellers"
+      "Diversified ecosystem driving organic and inorganic growth across businesses with centralised strategy support",
+      "Leading value-focused e-commerce marketplace purpose built for value shoppers",
+      "Robust unit economics with operating leverage in effect, ensuring improved profitability",
+      "Proprietary technology stack powering discovery-led, personalised shopping experience",
+      "Ability to identify, acquire, and scale businesses across the e-commerce value chain",
+      "Robust governance practices, experienced management and marquee investors"
     ],
     "risks": [
-      "Continued losses in recent years",
-      "Intense competition in e-commerce",
-      "Dependence on subsidiary performance"
+      "The company has a history of losses and may continue to incur losses in the future",
+      "The company's business is dependent on the performance of its subsidiaries, particularly Snapdeal",
+      "The e-commerce market in India is highly competitive",
+      "The company is subject to regulatory risks related to e-commerce and data privacy",
+      "The company's business may be adversely affected by any disruption in its technology infrastructure"
     ]
   },
 
   "ipo_important_dates": {
-    "ipo_open_date": "TBA",
-    "ipo_close_date": "TBA",
-    "basis_of_allotment_date": "TBA",
-    "refund_initiation_date": "TBA",
-    "demat_credit_date": "TBA",
-    "listing_date": "TBA",
-    "upi_mandate_deadline": "TBA"
+    "anchor_bidding_date": "24 Sep 2026",
+    "ipo_open_date": "25 Sep 2026",
+    "ipo_close_date": "29 Sep 2026",
+    "basis_of_allotment_date": "30 Sep 2026",
+    "refund_initiation_date": "01 Oct 2026",
+    "demat_credit_date": "01 Oct 2026",
+    "listing_date": "05 Oct 2026"
   },
 
   "ipo_objectives": {
-    "capital_expenditure": "Growth and technology initiatives",
-    "debt_repayment": "N/A",
-    "general_corporate_purposes": "Working capital and ecosystem expansion"
+    "funding_marketing_and_business_promotion_expense_of_marketplace_business": "₹132.00 Cr",
+    "funding_technology_infrastructure_costs_of_marketplace_business": "₹50.00 Cr",
+    "funding_inorganic_growth_through_acquisitions_and_general_corporate_purpose": "Balance Amount"
   },
 
   "investor_reservation": {
-    "qib_quota": "Not less than 75%",
-    "retail_quota": "Not more than 10%",
-    "hni_quota": "Not more than 15%",
-    "market_maker_quota": "N/A"
+    "qib_quota": "Not less than 75% of the Offer",
+    "hni_nii_quota": "Not more than 15% of the Offer",
+    "retail_quota": "Not more than 10% of the Offer",
+    "anchor_investor_quota": "Not specified in the source"
   },
 
   "market_lot_details": {
-    "retail_minimum": { "lot_size": "TBA", "shares": "TBA", "amount": "TBA" },
-    "retail_maximum": { "lot_size": "TBA", "shares": "TBA", "amount": "TBA" },
-    "shni_minimum": { "lot_size": "TBA", "shares": "TBA", "amount": "TBA" }
+    "retail_minimum": {
+      "lot_size": "1 Lot",
+      "shares": "468",
+      "amount": "₹14,976"
+    },
+    "retail_maximum": {
+      "lot_size": "13 Lots",
+      "shares": "6084",
+      "amount": "₹1,94,688"
+    },
+    "shni_minimum": {
+      "lot_size": "14 Lots",
+      "shares": "6552",
+      "amount": "₹2,09,664"
+    },
+    "shni_maximum": {
+      "lot_size": "66 Lots",
+      "shares": "30888",
+      "amount": "₹9,88,416"
+    },
+    "bhni_minimum": {
+      "lot_size": "67 Lots",
+      "shares": "31356",
+      "amount": "₹10,03,392"
+    }
   },
 
   "key_performance_indicators": {
-    "roe": "N/A",
-    "roce": "N/A",
-    "ronw": "-100.25%",
-    "pat_margin": "Negative",
-    "ebitda_margin": "Negative",
-    "eps": "Negative",
-    "debt_to_equity": "Very low",
-    "pe_ratio": "N/A",
-    "price_to_book": "N/A"
+    "roe": "Not explicitly stated in the source (Company reported losses)",
+    "roce": "Not explicitly stated in the source",
+    "pat_margin": "Negative (Net loss of ₹45.51 Cr in FY26)",
+    "ebitda_margin": "Negative (EBITDA of -₹22.17 Cr in FY26)",
+    "eps": "-₹1.00 (Pre-IPO)",
+    "nav": "₹2.21",
+    "debt_to_equity": "Not explicitly stated in the source"
   },
 
   "company_financial_data": [
     {
-      "period": "30 Sep 2025",
-      "assets": "₹555.84 Cr",
-      "total_income": "₹251.91 Cr",
-      "pat": "-₹22.46 Cr",
-      "ebitda": "-₹9.28 Cr",
-      "net_worth": "₹142.09 Cr",
-      "total_borrowing": "Minimal"
+      "period": "FY2026",
+      "assets": "₹575.28 Cr",
+      "total_income": "₹537.67 Cr",
+      "pat": "-₹45.51 Cr",
+      "ebitda": "-₹22.17 Cr",
+      "net_worth": "₹102.08 Cr",
+      "total_borrowing": "Not explicitly stated in the source"
     },
     {
-      "period": "31 Mar 2025",
-      "assets": "₹553.97 Cr",
+      "period": "FY2025",
+      "assets": "₹558.09 Cr",
       "total_income": "₹406.77 Cr",
-      "pat": "-₹125.94 Cr",
-      "ebitda": "-₹39.16 Cr",
-      "net_worth": "₹138.56 Cr",
+      "pat": "-₹126.31 Cr",
+      "ebitda": "-₹107.79 Cr",
+      "net_worth": "₹126.33 Cr",
       "total_borrowing": "₹0.45 Cr"
     },
     {
-      "period": "31 Mar 2024",
+      "period": "FY2024",
       "assets": "₹410.50 Cr",
       "total_income": "₹384.74 Cr",
       "pat": "-₹51.30 Cr",
-      "ebitda": "-₹26.52 Cr",
-      "net_worth": "₹129.16 Cr",
-      "total_borrowing": "N/A"
-    },
-    {
-      "period": "31 Mar 2023",
-      "assets": "₹378.37 Cr",
-      "total_income": "₹388.13 Cr",
-      "pat": "-₹267.53 Cr",
-      "ebitda": "-₹166.72 Cr",
-      "net_worth": "₹22.83 Cr",
-      "total_borrowing": "N/A"
+      "ebitda": "-₹35.77 Cr",
+      "net_worth": "-₹142.09 Cr",
+      "total_borrowing": "Not explicitly stated in the source"
     }
   ],
 
   "grey_market_premium": {
-    "gmp_price": "N/A",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
-    "gmp_last_updated": "N/A",
-    "estimated_listing_price": "N/A"
+    "gmp_price": "Not Available",
+    "kostak_rate": "Not Available",
+    "subject_to_sauda": "Not Available",
+    "gmp_last_updated": "Not Available",
+    "estimated_listing_price": "TBA"
   },
 
   "ipo_subscription_data": {
-    "qib_ex_anchor": "N/A",
-    "hni_subscription": "N/A",
-    "retail_subscription": "N/A",
-    "total_subscription": "N/A"
+    "total_subscription": "Pending",
+    "qib_ex_anchor": "Pending",
+    "hni_subscription": "Pending",
+    "retail_subscription": "Pending"
   },
 
   "ipo_intermediaries": {
     "registrar": "MUFG Intime India Pvt. Ltd.",
-    "registrar_website": "https://in.mpms.mufg.com",
-    "market_maker": "N/A",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "registrar_website": "https://in.mpms.mufg.com/Initial_Offer/public-issues.html",
+    "registrar_phone": "022-49186000",
+    "registrar_email": "acevector.ipo@in.mpms.mufg.com"
   },
 
   "ipo_lead_manager": {
-    "lead_manager": "IIFL Capital Services Ltd"
+    "lead_manager": "IIFL Capital Services Ltd., CLSA India Pvt. Ltd., Systematix Corporate Services Ltd."
   },
 
   "company_information": {
-    "company_address": "Mezzanine Floor, A-83, Okhla Industrial Area, Phase II, New Delhi - 110020",
-    "company_website": "https://www.acevector.com/",
+    "company_address": "Mezzanine Floor, A-83, Okhla Industrial Area, Ph-II, Delhi, New Delhi - 110020",
+    "company_website": "https://www.acevector.com",
     "company_email": "contact@acevector.com",
-    "company_phone": "N/A"
+    "company_phone": "+91 1244739850"
   },
 
   "ipo_documents": {
-    "drhp_link": "https://www.sebi.gov.in/filings/public-issues/dec-2025/acevector-limited-udrhp_98252.html",
-    "rhp_link": "N/A",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "drhp_link": "",
+    "rhp_link": "https://www.india.clsa.com/uploads/Ace_Vector_Limited_RHP_18515f8243.pdf",
+    "prospectus_pdf": "",
+    "investor_presentation": ""
   },
 
   "faq": [
     {
-      "question": "What does Acevector Ltd. do?",
-      "answer": "It operates Snapdeal marketplace, Unicommerce SaaS tools, and Stellaro consumer brands targeting value buyers in smaller Indian cities."
+      "question": "What is Acevector IPO?",
+      "answer": "Acevector IPO is a main-board book building issue of 13,12,50,000 equity shares of the face value of ₹1 aggregating up to ₹420.00 Crores. The issue is priced at ₹30 to ₹32 per share."
     },
     {
-      "question": "When will the Acevector IPO open?",
-      "answer": "Dates are yet to be announced (SEBI approval received in November 2025)."
+      "question": "When does the Acevector IPO open and close?",
+      "answer": "The IPO opens on Friday, September 25, 2026, and closes on Tuesday, September 29, 2026."
+    },
+    {
+      "question": "What is the price band of the Acevector IPO?",
+      "answer": "The IPO price band is set at ₹30 to ₹32 per share."
+    },
+    {
+      "question": "What is the lot size and minimum investment for Acevector IPO?",
+      "answer": "The lot size is 468 shares. The minimum investment required for retail investors is ₹14,976 (based on the upper price band)."
+    },
+    {
+      "question": "What is the total issue size of the Acevector IPO?",
+      "answer": "The total issue size is up to ₹420.00 crores, comprising a fresh issue of up to ₹287.00 crores and an offer for sale (OFS) of up to ₹133.00 crores."
+    },
+    {
+      "question": "Where will Acevector shares be listed?",
+      "answer": "The shares are proposed to be listed on both BSE and NSE."
+    },
+    {
+      "question": "Who is the registrar for the Acevector IPO?",
+      "answer": "MUFG Intime India Pvt. Ltd. is the registrar for the IPO."
+    },
+    {
+      "question": "What is the post-IPO market cap of Acevector?",
+      "answer": "Based on the upper cap of the price band, the post-IPO market cap is estimated to be ₹1,741.40 crore."
+    },
+    {
+      "question": "What are the company's key businesses?",
+      "answer": "The company operates a value-focused e-commerce marketplace (Snapdeal), e-commerce enablement SaaS platforms (Uniware, Convertway, Shipway), and consumer brands (Stellaro Brands)."
+    },
+    {
+      "question": "Who are the promoters of Acevector?",
+      "answer": "The promoters are Kunal Bahl, Rohit Kumar Bansal, and Starfish I Pte. Ltd."
     }
   ]
 },

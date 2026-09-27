@@ -34,36 +34,51 @@ const isIPOActiveByDate = (open, close) => {
 
   return o <= today && today <= c;
 };
- const parseDate = (dateStr) => {
+
+const parseDate = (dateStr) => {
   if (!dateStr) return null;
 
   const [day, monthStr, year] = dateStr.split(" ");
+
   const months = {
-    Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
-    Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11,
+    Jan: 0,
+    Feb: 1,
+    Mar: 2,
+    Apr: 3,
+    May: 4,
+    Jun: 5,
+    Jul: 6,
+    Aug: 7,
+    Sep: 8,
+    Oct: 9,
+    Nov: 10,
+    Dec: 11,
   };
 
   return new Date(year, months[monthStr], Number(day));
 };
+
 export const IPOCard = ({ ipo }) => {
   const router = useRouter();
-const getIPOType = (ipo) => {
-  if (ipo?.ipo_basic_details?.ipo_type) {
-    return ipo.ipo_basic_details.ipo_type
-      .replace(/ipo/i, "")
-      .trim()
-      .toUpperCase();
-  }
 
-  if (ipo?.type) {
-    return ipo.type.toUpperCase();
-  }
+  const getIPOType = (ipo) => {
+    if (ipo?.ipo_basic_details?.ipo_type) {
+      return ipo.ipo_basic_details.ipo_type
+        .replace(/ipo/i, "")
+        .trim()
+        .toUpperCase();
+    }
 
-  const name = (ipo?.fullName || ipo?.name || "").toLowerCase();
-  return name.includes("sme") ? "SME" : "MAINBOARD";
-};
-const rawType = getIPOType(ipo);
-const type = rawType === "SME" ? "SME" : "Mainboard";
+    if (ipo?.type) {
+      return ipo.type.toUpperCase();
+    }
+
+    const name = (ipo?.fullName || ipo?.name || "").toLowerCase();
+    return name.includes("sme") ? "SME" : "MAINBOARD";
+  };
+
+  const rawType = getIPOType(ipo);
+  const type = rawType === "SME" ? "SME" : "Mainboard";
 
   const typeColor =
     type === "SME"
@@ -74,16 +89,16 @@ const type = rawType === "SME" ? "SME" : "Mainboard";
 
   return (
     <div
-  className="
-    w-full
-    bg-white
-    border border-gray-200
-    rounded-2xl
-    shadow-sm
-    flex flex-col
-    h-full
-  "
->
+      className="
+        w-full
+        bg-white
+        border border-gray-200
+        rounded-2xl
+        shadow-sm
+        flex flex-col
+        h-full
+      "
+    >
       <div className="p-4 flex flex-col gap-2 h-full">
         <div className="flex gap-3 items-start">
           {ipo.logo ? (
@@ -100,6 +115,7 @@ const type = rawType === "SME" ? "SME" : "Mainboard";
             <h3 className="font-bold text-base text-gray-900 truncate">
               {ipo.name}
             </h3>
+
             <p className="text-xs text-gray-500 truncate mt-0.5">
               {ipo.about_company?.company_name || "IPO"}
             </p>
@@ -115,7 +131,9 @@ const type = rawType === "SME" ? "SME" : "Mainboard";
                 </span>
               )}
 
-              <span className={`inline-flex items-center px-0.5 text-xs rounded flex-shrink-0 ${typeColor}`}>
+              <span
+                className={`inline-flex items-center px-0.5 text-xs rounded flex-shrink-0 ${typeColor}`}
+              >
                 {type}
               </span>
             </div>
@@ -124,13 +142,22 @@ const type = rawType === "SME" ? "SME" : "Mainboard";
 
         <div className="mt-2 text-sm grid grid-cols-2 gap-y-1 gap-x-2">
           <span className="text-gray-600">Dates</span>
-          <span className="font-medium text-gray-900">{formatDateRange(ipo.open, ipo.close)}</span>
+          <span className="font-medium text-gray-900">
+            {formatDateRange(ipo.open, ipo.close)}
+          </span>
+
           <span className="text-gray-600">Price</span>
           <span className="font-medium text-gray-900">{ipo.price}</span>
+
           <span className="text-gray-600">Lot</span>
-          <span className="font-medium text-gray-900">{ipo.lot} shares</span>
+          <span className="font-medium text-gray-900">
+            {ipo.lot} shares
+          </span>
+
           <span className="text-gray-600">Listing</span>
-          <span className="font-medium text-gray-900">{ipo.listing || "TBA"}</span>
+          <span className="font-medium text-gray-900">
+            {ipo.listing || "TBA"}
+          </span>
         </div>
 
         <div className="mt-auto flex gap-2">
@@ -139,15 +166,16 @@ const type = rawType === "SME" ? "SME" : "Mainboard";
             className="flex-1 py-2.5 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold rounded-xl"
           >
             Apply
-          </button> 
+          </button>
+
           <button
-           onClick={() =>
-  router.push(
-    `/ipo/${ipo.id}/${slugify(
-      ipo.name || ipo.fullName
-    )}`
-  )
-}
+            onClick={() =>
+              router.push(
+                `/ipo/${ipo.id}/${slugify(
+                  ipo.name || ipo.fullName
+                )}`
+              )
+            }
             className="flex-1 py-2.5 border border-green-300 text-green-700 text-xs font-semibold rounded-xl"
           >
             Details
@@ -158,44 +186,95 @@ const type = rawType === "SME" ? "SME" : "Mainboard";
   );
 };
 
-const IpoList = ({ ipos = [] }) => {
+const IPOCardSkeleton = () => (
+  <div className="w-full bg-white border border-gray-200 rounded-2xl shadow-sm flex flex-col h-full animate-pulse">
+    <div className="p-4 flex flex-col gap-2 h-full">
+      <div className="flex gap-3 items-start">
+        <div className="w-12 h-12 rounded-xl bg-gray-200 flex-shrink-0" />
+
+        <div className="flex-1 min-w-0 space-y-2">
+          <div className="h-4 bg-gray-200 rounded w-3/4" />
+          <div className="h-3 bg-gray-200 rounded w-1/2" />
+
+          <div className="flex gap-2 mt-1">
+            <div className="h-4 w-12 bg-gray-200 rounded-full" />
+            <div className="h-4 w-16 bg-gray-200 rounded" />
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-2 grid grid-cols-2 gap-y-1 gap-x-2">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="contents">
+            <div className="h-3.5 bg-gray-200 rounded w-16 my-0.5" />
+            <div className="h-3.5 bg-gray-200 rounded w-20 my-0.5 justify-self-end" />
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-auto flex gap-2">
+        <div className="flex-1 h-9 bg-gray-200 rounded-xl" />
+        <div className="flex-1 h-9 bg-gray-200 rounded-xl" />
+      </div>
+    </div>
+  </div>
+);
+
+const IpoList = ({ ipos = [], loading = false }) => {
   const router = useRouter();
-
-
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
- const top8IPOs = useMemo(() => {
-  return ipos
-    .map((ipo) => {
-      const openDate = parseDate(ipo.open);
-      const closeDate = parseDate(ipo.close);
+  const top8IPOs = useMemo(() => {
+    return ipos
+      .map((ipo) => {
+        const openDate = parseDate(ipo.open);
+        const closeDate = parseDate(ipo.close);
 
-      if (!openDate || !closeDate) return null;
+        if (!openDate || !closeDate) return null;
 
-      closeDate.setHours(23, 59, 59, 999);
+        closeDate.setHours(23, 59, 59, 999);
 
-      return {
-        ...ipo,
-        _openDate: openDate,
-        _closeDate: closeDate,
-      };
-    })
-    .filter(
-      (ipo) =>
-        ipo &&
-        ipo._openDate <= today &&
-        today <= ipo._closeDate
-    )
-    .sort((a, b) => a._closeDate - b._closeDate)
-    .slice(0, 8);
-}, [ipos]);
+        return {
+          ...ipo,
+          _openDate: openDate,
+          _closeDate: closeDate,
+        };
+      })
+      .filter(
+        (ipo) =>
+          ipo &&
+          ipo._openDate <= today &&
+          today <= ipo._closeDate
+      )
+      .sort((a, b) => a._closeDate - b._closeDate)
+      .slice(0, 8);
+  }, [ipos]);
+
+  if (loading) {
+    return (
+      <div className="py-4 px-4 lg:py-4">
+        <div className="w-full">
+          <div className="hidden lg:grid grid-cols-4 gap-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <IPOCardSkeleton key={i} />
+            ))}
+          </div>
+
+          <div className="lg:hidden space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <IPOCardSkeleton key={i} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="py-4 px-4 lg:py-4">
       <div className="w-full">
-        {/* Desktop Grid */}
         <div className="hidden lg:grid grid-cols-4 gap-4">
           {top8IPOs.length > 0 ? (
             top8IPOs.map((ipo, i) => (
@@ -214,6 +293,7 @@ const IpoList = ({ ipos = [] }) => {
               <p className="text-2xl font-semibold text-gray-600">
                 No Live IPOs Right Now
               </p>
+
               <p className="text-lg text-gray-500 mt-4">
                 Check back soon for upcoming IPOs or explore Pre-IPO & Unlisted Shares.
               </p>
@@ -221,61 +301,49 @@ const IpoList = ({ ipos = [] }) => {
           )}
         </div>
 
-      
-{/* Mobile / Tablet Vertical Layout */}
-<div className="lg:hidden">
-  {top8IPOs.length > 0 ? (
+        <div className="lg:hidden">
+          {top8IPOs.length > 0 ? (
+            <div className="space-y-4">
+              {top8IPOs.map((ipo, i) => (
+                <motion.div
+                  key={ipo.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                >
+                  <IPOCard ipo={ipo} />
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="py-12 text-center">
+              <p className="text-xl font-semibold text-gray-600">
+                No Live IPOs Right Now
+              </p>
 
-    <div className="space-y-4">
+              <p className="text-sm text-gray-500 mt-3">
+                Check back soon for new opportunities.
+              </p>
 
-      {top8IPOs.map((ipo, i) => (
-
-        <motion.div
-          key={ipo.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.05 }}
-        >
-          <IPOCard ipo={ipo} />
-        </motion.div>
-
-      ))}
-
-    </div>
-
-  ) : (
-
-    <div className="py-12 text-center">
-
-      <p className="text-xl font-semibold text-gray-600">
-        No Live IPOs Right Now
-      </p>
-
-      <p className="text-sm text-gray-500 mt-3">
-        Check back soon for new opportunities.
-      </p>
-
-      <button
-        onClick={() => router.push("/how-to-apply-ipo")}
-        className="
-          mt-6
-          w-full
-          py-3
-          rounded-xl
-          bg-green-600
-          hover:bg-green-700
-          text-white
-          font-bold
-          transition
-        "
-      >
-        Learn How to Apply for IPOs
-      </button>
-
-    </div>
-
-  )}
-</div>
+              <button
+                onClick={() => router.push("/how-to-apply-ipo")}
+                className="
+                  mt-6
+                  w-full
+                  py-3
+                  rounded-xl
+                  bg-green-600
+                  hover:bg-green-700
+                  text-white
+                  font-bold
+                  transition
+                "
+              >
+                Learn How to Apply for IPOs
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

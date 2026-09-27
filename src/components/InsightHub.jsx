@@ -3,7 +3,7 @@
 
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import slugify from "../utils/slugify";
 import {
   BookOpen,
@@ -14,11 +14,22 @@ import {
 
 const CARDS_PER_PAGE = 24;
 
+/* ----------------------------------------------------
+   Preload strategy
+   ----------------------------------------------------
+   - First 8: eager + high priority (above the fold)
+   - Next 16: eager, normal priority (below fold but instant)
+   - Everything after: lazy (load-more batches)
+---------------------------------------------------- */
+const EAGER_FIRST_BATCH = 8;
+const EAGER_SECOND_BATCH = 24;
+
 const InsightHub = ({ initialBlogs = [] }) => {
   const router = useRouter();
- const [blogs, setBlogs] = useState(initialBlogs);
-const [visibleCount, setVisibleCount] = useState(CARDS_PER_PAGE);
-const [loading, setLoading] = useState(false);
+
+  const [blogs, setBlogs] = useState(initialBlogs);
+  const [visibleCount, setVisibleCount] = useState(CARDS_PER_PAGE);
+  const [loading, setLoading] = useState(false);
 
   const corporateActionTypes = [
     "buyback",
@@ -29,29 +40,90 @@ const [loading, setLoading] = useState(false);
     "other",
   ];
 
- 
-
-  // Preload the first few images before user scrolls
-  useEffect(() => {
-    blogs.slice(0, 12).forEach((post) => {
-      if (post.image_url) {
-        const img = new window.Image();
-        img.src = post.image_url;
-      }
-    });
-  }, [blogs]);
-
-  const handleCardClick = (post) => {
-    router.push(`/insight-hub/${post.id}/${slugify(post.title)}`);
-  };
-
   const isCorporateAction = (post) => {
     if (!post.action_type && !post.category) return false;
     const type = (post.action_type || post.category || "").toLowerCase();
     return corporateActionTypes.includes(type);
   };
 
-  const visibleBlogs = blogs.slice(0, visibleCount);
+  /* ----------------------------------------------------
+     Preload images in the background
+     ----------------------------------------------------
+     Warms the browser HTTP cache so images display the
+     instant they scroll into view. Runs once per blogs
+     change, doesn't block rendering.
+  ---------------------------------------------------- */
+  useEffect(() => {
+    if (!blogs.length) return;
+
+    // Preload the first 24 (visible batch) immediately
+    const immediate = blogs
+      .slice(0, EAGER_SECOND_BATCH)
+      .filter((p) => p?.image_url);
+
+    immediate.forEach((post) => {
+      const img = new window.Image();
+      img.decoding = "async";
+      img.src = post.image_url;
+    });
+
+    // Preload the next 24 (potential "load more" batch) on idle
+    const idle = blogs
+      .slice(EAGER_SECOND_BATCH, EAGER_SECOND_BATCH * 2)
+      .filter((p) => p?.image_url);
+
+    if (idle.length && "requestIdleCallback" in window) {
+      const handle = window.requestIdleCallback(
+        () => {
+          idle.forEach((post) => {
+            const img = new window.Image();
+            img.decoding = "async";
+            img.src = post.image_url;
+          });
+        },
+        { timeout: 2000 }
+      );
+      return () => window.cancelIdleCallback?.(handle);
+    } else {
+      // Fallback for Safari / older browsers
+      const t = setTimeout(() => {
+        idle.forEach((post) => {
+          const img = new window.Image();
+          img.decoding = "async";
+          img.src = post.image_url;
+        });
+      }, 800);
+      return () => clearTimeout(t);
+    }
+  }, [blogs]);
+
+  /* ----------------------------------------------------
+     Also preload when Load More is clicked
+  ---------------------------------------------------- */
+  useEffect(() => {
+    // Whenever visibleCount grows, warm the next batch
+    const nextBatchStart = visibleCount;
+    const nextBatchEnd = visibleCount + CARDS_PER_PAGE;
+
+    const upcoming = blogs
+      .slice(nextBatchStart, nextBatchEnd)
+      .filter((p) => p?.image_url);
+
+    upcoming.forEach((post) => {
+      const img = new window.Image();
+      img.decoding = "async";
+      img.src = post.image_url;
+    });
+  }, [visibleCount, blogs]);
+
+  const handleCardClick = (post) => {
+    router.push(`/insight-hub/${post.id}/${slugify(post.title)}`);
+  };
+
+  const visibleBlogs = useMemo(
+    () => blogs.slice(0, visibleCount),
+    [blogs, visibleCount]
+  );
 
   return (
     <div className="w-full min-h-screen bg-gray-50">
@@ -138,12 +210,20 @@ const [loading, setLoading] = useState(false);
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
             {visibleBlogs.map((post, i) => {
               const isCorp = isCorporateAction(post);
+
+              // Priority strategy:
+              //  - First 8 cards: eager + high priority (likely above fold)
+              //  - Next 16: eager + low priority (visible on scroll-down soon)
+              //  - Rest (Load-More batches): lazy (loads on demand)
+              const isLoadingEager = i < EAGER_SECOND_BATCH;
+              const isHighPriority = i < EAGER_FIRST_BATCH;
+
               return (
                 <motion.article
-                  key={post.id}
+                  key={post.id || `card-${i}`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
+                  transition={{ delay: Math.min(i, 12) * 0.04 }}
                   className="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col h-full overflow-hidden"
                   onClick={() => handleCardClick(post)}
                   style={{
@@ -154,9 +234,11 @@ const [loading, setLoading] = useState(false);
                   <div className="relative w-full h-[160px] sm:h-[175px] lg:h-[190px] overflow-hidden bg-gray-100">
                     <img
                       src={post.image_url}
-                      alt={post.title}
-                      loading={i < 4 ? "eager" : "lazy"}
-                      fetchPriority={i < 2 ? "high" : "auto"}
+                      alt={post.title || post.heading || "Insight"}
+                      width={400}
+                      height={190}
+                      loading={isLoadingEager ? "eager" : "lazy"}
+                      fetchPriority={isHighPriority ? "high" : "auto"}
                       decoding="async"
                       className="w-full h-full object-cover object-center transition-all duration-300"
                     />
@@ -204,4 +286,4 @@ const [loading, setLoading] = useState(false);
   );
 };
 
-export default InsightHub;
+export default InsightHub; 

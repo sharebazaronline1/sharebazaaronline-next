@@ -11,7 +11,19 @@ import IpoList from "../IpoList";
 import Blogs from '../Blogs';
 import slugify from "../../utils/slugify";
 import BrokerAnalyzer from '../BrokerAnalyzer';
-import { TrendingUp, ShieldCheck, UserCheck, Gem, Scale, Lightbulb, Star, Check, Building2, UserCog2Icon } from 'lucide-react';
+import {
+  Loader2,
+  TrendingUp,
+  ShieldCheck,
+  UserCheck,
+  Gem,
+  Scale,
+  Lightbulb,
+  Star,
+  Check,
+  Building2,
+  UserCog2Icon,
+} from 'lucide-react';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.sharebazaaronline.com';
 const SEO = () => null;
@@ -34,7 +46,11 @@ const AdBanner = ({ size = "horizontal" }) => (
   </div>
 );
 
-export default function Home() {
+export default function Home({
+  initialIpos = [],
+  initialUnlistedStocks = [],
+  initialBlogs = [],
+}) {
   const [index, setIndex] = useState(0);
   const router = useRouter();
   const navigate = (p) => router.push(p);
@@ -118,7 +134,7 @@ export default function Home() {
       <section className="relative overflow-hidden py-8 lg:py-12">
         <div className="max-w-[1600px] mx-auto px-4 lg:px-8">
           <div className="grid lg:grid-cols-2 items-center gap-8 xl:gap-16">
-            
+
             <div className="flex flex-col justify-center items-start text-left w-full">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 border border-green-200 text-green-700 font-semibold shadow-sm text-xs sm:text-sm">
                 <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
@@ -433,32 +449,30 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="px-4 sm:px-6 lg:px-10 pb-6 sm:pb-8">
-            {isIPOLoading ? (
-              <div className="flex justify-center py-20">
-                <div className="animate-spin rounded-full h-14 w-14 border-t-4 border-b-4 border-green-600" />
-              </div>
-            ) : (
-              <IpoList ipos={ipos} />
-            )}
+        <div className="px-4 sm:px-6 lg:px-10 pb-6 sm:pb-8">
+  <IpoList
+    ipos={ipos}
+    loading={isIPOLoading}
+  />
 
-            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-t border-slate-100 pt-6">
-              <div>
-                <h3 className="font-semibold text-slate-900 text-sm sm:text-base">
-                  Looking for all IPOs?
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-500">
-                  Explore upcoming, closed and listed IPOs with complete details.
-                </p>
-              </div>
-              <button
-                onClick={() => navigate("/ipo/ipo-list")}
-                className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-green-700 hover:bg-green-800 text-white font-semibold transition text-sm sm:text-base"
-              >
-                View All IPOs →
-              </button>
-            </div>
-          </div>
+  <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-t border-slate-100 pt-6">
+    <div>
+      <h3 className="font-semibold text-slate-900 text-sm sm:text-base">
+        Looking for all IPOs?
+      </h3>
+      <p className="text-xs sm:text-sm text-slate-500">
+        Explore upcoming, closed and listed IPOs with complete details.
+      </p>
+    </div>
+
+    <button
+      onClick={() => navigate("/ipo/ipo-list")}
+      className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-green-700 hover:bg-green-800 text-white font-semibold transition text-sm sm:text-base"
+    >
+      View All IPOs →
+    </button>
+  </div>
+</div>
         </div>
       </section>
 
@@ -481,7 +495,7 @@ export default function Home() {
           </div>
 
           <div className="px-4 sm:px-6 lg:px-10 pb-6 sm:pb-8">
-            <Blogs />
+            <Blogs initialBlogs={initialBlogs} />
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-t border-slate-100 pt-6">
               <div>
                 <h3 className="font-semibold text-slate-900 text-sm sm:text-base">
