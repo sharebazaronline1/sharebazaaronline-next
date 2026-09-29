@@ -1,237 +1,445 @@
-// src/components/LoginClient.jsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from 'next/link';
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
-import { ensureProfile } from "@/lib/profile"; // new utility
-
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 
-const SITE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://sharebazaaronline.com";
+const SITE_URL =
+  process.env.NEXT_PUBLIC_APP_URL || "https://sharebazaaronline.com";
 
 const LoginClient = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
-  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [mobile, setMobile] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [mobile, setMobile] = useState("");
 
-  // Save referral code from URL
-  useEffect(() => {
-    const saveReferral = async () => {
-      const ref = searchParams?.get("ref");
-      if (!ref) return;
+  const authHandled = useRef(false);
+  const mountedRef = useRef(true);
 
-      const { data: referrer } = await supabase
+  /* ============================================================
+     REFERRAL STORAGE HELPERS
+  ============================================================ */
+  const getPendingReferral = () => {
+    return (
+      localStorage.getItem("pending_referral") ||
+      localStorage.getItem("referral_code") ||
+      sessionStorage.getItem("referral_code")
+    );
+  };
+
+  const savePendingReferral = (referralCode) => {
+    if (!referralCode) return;
+    localStorage.setItem("pending_referral", referralCode);
+    localStorage.setItem("referral_code", referralCode);
+    sessionStorage.setItem("referral_code", referralCode);
+  };
+
+  const clearPendingReferral = () => {
+    localStorage.removeItem("pending_referral");
+    localStorage.removeItem("referral_code");
+    localStorage.removeItem("oauth_referral");
+    sessionStorage.removeItem("referral_code");
+  };
+
+  /* ============================================================
+     WAIT FOR PROFILE (trigger may take a moment to fire)
+  ============================================================ */
+  const waitForProfile = async (userId) => {
+    for (let i = 0; i < 30; i++) {
+      const { data, error } = await supabase
         .from("profiles")
-        .select("id")
-        .eq("sb_user_id", ref)
+        .select(
+          `
+            id,
+            full_name,
+            email,
+            mobile,
+            sb_user_id,
+            referred_by_code
+          `
+        )
+        .eq("id", userId)
         .maybeSingle();
 
-      if (!referrer) {
-        console.error("Invalid referral code");
-        return;
+      if (data) return data;
+
+      if (error) {
+        console.error("Profile lookup error:", error);
       }
 
-      localStorage.setItem("referral_code", ref);
-      localStorage.setItem("pending_referral", ref);
-      sessionStorage.setItem("referral_code", ref);
-    };
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+    }
 
-    saveReferral();
-  }, [searchParams]);
+    return null;
+  };
 
+  /* ============================================================
+     APPLY REFERRAL (mirrors Login.jsx logic)
+  ============================================================ */
   const applyReferral = async (user) => {
     try {
-      const referralCode = localStorage.getItem("pending_referral") || localStorage.getItem("referral_code");
-      if (!referralCode || !user?.id) return;
+      if (!user?.id) return;
 
-      // Ensure profile exists
-      const profile = await ensureProfile(supabase, user);
-      if (!profile) {
-        console.error("Could not ensure profile for referral");
+      const referralCode = getPendingReferral();
+      if (!referralCode) return;
+
+      const currentProfile = await waitForProfile(user.id);
+
+      if (!currentProfile) {
+        console.error(
+          "Profile was not available for referral processing"
+        );
         return;
       }
 
-      const currentProfile = profile;
-
+      /* Self-referral guard */
       if (currentProfile.sb_user_id === referralCode) {
         console.error("Self referral blocked");
+        clearPendingReferral();
         return;
       }
 
-      if (!currentProfile.referred_by_code) {
-        await supabase
-          .from("profiles")
-          .update({ referred_by_code: referralCode })
-          .eq("id", user.id);
+      /* Already referred — nothing to do */
+      if (currentProfile.referred_by_code) {
+        clearPendingReferral();
+        return;
       }
 
-      const { data: referrerProfile } = await supabase
+      /* Find referrer */
+      const { data: referrerProfile, error: referrerError } =
+        await supabase
+          .from("profiles")
+          .select("id, sb_user_id")
+          .eq("sb_user_id", referralCode)
+          .maybeSingle();
+
+      if (referrerError || !referrerProfile) {
+        console.error(
+          "Invalid referral code:",
+          referrerError || referralCode
+        );
+        clearPendingReferral();
+        return;
+      }
+
+      if (referrerProfile.id === currentProfile.id) {
+        console.error("Self referral blocked");
+        clearPendingReferral();
+        return;
+      }
+
+      /* Check for existing referral row */
+      const { data: existingReferral, error: existingReferralError } =
+        await supabase
+          .from("referrals")
+          .select("id")
+          .eq("referred_sb_user_id", currentProfile.id)
+          .maybeSingle();
+
+      if (existingReferralError) {
+        console.error("Referral check failed:", existingReferralError);
+        return;
+      }
+
+      if (existingReferral) {
+        clearPendingReferral();
+        return;
+      }
+
+      /* Update profile — only if referred_by_code is still null */
+      const { error: profileUpdateError } = await supabase
         .from("profiles")
-        .select("*")
-        .eq("sb_user_id", referralCode)
-        .single();
+        .update({ referred_by_code: referralCode })
+        .eq("id", currentProfile.id)
+        .is("referred_by_code", null);
 
-      if (!referrerProfile) return;
+      if (profileUpdateError) {
+        console.error(
+          "Referral profile update failed:",
+          profileUpdateError
+        );
+        return;
+      }
 
-      const { data: existingReferral } = await supabase
+      /* Insert referral row */
+      const { error: insertError } = await supabase
         .from("referrals")
-        .select("id")
-        .eq("referred_sb_user_id", currentProfile.id)
-        .single();
+        .insert({
+          referrer_sb_user_id: referrerProfile.id,
+          referred_sb_user_id: currentProfile.id,
+          referred_name:
+            currentProfile.full_name ||
+            user.user_metadata?.full_name ||
+            user.user_metadata?.name ||
+            "New User",
+          referred_email: currentProfile.email || user.email || null,
+          referred_mobile:
+            currentProfile.mobile ||
+            user.user_metadata?.mobile ||
+            null,
+          status: "pending",
+          reward_amount: 0,
+          commission_earned: 0,
+        });
 
-      if (existingReferral) return;
+      if (insertError) {
+        console.error("Referral insert failed:", insertError);
+        return;
+      }
 
-      await supabase.from("referrals").insert({
-        referrer_sb_user_id: referrerProfile.id,
-        referred_sb_user_id: currentProfile.id,
-        referred_name: currentProfile.full_name || user.user_metadata?.full_name || "New User",
-        referred_email: currentProfile.email || user.email,
-        referred_mobile: currentProfile.mobile || null,
-        status: "pending",
-        reward_amount: 0,
-        commission_earned: 0,
-      });
-
-      console.log("Referral inserted successfully");
-
-    } catch (err) {
-      console.error("applyReferral error:", err);
+      clearPendingReferral();
+    } catch (error) {
+      console.error("Referral processing failed:", error);
     }
   };
 
+  /* ============================================================
+     MOUNTED TRACKER
+  ============================================================ */
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  /* ============================================================
+     SAVE URL ?ref= TO STORAGE ON LOAD
+  ============================================================ */
+  useEffect(() => {
+    const referralCode = searchParams?.get("ref");
+    if (referralCode) {
+      savePendingReferral(referralCode);
+    }
+  }, [searchParams]);
+
+  /* ============================================================
+     HANDLE OAUTH CALLBACK (?code=… OR #access_token=…)
+  ============================================================ */
+  useEffect(() => {
+    const params = searchParams;
+    const hashParams = new URLSearchParams(
+      window.location.hash.replace("#", "")
+    );
+
+    const hasAuthCallback =
+      params?.has("code") || hashParams.has("access_token");
+
+    const authError =
+      params?.get("error_description") ||
+      params?.get("error") ||
+      hashParams.get("error_description") ||
+      hashParams.get("error");
+
+    if (authError) {
+      console.error("Authentication callback error:", authError);
+    }
+
+    if (!hasAuthCallback) return;
+
+    const processAuthenticatedUser = async (session) => {
+      if (!session?.user || authHandled.current) return;
+
+      authHandled.current = true;
+
+      try {
+        await applyReferral(session.user);
+
+        if (!mountedRef.current) return;
+
+        router.replace("/dashboard");
+      } catch (error) {
+        console.error("Authentication processing failed:", error);
+
+        if (mountedRef.current) {
+          router.replace("/dashboard");
+        }
+      }
+    };
+
+    const { data: { subscription } } =
+      supabase.auth.onAuthStateChange((event, session) => {
+        if (event !== "SIGNED_IN" && event !== "INITIAL_SESSION") {
+          return;
+        }
+
+        if (!session?.user) return;
+
+        setTimeout(() => {
+          processAuthenticatedUser(session);
+        }, 0);
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [searchParams, router]);
+
+  /* ============================================================
+     EMAIL / PASSWORD AUTH
+  ============================================================ */
   const handleEmailAuth = async (e) => {
     e.preventDefault();
+
+    if (loading) return;
     setLoading(true);
 
     try {
+      /* ---------- SIGN UP ---------- */
       if (isSignUp) {
         if (!fullName.trim()) {
-          alert("Please enter your full name");
-          setLoading(false);
-          return;
+          throw new Error("Please enter your full name");
         }
-
         if (!mobile.trim()) {
-          alert("Please enter mobile number");
-          setLoading(false);
-          return;
+          throw new Error("Please enter mobile number");
         }
 
-        const referralCode = localStorage.getItem("pending_referral") || localStorage.getItem("referral_code");
+        const referralCode = getPendingReferral();
+
+        const redirectUrl = new URL(
+          `${window.location.origin}/login`
+        );
+
+        if (referralCode) {
+          redirectUrl.searchParams.set("ref", referralCode);
+        }
 
         const { data, error } = await supabase.auth.signUp({
-          email,
+          email: email.trim(),
           password,
           options: {
+            emailRedirectTo: redirectUrl.toString(),
             data: {
-              full_name: fullName,
-              mobile,
+              full_name: fullName.trim(),
+              mobile: mobile.trim(),
             },
           },
         });
 
         if (error) throw error;
 
-        // Ensure profile is created (trigger may not always run)
-        if (data.user) {
-          await ensureProfile(supabase, data.user);
-        }
-
         if (referralCode) {
-          localStorage.setItem("pending_referral", referralCode);
+          savePendingReferral(referralCode);
         }
 
-        alert("Check your email to verify your account");
+        if (data?.session?.user) {
+          authHandled.current = true;
+          await applyReferral(data.session.user);
+          router.replace("/dashboard");
+          return;
+        }
+
         setIsSignUp(false);
-        setLoading(false);
+        alert(
+          "Account created successfully. Please check your email and verify your account before signing in."
+        );
         return;
       }
 
+      /* ---------- SIGN IN ---------- */
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
+        email: email.trim(),
         password,
       });
 
       if (error) throw error;
 
-      const user = data.user;
+      const user = data?.user;
 
-      if (!user.email_confirmed_at) {
-        alert("Please verify your email before logging in 📩");
-        await supabase.auth.signOut();
-        setLoading(false);
-        return;
+      if (!user) {
+        throw new Error("Unable to retrieve user information");
       }
 
-      // Ensure profile exists
-      await ensureProfile(supabase, user);
+      if (!user.email_confirmed_at) {
+        await supabase.auth.signOut();
+        throw new Error("Please verify your email before logging in.");
+      }
 
-      await supabase
+      authHandled.current = true;
+
+      const { error: profileUpdateError } = await supabase
         .from("profiles")
-        .update({
-          mobile: user.user_metadata?.mobile || null,
-          email_verified: true,
-        })
-        .eq("sb_user_id", user.id);
+        .update({ email_verified: true })
+        .eq("id", user.id);
+
+      if (profileUpdateError) {
+        console.error(
+          "Profile verification update failed:",
+          profileUpdateError
+        );
+      }
 
       await applyReferral(user);
-      
-      router.replace("/dashboard");
 
+      router.replace("/dashboard");
     } catch (error) {
+      console.error("Authentication error:", error);
+
       alert(
-        error.message.includes("Invalid login credentials")
+        error?.message?.includes("Invalid login credentials")
           ? "Incorrect email or password"
-          : error.message
+          : error?.message || "Something went wrong"
       );
     } finally {
-      setLoading(false);
+      if (mountedRef.current) {
+        setLoading(false);
+      }
     }
   };
 
+  /* ============================================================
+     GOOGLE OAUTH
+  ============================================================ */
   const handleGoogleLogin = async () => {
+    if (loading) return;
+    setLoading(true);
+
     try {
-      const ref =
-        localStorage.getItem("pending_referral") ||
-        localStorage.getItem("referral_code") ||
-        searchParams?.get("ref");
+      const referralCode =
+        getPendingReferral() || searchParams?.get("ref");
 
-      const callbackUrl =
-        `${window.location.origin}/auth/callback`;
+      if (referralCode) {
+        savePendingReferral(referralCode);
+      }
 
-      console.log("Google OAuth callback URL:", callbackUrl);
+      const redirectUrl = new URL(
+        `${window.location.origin}/login`
+      );
 
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      if (referralCode) {
+        redirectUrl.searchParams.set("ref", referralCode);
+      }
+
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: callbackUrl,
+          redirectTo: redirectUrl.toString(),
         },
       });
 
-      if (error) {
-        console.error("Google OAuth error:", error);
-        alert(error.message);
-        return;
-      }
-
-      console.log("OAuth started:", data);
+      if (error) throw error;
     } catch (error) {
-      console.error("Google login exception:", error);
-      alert(error.message);
+      console.error("Google login error:", error);
+      alert(error?.message || "Google login failed");
+
+      if (mountedRef.current) {
+        setLoading(false);
+      }
     }
   };
 
-  // Breadcrumb items for JSON-LD
+  /* ============================================================
+     SCHEMAS
+  ============================================================ */
   const breadcrumbItems = [
     { name: "Home", url: "/" },
     { name: "Login", url: "/login" },
@@ -241,10 +449,14 @@ const LoginClient = () => {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "Login - ShareBazaarOnline",
-    description: "Login to your ShareBazaarOnline account to track IPOs, unlisted shares, corporate actions, and manage your investment portfolio.",
+    description:
+      "Login to your ShareBazaarOnline account to track IPOs, unlisted shares, corporate actions, and manage your investment portfolio.",
     url: `${SITE_URL}/login`,
   };
 
+  /* ============================================================
+     RENDER
+  ============================================================ */
   return (
     <>
       <script
@@ -296,6 +508,7 @@ const LoginClient = () => {
                       />
                     </div>
                   )}
+
                   {isSignUp && (
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -311,6 +524,7 @@ const LoginClient = () => {
                       />
                     </div>
                   )}
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Email Address
@@ -364,22 +578,37 @@ const LoginClient = () => {
                 <button
                   type="button"
                   onClick={handleGoogleLogin}
-                  className="w-full py-2.5 border border-gray-300 rounded-xl font-medium text-gray-700 hover:bg-gray-50 transition flex items-center justify-center gap-3"
+                  disabled={loading}
+                  className="w-full py-2.5 border border-gray-300 rounded-xl font-medium text-gray-700 hover:bg-gray-50 transition flex items-center justify-center gap-3 disabled:opacity-60"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    <path
+                      fill="#4285F4"
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    />
+                    <path
+                      fill="#34A853"
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    />
+                    <path
+                      fill="#FBBC05"
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                    />
+                    <path
+                      fill="#EA4335"
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                    />
                   </svg>
                   Continue with Google
                 </button>
 
                 <p className="mt-6 text-center text-sm text-gray-600">
-                  {isSignUp ? "Already have an account?" : "New to ShareBazaarOnline?"}{" "}
+                  {isSignUp
+                    ? "Already have an account?"
+                    : "New to ShareBazaarOnline?"}{" "}
                   <button
                     type="button"
-                    onClick={() => setIsSignUp(!isSignUp)}
+                    onClick={() => setIsSignUp((prev) => !prev)}
                     className="font-semibold text-green-600 hover:text-green-700 transition"
                   >
                     {isSignUp ? "Sign In" : "Create an account"}
@@ -387,7 +616,10 @@ const LoginClient = () => {
                 </p>
 
                 <div className="mt-4 text-center">
-                  <Link href="/" className="text-sm text-gray-500 hover:text-gray-700 transition inline-flex items-center gap-1">
+                  <Link
+                    href="/"
+                    className="text-sm text-gray-500 hover:text-gray-700 transition inline-flex items-center gap-1"
+                  >
                     ← Back to Home
                   </Link>
                 </div>

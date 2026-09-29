@@ -1,4 +1,3 @@
-// src/components/ReferralsClient.jsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -22,6 +21,16 @@ import Sidebar from "./Sidebar";
 import UserProfileDropdown from "./UserProfileDropdown";
 import { createClient } from "@/lib/supabase/client";
 
+const generateShortId = (uid) => {
+  if (!uid) return "SB-GUEST000";
+  const short = uid.slice(-12);
+  const hash = btoa(short)
+    .replace(/[=+/]/g, "")
+    .slice(0, 8)
+    .toUpperCase();
+  return `SB-${hash}`;
+};
+
 const ReferralsClient = ({
   user,
   referralCode: initialReferralCode,
@@ -31,12 +40,19 @@ const ReferralsClient = ({
 }) => {
   const [copied, setCopied] = useState(false);
   const [showLink, setShowLink] = useState(false);
-  const [referralCode] = useState(initialReferralCode);
+  const [referralCode, setReferralCode] = useState(
+    initialReferralCode || ""
+  );
   const [referrals, setReferrals] = useState(initialReferrals || []);
-  const [totalRewards, setTotalRewards] = useState(initialTotalRewards || 0);
-  const [loading, setLoading] = useState(false);
+  const [totalRewards, setTotalRewards] = useState(
+    initialTotalRewards || 0
+  );
+  const [loading, setLoading] = useState(true);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [commissionRate] = useState(initialCommissionRate || 0);
+  const [commissionRate, setCommissionRate] = useState(
+    initialCommissionRate || 0
+  );
+
   const [referralName, setReferralName] = useState("");
   const [referralEmail, setReferralEmail] = useState("");
   const [referralMobile, setReferralMobile] = useState("");
@@ -44,70 +60,231 @@ const ReferralsClient = ({
 
   const supabase = createClient();
 
-  // Fetch referrals (client-side refresh)
-  const fetchReferrals = async () => {
+  /* ============================================================
+     FETCH — merges `profiles` (referred_by_code) + `referrals`
+  ============================================================ */
+  const fetchReferrals = async (
+    userId,
+    userReferralCode,
+    currentCommissionRate
+  ) => {
     setLoading(true);
+
     try {
-      const { data: refData, error: refError } = await supabase
-        .from("referrals")
-        .select("*")
-        .eq("referrer_sb_user_id", user.id)
-        .order("created_at", { ascending: false });
+      /* 1. Profiles whose referred_by_code = my code */
+      const { data: referredProfiles, error: profileError } =
+        await supabase
+          .from("profiles")
+          .select(
+            `
+              id,
+              full_name,
+              email,
+              mobile,
+              referred_by_code,
+              created_at
+            `
+          )
+          .eq("referred_by_code", userReferralCode)
+          .order("created_at", { ascending: false });
 
-      if (refError) throw refError;
+      if (profileError) throw profileError;
 
-      // Compute commissions (similar to server)
-      const referredUserIds = refData
-        .map(r => r.referred_sb_user_id)
-        .filter(id => id);
+      /* 2. Referral rows where I'm the referrer */
+      const { data: referralRows, error: referralError } =
+        await supabase
+          .from("referrals")
+          .select("*")
+          .eq("referrer_sb_user_id", userId)
+          .order("created_at", { ascending: false });
 
-      let ordersMap = {};
-      if (referredUserIds.length > 0) {
-        const { data: orders, error: ordersError } = await supabase
-          .from("orders")
-          .select("user_id, total")
-          .in("user_id", referredUserIds);
-
-        if (!ordersError && orders) {
-          ordersMap = orders.reduce((acc, order) => {
-            if (!acc[order.user_id]) acc[order.user_id] = [];
-            acc[order.user_id].push(order);
-            return acc;
-          }, {});
-        }
+      if (referralError) {
+        console.error("Referral table fetch error:", referralError);
       }
 
-      const enriched = refData.map(ref => {
-        const userOrders = ordersMap[ref.referred_sb_user_id] || [];
-        const totalCommission = userOrders.reduce((sum, order) => {
-          return sum + (Number(order.total) || 0) * commissionRate;
-        }, 0);
-        return {
-          ...ref,
-          totalCommission: Math.round(totalCommission * 100) / 100,
-        };
+      /* 3. Merge — profile is the base, referral row overlays */
+      const profileMap = new Map();
+
+      (referredProfiles || []).forEach((profile) => {
+        profileMap.set(profile.id, {
+          id: profile.id,
+          referred_sb_user_id: profile.id,
+          referred_name: profile.full_name || "New Friend",
+          referred_email: profile.email || null,
+          referred_mobile: profile.mobile || null,
+          status: "pending",
+          reward_amount: 0,
+          commission_earned: 0,
+          created_at: profile.created_at,
+        });
       });
 
-      setReferrals(enriched);
-      const grandTotal = enriched.reduce((acc, r) => acc + (r.totalCommission || 0), 0);
+      (referralRows || []).forEach((referral) => {
+        const referredUserId = referral.referred_sb_user_id;
+
+        if (referredUserId && profileMap.has(referredUserId)) {
+          const existing = profileMap.get(referredUserId);
+          profileMap.set(referredUserId, {
+            ...existing,
+            ...referral,
+            referred_name:
+              referral.referred_name || existing.referred_name,
+            referred_email:
+              referral.referred_email || existing.referred_email,
+            referred_mobile:
+              referral.referred_mobile || existing.referred_mobile,
+          });
+        } else if (referredUserId) {
+          profileMap.set(referredUserId, referral);
+        }
+      });
+
+      const combinedReferrals = Array.from(profileMap.values());
+
+      /* 4. Enrich with commission from orders */
+      const enrichedReferrals = await Promise.all(
+        combinedReferrals.map(async (ref) => {
+          let referredUserId =
+            ref.referred_sb_user_id || ref.id || null;
+
+          if (!referredUserId && ref.referred_email) {
+            const { data: profile } = await supabase
+              .from("profiles")
+              .select("id")
+              .ilike("email", ref.referred_email.trim())
+              .maybeSingle();
+            referredUserId = profile?.id || null;
+          }
+
+          let commission = 0;
+
+          if (referredUserId) {
+            const { data: orders, error: ordersError } =
+              await supabase
+                .from("orders")
+                .select("total")
+                .eq("user_id", referredUserId);
+
+            if (ordersError) {
+              console.error("Orders fetch error:", ordersError);
+            }
+
+            commission = (orders || []).reduce(
+              (sum, order) =>
+                sum +
+                (Number(order.total) || 0) * currentCommissionRate,
+              0
+            );
+          }
+
+          return {
+            ...ref,
+            totalCommission: Math.round(commission * 100) / 100,
+          };
+        })
+      );
+
+      enrichedReferrals.sort(
+        (a, b) =>
+          new Date(b.created_at || 0) - new Date(a.created_at || 0)
+      );
+
+      setReferrals(enrichedReferrals);
+
+      const grandTotal = enrichedReferrals.reduce(
+        (sum, referral) =>
+          sum + (Number(referral.totalCommission) || 0),
+        0
+      );
       setTotalRewards(Math.round(grandTotal * 100) / 100);
-    } catch (err) {
-      console.error("Referrals fetch error:", err);
+    } catch (error) {
+      console.error("Referrals fetch error:", error);
+      setReferrals([]);
+      setTotalRewards(0);
     } finally {
       setLoading(false);
     }
   };
 
-  // Referral link
+  /* ============================================================
+     INIT — resolve code + rate, then fetch
+  ============================================================ */
+  useEffect(() => {
+    const init = async () => {
+      setLoading(true);
+
+      try {
+        const userId = user?.id;
+        if (!userId) {
+          setLoading(false);
+          return;
+        }
+
+        const { data: profileData, error: profileError } =
+          await supabase
+            .from("profiles")
+            .select(
+              `
+                id,
+                sb_user_id,
+                commission_rate
+              `
+            )
+            .eq("id", userId)
+            .single();
+
+        if (profileError) throw profileError;
+
+        let code = profileData?.sb_user_id;
+
+        if (!code) {
+          code = generateShortId(userId);
+          const { error: updateError } = await supabase
+            .from("profiles")
+            .update({ sb_user_id: code })
+            .eq("id", userId);
+
+          if (updateError) throw updateError;
+        }
+
+        const rate =
+          Number(profileData?.commission_rate || 0) / 100;
+
+        setReferralCode(code);
+        setCommissionRate(rate);
+
+        await fetchReferrals(userId, code, rate);
+      } catch (error) {
+        console.error("Referral initialization error:", error);
+        setReferrals([]);
+        setTotalRewards(0);
+        setLoading(false);
+      }
+    };
+
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
+
+  /* ============================================================
+     LINK + SHARE
+  ============================================================ */
   const referralLink = referralCode
-    ? `${process.env.NEXT_PUBLIC_APP_URL || "https://sharebazaaronline.com"}/login?ref=${referralCode}`
+    ? `${
+        process.env.NEXT_PUBLIC_APP_URL ||
+        "https://sharebazaaronline.com"
+      }/login?ref=${referralCode}`
     : "";
 
-  const handleCopy = () => {
+  const handleCopy = async () => {
     if (!referralLink) return;
-    navigator.clipboard.writeText(referralLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
+    try {
+      await navigator.clipboard.writeText(referralLink);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch (error) {
+      console.error("Copy failed:", error);
+    }
   };
 
   const whatsappShareUrl = referralLink
@@ -116,8 +293,12 @@ const ReferralsClient = ({
       )}`
     : "";
 
+  /* ============================================================
+     MANUAL REFERRAL SUBMIT
+  ============================================================ */
   const handleReferralSubmit = async (e) => {
     e.preventDefault();
+
     if (!referralName || !referralMobile) {
       alert("Name and Mobile are required");
       return;
@@ -138,42 +319,61 @@ const ReferralsClient = ({
       return;
     }
 
-    await fetchReferrals();
+    await fetchReferrals(user.id, referralCode, commissionRate);
+
     setReferralName("");
     setReferralEmail("");
     setReferralMobile("");
     alert("Referral submitted successfully!");
   };
 
+  /* ============================================================
+     WITHDRAW
+  ============================================================ */
   const handleWithdraw = () => {
     const amount = Number(withdrawAmount);
+
     if (!amount || amount < 1000) {
       alert("Minimum withdrawal amount is ₹1000");
       return;
     }
+
     if (amount > totalRewards) {
       alert("You cannot withdraw more than your available rewards");
       return;
     }
 
-    alert(`Withdrawal request of ₹${amount} initiated. Our team will contact you shortly.`);
+    alert(
+      `Withdrawal request of ₹${amount} initiated. Our team will contact you shortly.`
+    );
     setWithdrawAmount("");
   };
 
+  /* ============================================================
+     RENDER
+  ============================================================ */
   return (
     <div className="min-h-screen bg-gray-50">
-      <Sidebar mobileOpen={mobileSidebarOpen} setMobileOpen={setMobileSidebarOpen} />
+      <Sidebar
+        mobileOpen={mobileSidebarOpen}
+        setMobileOpen={setMobileSidebarOpen}
+      />
+
       <main className="md:ml-64 px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
-        {/* Mobile Header */}
         <header className="md:hidden sticky top-0 z-20 bg-white border-gray-200 px-4 py-4 mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <button onClick={() => setMobileSidebarOpen(true)} className="p-1">
+              <button
+                onClick={() => setMobileSidebarOpen(true)}
+                className="p-1"
+              >
                 <Menu size={24} />
               </button>
               <div>
                 <p className="text-xs text-gray-500">Rewards Program</p>
-                <h1 className="text-lg font-semibold text-gray-900">Referrals</h1>
+                <h1 className="text-lg font-semibold text-gray-900">
+                  Referrals
+                </h1>
               </div>
             </div>
             <UserProfileDropdown />
@@ -212,7 +412,9 @@ const ReferralsClient = ({
                     onClick={handleCopy}
                     disabled={!referralLink}
                     className={`min-w-[120px] flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg text-white font-medium transition ${
-                      copied ? "bg-[#15803D]" : "bg-[#16A34A] hover:bg-[#15803D]"
+                      copied
+                        ? "bg-[#15803D]"
+                        : "bg-[#16A34A] hover:bg-[#15803D]"
                     } disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     {copied ? <Check size={18} /> : <Copy size={18} />}
@@ -223,7 +425,9 @@ const ReferralsClient = ({
                 {referralLink && (
                   <div className="flex justify-center gap-5 pt-2">
                     <a
-                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}`}
+                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                        referralLink
+                      )}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-12 h-12 rounded-full bg-blue-100 hover:bg-blue-200 flex items-center justify-center transition"
@@ -231,7 +435,9 @@ const ReferralsClient = ({
                       <FaFacebookF className="text-blue-700 text-xl" />
                     </a>
                     <a
-                      href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(referralLink)}`}
+                      href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
+                        referralLink
+                      )}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition"
@@ -239,7 +445,9 @@ const ReferralsClient = ({
                       <FaXTwitter className="text-black text-xl" />
                     </a>
                     <a
-                      href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(referralLink)}`}
+                      href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
+                        referralLink
+                      )}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-12 h-12 rounded-full bg-blue-100 hover:bg-blue-200 flex items-center justify-center transition"
@@ -262,7 +470,10 @@ const ReferralsClient = ({
 
           {/* HOW IT WORKS */}
           <div className="pt-10">
-            <h3 className="text-xl font-semibold text-center mb-10">How it works</h3>
+            <h3 className="text-xl font-semibold text-center mb-10">
+              How it works
+            </h3>
+
             <div className="hidden sm:grid grid-cols-5 items-center text-center max-w-4xl mx-auto gap-2">
               <div className="space-y-4">
                 <div className="w-20 h-20 mx-auto rounded-full bg-green-100 flex items-center justify-center text-green-600">
@@ -288,11 +499,20 @@ const ReferralsClient = ({
 
             <div className="sm:hidden space-y-10 text-center">
               {[
-                { icon: <Share2 size={28} />, text: "Share your referral link" },
-                { icon: <Users size={28} />, text: "Friends join and place orders" },
-                { icon: <IndianRupee size={28} />, text: "You earn real rewards" },
-              ].map((item, idx) => (
-                <div key={idx} className="space-y-4">
+                {
+                  icon: <Share2 size={28} />,
+                  text: "Share your referral link",
+                },
+                {
+                  icon: <Users size={28} />,
+                  text: "Friends join and place orders",
+                },
+                {
+                  icon: <IndianRupee size={28} />,
+                  text: "You earn real rewards",
+                },
+              ].map((item, index) => (
+                <div key={index} className="space-y-4">
                   <div className="w-20 h-20 mx-auto rounded-full bg-green-100 flex items-center justify-center text-green-600">
                     {item.icon}
                   </div>
@@ -304,8 +524,14 @@ const ReferralsClient = ({
 
           {/* REFER VIA EMAIL / MOBILE */}
           <div className="pt-10">
-            <h3 className="text-xl font-semibold mb-6">Refer via Email or Mobile</h3>
-            <form onSubmit={handleReferralSubmit} className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <h3 className="text-xl font-semibold mb-6">
+              Refer via Email or Mobile
+            </h3>
+
+            <form
+              onSubmit={handleReferralSubmit}
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+            >
               <input
                 type="text"
                 placeholder="Friend's Name"
@@ -350,30 +576,39 @@ const ReferralsClient = ({
 
             {loading ? (
               <div className="flex flex-col items-center justify-center py-16">
-                <Loader2 size={40} className="animate-spin text-green-600 mb-4" />
+                <Loader2
+                  size={40}
+                  className="animate-spin text-green-600 mb-4"
+                />
                 <p className="text-gray-600">Loading your referrals...</p>
               </div>
             ) : referrals.length === 0 ? (
               <div className="text-center py-16 bg-gray-50 rounded-2xl">
                 <Users size={64} className="mx-auto text-gray-400 mb-6" />
-                <h4 className="text-xl font-semibold text-gray-700 mb-3">No Referrals Yet</h4>
+                <h4 className="text-xl font-semibold text-gray-700 mb-3">
+                  No Referrals Yet
+                </h4>
                 <p className="text-gray-600 max-w-md mx-auto">
-                  Share your unique referral link with friends to start earning rewards!
+                  Share your unique referral link with friends to start
+                  earning rewards!
                 </p>
               </div>
             ) : (
               <>
                 <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-2xl p-8 mb-10 text-center shadow-inner">
-                  <p className="text-lg text-gray-700 mb-2">Total Rewards Earned</p>
+                  <p className="text-lg text-gray-700 mb-2">
+                    Total Rewards Earned
+                  </p>
                   <p className="text-5xl font-bold text-green-700">
                     ₹{totalRewards.toLocaleString("en-IN")}
                   </p>
 
-                  {/* Withdraw Section */}
                   <div className="mt-8 pt-6 border-green-200">
                     <div className="flex flex-col sm:flex-row items-center gap-4 max-w-md mx-auto">
                       <div className="flex-1 relative">
-                        <span className="absolute left-4 top-1/4 -translate-y-1/2 text-gray-500 text-lg">₹</span>
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-lg">
+                          ₹
+                        </span>
                         <input
                           type="text"
                           value={withdrawAmount}
@@ -396,7 +631,8 @@ const ReferralsClient = ({
                       </button>
                     </div>
                     <p className="text-xs text-gray-600 mt-4 text-center">
-                      Maximum withdrawal amount is ₹1000 • For any queries contact:{" "}
+                      Maximum withdrawal amount is ₹1000 • For any queries
+                      contact:{" "}
                       <a
                         href="mailto:payment@sharebazaaronline.com"
                         className="text-green-700 underline hover:text-green-800"
@@ -410,17 +646,26 @@ const ReferralsClient = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {referrals.map((ref, index) => (
                     <div
-                      key={index}
+                      key={
+                        ref.id ||
+                        ref.referred_sb_user_id ||
+                        index
+                      }
                       className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all"
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-100 to-blue-100 flex items-center justify-center text-indigo-700 font-bold text-lg shrink-0">
                           {ref.referred_name?.charAt(0).toUpperCase() || "?"}
                         </div>
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold text-gray-900 truncate">
                             {ref.referred_name || "New Friend"}
                           </p>
+                          {ref.referred_email && (
+                            <p className="text-xs text-gray-500 truncate">
+                              {ref.referred_email}
+                            </p>
+                          )}
                         </div>
                       </div>
 
@@ -442,7 +687,10 @@ const ReferralsClient = ({
                         <div>
                           <p className="text-gray-500">Reward</p>
                           <p className="font-medium text-green-700 mt-1">
-                            ₹{(ref.totalCommission || 0).toLocaleString("en-IN")}
+                            ₹
+                            {(ref.totalCommission || 0).toLocaleString(
+                              "en-IN"
+                            )}
                           </p>
                         </div>
                       </div>
