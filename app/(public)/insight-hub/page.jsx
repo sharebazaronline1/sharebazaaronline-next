@@ -1,10 +1,18 @@
 // app/insight-hub/page.jsx
-
 import InsightHub from "../../../src/components/InsightHub";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@supabase/supabase-js";
 import { fetchInsightDetails } from "@/api/mockApi";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
+
+// Anonymous client — no cookies, makes route cacheable via ISR
+const supabasePublic = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  {
+    auth: { persistSession: false, autoRefreshToken: false },
+  }
+);
 
 export const metadata = {
   title: "Insight Hub | ShareBazaarOnline",
@@ -32,29 +40,53 @@ export const metadata = {
 
 export const revalidate = 300;
 
-export default async function InsightHubPage() {
-  const supabase = await createClient();
-
-  const { data: dbData, error } = await supabase
-    .from("blogs")
-    .select("*")
-    .eq("status", "published");
-
-  if (error) {
-    console.error("Supabase error:", error);
-  }
-
-  let mockData = [];
-
+async function getDBBlogs() {
   try {
-    mockData = await fetchInsightDetails();
-  } catch (error) {
-    console.error("Error loading mock insights:", error);
-  }
+    const { data, error } = await supabasePublic
+      .from("blogs")
+      .select(
+        "id, title, heading, image_url, published_at, category, status, content"
+      )
+      .eq("status", "published")
+      .order("published_at", { ascending: false })
+      .limit(60);
 
-  const formattedMock = mockData.map((item) => ({
+    if (error) {
+      console.error("Supabase blogs error:", error.message);
+      return [];
+    }
+    return data || [];
+  } catch (err) {
+    console.error("Supabase blogs exception:", err?.message || err);
+    return [];
+  }
+}
+
+async function getMockBlogs() {
+  try {
+    return (await fetchInsightDetails()) || [];
+  } catch (err) {
+    console.error("Mock insights error:", err?.message || err);
+    return [];
+  }
+}
+
+export default async function InsightHubPage() {
+  // Fetch both sources in parallel
+  const [dbData, mockData] = await Promise.all([
+    getDBBlogs(),
+    getMockBlogs(),
+  ]);
+
+  const formattedDB = (dbData || []).map((item) => ({
+    ...item,
+    source: "db",
+  }));
+
+  const formattedMock = (mockData || []).map((item) => ({
     id: `mock-${item.id}`,
     title: item.title,
+    heading: item.heading || item.title,
     image_url: item.image,
     published_at: item.date,
     reading_time: item.readTime,
@@ -63,27 +95,24 @@ export default async function InsightHubPage() {
     source: "mock",
   }));
 
-  const formattedDB = (dbData || []).map((item) => ({
-    ...item,
-    source: "db",
-  }));
+  const merged = [...formattedDB, ...formattedMock];
 
-  let merged = [...formattedDB, ...formattedMock];
-
-  const uniqueMap = new Map();
-
-  merged.forEach((item) => {
-    if (!uniqueMap.has(item.title)) {
-      uniqueMap.set(item.title, item);
-    }
+  // Dedupe by id, fallback to title
+  const seen = new Set();
+  const unique = merged.filter((item) => {
+    const key = item.id
+      ? `id-${item.id}`
+      : `t-${String(item.title || item.heading || "").toLowerCase().trim()}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
   });
 
-  merged = Array.from(uniqueMap.values());
-
-  merged.sort(
+  // Newest first
+  unique.sort(
     (a, b) =>
-      new Date(b.published_at || 0) -
-      new Date(a.published_at || 0)
+      new Date(b.published_at || 0).getTime() -
+      new Date(a.published_at || 0).getTime()
   );
 
   const webPageSchema = {
@@ -116,12 +145,7 @@ export default async function InsightHubPage() {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: `${SITE_URL}/`,
-      },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
       {
         "@type": "ListItem",
         position: 2,
@@ -138,19 +162,13 @@ export default async function InsightHubPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: safeJsonLd(webPageSchema),
-        }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(webPageSchema) }}
       />
-
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: safeJsonLd(breadcrumbSchema),
-        }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbSchema) }}
       />
-
-      <InsightHub initialBlogs={merged} />
+      <InsightHub initialBlogs={unique} />
     </>
   );
 }

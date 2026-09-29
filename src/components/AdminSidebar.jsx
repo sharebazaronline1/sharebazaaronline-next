@@ -32,7 +32,6 @@ const AdminSidebar = ({ mobileOpen, setMobileOpen }) => {
     { href: "/admin/orders", icon: <IndianRupee size={18} />, label: "Orders" },
     { href: "/admin/blogs", icon: <Newspaper size={18} />, label: "Blogs" },
     { href: "/admin/corporate-actions", icon: <Layers size={18} />, label: "Corporate Actions" },
-    { href: "/admin/ipo-upload", icon: <Layers size={18} />, label: "Upload IPOs" },
     { href: "/admin/corporateupload", icon: <ClipboardList size={18} />, label: "Corporate Upload" },
     { href: "/admin/signals", icon: <Activity size={18} />, label: "Signal Upload" },
     { href: "/admin/settings", icon: <Settings size={18} />, label: "Settings" },

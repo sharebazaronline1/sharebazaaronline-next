@@ -238,6 +238,7 @@ const HeaderAndNav = () => {
             </Link>
             <Link
               href="/insight-hub"
+              prefetch={true}
               className="text-gray-700 hover:text-text-emerald-800/70 transition"
             >
               Insight Hub
@@ -482,6 +483,7 @@ const HeaderAndNav = () => {
             </Link>
             <Link
               href="/insight-hub"
+              prefetch={true}
               className="block py-2 text-gray-800"
               onClick={() => setMobileMenuOpen(false)}
             >
