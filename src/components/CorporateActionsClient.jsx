@@ -1,7 +1,7 @@
 // src/components/CorporateActionsClient.jsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from 'next/link';
 import { createClient } from "@/lib/supabase/client";
@@ -10,12 +10,16 @@ import {
   Search, 
   TrendingUp,
   Home,
-  ChevronRight
+  ChevronRight,
+  ChevronUp,
+  ChevronDown,
+  ChevronLeft
 } from "lucide-react";
 
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 
 const SITE_URL = "https://sharebazaaronline.com";
+const ITEMS_PER_PAGE = 20;
 
 const CorporateActionsClient = () => {
   const router = useRouter();
@@ -24,7 +28,14 @@ const CorporateActionsClient = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedYear, setSelectedYear] = useState("2026");
-const supabase = createClient();
+  const [currentPage, setCurrentPage] = useState(1);
+  const supabase = createClient();
+
+  const [sortConfig, setSortConfig] = useState({
+    key: "ex_date",
+    direction: "desc",
+  });
+
   const tabs = [
     { id: "buyback", label: "Buyback", dbType: "buyback" },
     { id: "dividends", label: "Dividends", dbType: "dividend" },
@@ -66,12 +77,173 @@ const supabase = createClient();
     fetchCorporateActions();
   }, [activeTab]);
 
+  // Reset sort to default whenever the tab changes
+  useEffect(() => {
+    setSortConfig({ key: "ex_date", direction: "desc" });
+  }, [activeTab]);
+
+  // Reset page to 1 whenever filters / sort / tab change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab, searchQuery, selectedYear, sortConfig]);
+
   const filteredRecords = records.filter((item) => {
     const matchesSearch = item.company?.toLowerCase().includes(searchQuery.toLowerCase());
     const dateToCheck = item.ex_date || item.announcement || "";
     const matchesYear = dateToCheck ? dateToCheck.startsWith(selectedYear) : true;
     return matchesSearch && matchesYear;
   });
+
+  // ==========================================================
+  // SORTING ENGINE
+  // ==========================================================
+  const parseDateValue = (dateStr) => {
+    if (!dateStr) return 0;
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? 0 : d.getTime();
+  };
+
+  const parseNumericValue = (val) => {
+    if (val === null || val === undefined || val === "") return 0;
+    if (typeof val === "number") return val;
+    const match = String(val).replace(/,/g, "").match(/-?\d+(\.\d+)?/);
+    return match ? Number(match[0]) : 0;
+  };
+
+  const getSortValue = (item, key) => {
+    switch (key) {
+      case "company":
+        return (item.company || "").toLowerCase();
+      case "buyback_price":
+        return parseNumericValue(item.buyback_price);
+      case "cmp":
+        return parseNumericValue(item.cmp);
+      case "premium":
+        return parseNumericValue(item.premium);
+      case "size":
+        return parseNumericValue(item.size);
+      case "record":
+        return parseDateValue(item.record);
+      case "ex_date":
+        return parseDateValue(item.ex_date);
+      case "announcement":
+        return parseDateValue(item.announcement);
+      case "payment_date":
+        return parseDateValue(item.payment_date);
+      case "type":
+        return (item.type || "").toLowerCase();
+      case "yield":
+        return parseNumericValue(item.ratio_or_percentage);
+      case "ratio":
+        return (item.ratio_or_percentage || "").toString().toLowerCase();
+      case "rights_price":
+        return parseNumericValue(item.rights_price);
+      case "market_price":
+        return parseNumericValue(item.market_price);
+      case "discount":
+        return parseNumericValue(item.discount);
+      case "old_fv":
+        return parseNumericValue(item.old_fv);
+      case "new_fv":
+        return parseNumericValue(item.new_fv);
+      case "action_type_detail":
+        return (item.action_type_detail || "").toLowerCase();
+      case "key_detail":
+        return (item.key_detail || "").toLowerCase();
+      case "status":
+        return (item.status || "").toLowerCase();
+      default:
+        return "";
+    }
+  };
+
+  const handleSort = (key) => {
+    setSortConfig((prev) => {
+      if (prev.key === key) {
+        return {
+          key,
+          direction: prev.direction === "asc" ? "desc" : "asc",
+        };
+      }
+      return {
+        key,
+        direction: "asc",
+      };
+    });
+  };
+
+  const sortedRecords = useMemo(() => {
+    return [...filteredRecords].sort((a, b) => {
+      const aValue = getSortValue(a, sortConfig.key);
+      const bValue = getSortValue(b, sortConfig.key);
+
+      if (typeof aValue === "string" && typeof bValue === "string") {
+        const comparison = aValue.localeCompare(bValue, undefined, {
+          numeric: true,
+          sensitivity: "base",
+        });
+        return sortConfig.direction === "asc" ? comparison : -comparison;
+      }
+
+      if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
+      return 0;
+    });
+  }, [filteredRecords, sortConfig]);
+
+  // ==========================================================
+  // PAGINATION
+  // ==========================================================
+  const totalPages = Math.ceil(sortedRecords.length / ITEMS_PER_PAGE);
+
+  const paginatedRecords = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return sortedRecords.slice(start, start + ITEMS_PER_PAGE);
+  }, [sortedRecords, currentPage]);
+
+  // ==========================================================
+  // SORTABLE HEADER
+  // ==========================================================
+  const SortableHeader = ({ label, sortKey, align = "center", borderRight = false }) => {
+    const isActive = sortConfig.key === sortKey;
+    const isAscending = sortConfig.direction === "asc";
+
+    return (
+      <th
+        className={`px-4 py-3.5 font-semibold text-slate-600 ${
+          align === "left" ? "text-left" : "text-center"
+        } ${borderRight ? "border-r border-slate-200/60" : ""}`}
+      >
+        <button
+          type="button"
+          onClick={() => handleSort(sortKey)}
+          className={`inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider transition-colors duration-150 outline-none focus:outline-none focus-visible:outline-none border-0 ring-0 focus:ring-0 ${
+            isActive
+              ? "text-[#16A34A]"
+              : "text-slate-500 hover:text-slate-900"
+          }`}
+        >
+          <span className="leading-none">{label}</span>
+
+          <span className="inline-flex items-center justify-center w-4 h-4 flex-shrink-0">
+            {isActive ? (
+              isAscending ? (
+                <ChevronUp size={15} strokeWidth={2.5} />
+              ) : (
+                <ChevronDown size={15} strokeWidth={2.5} />
+              )
+            ) : (
+              <ChevronDown
+                size={15}
+                className="text-slate-300"
+                strokeWidth={2}
+              />
+            )}
+          </span>
+        </button>
+      </th>
+    );
+  };
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "-";
@@ -243,7 +415,7 @@ const supabase = createClient();
                   <div className="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-[#16A34A] rounded-full" />
                   <p className="text-sm tracking-wide">Syncing market data...</p>
                 </div>
-              ) : filteredRecords.length === 0 ? (
+              ) : sortedRecords.length === 0 ? (
                 <div className="text-center py-20 text-slate-400">
                   No data matched your selected metrics for {currentTabLabel}.
                 </div>
@@ -251,75 +423,80 @@ const supabase = createClient();
                 <table className="w-full border-collapse text-[13px] text-slate-700">
                   <thead>
                     <tr className="bg-slate-50/70 border-b border-slate-200 text-slate-500 font-semibold text-center">
-                      <th className="px-6 py-3.5 text-left font-semibold text-slate-600 w-64 border-r border-slate-200/60">Company</th>
+                      <SortableHeader
+                        label="Company"
+                        sortKey="company"
+                        align="left"
+                        borderRight
+                      />
 
                       {activeTab === "buyback" && (
                         <>
-                          <th className="px-4 py-3.5">Buyback Price</th>
-                          <th className="px-4 py-3.5">CMP</th>
-                          <th className="px-4 py-3.5">Premium</th>
-                          <th className="px-4 py-3.5">Record Date</th>
-                          <th className="px-4 py-3.5">Ex Date</th>
-                          <th className="px-4 py-3.5">Size</th>
+                          <SortableHeader label="Buyback Price" sortKey="buyback_price" />
+                          <SortableHeader label="CMP" sortKey="cmp" />
+                          <SortableHeader label="Premium" sortKey="premium" />
+                          <SortableHeader label="Record Date" sortKey="record" />
+                          <SortableHeader label="Ex Date" sortKey="ex_date" />
+                          <SortableHeader label="Size" sortKey="size" />
                         </>
                       )}
 
                       {activeTab === "dividends" && (
                         <>
-                          <th className="px-4 py-3.5">Dividend Type</th>
-                          <th className="px-4 py-3.5">Yield %</th>
-                          <th className="px-4 py-3.5">Announcement</th>
-                          <th className="px-4 py-3.5">Record Date</th>
-                          <th className="px-4 py-3.5">Ex Date</th>
-                          <th className="px-4 py-3.5">Payment Date</th>
+                          <SortableHeader label="Dividend Type" sortKey="type" />
+                          <SortableHeader label="Yield %" sortKey="yield" />
+                          <SortableHeader label="Announcement" sortKey="announcement" />
+                          <SortableHeader label="Record Date" sortKey="record" />
+                          <SortableHeader label="Ex Date" sortKey="ex_date" />
+                          <SortableHeader label="Payment Date" sortKey="payment_date" />
                         </>
                       )}
 
                       {activeTab === "rights" && (
                         <>
-                          <th className="px-4 py-3.5">Ratio</th>
-                          <th className="px-4 py-3.5">Rights Price</th>
-                          <th className="px-4 py-3.5">Market Price</th>
-                          <th className="px-4 py-3.5">Discount</th>
-                          <th className="px-4 py-3.5">Record Date</th>
-                          <th className="px-4 py-3.5">Ex Date</th>
+                          <SortableHeader label="Ratio" sortKey="ratio" />
+                          <SortableHeader label="Rights Price" sortKey="rights_price" />
+                          <SortableHeader label="Market Price" sortKey="market_price" />
+                          <SortableHeader label="Discount" sortKey="discount" />
+                          <SortableHeader label="Record Date" sortKey="record" />
+                          <SortableHeader label="Ex Date" sortKey="ex_date" />
                         </>
                       )}
 
                       {activeTab === "bonus" && (
                         <>
-                          <th className="px-4 py-3.5">Bonus Ratio</th>
-                          <th className="px-4 py-3.5">Announcement</th>
-                          <th className="px-4 py-3.5">Record Date</th>
-                          <th className="px-4 py-3.5">Ex Date</th>
+                          <SortableHeader label="Bonus Ratio" sortKey="ratio" />
+                          <SortableHeader label="Announcement" sortKey="announcement" />
+                          <SortableHeader label="Record Date" sortKey="record" />
+                          <SortableHeader label="Ex Date" sortKey="ex_date" />
                         </>
                       )}
 
                       {activeTab === "splits" && (
                         <>
-                          <th className="px-4 py-3.5">Split Ratio</th>
-                          <th className="px-4 py-3.5">Old FV</th>
-                          <th className="px-4 py-3.5">New FV</th>
-                          <th className="px-4 py-3.5">Announcement</th>
-                          <th className="px-4 py-3.5">Record Date</th>
-                          <th className="px-4 py-3.5">Ex Date</th>
+                          <SortableHeader label="Split Ratio" sortKey="ratio" />
+                          <SortableHeader label="Old FV" sortKey="old_fv" />
+                          <SortableHeader label="New FV" sortKey="new_fv" />
+                          <SortableHeader label="Announcement" sortKey="announcement" />
+                          <SortableHeader label="Record Date" sortKey="record" />
+                          <SortableHeader label="Ex Date" sortKey="ex_date" />
                         </>
                       )}
 
                       {activeTab === "others" && (
                         <>
-                          <th className="px-4 py-3.5">Action Type</th>
-                          <th className="px-4 py-3.5">Key Detail</th>
-                          <th className="px-4 py-3.5">Announcement</th>
-                          <th className="px-4 py-3.5">Record Date</th>
-                          <th className="px-4 py-3.5">Ex Date</th>
-                          <th className="px-4 py-3.5">Status</th>
+                          <SortableHeader label="Action Type" sortKey="action_type_detail" />
+                          <SortableHeader label="Key Detail" sortKey="key_detail" />
+                          <SortableHeader label="Announcement" sortKey="announcement" />
+                          <SortableHeader label="Record Date" sortKey="record" />
+                          <SortableHeader label="Ex Date" sortKey="ex_date" />
+                          <SortableHeader label="Status" sortKey="status" />
                         </>
                       )}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 text-slate-800">
-                    {filteredRecords.map((row) => (
+                    {paginatedRecords.map((row) => (
                       <tr 
                         key={row.id} 
                         onClick={() => {
@@ -414,6 +591,55 @@ const supabase = createClient();
                 </table>
               )}
             </div>
+
+            {/* ==================== PAGINATION (Prev / Next only) ==================== */}
+            {!loading && sortedRecords.length > 0 && totalPages > 1 && (
+              <div className="px-6 py-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p className="text-sm text-slate-500">
+                  Showing{" "}
+                  <span className="font-semibold text-slate-700">
+                    {(currentPage - 1) * ITEMS_PER_PAGE + 1}
+                  </span>{" "}
+                  to{" "}
+                  <span className="font-semibold text-slate-700">
+                    {Math.min(currentPage * ITEMS_PER_PAGE, sortedRecords.length)}
+                  </span>{" "}
+                  of{" "}
+                  <span className="font-semibold text-slate-700">
+                    {sortedRecords.length}
+                  </span>{" "}
+                  records
+                </p>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    className="inline-flex items-center gap-1.5 h-10 px-4 rounded-xl border border-slate-300 text-slate-600 text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 transition"
+                  >
+                    <ChevronLeft size={16} />
+                    Prev
+                  </button>
+
+                  <span className="px-4 h-10 inline-flex items-center rounded-xl border border-slate-200 bg-slate-50 text-sm font-semibold text-slate-700">
+                    <span className="text-[#16A34A]">{currentPage}</span>
+                    <span className="mx-1.5 text-slate-400">/</span>
+                    <span>{totalPages}</span>
+                  </span>
+
+                  <button
+                    disabled={currentPage === totalPages}
+                    onClick={() =>
+                      setCurrentPage((p) => Math.min(totalPages, p + 1))
+                    }
+                    className="inline-flex items-center gap-1.5 h-10 px-4 rounded-xl border border-slate-300 text-slate-600 text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 transition"
+                  >
+                    Next
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

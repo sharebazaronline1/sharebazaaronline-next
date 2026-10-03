@@ -1,7 +1,7 @@
 // src/components/CompareBrokerClient.jsx
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import Link from 'next/link';
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -33,25 +33,55 @@ const featureCards = [
   { icon: ShieldCheck, title: "Trusted & Safe", desc: "SEBI registered & investor trusted brokers.", color: "blue" },
 ];
 
+/* ==========================================================
+   FORMAT CHARGE
+   ----------------------------------------------------------
+   Shortens long descriptive values to keep cards compact.
+   Long sentences are cut at ~60 chars with an ellipsis so
+   every card fits on 3 lines max.
+   ========================================================== */
 const formatCharge = (value) => {
-  if (!value) return "—";
+  if (value === null || value === undefined || value === "") return "—";
 
   let text = String(value).trim();
-
-  if (/free/i.test(text)) return "Free";
+  if (!text) return "—";
 
   text = text
     .replace(/&#8377;|&\s*₹\s*;|&amp;#8377;/g, "₹")
     .replace(/\\u20B9/g, "₹")
-    .replace(/Rs\.?/gi, "₹");
+    .replace(/Rs\.?/gi, "₹")
+    .replace(/\s+/g, " ");
 
-  const match = text.match(/(\d+(\.\d+)?)/);
+  if (/^free$/i.test(text)) return "Free";
 
-  if (match) {
-    return `₹${match[1]}/order`;
+  // Pure numeric → format as per-order
+  const numericOnly = text.replace(/[₹,\s]/g, "");
+  if (/^\d+(\.\d+)?$/.test(numericOnly)) {
+    if (numericOnly === "0") return "Free";
+    return `₹${numericOnly}/order`;
   }
 
-  return text.length > 28 ? text.substring(0, 28) + "..." : text;
+  // Shorten long descriptive values so cards stay compact.
+  // Try to break at the first sentence-ending punctuation
+  // after 40 chars, otherwise hard-cut at 60 chars.
+  if (text.length > 60) {
+    const semi = text.indexOf(";", 30);
+    const dot = text.indexOf(".", 30);
+    const comma = text.indexOf(",", 40);
+
+    const candidates = [semi, dot, comma].filter(
+      (i) => i > 30 && i < 70
+    );
+
+    if (candidates.length) {
+      const cut = Math.min(...candidates);
+      return text.substring(0, cut).trim() + "…";
+    }
+
+    return text.substring(0, 60).trim() + "…";
+  }
+
+  return text;
 };
 
 const StarRating = ({ rating }) => (
@@ -75,9 +105,28 @@ const formatActiveUsers = (text) => {
 
 const BrokerDropdown = ({ brokers, label, selected, onSelect }) => {
   const [open, setOpen] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleClickOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [open]);
 
   return (
-    <div className="relative">
+    <div className="relative" ref={containerRef}>
       <p className="text-sm font-semibold text-gray-500 mb-2.5 ml-1 uppercase tracking-wider">{label}</p>
       <button
         onClick={() => setOpen(!open)}
@@ -138,15 +187,65 @@ const BrokerDropdown = ({ brokers, label, selected, onSelect }) => {
   );
 };
 
-const getCharge = (broker, key) => broker?.details?.brokerage_charges?.[key] ?? "—";
-const getAccountCharge = (broker, key) => broker?.details?.account_opening_charges?.[key] ?? "—";
+/* ==========================================================
+   FLEXIBLE CHARGE LOOKUP
+   ========================================================== */
+const normalizeKey = (k) =>
+  String(k)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+
+const findChargeValue = (charges, aliases) => {
+  if (!charges || typeof charges !== "object") return null;
+
+  const normalized = {};
+  Object.keys(charges).forEach((k) => {
+    normalized[normalizeKey(k)] = charges[k];
+  });
+
+  const isUsable = (v) => v !== undefined && v !== null && v !== "";
+
+  for (const alias of aliases) {
+    if (isUsable(charges[alias])) return charges[alias];
+    const nk = normalizeKey(alias);
+    if (isUsable(normalized[nk])) return normalized[nk];
+  }
+
+  for (const alias of aliases) {
+    const nk = normalizeKey(alias);
+    const tokens = nk.split("_").filter((t) => t.length > 2);
+    if (!tokens.length) continue;
+
+    const found = Object.keys(normalized).find((k) => {
+      const hit = tokens.every((t) => k.includes(t));
+      return hit && isUsable(normalized[k]);
+    });
+
+    if (found) return normalized[found];
+  }
+
+  return null;
+};
+
+const getCharge = (broker, aliases) => {
+  const charges = broker?.details?.brokerage_charges;
+  const val = findChargeValue(charges, aliases);
+  return val ?? "—";
+};
+
+const getAccountCharge = (broker, aliases) => {
+  const charges = broker?.details?.account_opening_charges;
+  const val = findChargeValue(charges, aliases);
+  return val ?? "—";
+};
 
 const fixedSegments = ["Equity", "F&O", "Commodity", "Currency"];
 
 const CompareCard = ({ broker, highlight }) => {
   if (!broker) {
     return (
-      <div className="bg-white border-2 border-dashed border-gray-200 rounded-3xl h-[920px] flex flex-col items-center justify-center text-center p-8 transition-colors hover:border-gray-300">
+      <div className="bg-white border-2 border-dashed border-gray-200 rounded-3xl flex flex-col items-center justify-center text-center p-8 transition-colors hover:border-gray-300 min-h-[400px] w-full">
         <BarChart3 size={48} className="text-gray-300 mb-4" />
         <p className="font-bold text-gray-400 text-lg">Select a Broker</p>
         <p className="text-sm text-gray-400 mt-1 max-w-[200px]">Add a broker to start comparison parameters</p>
@@ -165,7 +264,7 @@ const CompareCard = ({ broker, highlight }) => {
   return (
     <motion.div
       whileHover={{ y: -4 }}
-      className={`relative bg-white rounded-3xl overflow-hidden border flex flex-col h-[920px] transition-all duration-300 ${
+      className={`relative bg-white rounded-3xl overflow-hidden border flex flex-col w-full transition-all duration-300 ${
         highlight 
           ? "border-emerald-500 shadow-xl ring-4 ring-emerald-50" 
           : "border-gray-200/80 shadow-md hover:shadow-xl hover:border-gray-300"
@@ -178,7 +277,7 @@ const CompareCard = ({ broker, highlight }) => {
       )}
 
       {/* Header Segment */}
-      <div className="px-6 pt-10 pb-6 text-center border-b border-gray-100 h-[260px] flex flex-col items-center justify-between">
+      <div className="px-6 pt-10 pb-6 text-center border-b border-gray-100 h-[260px] flex flex-col items-center justify-between flex-shrink-0">
         <div className="w-24 h-24 bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex items-center justify-center">
           <img src={broker.logo} alt={broker.name} className="w-full h-full object-contain" />
         </div>
@@ -187,7 +286,6 @@ const CompareCard = ({ broker, highlight }) => {
           {broker.name}
         </h3>
 
-        {/* Stats Section */}
         <div className="grid grid-cols-2 gap-4 w-full max-w-xs bg-gray-50/70 p-3.5 rounded-2xl border border-gray-100">
           <div className="border-r border-gray-200 last:border-0 pr-2">
             <StarRating rating={rating} />
@@ -212,23 +310,78 @@ const CompareCard = ({ broker, highlight }) => {
       </div>
 
       {/* Content Segment */}
-      <div className="p-6 flex-1 flex flex-col bg-white justify-between">
-        <div className="mb-8 h-[330px]">
+      <div className="p-6 flex-1 flex flex-col bg-white">
+        <div className="mb-8 flex-1">
           <p className="uppercase text-xs tracking-widest text-gray-400 mb-4 font-bold">KEY CHARGES</p>
           <div className="divide-y divide-gray-100 text-sm">
             {[
-              ["Account Opening", getAccountCharge(broker, "individual_account_opening_fee")],
-              ["Equity Delivery", getCharge(broker, "equity_delivery_for_individuals")],
-              ["Intraday", getCharge(broker, "intraday_for_individuals")],
-              ["Futures", getCharge(broker, "futures_trades_for_individuals")],
-              ["Options", getCharge(broker, "option_trades_for_individuals") || getCharge(broker, "options_trades_for_individuals")],
+              [
+                "Account Opening",
+                getAccountCharge(broker, [
+                  "individual_account_opening_fee",
+                  "account_opening_fee",
+                  "individual_account_opening",
+                  "account_opening_individual",
+                  "account_opening",
+                ]),
+              ],
+              [
+                "Equity Delivery",
+                getCharge(broker, [
+                  "equity_delivery_for_individuals",
+                  "equity_delivery_individual",
+                  "equity delivery individual",
+                  "equity_delivery",
+                  "equity_delivery_charges",
+                ]),
+              ],
+              [
+                "Intraday",
+                getCharge(broker, [
+                  "intraday_for_individuals",
+                  "intraday_individual",
+                  "intraday individual",
+                  "intraday",
+                  "intraday_charges",
+                ]),
+              ],
+              [
+                "Futures",
+                getCharge(broker, [
+                  "futures_trades_for_individuals",
+                  "futures_individual",
+                  "futures individual",
+                  "futures_trades",
+                  "futures",
+                  "futures_charges",
+                ]),
+              ],
+              [
+                "Options",
+                getCharge(broker, [
+                  "option_trades_for_individuals",
+                  "options_trades_for_individuals",
+                  "options_individual",
+                  "option_individual",
+                  "options individual",
+                  "option individual",
+                  "options_trades",
+                  "option_trades",
+                  "options",
+                  "option",
+                  "options_charges",
+                  "option_charges",
+                ]),
+              ],
             ].map(([label, value]) => (
               <div 
                 key={label} 
-                className="flex justify-between items-start gap-4 min-h-[64px] py-3 border-b border-gray-100 last:border-0"
+                className="flex justify-between items-start gap-4 py-3 border-b border-gray-100 last:border-0"
               >
-                <span className="text-gray-500 font-medium text-xs md:text-sm flex-shrink-0 mt-0.5">{label}</span>
-                <span className="font-semibold text-gray-900 text-xs md:text-sm leading-5 text-right line-clamp-3 overflow-hidden max-w-[65%]">
+                <span className="text-gray-500 font-medium text-xs md:text-sm flex-shrink-0 mt-0.5 w-[38%]">
+                  {label}
+                </span>
+                <span className="font-semibold text-gray-900 text-xs md:text-sm leading-5 text-right line-clamp-3 overflow-hidden break-words flex-1">
                   {formatCharge(value)}
                 </span>
               </div>
@@ -237,7 +390,7 @@ const CompareCard = ({ broker, highlight }) => {
         </div>
 
         {/* Segments Supported */}
-        <div className="mb-8">
+        <div className="mb-6">
           <p className="uppercase text-xs tracking-widest text-gray-400 mb-3 font-bold">SEGMENTS SUPPORTED</p>
           <div className="flex flex-wrap gap-1.5">
             {fixedSegments.map((seg) => (
@@ -252,7 +405,7 @@ const CompareCard = ({ broker, highlight }) => {
         </div>
 
         {/* CTA Buttons */}
-        <div className="mt-auto pt-6 border-t border-gray-100 grid grid-cols-2 gap-3 h-[88px]">
+        <div className="pt-6 border-t border-gray-100 grid grid-cols-2 gap-3">
           <Link
             href={`/brokerdetails/${broker.slug}`}
             className="py-3.5 border-2 border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors text-center text-sm flex items-center justify-center"
@@ -281,7 +434,7 @@ const LoadingAnimation = () => (
 const CompareBrokerClient = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-const supabase = createClient();
+  const supabase = createClient();
   const [brokers, setBrokers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [broker1, setBroker1] = useState(null);
@@ -306,7 +459,7 @@ const supabase = createClient();
           }));
 
           setBrokers(parsedData);
-          
+
           const urlParam1 = searchParams?.get("broker1") || null;
           const urlParam2 = searchParams?.get("broker2") || null;
           const urlParam3 = searchParams?.get("broker3") || null;
