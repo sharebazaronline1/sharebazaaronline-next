@@ -173,7 +173,7 @@ export default function Home({
 
               <div className="flex flex-wrap sm:flex-row justify-start gap-2 sm:gap-3 mt-6 sm:mt-8 w-full">
                 <button
-                  onClick={() => navigate("/ipo/ipo-list")}
+                  onClick={() => navigate("/ipo")}
                   className="flex-1 sm:flex-none px-4 sm:px-6 md:px-8 py-3 sm:py-3.5 rounded-2xl bg-[#16A34A] hover:bg-[#15803D] text-white font-bold shadow-lg shadow-green-600/20 transition text-sm sm:text-base"
                 >
                   Explore IPO
