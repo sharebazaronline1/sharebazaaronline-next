@@ -204,7 +204,7 @@ const PreIPOWatchlistClient = ({ user }) => {
           </div>
           <div className="mt-10 text-center">
             <button
-              onClick={() => router.push("/pre-ipo-stocks")}
+              onClick={() => router.push("/preipo")}
               className="inline-flex items-center gap-3 px-10 py-4 bg-[#16A34A] text-white font-medium rounded-xl hover:bg-[#15803D] transition shadow-md hover:shadow-lg"
             >
               <TrendingUp size={20} />

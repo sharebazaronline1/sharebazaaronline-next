@@ -44,7 +44,7 @@ export const buildSearchIndex = (
       Depository ${pre.depository || ""}
     `,
     preview: `Pre IPO • Unlisted Share • Price ${pre.price || "N/A"}`,
-    url: `/pre-ipo-stocks`,
+    url: `/preipo`,
     anchor: `preipo-${pre.id}`,
   }));
 
@@ -93,7 +93,7 @@ export const buildSearchIndex = (
     title: u.name,
     content: `Unlisted Share • Price ${u.price || ""}`,
     preview: `Unlisted Share • Price ${u.price || "N/A"}`,
-    url: `/pre-ipo-stocks`,
+    url: `/preipo`,
     anchor: `preipo-${u.id}`,
   }));
 

@@ -56,7 +56,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
         <div className="text-center text-red-600">
           <h2 className="text-2xl font-bold">Company Not Found</h2>
           <Link
-            href="/pre-ipo-stocks"
+            href="/preipo"
             className="text-emerald-600 underline mt-4 inline-block"
           >
             ← Back to Unlisted Shares
@@ -79,8 +79,8 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
 
   const breadcrumbItems = [
     { name: "Home", url: "/" },
-    { name: "Unlisted Shares", url: "/pre-ipo-stocks" },
-    { name: data.name, url: `/pre-ipo-stocks/${id}/${slug}` },
+    { name: "Unlisted Shares", url: "/preipo" },
+    { name: data.name, url: `/preipo/${id}/${slug}` },
   ];
 
   // Helper function to check if data exists
@@ -119,7 +119,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${SITE_URL}/pre-ipo-stocks/${id}/${slug}`,
+      "@id": `${SITE_URL}/preipo/${id}/${slug}`,
     },
   };
 
@@ -135,7 +135,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
       price: data.price || 0,
       priceCurrency: "INR",
       availability: "https://schema.org/InStock",
-      url: `${SITE_URL}/pre-ipo-stocks/${id}/${slug}`,
+      url: `${SITE_URL}/preipo/${id}/${slug}`,
     },
     brand: {
       "@type": "Brand",
@@ -201,7 +201,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
               <ChevronRight className="w-4 h-4 text-slate-400" />
               <li>
                 <Link
-                  href="/pre-ipo-stocks"
+                  href="/preipo"
                   className="hover:text-emerald-600 transition-colors"
                 >
                   Unlisted Shares
@@ -696,7 +696,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
           {/* BACK BUTTON */}
           <div className="text-center pt-4">
             <Link
-              href="/pre-ipo-stocks"
+              href="/preipo"
               className="inline-flex items-center gap-2 font-semibold text-slate-600 hover:text-slate-900 transition-colors"
             >
               <ArrowLeft size={18} />
@@ -737,7 +737,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
               </Link>
 
               <Link
-                href="/pre-ipo-stocks"
+                href="/preipo"
                 className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
               >
                 <div className="flex items-center justify-between">

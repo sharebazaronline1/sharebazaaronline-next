@@ -185,7 +185,7 @@ export default function Home({
                   Compare Brokers
                 </button>
                 <button
-                  onClick={() => navigate("/pre-ipo-stocks")}
+                  onClick={() => navigate("/preipo")}
                   className="flex-1 sm:flex-none px-4 sm:px-6 md:px-8 py-3 sm:py-3.5 rounded-2xl bg-[#16A34A] hover:bg-[#15803D] text-white font-bold shadow-lg shadow-green-600/20 transition text-sm sm:text-base"
                 >
                   Pre IPO
@@ -250,7 +250,7 @@ export default function Home({
             </p>
           </div>
           <button
-            onClick={() => navigate("/pre-ipo-stocks")}
+            onClick={() => navigate("/preipo")}
             className="hidden lg:flex items-center gap-2 font-semibold text-[#00B14F] hover:text-[#009944] transition text-sm"
           >
             View All →
@@ -313,7 +313,7 @@ export default function Home({
 
         <div className="lg:hidden text-center mt-4">
           <button
-            onClick={() => navigate("/pre-ipo-stocks")}
+            onClick={() => navigate("/preipo")}
             className="text-[#00B14F] font-semibold text-sm"
           >
             View All →

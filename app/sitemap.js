@@ -75,7 +75,7 @@ priority: 1.0,
 },
 
 {
-  url: `${BASE_URL}/pre-ipo-stocks`,
+  url: `${BASE_URL}/preipo`,
   lastModified: fallbackDate,
   changeFrequency: "daily",
   priority: 0.95,

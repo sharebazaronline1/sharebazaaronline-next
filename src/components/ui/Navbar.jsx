@@ -192,7 +192,7 @@ const HeaderAndNav = () => {
                   }`}
               >
                 <Link
-                  href="/pre-ipo-stocks"
+                  href="/preipo"
                   className="block px-4 py-2 text-gray-700 hover:text-text-emerald-800/70 font-normal hover:bg-gray-50 rounded-xl"
                 >
                   Pre-IPO List
@@ -434,7 +434,7 @@ const HeaderAndNav = () => {
               {mobilePreIPO && (
                 <div className="pl-6 space-y-2 mt-1">
                   <Link
-                    href="/pre-ipo-stocks"
+                    href="/preipo"
                     className="block text-gray-600 hover:text-[#1e40af] font-normal"
                     onClick={() => setMobileMenuOpen(false)}
                   >

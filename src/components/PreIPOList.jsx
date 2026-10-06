@@ -277,7 +277,7 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
                       className="hover:bg-gray-50 transition cursor-pointer"
                       onClick={() =>
                         router.push(
-                          `/pre-ipo-stocks/${ipo.id}/${slugify(ipo.name)}`
+                          `/preipo/${ipo.id}/${slugify(ipo.name)}`
                         )
                       }
                     >
@@ -324,7 +324,7 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
                           <button
                             onClick={() =>
                               router.push(
-                                `/pre-ipo-stocks/${ipo.id}/${slugify(ipo.name)}`
+                                `/preipo/${ipo.id}/${slugify(ipo.name)}`
                               )
                             }
                             className="h-12 px-5 rounded-xl border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition"

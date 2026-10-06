@@ -18,7 +18,7 @@ export default function Footer(){
             <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center xl:justify-end gap-4 w-full xl:w-auto">
               <Link href="/ipo" className="w-full sm:w-auto px-6 py-4 rounded-xl bg-green-600 text-white font-bold shadow-lg transition-all hover:scale-[1.02] text-center">Explore IPOs</Link>
               <Link href="/comparebrokers" className="w-full sm:w-auto px-6 py-4 rounded-xl border border-white/70 text-white font-bold hover:bg-white/10 transition text-center">Compare Brokers</Link>
-              <Link href="/pre-ipo-stocks" className="w-full sm:w-auto px-6 py-4 rounded-xl bg-green-600 text-white font-bold shadow-lg transition-all hover:scale-[1.02] text-center">Pre-IPO</Link>
+              <Link href="/preipo" className="w-full sm:w-auto px-6 py-4 rounded-xl bg-green-600 text-white font-bold shadow-lg transition-all hover:scale-[1.02] text-center">Pre-IPO</Link>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default function Footer(){
               <h3 className="text-lg font-bold text-white mb-5">PRODUCTS</h3>
               <ul className="space-y-3 text-sm text-slate-300">
                 <li><Link href="/ipo" className="hover:text-green-400 transition">IPO Updates</Link></li>
-                <li><Link href="/pre-ipo-stocks" className="hover:text-green-400 transition">Unlisted Shares</Link></li>
+                <li><Link href="/preipo" className="hover:text-green-400 transition">Unlisted Shares</Link></li>
                 <li><Link href="/broker-analyzer" className="hover:text-green-400 transition">Broker Analyzer</Link></li>
                 <li><Link href="/skill-up" className="hover:text-green-400 transition">ETFs</Link></li>
                 <li><Link href="/skill-up" className="hover:text-green-400 transition">Mutual Funds</Link></li>

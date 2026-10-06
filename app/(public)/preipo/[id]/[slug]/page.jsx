@@ -1,4 +1,4 @@
-// app/pre-ipo-stocks/[id]/[slug]/page.jsx
+// app/preipo/[id]/[slug]/page.jsx
 
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -125,7 +125,7 @@ export async function generateMetadata({ params }) {
     ? `${companyName} - Share Price ${price} | ShareBazaarOnline`
     : `${companyName} - Share Details | ShareBazaarOnline`;
 
-  const canonical = `${SITE_URL}/pre-ipo-stocks/${id}/${slug}`;
+  const canonical = `${SITE_URL}/preipo/${id}/${slug}`;
 
   const imageUrl = data.logo
     ? data.logo.startsWith("http")
@@ -171,7 +171,7 @@ export default async function Page({ params }) {
   }
 
   const companyName = data.name || "Unlisted Company";
-  const canonicalUrl = `${SITE_URL}/pre-ipo-stocks/${id}/${slug}`;
+  const canonicalUrl = `${SITE_URL}/preipo/${id}/${slug}`;
 
   const price = data.price
     ? `₹${Number(data.price).toLocaleString("en-IN")}`
@@ -256,7 +256,7 @@ export default async function Page({ params }) {
         "@type": "ListItem",
         position: 2,
         name: "Pre-IPO Stocks",
-        item: `${SITE_URL}/pre-ipo-stocks`,
+        item: `${SITE_URL}/preipo`,
       },
       {
         "@type": "ListItem",
