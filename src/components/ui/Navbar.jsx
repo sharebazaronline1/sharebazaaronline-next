@@ -243,12 +243,7 @@ const HeaderAndNav = () => {
             >
               Insight Hub
             </Link>
-            <Link
-              href="/skill-up"
-              className="text-gray-700 hover:text-text-emerald-800/70 transition"
-            >
-              SkillUp
-            </Link>
+          
 
             {/* Global Search - Desktop */}
             <div className="flex items-center">
@@ -488,13 +483,6 @@ const HeaderAndNav = () => {
               onClick={() => setMobileMenuOpen(false)}
             >
               Insight Hub
-            </Link>
-            <Link
-              href="/skill-up"
-              className="block py-2 text-gray-800"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              SkillUp
             </Link>
 
             {/* Mobile Login / Profile */}

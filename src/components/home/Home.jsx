@@ -466,7 +466,7 @@ export default function Home({
     </div>
 
     <button
-      onClick={() => navigate("/ipo/ipo-list")}
+      onClick={() => navigate("/ipo")}
       className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-green-700 hover:bg-green-800 text-white font-semibold transition text-sm sm:text-base"
     >
       View All IPOs →
@@ -475,7 +475,6 @@ export default function Home({
 </div>
         </div>
       </section>
-
       <AdBanner />
 
       {/* BLOGS & MARKET INSIGHTS */}

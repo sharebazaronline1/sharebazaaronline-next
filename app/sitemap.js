@@ -116,12 +116,6 @@ priority: 1.0,
   priority: 0.75,
 },
 
-{
-  url: `${BASE_URL}/skill-up`,
-  lastModified: fallbackDate,
-  changeFrequency: "monthly",
-  priority: 0.7,
-},
 
 {
   url: `${BASE_URL}/ipoguide`,
