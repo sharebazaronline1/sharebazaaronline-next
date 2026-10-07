@@ -133,9 +133,9 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
   const visibleIPOs = ipos.slice(0, visibleCount);
 
   return (
-    <div className="w-full bg-[#f5faf7] min-h-screen">
+    <div className="w-full bg-white min-h-screen">
       {/* HERO */}
-      <section className="relative overflow-hidden border-gray-200 bg-gradient-to-br from-white via-[#f6fffb] to-[#eef8ff] py-16 lg:py-8">
+      <section className="relative overflow-hidden bg-white py-16 lg:py-8">
         <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-green-100/40 blur-3xl rounded-full -translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 right-0 w-[350px] h-[350px] bg-blue-100/40 blur-3xl rounded-full translate-x-1/3 translate-y-1/3"></div>
 
@@ -144,7 +144,7 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
             <div className="xl:col-span-6">
               <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-5 py-2 rounded-full text-sm font-semibold border border-green-200 shadow-sm">
                 <TrendingUp size={16} />
-                Pre-IPO & Unlisted Shares
+                Pre-IPO &amp; Unlisted Shares
               </div>
 
               <h1 className="mt-7 text-5xl md:text-6xl lg:text-7xl font-black tracking-[-3px] leading-[0.95] text-[#0f172a]">
@@ -178,7 +178,7 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
                   <div>
                     <p className="font-semibold text-gray-900">Secure Deals</p>
                     <p className="text-sm text-gray-500 mt-1">
-                      Trusted & transparent investments
+                      Trusted &amp; transparent investments
                     </p>
                   </div>
                 </div>
@@ -211,15 +211,15 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
       </section>
 
       {/* MAIN CONTENT */}
-      <section className="w-full px-4 lg:px-8 py-10">
+      <section className="w-full bg-white px-4 lg:px-8 py-10">
         <div className="w-full">
           <div className="w-full bg-white rounded-[28px] border border-slate-200 shadow-[0_10px_40px_rgba(15,23,42,0.05)] overflow-hidden">
             {/* HEADER */}
-            <div className="px-8 py-7 border-gray-200">
+            <div className="bg-white px-8 py-7 border-b border-gray-200">
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                 <div>
                   <h2 className="text-4xl font-black tracking-[-1px] text-[#0f172a]">
-                    Pre-IPO & Unlisted Shares
+                    Pre-IPO &amp; Unlisted Shares
                   </h2>
                   <p className="mt-2 text-lg text-gray-500">
                     Invest early in high-growth companies before they list
@@ -229,15 +229,15 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
             </div>
 
             {/* MOBILE SWIPE */}
-            <div className="sm:hidden flex items-center justify-end gap-2 px-4 py-2 bg-blue-50 text-[11px] text-blue-700 font-medium">
+            <div className="sm:hidden flex items-center justify-end gap-2 px-4 py-2 bg-white text-[11px] text-blue-700 font-medium border-b border-gray-100">
               ← Swipe →
             </div>
 
             {/* TABLE */}
-            <div className="w-full overflow-x-auto">
-              <table className="w-full min-w-[1100px]">
+            <div className="w-full overflow-x-auto bg-white">
+              <table className="w-full min-w-[1100px] bg-white">
                 <thead>
-                  <tr className="bg-gray-50 border-gray-200">
+                  <tr className="bg-gray-50 border-b border-gray-200">
                     <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
                       Company
                     </th>
@@ -256,11 +256,10 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
                   </tr>
                 </thead>
 
-                <tbody className="divide-y divide-gray-100">
-                  {/* ✅ FIX: Only show skeletons when there is genuinely no data */}
+                <tbody className="bg-white divide-y divide-gray-100">
                   {loading && ipos.length === 0 &&
                     Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => (
-                      <tr key={i} className="animate-pulse">
+                      <tr key={i} className="animate-pulse bg-white">
                         <td className="px-6 py-5">
                           <div className="h-5 bg-gray-200 rounded w-52"></div>
                         </td>
@@ -274,11 +273,9 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.02 }}
-                      className="hover:bg-gray-50 transition cursor-pointer"
+                      className="bg-white hover:bg-gray-50 transition cursor-pointer"
                       onClick={() =>
-                        router.push(
-                          `/preipo/${ipo.id}/${slugify(ipo.name)}`
-                        )
+                        router.push(`/preipo/${ipo.id}/${slugify(ipo.name)}`)
                       }
                     >
                       <td className="px-6 py-5">
@@ -341,14 +338,14 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
 
             {/* FOOTER */}
             {!loading && ipos.length > 0 && (
-              <div className="px-6 py-5 border-gray-200 bg-[#f8fcf9]">
+              <div className="bg-white px-6 py-5 border-t border-gray-200">
                 <div className="flex items-center justify-between flex-wrap gap-4">
                   <div className="flex items-center gap-3 text-green-700">
                     <div className="w-10 h-10 rounded-2xl bg-green-100 flex items-center justify-center">
                       <ShieldCheck size={18} />
                     </div>
                     <p className="text-sm font-medium">
-                      All investments are secured & compliant with SEBI
+                      All investments are secured &amp; compliant with SEBI
                       regulations.
                     </p>
                   </div>

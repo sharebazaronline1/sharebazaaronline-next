@@ -1,12 +1,11 @@
 // src/utils/buildSearchIndex.js
 import slugify from "./slugify";
 
-// Utility to strip HTML tags and normalize spaces
 const stripHtml = (html = "") => {
   if (typeof html !== "string") return "";
   return html
-    .replace(/<[^>]*>/g, " ") // Replace tags with a space
-    .replace(/\s+/g, " ")    // Normalize multiple spaces
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
     .trim();
 };
 
@@ -44,8 +43,8 @@ export const buildSearchIndex = (
       Depository ${pre.depository || ""}
     `,
     preview: `Pre IPO • Unlisted Share • Price ${pre.price || "N/A"}`,
-    url: `/preipo`,
-    anchor: `preipo-${pre.id}`,
+    url: `/preipo/${pre.id}/${slugify(pre.name)}`,
+    anchor: null,
   }));
 
   const brokerIndex = brokers.map((b) => ({
@@ -58,7 +57,7 @@ export const buildSearchIndex = (
 
   const blogIndex = blogs.map((b) => {
     const title = b.heading || b.title || "";
-    
+
     const cleanContent = stripHtml(b.content);
     const cleanSummary = stripHtml(b.summary);
     const cleanExcerpt = stripHtml(b.excerpt);
@@ -75,9 +74,8 @@ export const buildSearchIndex = (
       .join(" ");
 
     const rawPreview = cleanSummary || cleanExcerpt || cleanContent;
-    const preview = rawPreview.length > 120 
-      ? `${rawPreview.slice(0, 120)}...` 
-      : rawPreview;
+    const preview =
+      rawPreview.length > 120 ? `${rawPreview.slice(0, 120)}...` : rawPreview;
 
     return {
       id: `blog-${b.id}`,
@@ -93,8 +91,8 @@ export const buildSearchIndex = (
     title: u.name,
     content: `Unlisted Share • Price ${u.price || ""}`,
     preview: `Unlisted Share • Price ${u.price || "N/A"}`,
-    url: `/preipo`,
-    anchor: `preipo-${u.id}`,
+    url: `/preipo/${u.id}/${slugify(u.name)}`,
+    anchor: null,
   }));
 
   return [

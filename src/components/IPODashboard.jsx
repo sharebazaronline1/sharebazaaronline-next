@@ -90,21 +90,18 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
 
   const router = useRouter();
 
-  // Stable "today" reference — same value on server and client.
   const nowRef = useMemo(() => {
     const d = now ? new Date(now) : new Date();
     d.setHours(0, 0, 0, 0);
     return d;
   }, [now]);
 
-  // Sync when parent passes new initialIpos
   useEffect(() => {
     if (Array.isArray(initialIpos) && initialIpos.length > 0) {
       setIpos(initialIpos);
     }
   }, [initialIpos]);
 
-  // Keep the active tab in sync if the parent recomputes defaultTab
   useEffect(() => {
     setActiveTab(defaultTab);
   }, [defaultTab]);
@@ -159,12 +156,6 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
     return null;
   };
 
-  /**
-   * Determine status strictly by dates.
-   *
-   * Upcoming = open date is STRICTLY AFTER today.
-   * If the open date is today, the IPO is already "Open" (never Upcoming).
-   */
   const getIPOStatusByDate = (ipo) => {
     const today = new Date(nowRef);
 
@@ -190,7 +181,6 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
       const open = new Date(openDate);
       open.setHours(0, 0, 0, 0);
 
-      // Strictly future → Upcoming. Today's open date does NOT qualify.
       if (today < open) return "Upcoming";
 
       if (closeDate) {
@@ -203,7 +193,6 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
       return "Open";
     }
 
-    // Fallback when open date can't be parsed — use close date if available
     if (closeDate) {
       const close = new Date(closeDate);
       close.setHours(23, 59, 59, 999);
@@ -217,10 +206,6 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
     return "Upcoming";
   };
 
-  /**
-   * Centralized display values so filters, sorting, and rendered cells
-   * always agree.
-   */
   const getDisplayValues = (ipo) => {
     const name =
       getValue(
@@ -261,29 +246,19 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
     const price = getValue(ipo, "price", "price_band", "priceBand");
 
     if (price === null) return Number.MAX_SAFE_INTEGER;
-
     if (typeof price === "number") return price;
 
-    const numbers = String(price)
-      .replace(/₹/g, "")
-      .match(/\d+(?:\.\d+)?/g);
-
-    if (!numbers || numbers.length === 0) {
-      return Number.MAX_SAFE_INTEGER;
-    }
+    const numbers = String(price).replace(/₹/g, "").match(/\d+(?:\.\d+)?/g);
+    if (!numbers || numbers.length === 0) return Number.MAX_SAFE_INTEGER;
 
     return Number(numbers[0]);
   };
 
   const getLotNumericValue = (ipo) => {
     const lot = getValue(ipo, "lot", "lot_size", "lotSize");
-
     if (lot === null) return Number.MAX_SAFE_INTEGER;
 
-    const number = String(lot)
-      .replace(/,/g, "")
-      .match(/\d+/);
-
+    const number = String(lot).replace(/,/g, "").match(/\d+/);
     return number ? Number(number[0]) : Number.MAX_SAFE_INTEGER;
   };
 
@@ -310,7 +285,6 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
             "subscription_start_date"
           )
         );
-
         return date ? date.getTime() : Number.MAX_SAFE_INTEGER;
       }
 
@@ -324,7 +298,6 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
             "subscription_end_date"
           )
         );
-
         return date ? date.getTime() : Number.MAX_SAFE_INTEGER;
       }
 
@@ -335,7 +308,6 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
         const date = parseDate(
           getValue(ipo, "listing", "listing_date", "listingDate")
         );
-
         return date ? date.getTime() : Number.MAX_SAFE_INTEGER;
       }
 
@@ -355,11 +327,7 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
           direction: prev.direction === "asc" ? "desc" : "asc",
         };
       }
-
-      return {
-        key,
-        direction: "asc",
-      };
+      return { key, direction: "asc" };
     });
 
     setCurrentPage(1);
@@ -369,20 +337,16 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
 
   const filteredIPOs = useMemo(() => {
     const filtered = ipos.filter((ipo) => {
-      // Tab filter
       const ipoStatus = getIPOStatusByDate(ipo);
       if (ipoStatus !== activeTab) return false;
 
-      // Type filter
       const ipoType = getIPOType(ipo);
       if (
         typeFilter !== "All" &&
         !ipoType.toLowerCase().includes(typeFilter.toLowerCase())
-      ) {
+      )
         return false;
-      }
 
-      // Column filters (case-insensitive substring match)
       const d = getDisplayValues(ipo);
       const f = columnFilters;
 
@@ -411,10 +375,7 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
         !String(d.listing).toLowerCase().includes(f.listing.toLowerCase())
       )
         return false;
-      if (
-        f.lot &&
-        !String(d.lot).toLowerCase().includes(f.lot.toLowerCase())
-      )
+      if (f.lot && !String(d.lot).toLowerCase().includes(f.lot.toLowerCase()))
         return false;
 
       return true;
@@ -433,14 +394,8 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
         return sortConfig.direction === "asc" ? comparison : -comparison;
       }
 
-      if (aValue < bValue) {
-        return sortConfig.direction === "asc" ? -1 : 1;
-      }
-
-      if (aValue > bValue) {
-        return sortConfig.direction === "asc" ? 1 : -1;
-      }
-
+      if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
       return 0;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -458,14 +413,6 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
     return ipos.filter((ipo) => getIPOStatusByDate(ipo) === tab).length;
   };
 
-  /**
-   * Windowed pagination range:
-   * Always shows first, last, current, and ±1 around current.
-   * Gaps of 1 page are filled directly; larger gaps become "…".
-   *
-   * Example (current = 10, total = 21):
-   *   [1, "…", 9, 10, 11, "…", 21]
-   */
   const paginationRange = useMemo(() => {
     const total = totalPages;
     const current = currentPage;
@@ -474,7 +421,6 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
     if (total <= 1) return [1];
 
     const pages = [];
-
     for (let i = 1; i <= total; i++) {
       if (
         i === 1 ||
@@ -491,14 +437,9 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
     for (const page of pages) {
       if (prev !== null) {
         const gap = page - prev;
-
-        if (gap === 2) {
-          withDots.push(prev + 1);
-        } else if (gap > 2) {
-          withDots.push(`dots-${prev}`);
-        }
+        if (gap === 2) withDots.push(prev + 1);
+        else if (gap > 2) withDots.push(`dots-${prev}`);
       }
-
       withDots.push(page);
       prev = page;
     }
@@ -566,9 +507,9 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
   }
 
   return (
-    <div className="w-full bg-white min-h-screen">
+    <div className="bg-white w-full min-h-screen">
       {/* HERO SECTION */}
-      <section className="relative overflow-hidden border-gray-200 bg-gradient-to-br from-white via-[#f6fffb] to-[#eef8ff] py-16 lg:py-2">
+      <section className="relative overflow-hidden bg-white py-16 lg:py-2">
         <div className="relative max-w-[1800px] mx-auto px-6">
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-14 items-center">
             <div className="xl:col-span-6">
@@ -583,7 +524,7 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
               </h1>
 
               <p className="mt-6 text-lg lg:text-[22px] leading-9 text-slate-600 max-w-2xl">
-                Track live & upcoming IPOs in India with listing dates,
+                Track live &amp; upcoming IPOs in India with listing dates,
                 price bands, GMP trends, lot sizes, and subscription insights.
               </p>
             </div>
@@ -600,10 +541,10 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
       </section>
 
       {/* TABLE SECTION */}
-      <section className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <section className="bg-white max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
           {/* FILTERS */}
-          <div className="px-4 sm:px-8 py-5 border-b border-gray-200 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+          <div className="bg-white px-4 sm:px-8 py-5 border-b border-gray-200 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
             <div className="flex flex-wrap gap-3">
               {tabs.map((tab) => (
                 <button
@@ -660,34 +601,27 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
           </div>
 
           {/* TABLE */}
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[1250px]">
+          <div className="overflow-x-auto bg-white">
+            <table className="w-full min-w-[1250px] bg-white">
               <thead>
-                {/* Column labels (sortable) */}
                 <tr className="bg-gray-50">
                   <SortableHeader
                     label="Company"
                     sortKey="company"
                     align="left"
                   />
-
                   <SortableHeader label="Open" sortKey="open" />
-
                   <SortableHeader label="Close" sortKey="close" />
-
                   <SortableHeader label="Price Band" sortKey="price" />
-
                   <SortableHeader label="Listing" sortKey="listing" />
-
                   <SortableHeader label="Lot Size" sortKey="lot" />
-
                   <th className="px-6 pt-4 pb-2 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
                     Action
                   </th>
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="bg-white divide-y divide-gray-100">
                 {paginatedIPOs.length === 0 ? (
                   <tr>
                     <td
@@ -717,7 +651,7 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
                         initial={{ opacity: 0, y: 8 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.03 }}
-                        className="hover:bg-gray-50 transition cursor-pointer"
+                        className="bg-white hover:bg-gray-50 transition cursor-pointer"
                         onClick={() =>
                           router.push(`/ipo/${ipo.id}/${slugify(name)}`)
                         }
@@ -823,18 +757,14 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
 
           {/* PAGINATION */}
           {totalPages > 1 && (
-            <div className="px-6 py-5 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
+            <div className="bg-white px-6 py-5 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
               <p className="text-gray-500 text-center sm:text-left">
                 Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–
-                {Math.min(
-                  currentPage * ITEMS_PER_PAGE,
-                  filteredIPOs.length
-                )}{" "}
+                {Math.min(currentPage * ITEMS_PER_PAGE, filteredIPOs.length)}{" "}
                 of {filteredIPOs.length}
               </p>
 
               <div className="flex items-center gap-1.5 flex-wrap justify-center">
-                {/* Prev */}
                 <button
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
@@ -845,7 +775,6 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
                   <span className="hidden sm:inline">Prev</span>
                 </button>
 
-                {/* Windowed page numbers */}
                 {paginationRange.map((item) =>
                   typeof item === "string" ? (
                     <span
@@ -863,16 +792,13 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
                           ? "bg-[#16A34A] text-white shadow-sm"
                           : "border border-gray-300 text-gray-700 hover:bg-gray-50"
                       }`}
-                      aria-current={
-                        currentPage === item ? "page" : undefined
-                      }
+                      aria-current={currentPage === item ? "page" : undefined}
                     >
                       {item}
                     </button>
                   )
                 )}
 
-                {/* Next */}
                 <button
                   disabled={currentPage === totalPages}
                   onClick={() =>
@@ -889,7 +815,7 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
           )}
         </div>
 
-        <div className="mt-8">
+        <div className="mt-8 bg-white">
           <IPOFAQ />
         </div>
       </section>
