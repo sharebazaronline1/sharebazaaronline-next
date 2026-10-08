@@ -100,7 +100,7 @@ export default function Footer() {
                     </div>
                   </div>
 
-                  <div>
+                  <div className="w-full text-center md:text-left">
                     <a
                       href="mailto:support@sharebazaaronline.com"
                       className="text-sm text-slate-300 hover:text-green-400 transition break-all"
@@ -124,19 +124,10 @@ export default function Footer() {
                       IPO Tracker
                     </Link>
                   </li>
-                  
                   <li>
                     <Link href="/insight-hub" className="hover:text-green-400 transition">
                       Insight Hub
                     </Link>
-                  </li>
-                  <li>
-                    <a
-                      href="mailto:support@sharebazaaronline.com"
-                      className="hover:text-green-400 transition"
-                    >
-                      Help &amp; Support
-                    </a>
                   </li>
                 </ul>
               </div>
@@ -186,18 +177,28 @@ export default function Footer() {
                     </Link>
                   </li>
                   <li>
-                    <a
-                      href="mailto:support@sharebazaaronline.com"
-                      className="hover:text-green-400 transition"
-                    >
-                      Help Center
-                    </a>
+                    <Link href="/how-to-apply-ipo" className="hover:text-green-400 transition">
+                      Help &amp; Support
+                    </Link>
                   </li>
                 </ul>
               </div>
             </div>
 
-            <div className="mt-12 pt-8 border-t border-white/10 flex flex-col lg:flex-row justify-between items-center gap-4 text-sm text-slate-400">
+            {/* DISCLAIMER — full width, centered */}
+            <div className="mt-10 pt-8">
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed text-center">
+                ShareBazaarOnline.com is an educational and information platform for Indian investors. We are not SEBI-registered Investment Advisers or Research Analysts. All content — including IPO analysis, dividend coverage, broker comparisons, and unlisted share information — is for information and education only, not personalised investment advice. Investments in securities markets carry risk; read all documents carefully and consult a SEBI-registered adviser before investing. Past performance does not guarantee future results. We do not guarantee the accuracy of information provided and are not liable for any loss from its use.{" "}
+                <Link
+                  href="/disclaimer"
+                  className="text-green-400 hover:text-green-300 font-medium whitespace-nowrap"
+                >
+                  Read full disclaimer →
+                </Link>
+              </p>
+            </div>
+
+            <div className="mt-8 pt-8 flex flex-col lg:flex-row justify-between items-center gap-4 text-sm text-slate-400">
               <p className="text-center lg:text-left">
                 © {year} Sharebazaaronline. All rights reserved.
               </p>
