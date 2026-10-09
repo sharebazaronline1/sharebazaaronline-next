@@ -119,11 +119,11 @@ const HeaderAndNav = () => {
 
   return (
     <header className="bg-white border-gray-100 sticky top-0 z-50 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16">
         {/* HEADER FLEX */}
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center flex-shrink-0 -ml-2 lg:-ml-16 cursor-pointer">
+          <Link href="/" className="flex items-center flex-shrink-0 cursor-pointer">
             <Image
               src="/images/sharebazaar.png"
               alt="ShareBazaarOnline"

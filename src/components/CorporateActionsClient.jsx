@@ -305,7 +305,7 @@ const CorporateActionsClient = () => {
       <div className="w-full min-h-screen bg-white pb-20">
         
         {/* Visual Breadcrumb */}
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-6">
           <nav aria-label="Breadcrumb" className="text-sm font-medium text-slate-500">
             <ol className="flex items-center space-x-2">
               <li>
@@ -322,7 +322,7 @@ const CorporateActionsClient = () => {
 
         {/* ==================== HERO SECTION ==================== */}
         <section className="relative overflow-hidden py-16 bg-white border-b border-gray-100">
-          <div className="relative max-w-[1800px] mx-auto px-6 text-center">
+          <div className="relative w-full px-4 sm:px-6 lg:px-10 xl:px-16 text-center">
             
             <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
               <div className="inline-flex items-center gap-2 bg-emerald-50 text-[#16A34A] px-4 py-1.5 rounded-full text-xs font-bold border border-emerald-200/60 shadow-xs">
@@ -355,7 +355,7 @@ const CorporateActionsClient = () => {
         </section>
 
         {/* ==================== TABS BAR ==================== */}
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 mt-12 flex justify-center">
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 mt-12 flex justify-center">
           <div className="flex bg-slate-100 p-1.5 rounded-xl items-center gap-1 shadow-inner border border-slate-200/60 overflow-x-auto max-w-full scrollbar-none">
             {tabs.map((tab) => (
               <button
@@ -377,7 +377,7 @@ const CorporateActionsClient = () => {
         </div>
 
         {/* ==================== MAIN TABLE ==================== */}
-        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 mt-10">
           <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
             
             <div className="px-6 py-5 border-b border-slate-100 bg-white flex flex-col lg:flex-row lg:items-center justify-between gap-4">

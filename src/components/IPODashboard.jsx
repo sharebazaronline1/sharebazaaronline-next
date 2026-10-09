@@ -4,6 +4,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 import {
   TrendingUp,
@@ -499,7 +500,7 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
 
   if (loading && (!ipos || ipos.length === 0)) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center bg-white">
+      <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 py-20 text-center bg-white">
         <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-green-600 mx-auto"></div>
         <p className="mt-4 text-gray-600">Loading IPOs...</p>
       </div>
@@ -510,7 +511,7 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
     <div className="bg-white w-full min-h-screen">
       {/* HERO SECTION */}
       <section className="relative overflow-hidden bg-white py-16 lg:py-2">
-        <div className="relative max-w-[1800px] mx-auto px-6">
+        <div className="relative w-full px-4 sm:px-6 lg:px-10 xl:px-16">
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-14 items-center">
             <div className="xl:col-span-6">
               <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-5 py-2 rounded-full text-sm font-semibold border border-green-200 shadow-sm">
@@ -541,7 +542,7 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
       </section>
 
       {/* TABLE SECTION */}
-      <section className="bg-white max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <section className="bg-white w-full px-4 sm:px-6 lg:px-10 xl:px-16 py-8">
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
           {/* FILTERS */}
           <div className="bg-white px-4 sm:px-8 py-5 border-b border-gray-200 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
@@ -818,6 +819,77 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
         <div className="mt-8 bg-white">
           <IPOFAQ />
         </div>
+           {/* EXPLORE MORE */}
+                         <div className="mt-8 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+                      <div className="mb-6">
+                        <h3 className="text-2xl font-bold text-slate-900">
+                          Explore More Investment Opportunities
+                        </h3>
+                        <p className="text-slate-500 mt-2 text-sm lg:text-base">
+                          Discover IPOs, unlisted shares, and broker comparison tools
+                          curated for smart investors.
+                        </p>
+                      </div>
+          
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <Link
+                            href="/insight-hub"
+                            className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
+                          >
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="text-lg font-semibold text-slate-900">
+                                  Insight Hub
+                                </p>
+                                <p className="text-sm text-slate-400 mt-1">
+                                  Read IPO news, blogs & market insights
+                                </p>
+                              </div>
+                              <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                                →
+                              </span>
+                            </div>
+                          </Link>
+          
+                        <Link
+                          href="/preipo"
+                          className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-lg font-semibold text-slate-900">
+                                Unlisted Shares
+                              </p>
+                              <p className="text-sm text-slate-400 mt-1">
+                                Invest before public listing
+                              </p>
+                            </div>
+                            <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                              →
+                            </span>
+                          </div>
+                        </Link>
+          
+                        <Link
+                          href="/broker-analyzer"
+                          className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-lg font-semibold text-slate-900">
+                                Compare Brokers
+                              </p>
+                              <p className="text-sm text-slate-400 mt-1">
+                                Find the best broker platform
+                              </p>
+                            </div>
+                            <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                              →
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
       </section>
     </div>
   );

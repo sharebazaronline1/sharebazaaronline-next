@@ -132,7 +132,7 @@ export default function Home({
 
       {/* HERO SECTION */}
       <section className="relative overflow-hidden py-8 lg:py-12">
-        <div className="max-w-[1600px] mx-auto px-4 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16">
           <div className="grid lg:grid-cols-2 items-center gap-8 xl:gap-16">
 
             <div className="flex flex-col justify-center items-start text-left w-full">
@@ -239,7 +239,7 @@ export default function Home({
       </section>
 
       {/* UNLISTED / PRE-IPO SHARES SECTION */}
-      <section className="py-8 max-w-[1600px] mx-auto px-4 lg:px-8">
+      <section className="py-8 w-full px-4 sm:px-6 lg:px-10 xl:px-16">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900">
@@ -322,7 +322,7 @@ export default function Home({
       </section>
 
       {/* BROKER ANALYZER SECTION */}
-      <section className="py-12 lg:py-16 max-w-[1600px] mx-auto px-4 lg:px-8">
+      <section className="py-12 lg:py-16 w-full px-4 sm:px-6 lg:px-10 xl:px-16">
         <div className="flex flex-col xl:flex-row gap-6 items-stretch">
           <div className="flex-1 rounded-[28px] bg-white border border-slate-200 shadow-[0_10px_40px_rgba(15,23,42,0.05)] overflow-hidden">
             <div className="h-1.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-green-500" />
@@ -434,7 +434,7 @@ export default function Home({
       <AdBanner />
 
       {/* LIVE & UPCOMING IPOS */}
-      <section className="py-12 lg:py-16 max-w-[1600px] mx-auto px-4 lg:px-8">
+      <section className="py-12 lg:py-16 w-full px-4 sm:px-6 lg:px-10 xl:px-16">
         <div className="rounded-[28px] bg-white border border-slate-200 shadow-[0_10px_40px_rgba(15,23,42,0.05)] overflow-hidden">
           <div className="h-1.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-green-500" />
           <div className="px-4 sm:px-6 lg:px-10 pt-6 sm:pt-8 pb-4 sm:pb-6">
@@ -478,7 +478,7 @@ export default function Home({
       <AdBanner />
 
       {/* BLOGS & MARKET INSIGHTS */}
-      <section className="py-12 lg:py-16 max-w-[1600px] mx-auto px-4 lg:px-8">
+      <section className="py-12 lg:py-16 w-full px-4 sm:px-6 lg:px-10 xl:px-16">
         <div className="rounded-[28px] bg-white border border-slate-200 shadow-[0_10px_40px_rgba(15,23,42,0.05)] overflow-hidden">
           <div className="h-1.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-green-500" />
           <div className="px-4 sm:px-6 lg:px-10 pt-6 sm:pt-8 pb-4 sm:pb-6">
@@ -518,7 +518,7 @@ export default function Home({
       <AdBanner />
 
       {/* WHY CHOOSE US SECTION */}
-      <section className="py-12 lg:py-16 max-w-[1600px] mx-auto px-4 lg:px-8">
+      <section className="py-12 lg:py-16 w-full px-4 sm:px-6 lg:px-10 xl:px-16">
         <div className="rounded-[28px] bg-white border border-slate-200 shadow-[0_10px_40px_rgba(15,23,42,0.05)] overflow-hidden">
           <div className="h-1.5 bg-gradient-to-r from-blue-600 via-cyan-500 to-green-500" />
           <div className="px-4 sm:px-6 lg:px-10 pt-6 sm:pt-8 pb-4 sm:pb-6">
@@ -628,7 +628,7 @@ export default function Home({
 
       {/* TRUSTED BY INVESTORS BANNER */}
       <section className="py-10 sm:py-12 bg-white border-t border-slate-200/80">
-        <div className="max-w-[1600px] mx-auto px-4 lg:px-8 text-center">
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 text-center">
           <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-green-50 border border-green-100 text-green-700 text-[10px] sm:text-xs font-bold tracking-wider">
             <Star className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-500 fill-current" />
             TRUSTED BY INVESTORS ACROSS INDIA

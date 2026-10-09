@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   ShieldCheck,
   TrendingUp,
@@ -360,7 +361,79 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
               </div>
             )}
           </div>
+         
         </div>
+          {/* EXPLORE MORE */}
+                         <div className="mt-8 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+                      <div className="mb-6">
+                        <h3 className="text-2xl font-bold text-slate-900">
+                          Explore More Investment Opportunities
+                        </h3>
+                        <p className="text-slate-500 mt-2 text-sm lg:text-base">
+                          Discover IPOs, unlisted shares, and broker comparison tools
+                          curated for smart investors.
+                        </p>
+                      </div>
+          
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <Link
+                          href="/ipo"
+                          className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-lg font-semibold text-slate-900">
+                                Latest IPOs
+                              </p>
+                              <p className="text-sm text-slate-400 mt-1">
+                                Track live & upcoming IPOs
+                              </p>
+                            </div>
+                            <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                              →
+                            </span>
+                          </div>
+                        </Link>
+          
+                        <Link
+                          href="/preipo"
+                          className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-lg font-semibold text-slate-900">
+                                Unlisted Shares
+                              </p>
+                              <p className="text-sm text-slate-400 mt-1">
+                                Invest before public listing
+                              </p>
+                            </div>
+                            <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                              →
+                            </span>
+                          </div>
+                        </Link>
+          
+                        <Link
+                          href="/broker-analyzer"
+                          className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-lg font-semibold text-slate-900">
+                                Compare Brokers
+                              </p>
+                              <p className="text-sm text-slate-400 mt-1">
+                                Find the best broker platform
+                              </p>
+                            </div>
+                            <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                              →
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+                    </div>
       </section>
     </div>
   );

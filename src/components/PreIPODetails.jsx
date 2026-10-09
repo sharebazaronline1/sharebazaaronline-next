@@ -216,7 +216,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
 
           {/* HERO */}
           <header className="relative bg-slate-50">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6 ml-4 lg:ml-6 py-6 pl-6 lg:pl-96 relative">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-6 py-6 relative">
               <div className="shrink-0">
                 <div className="w-28 h-28 lg:w-36 lg:h-36 rounded-xl p-4 bg-white shadow-md border border-gray-100">
                   <img
@@ -275,31 +275,120 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
             </div>
           </Card>
 
-          {/* SHARE DETAILS */}
-          <Card>
-            <SectionHeader
-              icon={IndianRupee}
-              title="Share Details"
-            />
-            <TableWrapper>
-              <table className="w-full min-w-[800px] text-sm border-collapse">
-                <tbody className="divide-y divide-gray-100">
-                  {data.shareDetails && Object.entries(data.shareDetails).map(
-                    ([key, value]) => (
-                      <tr key={key} className="hover:bg-slate-50/50">
-                        <td className="px-6 py-3 font-medium text-slate-600 w-1/2">
-                          {key.replace(/([A-Z])/g, " $1").trim()}
-                        </td>
-                        <td className="px-6 py-3 text-slate-900 text-right font-semibold">
-                          {value || "-"}
-                        </td>
-                      </tr>
-                    )
-                  )}
-                </tbody>
-              </table>
-            </TableWrapper>
-          </Card>
+        {/* SHARE DETAILS + INCOME STATEMENT — side by side */}
+{/* SHARE DETAILS (left) + INCOME STATEMENT & KEY RATIOS (right) */}
+<section className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+  {/* LEFT COLUMN — SHARE DETAILS */}
+  <Card>
+    <SectionHeader icon={IndianRupee} title="Share Details" />
+    <TableWrapper>
+      <table className="w-full text-sm border-collapse table-fixed">
+        <tbody className="divide-y divide-gray-100">
+          {data.shareDetails &&
+            Object.entries(data.shareDetails).map(([key, value]) => (
+              <tr key={key} className="hover:bg-slate-50/50">
+                <td className="px-3 sm:px-4 py-2.5 font-medium text-slate-600 w-1/2 break-words">
+                  {key.replace(/([A-Z])/g, " $1").trim()}
+                </td>
+                <td className="px-3 sm:px-4 py-2.5 text-slate-900 text-right font-semibold break-words">
+                  {value || "-"}
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </TableWrapper>
+  </Card>
+
+  {/* RIGHT COLUMN — INCOME STATEMENT + KEY FINANCIAL RATIOS stacked */}
+  <div className="space-y-4">
+    {/* INCOME STATEMENT */}
+    <Card>
+      <SectionHeader
+        icon={BarChart3}
+        title="Income Statement (Profit & Loss) (₹ in Crore)"
+      />
+      <TableWrapper>
+        {hasData(data.financials?.incomeStatement) ? (
+          <table className="w-full text-sm">
+            <thead className="bg-slate-100">
+              <tr>
+                <th className="px-2 sm:px-3 py-2.5 text-left text-slate-700 font-semibold">Particulars</th>
+                <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY22</th>
+                <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY23</th>
+                <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY24</th>
+                <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY25</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {data.financials.incomeStatement.map((r, i) => (
+                <tr key={i} className="hover:bg-slate-50/30">
+                  <td className="px-2 sm:px-3 py-2.5 text-slate-800 font-medium">{r.label}</td>
+                  <td className="px-2 sm:px-3 py-2.5 text-right text-slate-800">{formatValue(r.fy22)}</td>
+                  <td className="px-2 sm:px-3 py-2.5 text-right text-slate-800">{formatValue(r.fy23)}</td>
+                  <td className="px-2 sm:px-3 py-2.5 text-right text-slate-800">{formatValue(r.fy24)}</td>
+                  <td className="px-2 sm:px-3 py-2.5 text-right text-slate-800">{formatValue(r.fy25)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="p-4 text-slate-500 text-center">
+            Income statement data not available
+          </div>
+        )}
+      </TableWrapper>
+    </Card>
+
+    {/* KEY FINANCIAL RATIOS — stacked under Income Statement */}
+    <Card>
+      <SectionHeader
+        icon={BarChart3}
+        title="Key Financial Ratios (Last 3–5 Years)"
+      />
+      <TableWrapper>
+        {hasData(data.financials?.keyRatios) ? (
+          <table className="w-full text-sm">
+            <thead className="bg-slate-100">
+              <tr>
+                <th className="px-2 sm:px-3 py-2.5 text-left text-slate-700 font-semibold">Ratio</th>
+                <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY22</th>
+                <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY23</th>
+                <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY24</th>
+                <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY25</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {data.financials.keyRatios.map((ratio, i) => (
+                <tr key={i} className="hover:bg-slate-50/30">
+                  <td className="px-2 sm:px-3 py-2.5 font-medium text-slate-700">
+                    {ratio.label}
+                  </td>
+                  <td className="px-2 sm:px-3 py-2.5 text-right font-semibold text-slate-800">
+                    {formatValue(ratio.fy22)}
+                  </td>
+                  <td className="px-2 sm:px-3 py-2.5 text-right font-semibold text-slate-800">
+                    {formatValue(ratio.fy23)}
+                  </td>
+                  <td className="px-2 sm:px-3 py-2.5 text-right font-semibold text-slate-800">
+                    {formatValue(ratio.fy24)}
+                  </td>
+                  <td className="px-2 sm:px-3 py-2.5 text-right font-semibold text-slate-800">
+                    {formatValue(ratio.fy25)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="p-4 text-slate-500 text-center">
+            Financial ratios not available
+          </div>
+        )}
+      </TableWrapper>
+    </Card>
+  </div>
+</section>
 
           {/* FINANCIAL ANNUAL REPORT SUMMARY */}
           <Card>
@@ -311,92 +400,6 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
               {data.financials?.annualReportSummary ||
                 "Detailed audited financial performance summary will be updated soon."}
             </div>
-          </Card>
-
-          {/* INCOME STATEMENT */}
-          <Card>
-            <SectionHeader
-              icon={BarChart3}
-              title="Income Statement (Profit & Loss) (₹ in Crore)"
-            />
-            <TableWrapper>
-              {hasData(data.financials?.incomeStatement) ? (
-                <table className="w-full min-w-[700px] text-sm">
-                  <thead className="bg-slate-100">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-slate-700 font-semibold">Particulars</th>
-                      <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY22</th>
-                      <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY23</th>
-                      <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY24</th>
-                      <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY25</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {data.financials.incomeStatement.map((r, i) => (
-                      <tr key={i} className="hover:bg-slate-50/30">
-                        <td className="px-4 py-3 text-slate-800 font-medium">{r.label}</td>
-                        <td className="px-4 py-3 text-right text-slate-800">{formatValue(r.fy22)}</td>
-                        <td className="px-4 py-3 text-right text-slate-800">{formatValue(r.fy23)}</td>
-                        <td className="px-4 py-3 text-right text-slate-800">{formatValue(r.fy24)}</td>
-                        <td className="px-4 py-3 text-right text-slate-800">{formatValue(r.fy25)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <div className="p-4 text-slate-500 text-center">
-                  Income statement data not available
-                </div>
-              )}
-            </TableWrapper>
-          </Card>
-
-          {/* KEY FINANCIAL RATIOS */}
-          <Card>
-            <SectionHeader
-              icon={BarChart3}
-              title="Key Financial Ratios (Last 3–5 Years)"
-            />
-            <TableWrapper>
-              {hasData(data.financials?.keyRatios) ? (
-                <table className="w-full min-w-[600px] text-sm">
-                  <thead className="bg-slate-100">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-slate-700 font-semibold">Ratio</th>
-                      <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY22</th>
-                      <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY23</th>
-                      <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY24</th>
-                      <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY25</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {data.financials.keyRatios.map((ratio, i) => (
-                      <tr key={i} className="hover:bg-slate-50/30">
-                        <td className="px-4 py-3 font-medium text-slate-700">
-                          {ratio.label}
-                        </td>
-                        <td className="px-4 py-3 text-right font-semibold text-slate-800">
-                          {formatValue(ratio.fy22)}
-                        </td>
-                        <td className="px-4 py-3 text-right font-semibold text-slate-800">
-                          {formatValue(ratio.fy23)}
-                        </td>
-                        <td className="px-4 py-3 text-right font-semibold text-slate-800">
-                          {formatValue(ratio.fy24)}
-                        </td>
-                        <td className="px-4 py-3 text-right font-semibold text-slate-800">
-                          {formatValue(ratio.fy25)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              ) : (
-                <div className="p-4 text-slate-500 text-center">
-                  Financial ratios not available
-                </div>
-              )}
-            </TableWrapper>
           </Card>
 
           {/* WHY INVEST / INVESTOR INSIGHTS */}
@@ -419,7 +422,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
           </Card>
 
           {/* BALANCE SHEET */}
-          <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
             <Card>
               <SectionHeader
                 icon={Wallet}
@@ -718,7 +721,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <Link
-                href="/ipo/ipo-list"
+                href="/ipo"
                 className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
               >
                 <div className="flex items-center justify-between">

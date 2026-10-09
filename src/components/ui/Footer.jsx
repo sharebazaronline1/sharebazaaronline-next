@@ -5,11 +5,11 @@ import { FaTwitter, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa';
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="mt-8 w-full">
+    <footer className="w-full">
       <div className="w-full bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 text-white shadow-2xl">
         {/* TOP CTA SECTION */}
         <div className="relative overflow-hidden bg-gradient-to-r from-cyan-700 via-cyan-800 to-blue-900 px-4 sm:px-8 lg:px-14 py-10 lg:py-12">
-          <div className="relative z-10 flex flex-col xl:flex-row items-center justify-between gap-8 max-w-[1600px] mx-auto">
+          <div className="relative z-10 flex flex-col xl:flex-row items-center justify-between gap-8 w-full">
             <div className="text-center xl:text-left">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-white">
                 Smarter Investing Starts Here
@@ -43,8 +43,8 @@ export default function Footer() {
         </div>
 
         {/* MAIN FOOTER */}
-        <div className="px-4 sm:px-8 lg:px-20 py-10 lg:py-12">
-          <div className="max-w-[1600px] mx-auto">
+        <div className="px-4 sm:px-8 lg:px-20 pt-10 lg:pt-12 pb-20 lg:pb-12">
+          <div className="w-full">
             <div className="h-px bg-gradient-to-r from-transparent via-green-500/50 to-transparent mb-10" />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10">
@@ -177,8 +177,13 @@ export default function Footer() {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/how-to-apply-ipo" className="hover:text-green-400 transition">
+                    <Link href="/contact" className="hover:text-green-400 transition">
                       Help &amp; Support
+                    </Link>
+                  </li>
+                   <li>
+                    <Link href="/report-issue" className="hover:text-green-400 transition">
+                     Report Issue
                     </Link>
                   </li>
                 </ul>

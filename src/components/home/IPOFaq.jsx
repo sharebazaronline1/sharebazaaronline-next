@@ -71,8 +71,8 @@ const IPOFAQ = () => {
   const visibleFaqs = faqs.slice(0, visibleCount);
 
   return (
-    <div className=" rounded-2xl min-h-screen py-10 lg:py-16">
-      <div className="max-w-4xl mx-auto px-6">
+    <div className="rounded-2xl min-h-screen py-8 sm:py-10 lg:py-16">
+      <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16">
 
         {/* Header */}
         <div className="text-center mb-12">

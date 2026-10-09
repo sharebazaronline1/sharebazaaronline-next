@@ -117,7 +117,7 @@ const SegmentBadge = ({ label, segments = [] }) => {
 
 const AdBanner = () => (
   <div className="w-full flex justify-center my-6">
-    <div className="bg-slate-50 border border-slate-200 rounded-2xl w-full max-w-[1400px] h-20 flex items-center justify-center text-slate-400 text-sm tracking-wider uppercase font-medium">
+    <div className="bg-slate-50 border border-slate-200 rounded-2xl w-full h-20 flex items-center justify-center text-slate-400 text-sm tracking-wider uppercase font-medium">
       Advertisement
     </div>
   </div>
@@ -241,7 +241,7 @@ const BrokerAnalyzerClient = () => {
 
       <div className="w-full bg-white min-h-screen">
         {/* Visual Breadcrumb */}
-        <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-6">
           <nav aria-label="Breadcrumb" className="text-sm font-medium text-slate-500">
             <ol className="flex items-center space-x-2">
               <li>
@@ -261,7 +261,7 @@ const BrokerAnalyzerClient = () => {
           <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-green-100/40 blur-3xl rounded-full -translate-x-1/2 -translate-y-1/2"></div>
           <div className="absolute bottom-0 right-0 w-[350px] h-[350px] bg-blue-100/40 blur-3xl rounded-full translate-x-1/3 translate-y-1/3"></div>
 
-          <div className="relative max-w-[1800px] mx-auto px-6">
+          <div className="relative w-full px-4 sm:px-6 lg:px-10 xl:px-16">
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-14 items-center">
               <div className="xl:col-span-6">
                 <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-5 py-2 rounded-full text-sm font-semibold border border-green-200 shadow-sm">
@@ -314,7 +314,7 @@ const BrokerAnalyzerClient = () => {
           </div>
         </section>
 
-        <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 py-8 space-y-8">
           {/* EXPLANATORY SECTIONS */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">

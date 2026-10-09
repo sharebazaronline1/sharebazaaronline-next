@@ -569,7 +569,7 @@ const CompareBrokerClient = () => {
 
       <div className="min-h-screen bg-white antialiased">
         {/* Visual Breadcrumb */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-6">
           <nav aria-label="Breadcrumb" className="text-sm font-medium text-slate-500">
             <ol className="flex items-center space-x-2">
               <li>
@@ -584,7 +584,7 @@ const CompareBrokerClient = () => {
           </nav>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-8 pb-20">
           {/* Header */}
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-100 text-emerald-700 px-5 py-2 rounded-full text-xs font-bold mb-5 tracking-wide uppercase">
@@ -640,7 +640,7 @@ const CompareBrokerClient = () => {
         {/* Comparison Section */}
         <AnimatePresence>
           {(isLoading || showComparison) && (
-            <div id="comparison-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 scroll-mt-6">
+            <div id="comparison-section" className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pb-24 scroll-mt-6">
               <hr className="border-gray-200 mb-16" />
               <h2 className="text-3xl font-extrabold text-center mb-12 text-gray-900 tracking-tight">Side-by-Side Comparison</h2>
 

@@ -287,7 +287,7 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
 
         {/* SECTION 1: HERO PANEL */}
         <div className="bg-gradient-to-b from-[#060a22] to-[#0c133a] text-white border-b border-slate-800/60 w-full">
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+         <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-4">
           <nav aria-label="Breadcrumb" className="text-sm font-medium text-slate-500">
             <ol className="flex items-center space-x-2">
               <li>
@@ -308,7 +308,7 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
               </li>
             </ol>
           </nav>
-        </div>   <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl pt-5 pb-10">
+        </div>   <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-5 pb-10">
             
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
               <div className="lg:col-span-8 space-y-3 text-left">
@@ -374,7 +374,7 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
         {/* SECTION 2: MASONRY SYSTEM SPECIFICATION METRIC ENGINE */}
         {broker && broker.details && (
           <div className="w-full bg-slate-50/60 py-8 border-b border-slate-100">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16">
               
               <div className="mb-6 text-left">
                 <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
@@ -426,7 +426,7 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
         )}
 
         {/* SECTION 3: EDITORIAL CONTENT VIEWPORT */}
-        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 max-w-7xl">
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 py-10">
           <article
             className="prose max-w-none text-left prose-slate prose-sm"
             dangerouslySetInnerHTML={{

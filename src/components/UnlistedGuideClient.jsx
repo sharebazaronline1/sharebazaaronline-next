@@ -63,7 +63,7 @@ const AdBanner = ({ size = "horizontal" }) => (
   <div className="w-full flex justify-center py-4">
     <div
       className={`bg-gray-200 border-2 border-dashed border-gray-400 rounded-xl flex items-center justify-center text-gray-500 font-medium ${
-        size === "horizontal" ? "w-full max-w-5xl h-32" : "w-80 h-96"
+        size === "horizontal" ? "w-full h-32" : "w-80 h-96"
       }`}
     >
       Advertisement
@@ -94,7 +94,7 @@ const UnlistedGuideClient = () => {
       <BreadcrumbSchema items={breadcrumbItems} />
 
       <section className="relative overflow-hidden py-16 lg:py-8">
-        <div className="relative max-w-[1800px] mx-auto px-6">
+        <div className="relative w-full px-4 sm:px-6 lg:px-10 xl:px-16">
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-14 items-center">
             {/* LEFT CONTENT */}
             <div className="xl:col-span-6">
@@ -158,7 +158,7 @@ const UnlistedGuideClient = () => {
       </section>
 
       <div className="py-8 lg:py-8">
-        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 space-y-4">
           {/* Introduction */}
           <section className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 lg:p-8">
             <div className="flex items-center gap-4 mb-6">
