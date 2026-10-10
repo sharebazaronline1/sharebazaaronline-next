@@ -5,7 +5,6 @@ import { fetchInsightDetails } from "@/api/mockApi";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
 
-// Anonymous client — no cookies, makes route cacheable via ISR
 const supabasePublic = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -18,9 +17,7 @@ export const metadata = {
   title: "Insight Hub | ShareBazaarOnline",
   description:
     "Market insights, IPO updates, investment strategies and educational guides.",
-  alternates: {
-    canonical: `${SITE_URL}/insight-hub`,
-  },
+  alternates: { canonical: `${SITE_URL}/insight-hub` },
   openGraph: {
     title: "Insight Hub | ShareBazaarOnline",
     description:
@@ -38,26 +35,37 @@ export const metadata = {
   },
 };
 
-export const revalidate = 300;
+// Always fetch fresh — no stale ISR cache while we debug
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
+function slugify(text) {
+  if (!text) return "";
+  return String(text)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 async function getDBBlogs() {
   try {
     const { data, error } = await supabasePublic
       .from("blogs")
       .select(
-        "id, title, heading, image_url, published_at, category, status, content"
+        "id, title, heading, image_url, published_at, updated_at, category, status"
       )
       .eq("status", "published")
       .order("published_at", { ascending: false })
-      .limit(60);
+      .limit(500);
 
     if (error) {
-      console.error("Supabase blogs error:", error.message);
+      console.error("[getDBBlogs] supabase error:", error.message);
       return [];
     }
+    console.log("[getDBBlogs] fetched", data?.length || 0, "rows");
     return data || [];
   } catch (err) {
-    console.error("Supabase blogs exception:", err?.message || err);
+    console.error("[getDBBlogs] exception:", err?.message || err);
     return [];
   }
 }
@@ -66,22 +74,15 @@ async function getMockBlogs() {
   try {
     return (await fetchInsightDetails()) || [];
   } catch (err) {
-    console.error("Mock insights error:", err?.message || err);
+    console.error("[getMockBlogs] error:", err?.message || err);
     return [];
   }
 }
 
 export default async function InsightHubPage() {
-  // Fetch both sources in parallel
-  const [dbData, mockData] = await Promise.all([
-    getDBBlogs(),
-    getMockBlogs(),
-  ]);
+  const [dbData, mockData] = await Promise.all([getDBBlogs(), getMockBlogs()]);
 
-  const formattedDB = (dbData || []).map((item) => ({
-    ...item,
-    source: "db",
-  }));
+  const formattedDB = (dbData || []).map((item) => ({ ...item, source: "db" }));
 
   const formattedMock = (mockData || []).map((item) => ({
     id: `mock-${item.id}`,
@@ -89,15 +90,14 @@ export default async function InsightHubPage() {
     heading: item.heading || item.title,
     image_url: item.image,
     published_at: item.date,
+    updated_at: item.updated_at || item.date,
     reading_time: item.readTime,
     category: item.category,
-    content: item.content,
     source: "mock",
   }));
 
   const merged = [...formattedDB, ...formattedMock];
 
-  // Dedupe by id, fallback to title
   const seen = new Set();
   const unique = merged.filter((item) => {
     const key = item.id
@@ -108,11 +108,19 @@ export default async function InsightHubPage() {
     return true;
   });
 
-  // Newest first
   unique.sort(
     (a, b) =>
       new Date(b.published_at || 0).getTime() -
       new Date(a.published_at || 0).getTime()
+  );
+
+  console.log(
+    "[InsightHubPage] total unique:",
+    unique.length,
+    "| db:",
+    formattedDB.length,
+    "| mock:",
+    formattedMock.length
   );
 
   const webPageSchema = {
@@ -155,6 +163,22 @@ export default async function InsightHubPage() {
     ],
   };
 
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Insight Hub — Market Insights & Investment Guides",
+    url: `${SITE_URL}/insight-hub`,
+    numberOfItems: unique.length,
+    itemListElement: unique.slice(0, 24).map((post, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${SITE_URL}/insight-hub/${post.id}/${slugify(
+        post.heading || post.title
+      )}`,
+      name: post.heading || post.title,
+    })),
+  };
+
   const safeJsonLd = (schema) =>
     JSON.stringify(schema).replace(/</g, "\\u003c");
 
@@ -167,6 +191,10 @@ export default async function InsightHubPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListSchema) }}
       />
       <InsightHub initialBlogs={unique} />
     </>

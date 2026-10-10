@@ -11,10 +11,7 @@ const supabasePublic = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
-    },
+    auth: { persistSession: false, autoRefreshToken: false },
   }
 );
 
@@ -65,12 +62,10 @@ async function getMockBlog(id) {
 async function getBlog(id) {
   if (!id) return null;
 
-  // Mock path — never touches Supabase
   if (isMockId(id)) {
     return getMockBlog(id);
   }
 
-  // DB path — select * so we don't break when columns change
   try {
     const { data, error } = await supabasePublic
       .from("blogs")
@@ -79,12 +74,7 @@ async function getBlog(id) {
       .maybeSingle();
 
     if (error) {
-      console.error(
-        "[getBlog] supabase error:",
-        error.message,
-        "| code:",
-        error.code
-      );
+      console.error("[getBlog] supabase error:", error.message, "| code:", error.code);
       return null;
     }
 
@@ -221,9 +211,17 @@ export default async function Page({ params }) {
   const publishedDate = blog.published_at || blog.created_at;
   const modifiedDate = blog.updated_at || blog.published_at || blog.created_at;
 
+  const plainText =
+    typeof blog.content === "string" ? blog.content.replace(/<[^>]+>/g, " ") : "";
+  const wordCount = plainText.trim()
+    ? plainText.trim().split(/\s+/).length
+    : undefined;
+
+  const keywords = normalizeKeywords(blog.keywords);
+
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": "Article",
     "@id": `${canonicalUrl}#article`,
     headline: articleTitle,
     description: articleDescription,
@@ -231,12 +229,15 @@ export default async function Page({ params }) {
     image: [articleImage],
     ...(publishedDate ? { datePublished: publishedDate } : {}),
     ...(modifiedDate ? { dateModified: modifiedDate } : {}),
+    ...(wordCount ? { wordCount } : {}),
+    ...(keywords.length ? { keywords: keywords.join(", ") } : {}),
     articleSection: blog.category || "Market Insight",
+    inLanguage: "en-IN",
     author: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}#organization`,
-      name: "ShareBazaarOnline",
-      url: SITE_URL,
+      "@type": "Person",
+      name: "Kavya Talanki",
+      jobTitle: "Head of Research & Content",
+      url: `${SITE_URL}/about`,
     },
     publisher: {
       "@type": "Organization",
@@ -245,7 +246,9 @@ export default async function Page({ params }) {
       url: SITE_URL,
       logo: {
         "@type": "ImageObject",
-        url: `${SITE_URL}/logo.png`,
+        url: `${SITE_URL}/images/sharebazaar.png`,
+        width: 512,
+        height: 512,
       },
     },
     mainEntityOfPage: {
@@ -254,12 +257,38 @@ export default async function Page({ params }) {
     },
   };
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Insight Hub",
+        item: `${SITE_URL}/insight-hub`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: articleTitle,
+        item: canonicalUrl,
+      },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(articleSchema).replace(/</g, "\\u003c"),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
         }}
       />
       <InsightHubDetail blog={blog} id={id} slug={slug} />
