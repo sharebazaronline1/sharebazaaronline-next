@@ -35,9 +35,8 @@ export const metadata = {
   },
 };
 
-// Always fetch fresh — no stale ISR cache while we debug
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+// Cache the rendered page for 5 minutes so repeat visits are instant.
+export const revalidate = 300;
 
 function slugify(text) {
   if (!text) return "";

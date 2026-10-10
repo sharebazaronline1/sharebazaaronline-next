@@ -10,6 +10,7 @@ import { BookOpen, TrendingUp, LineChart, GraduationCap } from "lucide-react";
 const CARDS_PER_PAGE = 30;
 const EAGER_FIRST_BATCH = 8;
 const EAGER_SECOND_BATCH = 30;
+const HERO_IMAGE = "/images/hero-insight.png";
 
 const CORPORATE_ACTION_CATEGORIES = [
   "buyback",
@@ -31,6 +32,46 @@ const isCorporateAction = (post) => {
   return CORPORATE_ACTION_CATEGORIES.includes(cat);
 };
 
+const preloadImages = (urls) => {
+  const list = (urls || []).filter(Boolean);
+  if (!list.length) return Promise.resolve();
+
+  return Promise.all(
+    list.map(
+      (src) =>
+        new Promise((resolve) => {
+          const img = new window.Image();
+          img.decoding = "async";
+          img.onload = resolve;
+          img.onerror = resolve;
+          img.src = src;
+        })
+    )
+  );
+};
+
+const SkeletonGrid = () => (
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6">
+    {Array.from({ length: 10 }).map((_, i) => (
+      <div
+        key={`sk-${i}`}
+        className="bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse"
+      >
+        <div className="w-full aspect-[16/10] bg-gray-200" />
+        <div className="p-3.5 sm:p-4">
+          <div className="h-2.5 w-20 bg-gray-200 rounded mb-2" />
+          <div className="h-3 w-full bg-gray-200 rounded mb-1.5" />
+          <div className="h-3 w-4/5 bg-gray-200 rounded mb-1.5" />
+          <div className="h-3 w-2/3 bg-gray-200 rounded" />
+          <div className="mt-4 pt-3 border-t border-gray-100 flex justify-end">
+            <div className="h-3 w-12 bg-gray-200 rounded" />
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 const InsightHub = ({ initialBlogs = [] }) => {
   const router = useRouter();
 
@@ -43,67 +84,44 @@ const InsightHub = ({ initialBlogs = [] }) => {
   );
 
   const [visibleCount, setVisibleCount] = useState(CARDS_PER_PAGE);
-  const [loading] = useState(false);
+  const [ready, setReady] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
-    if (!blogs.length) return;
+    let cancelled = false;
 
-    const immediate = blogs
-      .slice(0, EAGER_SECOND_BATCH)
-      .filter((p) => p?.image_url);
+    const initialPosts = blogs.slice(0, CARDS_PER_PAGE);
+    const urls = [HERO_IMAGE, ...initialPosts.map((p) => p?.image_url)];
 
-    immediate.forEach((post) => {
-      const img = new window.Image();
-      img.decoding = "async";
-      img.src = post.image_url;
+    preloadImages(urls).then(() => {
+      if (!cancelled) setReady(true);
     });
 
-    const idle = blogs
-      .slice(EAGER_SECOND_BATCH, EAGER_SECOND_BATCH * 2)
-      .filter((p) => p?.image_url);
-
-    if (idle.length && "requestIdleCallback" in window) {
-      const handle = window.requestIdleCallback(
-        () => {
-          idle.forEach((post) => {
-            const img = new window.Image();
-            img.decoding = "async";
-            img.src = post.image_url;
-          });
-        },
-        { timeout: 2000 }
-      );
-      return () => window.cancelIdleCallback?.(handle);
-    } else {
-      const t = setTimeout(() => {
-        idle.forEach((post) => {
-          const img = new window.Image();
-          img.decoding = "async";
-          img.src = post.image_url;
-        });
-      }, 800);
-      return () => clearTimeout(t);
-    }
+    return () => {
+      cancelled = true;
+    };
   }, [blogs]);
-
-  useEffect(() => {
-    const nextBatchStart = visibleCount;
-    const nextBatchEnd = visibleCount + CARDS_PER_PAGE;
-
-    const upcoming = blogs
-      .slice(nextBatchStart, nextBatchEnd)
-      .filter((p) => p?.image_url);
-
-    upcoming.forEach((post) => {
-      const img = new window.Image();
-      img.decoding = "async";
-      img.src = post.image_url;
-    });
-  }, [visibleCount, blogs]);
 
   const handleCardClick = (post) => {
     const title = post.title || post.heading || "insight";
     router.push(`/insight-hub/${post.id}/${slugify(title)}`);
+  };
+
+  const handleLoadMore = async () => {
+    if (loadingMore) return;
+    setLoadingMore(true);
+
+    const nextSlice = blogs.slice(
+      visibleCount,
+      visibleCount + CARDS_PER_PAGE
+    );
+
+    await preloadImages(nextSlice.map((p) => p?.image_url));
+
+    setVisibleCount((prev) =>
+      Math.min(prev + CARDS_PER_PAGE, blogs.length)
+    );
+    setLoadingMore(false);
   };
 
   const visibleBlogs = useMemo(
@@ -184,8 +202,11 @@ const InsightHub = ({ initialBlogs = [] }) => {
             <div className="lg:col-span-6">
               <div className="relative flex justify-center">
                 <img
-                  src="/images/hero-insight.png"
+                  src={HERO_IMAGE}
                   alt="Insight Hub"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                   className="w-full max-w-[560px] object-contain drop-shadow-xl"
                 />
               </div>
@@ -195,8 +216,8 @@ const InsightHub = ({ initialBlogs = [] }) => {
       </section>
 
       <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pb-14">
-        {loading ? (
-          <div className="text-center text-gray-500 py-12">Loading blogs...</div>
+        {!ready ? (
+          <SkeletonGrid />
         ) : blogs.length === 0 ? (
           <div className="text-center text-gray-500 py-12">No blogs found</div>
         ) : (
@@ -217,10 +238,10 @@ const InsightHub = ({ initialBlogs = [] }) => {
               return (
                 <motion.article
                   key={post.id || `card-${i}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{ delay: Math.min(i, 12) * 0.04 }}
-                  className="group bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 cursor-pointer flex flex-col h-full overflow-hidden border border-gray-100"
+                  className="group bg-white rounded-2xl shadow-sm hover:shadow-lg transition-shadow duration-300 cursor-pointer flex flex-col h-full overflow-hidden border border-gray-100"
                   onClick={() => handleCardClick(post)}
                 >
                   <div className="relative w-full aspect-[16/10] overflow-hidden bg-gray-100">
@@ -230,7 +251,7 @@ const InsightHub = ({ initialBlogs = [] }) => {
                       loading={isLoadingEager ? "eager" : "lazy"}
                       fetchPriority={isHighPriority ? "high" : "auto"}
                       decoding="async"
-                      className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+                      className="w-full h-full object-cover object-center"
                     />
                   </div>
 
@@ -245,7 +266,7 @@ const InsightHub = ({ initialBlogs = [] }) => {
                       {title}
                     </h3>
 
-                    <div className="mt-auto flex items-center justify-end pt-3 border-t border-gray-100">
+                    <div className="mt-auto flex items-center justify-end  border-t border-gray-100">
                       <span className="text-xs font-semibold text-green-600 group-hover:text-green-700">
                         Read →
                       </span>
@@ -257,17 +278,16 @@ const InsightHub = ({ initialBlogs = [] }) => {
           </div>
         )}
 
-        {hasMore && !loading && (
+        {ready && hasMore && (
           <div className="text-center mt-12">
             <button
-              onClick={() =>
-                setVisibleCount((prev) =>
-                  Math.min(prev + CARDS_PER_PAGE, blogs.length)
-                )
-              }
-              className="px-8 py-3 bg-[#16A34A] text-white font-semibold rounded-full hover:bg-[#15803D] transition shadow-md"
+              onClick={handleLoadMore}
+              disabled={loadingMore}
+              className="px-8 py-3 bg-[#16A34A] text-white font-semibold rounded-full hover:bg-[#15803D] transition shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Load More Insights ({remaining} remaining)
+              {loadingMore
+                ? "Loading..."
+                : `Load More Insights (${remaining} remaining)`}
             </button>
           </div>
         )}
