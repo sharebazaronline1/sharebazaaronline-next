@@ -52,6 +52,19 @@ const TableWrapper = ({ children }) => (
   <div className="p-4 sm:p-5 overflow-x-auto">{children}</div>
 );
 
+/* Reusable advertisement placeholder */
+const AdBlock = ({ size = "horizontal", label = "Advertisement" }) => (
+  <div className="w-full flex justify-center py-2">
+    <div
+      className={`bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center text-gray-500 font-medium ${
+        size === "horizontal" ? "w-full h-28 sm:h-32" : "w-80 h-96"
+      }`}
+    >
+      {label}
+    </div>
+  </div>
+);
+
 /* ================= MAIN COMPONENT ================= */
 export default function IPODetailsClient({ initialIpo, id, slug }) {
   const [activeSection, setActiveSection] = useState("about");
@@ -181,14 +194,6 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
     { id: "faq", label: "FAQs", icon: HelpCircle },
   ];
 
-  // Right sidebar — relevant IPO / dividend links
-  const promoLinks = [
-    { label: "Live IPO Tracker", href: "/ipo" },
-    { label: "GMP Today", href: "/ipo" },
-    { label: "Upcoming Issues", href: "/ipo" },
-    { label: "Dividends & Bonus", href: "/corporateactions" },
-  ];
-
   return (
     <>
       <script
@@ -223,7 +228,13 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
 
                 <div>
                   <h1 className="text-2xl font-bold">{safeText(ipoName)}</h1>
-                  <p className="text-sm text-gray-600">{safeText(ipo.fullName)}</p>
+                 {(ipo.fullName || ipo.ipo_basic_details?.company_name) &&
+  (ipo.fullName || ipo.ipo_basic_details?.company_name) !== ipoName && (
+    <p className="text-sm text-gray-600">
+      {safeText(ipo.fullName || ipo.ipo_basic_details?.company_name)}
+    </p>
+)}
+
                 </div>
               </div>
 
@@ -265,7 +276,7 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
             <span className="text-gray-900 font-medium">{safeText(ipoName)} IPO</span>
           </div>
 
-          {/* 12-col layout: Quick Nav (2) | Main (7) | Right Promo (3) */}
+          {/* 12-col layout: Quick Nav (2) | Main (8) | Right Promo (2) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 w-full">
             {/* LEFT SIDEBAR — Quick Navigation */}
             <aside className="hidden lg:block lg:col-span-2">
@@ -301,7 +312,7 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
             </aside>
 
             {/* MAIN CONTENT */}
-            <main className="lg:col-span-7 space-y-4 w-full min-w-0">
+            <main className="lg:col-span-8 space-y-4 w-full min-w-0">
               {/* About Company */}
               <Card>
                 <SectionHeader id="about" icon={Building2} title="About Company" />
@@ -352,6 +363,9 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
                   </div>
                 </div>
               </Card>
+
+              {/* AD BLOCK #1 */}
+              <AdBlock />
 
               {/* IPO Important Dates */}
               <Card>
@@ -479,6 +493,9 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
                   </table>
                 </TableWrapper>
               </Card>
+
+              {/* AD BLOCK #2 */}
+              <AdBlock />
 
               {/* Grey Market Premium */}
               <Card>
@@ -611,51 +628,128 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
               )}
             </main>
 
-            {/* RIGHT SIDEBAR — Sticky promo card */}
-            <aside className="hidden lg:block lg:col-span-3">
-              <div className="sticky top-28 relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#061A40] via-[#0A2558] to-[#0E3A73] p-6 shadow-2xl border border-cyan-500/10 text-white">
-                {/* Decorative glow */}
-                <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-cyan-400/15 blur-3xl pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-32 h-32 rounded-full bg-blue-400/10 blur-3xl pointer-events-none" />
-
-                <div className="relative z-10">
-                  <div className="inline-flex items-center px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/25 text-cyan-300 text-[11px] font-semibold tracking-wide">
-                    IPO Insights
-                  </div>
-
-                  <h3 className="mt-4 text-2xl font-black leading-tight">
-                    Track Live
-                    <span className="block text-cyan-400">IPOs &amp; GMP</span>
-                  </h3>
-
-                  <p className="mt-3 text-slate-300 text-xs leading-relaxed">
-                    Real-time subscription numbers, GMP trends, allotment
-                    status and upcoming issues — all in one place.
-                  </p>
-
-                  <div className="mt-5 space-y-2.5">
-                    {promoLinks.map((item) => (
-                      <Link
-                        key={item.label}
-                        href={item.href}
-                        className="flex items-center gap-2.5 text-xs group"
-                      >
-                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0 group-hover:scale-150 transition" />
-                        <span className="text-slate-200 group-hover:text-white transition">
-                          {item.label}
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-
-                  <Link
-                    href="/ipo"
-                    className="mt-6 w-full py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold transition-all shadow-lg shadow-cyan-500/20 text-xs text-center inline-flex items-center justify-center gap-1.5"
+            {/* RIGHT SIDEBAR — 3 compact sticky promo cards */}
+            <aside className="hidden lg:block lg:col-span-2">
+              <div className="sticky top-28 space-y-3">
+                {[
+                  {
+                    badge: "IPO Insights",
+                    title: "Track Live",
+                    titleAccent: "IPOs & GMP",
+                    description:
+                      "Real-time subscription numbers, GMP trends and upcoming issues.",
+                    accentText: "text-cyan-400",
+                    accentBg: "bg-cyan-500 hover:bg-cyan-400",
+                    accentDot: "bg-cyan-400",
+                    accentBorder: "border-cyan-400/25",
+                    accentBadgeBg: "bg-cyan-400/10",
+                    accentGlow1: "bg-cyan-400/15",
+                    accentGlow2: "bg-blue-400/10",
+                    shadow: "shadow-cyan-500/20",
+                    links: [
+                      { label: "Live IPOs", href: "/ipo" },
+                      { label: "Upcoming Issues", href: "/ipo" },
+                    ],
+                    cta: { label: "IPO Tracker", href: "/ipo" },
+                  },
+                  {
+                    badge: "Pre-IPO",
+                    title: "Explore",
+                    titleAccent: "Unlisted Shares",
+                    description:
+                      "Verified prices and valuations of India's top pre-IPO companies.",
+                    accentText: "text-emerald-400",
+                    accentBg: "bg-emerald-500 hover:bg-emerald-400",
+                    accentDot: "bg-emerald-400",
+                    accentBorder: "border-emerald-400/25",
+                    accentBadgeBg: "bg-emerald-400/10",
+                    accentGlow1: "bg-emerald-400/15",
+                    accentGlow2: "bg-teal-400/10",
+                    shadow: "shadow-emerald-500/20",
+                    links: [
+                      { label: "Unlisted Stocks", href: "/preipo" },
+                      { label: "Top Valuations", href: "/preipo" },
+                    ],
+                    cta: { label: "View Pre-IPO", href: "/preipo" },
+                  },
+                  {
+                    badge: "Brokers",
+                    title: "Compare",
+                    titleAccent: "Top Brokers",
+                    description:
+                      "Brokerage charges, platform features and account-opening benefits.",
+                    accentText: "text-violet-400",
+                    accentBg: "bg-violet-500 hover:bg-violet-400",
+                    accentDot: "bg-violet-400",
+                    accentBorder: "border-violet-400/25",
+                    accentBadgeBg: "bg-violet-400/10",
+                    accentGlow1: "bg-violet-400/15",
+                    accentGlow2: "bg-fuchsia-400/10",
+                    shadow: "shadow-violet-500/20",
+                    links: [
+                      { label: "Broker Analyzer", href: "/broker-analyzer" },
+                      { label: "Compare Charges", href: "/comparebrokers" },
+                    ],
+                    cta: { label: "Compare Brokers", href: "/comparebrokers" },
+                  },
+                ].map((card, i) => (
+                  <div
+                    key={i}
+                    className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#061A40] via-[#0A2558] to-[#0E3A73] p-3.5 shadow-lg border border-cyan-500/10 text-white"
                   >
-                    View IPO Tracker
-                    <ArrowRight size={14} className="stroke-[2.5]" />
-                  </Link>
-                </div>
+                    {/* Decorative glows */}
+                    <div
+                      className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-3xl pointer-events-none ${card.accentGlow1}`}
+                    />
+                    <div
+                      className={`absolute bottom-0 left-0 w-24 h-24 rounded-full blur-3xl pointer-events-none ${card.accentGlow2}`}
+                    />
+
+                    <div className="relative z-10">
+                      <div
+                        className={`inline-flex items-center px-2 py-0.5 rounded-full border text-[10px] font-semibold tracking-wide ${card.accentBadgeBg} ${card.accentBorder} ${card.accentText}`}
+                      >
+                        {card.badge}
+                      </div>
+
+                      <h3 className="mt-2.5 text-base font-black leading-tight">
+                        {card.title}
+                        <span className={`block ${card.accentText}`}>
+                          {card.titleAccent}
+                        </span>
+                      </h3>
+
+                      <p className="mt-2 text-slate-300 text-[11px] leading-snug">
+                        {card.description}
+                      </p>
+
+                      <div className="mt-2.5 space-y-1">
+                        {card.links.map((item) => (
+                          <Link
+                            key={item.label}
+                            href={item.href}
+                            className="flex items-center gap-2 text-[11px] group"
+                          >
+                            <div
+                              className={`w-1 h-1 rounded-full shrink-0 group-hover:scale-150 transition ${card.accentDot}`}
+                            />
+                            <span className="text-slate-200 group-hover:text-white transition">
+                              {item.label}
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+
+                      <Link
+                        href={card.cta.href}
+                        className={`mt-3 w-full py-1.5 rounded-md text-slate-950 font-bold transition-all shadow-md text-[11px] text-center inline-flex items-center justify-center gap-1 ${card.accentBg} ${card.shadow}`}
+                      >
+                        {card.cta.label}
+                        <ArrowRight size={12} className="stroke-[2.5]" />
+                      </Link>
+                    </div>
+                  </div>
+                ))}
               </div>
             </aside>
           </div>

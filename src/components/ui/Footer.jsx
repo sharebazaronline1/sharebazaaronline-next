@@ -161,14 +161,18 @@ export default function Footer() {
               <div className="text-center sm:text-left">
                 <h3 className="text-lg font-bold text-white mb-5">RESOURCES</h3>
                 <ul className="space-y-3 text-sm text-slate-300">
+                 
                   <li>
-                    <Link href="/insight-hub" className="hover:text-green-400 transition">
-                      Blogs
+                    <Link href="/ipo-calendar" className="hover:text-green-400 transition">
+                      IPO Calendar
                     </Link>
                   </li>
                   <li>
-                    <Link href="/ipo" className="hover:text-green-400 transition">
-                      IPO Calendar
+                    <Link 
+                      href="/insight-hub/mock-1/nse-trading-holiday-clearing-holidays-update-2026" 
+                      className="hover:text-green-400 transition"
+                    >
+                      Holiday calender
                     </Link>
                   </li>
                   <li>

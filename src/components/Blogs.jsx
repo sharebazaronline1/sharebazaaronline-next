@@ -8,92 +8,85 @@ import { fetchInsightDetails } from "../api/mockApi";
 import slugify from "../utils/slugify";
 
 const MAX_BLOGS = 15;
+const DB_FETCH_LIMIT = 500;
 
 const CORPORATE_ACTION_TYPES = [
   "buyback",
   "dividend",
-  "rights",
   "bonus",
+  "bonus issue",
+  "stock split",
+  "rights",
+  "rights issue",
   "split",
-  "other",
-  "ipo",
+  "merger",
+  "demerger",
 ];
 
 const isCorporateActionPost = (post) => {
-  const type = String(post?.category || "")
-    .toLowerCase()
-    .trim();
-
+  if (!post) return false;
+  const type = String(post.category || "").toLowerCase().trim();
+  if (!type) return false;
   return CORPORATE_ACTION_TYPES.includes(type);
 };
 
-const BlogCard = ({ post, index, onClick }) => {
-  const isCorporateAction = isCorporateActionPost(post);
+const BlogCard = ({ post, index, onClick }) => (
+  <motion.div
+    whileHover={{ y: -4 }}
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.08 }}
+    onClick={() => onClick(post)}
+    className="w-full max-w-full sm:flex-shrink-0 sm:w-72 cursor-pointer"
+  >
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col h-full">
+      <div className="relative overflow-hidden bg-gray-100">
+        <img
+          src={post.image_url || "/images/placeholder.jpg"}
+          alt={post.title || post.heading || "blog"}
+          loading="lazy"
+          className="w-full h-auto sm:h-44 object-contain sm:object-cover sm:object-top transition-transform duration-500 group-hover:scale-105 bg-white"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+      </div>
 
-  return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.08 }}
-      onClick={() => onClick(post)}
-      className="w-full max-w-full sm:flex-shrink-0 sm:w-72 cursor-pointer"
-    >
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col h-full">
-        <div className="relative overflow-hidden bg-gray-100">
-          <img
-            src={post.image_url || "/images/placeholder.jpg"}
-            alt={post.title || post.heading || "blog"}
-            loading="lazy"
-            className="w-full h-auto sm:h-44 object-contain sm:object-cover sm:object-top transition-transform duration-500 group-hover:scale-105 bg-white"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
-        </div>
+      <div className="p-4 flex flex-col flex-1">
+        <p className="text-[13px] sm:text-sm text-green-600 font-medium mb-2 leading-normal">
+          {post.category || "Insights"}
+        </p>
 
-        <div className="p-4 flex flex-col flex-1">
-          <p className="text-[13px] sm:text-sm text-green-600 font-medium mb-2 leading-normal">
-            {post.category || "Insights"}
-          </p>
+        <h3 className="font-semibold text-gray-900 text-[10px] sm:text-sm leading-[1.45] break-words line-clamp-3">
+          {post.heading || post.title}
+        </h3>
 
-          <h3 className="font-semibold text-gray-900 text-[10px] sm:text-sm leading-[1.45] break-words line-clamp-3">
-            {post.heading || post.title}
-          </h3>
+        <p className="text-sm text-gray-500 mt-3">
+          {post.published_at
+            ? new Date(post.published_at).toLocaleDateString("en-IN")
+            : "—"}
+        </p>
 
-          {!isCorporateAction && (
-            <p className="text-sm text-gray-500 mt-3">
-              {post.published_at
-                ? new Date(post.published_at).toLocaleDateString("en-IN")
-                : "—"}
-            </p>
-          )}
-
-          <div className="mt-auto pt-4">
-            <button className="text-green-600 font-medium text-sm hover:text-green-700 transition">
-              Read More →
-            </button>
-          </div>
+        <div className="mt-auto pt-4">
+          <button className="text-green-600 font-medium text-sm hover:text-green-700 transition">
+            Read More →
+          </button>
         </div>
       </div>
-    </motion.div>
-  );
-};
+    </div>
+  </motion.div>
+);
 
 const BlogCardSkeleton = () => (
   <div className="w-full max-w-full sm:flex-shrink-0 sm:w-72 animate-pulse">
     <div className="bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col h-full">
       <div className="w-full sm:h-44 bg-gray-200" />
-
       <div className="p-4 flex flex-col flex-1">
         <div className="h-3 w-20 bg-gray-200 rounded mb-3" />
-
         <div className="space-y-2">
           <div className="h-3.5 bg-gray-200 rounded w-full" />
           <div className="h-3.5 bg-gray-200 rounded w-5/6" />
           <div className="h-3.5 bg-gray-200 rounded w-2/3" />
         </div>
-
         <div className="h-3 w-24 bg-gray-200 rounded mt-4" />
-
         <div className="mt-auto pt-4">
           <div className="h-3 w-20 bg-gray-200 rounded" />
         </div>
@@ -105,7 +98,9 @@ const BlogCardSkeleton = () => (
 const getNewestBlogs = (posts = []) => {
   const seen = new Set();
 
-  const unique = posts.filter((post) => {
+  const unique = (Array.isArray(posts) ? posts : []).filter((post) => {
+    if (isCorporateActionPost(post)) return false;
+
     const key = post.id
       ? `id-${post.id}`
       : `title-${String(post.title || post.heading || "")
@@ -113,7 +108,6 @@ const getNewestBlogs = (posts = []) => {
           .trim()}`;
 
     if (seen.has(key)) return false;
-
     seen.add(key);
     return true;
   });
@@ -123,11 +117,9 @@ const getNewestBlogs = (posts = []) => {
       const dateA = a.published_at
         ? new Date(a.published_at).getTime()
         : 0;
-
       const dateB = b.published_at
         ? new Date(b.published_at).getTime()
         : 0;
-
       return dateB - dateA;
     })
     .slice(0, MAX_BLOGS);
@@ -141,7 +133,7 @@ async function fetchDBBlogs() {
     )
     .eq("status", "published")
     .order("published_at", { ascending: false })
-    .limit(MAX_BLOGS);
+    .limit(DB_FETCH_LIMIT);
 
   if (error) {
     console.error(
@@ -153,13 +145,13 @@ async function fetchDBBlogs() {
   }
 
   if (!data || data.length === 0) {
-    console.warn("[Blogs] Empty result — retrying without status filter");
+    console.warn("[Blogs] Fetch #1 empty — retrying without status filter");
 
     const retry = await supabase
       .from("blogs")
       .select("*")
       .order("created_at", { ascending: false })
-      .limit(MAX_BLOGS);
+      .limit(DB_FETCH_LIMIT);
 
     if (retry.error) {
       console.error(
@@ -191,7 +183,23 @@ async function fetchDBBlogs() {
     }
   }
 
-  return Array.isArray(data) ? data : [];
+  const rows = Array.isArray(data) ? data : [];
+
+  // --- Diagnostics: see what categories actually came back ---
+  console.log("[Blogs] DB rows returned:", rows.length);
+  console.log(
+    "[Blogs] first 10 categories:",
+    rows.slice(0, 10).map((r) => r.category)
+  );
+  const corporateCount = rows.filter((r) => isCorporateActionPost(r)).length;
+  console.log(
+    "[Blogs] corporate-action rows in DB response:",
+    corporateCount,
+    "| non-corporate:",
+    rows.length - corporateCount
+  );
+
+  return rows;
 }
 
 export default function Blogs({ initialBlogs = [] }) {
@@ -200,25 +208,39 @@ export default function Blogs({ initialBlogs = [] }) {
 
   const [isHovered, setIsHovered] = useState(false);
 
-  const [blogs, setBlogs] = useState(
+  const [blogs, setBlogs] = useState(() =>
     getNewestBlogs(Array.isArray(initialBlogs) ? initialBlogs : [])
   );
-  const [loading, setLoading] = useState(
-    !initialBlogs || initialBlogs.length === 0
-  );
+  const [loading, setLoading] = useState(() => {
+    const seeded = getNewestBlogs(
+      Array.isArray(initialBlogs) ? initialBlogs : []
+    );
+    return seeded.length < MAX_BLOGS;
+  });
 
   useEffect(() => {
-    if (initialBlogs && initialBlogs.length > 0) {
-      setBlogs(getNewestBlogs(initialBlogs));
+    let cancelled = false;
+
+    const seed = Array.isArray(initialBlogs) ? initialBlogs : [];
+    const seededList = getNewestBlogs(seed);
+
+    console.log(
+      "[Blogs] seed received:",
+      seed.length,
+      "| non-corporate after filter:",
+      seededList.length
+    );
+
+    // Only skip the network if the seed already fills a full page.
+    if (seededList.length >= MAX_BLOGS) {
+      setBlogs(seededList);
       setLoading(false);
       return;
     }
 
-    let cancelled = false;
+    setLoading(true);
 
     const loadBlogs = async () => {
-      setLoading(true);
-
       try {
         const [dbData, mockResult] = await Promise.all([
           fetchDBBlogs(),
@@ -254,12 +276,26 @@ export default function Blogs({ initialBlogs = [] }) {
           })
         );
 
-        const merged = [...formattedDB, ...formattedMock];
+        const merged = [...seed, ...formattedDB, ...formattedMock];
 
-        setBlogs(getNewestBlogs(merged));
+        console.log(
+          "[Blogs] merged:",
+          merged.length,
+          "| seed:",
+          seed.length,
+          "| db:",
+          formattedDB.length,
+          "| mock:",
+          formattedMock.length
+        );
+
+        const finalList = getNewestBlogs(merged);
+        console.log("[Blogs] final visible cards:", finalList.length);
+
+        setBlogs(finalList);
       } catch (err) {
         console.error("[Blogs] Unexpected error:", err?.message || err);
-        if (!cancelled) setBlogs([]);
+        if (!cancelled) setBlogs(seededList);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -283,18 +319,14 @@ export default function Blogs({ initialBlogs = [] }) {
     const scroll = () => {
       if (!isHovered) {
         const maxScroll = container.scrollWidth - container.clientWidth;
-
         if (position < maxScroll) {
           position += 0.5;
-
           if (position >= maxScroll) {
             position = maxScroll;
           }
-
           container.scrollLeft = position;
         }
       }
-
       animationFrame = requestAnimationFrame(scroll);
     };
 
@@ -321,7 +353,6 @@ export default function Blogs({ initialBlogs = [] }) {
               <BlogCardSkeleton key={i} />
             ))}
           </div>
-
           <div className="hidden sm:flex gap-5 py-4 overflow-hidden">
             {Array.from({ length: 6 }).map((_, i) => (
               <BlogCardSkeleton key={i} />

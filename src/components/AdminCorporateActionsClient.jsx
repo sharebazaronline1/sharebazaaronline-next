@@ -1,12 +1,25 @@
 // src/components/AdminCorporateActionsClient.jsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import AdminSidebar from "./AdminSidebar";
 import UserProfileDropdown from "./UserProfileDropdown";
-import { Save, Plus, Trash2, Loader2, CheckCircle, Edit2, X, RefreshCw, Menu } from "lucide-react";
+import {
+  Save,
+  Plus,
+  Trash2,
+  Loader2,
+  CheckCircle,
+  Edit2,
+  X,
+  RefreshCw,
+  Menu,
+  ChevronUp,
+  ChevronDown,
+  Search,
+} from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { parse, format } from "date-fns";
@@ -22,6 +35,12 @@ const AdminCorporateActionsClient = () => {
   const [existingRecords, setExistingRecords] = useState([]);
   const [editModal, setEditModal] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortConfig, setSortConfig] = useState({
+    key: "company",
+    direction: "asc",
+  });
 
   const parseDate = (value) => {
     if (!value) return null;
@@ -100,6 +119,21 @@ const AdminCorporateActionsClient = () => {
   useEffect(() => {
     fetchRecords();
   }, []);
+
+  // Reset search + sort when the tab changes
+  useEffect(() => {
+    setSearchQuery("");
+    setSortConfig({ key: "company", direction: "asc" });
+  }, [activeTab]);
+
+  const handleSort = (key) => {
+    setSortConfig((prev) => {
+      if (prev.key === key) {
+        return { key, direction: prev.direction === "asc" ? "desc" : "asc" };
+      }
+      return { key, direction: "asc" };
+    });
+  };
 
   const addNewRow = () => {
     let newRow = { company: "" };
@@ -239,9 +273,169 @@ const AdminCorporateActionsClient = () => {
     setEditModal((prev) => ({ ...prev, [field]: value }));
   };
 
-  const filteredRecords = existingRecords.filter(
-    (record) => record.action_type === currentTabConfig?.dbType
-  );
+  // ==================== SORT HELPERS ====================
+
+  const toNumber = (value) => {
+    if (value === null || value === undefined || value === "") return null;
+    const n = Number(value);
+    return Number.isFinite(n) ? n : null;
+  };
+
+  const toDateValue = (value) => {
+    if (!value) return null;
+    const d = new Date(value);
+    return isNaN(d.getTime()) ? null : d.getTime();
+  };
+
+  const getSortValue = (record, key) => {
+    switch (key) {
+      case "company":
+        return String(record.company || "").toLowerCase();
+      case "type":
+        return String(record.type || "").toLowerCase();
+      case "percentage":
+      case "ratio":
+        return String(record.ratio_or_percentage || "").toLowerCase();
+      case "dividend_share":
+        return toNumber(record.dividend_share);
+      case "rights_price":
+        return toNumber(record.rights_price);
+      case "market_price":
+        return toNumber(record.market_price);
+      case "discount":
+        return String(record.discount || "").toLowerCase();
+      case "buyback_price":
+        return toNumber(record.buyback_price);
+      case "cmp":
+        return toNumber(record.cmp);
+      case "premium":
+        return String(record.premium || "").toLowerCase();
+      case "size":
+        return String(record.size || "").toLowerCase();
+      case "old_fv":
+        return toNumber(record.old_fv);
+      case "new_fv":
+        return toNumber(record.new_fv);
+      case "action_type_detail":
+        return String(record.action_type_detail || "").toLowerCase();
+      case "key_detail":
+        return String(record.key_detail || "").toLowerCase();
+      case "status":
+        return String(record.status || "").toLowerCase();
+      case "announcement":
+        return toDateValue(record.announcement);
+      case "record":
+        return toDateValue(record.record);
+      case "ex_date":
+        return toDateValue(record.ex_date);
+      case "payment_date":
+        return toDateValue(record.payment_date) || String(record.payment_date || "").toLowerCase();
+      default:
+        return "";
+    }
+  };
+
+  const SortableHeader = ({ label, sortKey, align = "left", width }) => {
+    const isActive = sortConfig.key === sortKey;
+    const isAscending = sortConfig.direction === "asc";
+
+    return (
+      <th
+        className={`px-4 py-3 text-${align} ${width || ""}`}
+      >
+        <button
+          onClick={() => handleSort(sortKey)}
+          className={`inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider transition ${
+            isActive ? "text-emerald-700" : "text-gray-500 hover:text-gray-900"
+          }`}
+        >
+          {label}
+          <span className="flex flex-col -space-y-1">
+            {isActive ? (
+              isAscending ? (
+                <ChevronUp size={14} strokeWidth={2.5} />
+              ) : (
+                <ChevronDown size={14} strokeWidth={2.5} />
+              )
+            ) : (
+              <>
+                <ChevronUp size={11} className="text-gray-300" />
+                <ChevronDown size={11} className="text-gray-300" />
+              </>
+            )}
+          </span>
+        </button>
+      </th>
+    );
+  };
+
+  // ==================== FILTER + SORT ====================
+
+  const filteredRecords = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+
+    const base = existingRecords.filter(
+      (record) => record.action_type === currentTabConfig?.dbType
+    );
+
+    const searched = !q
+      ? base
+      : base.filter((record) => {
+          const haystack = [
+            record.company,
+            record.type,
+            record.ratio_or_percentage,
+            record.dividend_share,
+            record.rights_price,
+            record.market_price,
+            record.discount,
+            record.buyback_price,
+            record.cmp,
+            record.premium,
+            record.size,
+            record.old_fv,
+            record.new_fv,
+            record.action_type_detail,
+            record.key_detail,
+            record.status,
+            formatDateOnly(record.announcement),
+            formatDateOnly(record.record),
+            formatDateOnly(record.ex_date),
+            record.payment_date,
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+          return haystack.includes(q);
+        });
+
+    const sorted = [...searched].sort((a, b) => {
+      const av = getSortValue(a, sortConfig.key);
+      const bv = getSortValue(b, sortConfig.key);
+
+      // Nulls last, regardless of direction
+      if (av === null && bv === null) return 0;
+      if (av === null) return 1;
+      if (bv === null) return -1;
+
+      if (typeof av === "string" && typeof bv === "string") {
+        const cmp = av.localeCompare(bv, undefined, {
+          numeric: true,
+          sensitivity: "base",
+        });
+        return sortConfig.direction === "asc" ? cmp : -cmp;
+      }
+
+      if (av < bv) return sortConfig.direction === "asc" ? -1 : 1;
+      if (av > bv) return sortConfig.direction === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    return sorted;
+  }, [existingRecords, currentTabConfig, searchQuery, sortConfig]);
+
+  const hasActiveSearch = searchQuery.trim() !== "";
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -559,69 +753,123 @@ const AdminCorporateActionsClient = () => {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
               <div>
                 <h2 className="text-lg text-gray-900 tracking-tight uppercase">Database Directory</h2>
-                <p className="text-xs text-gray-400">Current live records stored inside database category</p>
+                <p className="text-xs text-gray-400">
+                  Current live records stored inside database category
+                  {hasActiveSearch && (
+                    <span className="ml-2 text-emerald-600 font-medium">
+                      · {filteredRecords.length} match{filteredRecords.length === 1 ? "" : "es"}
+                    </span>
+                  )}
+                </p>
               </div>
-              <button 
-                onClick={fetchRecords} 
-                className="flex items-center gap-1.5 text-xs text-emerald-600 font-medium border border-emerald-100 bg-emerald-50/50 hover:bg-emerald-50 px-3 py-1.5 rounded-lg transition"
-              >
-                <RefreshCw size={12} className={fetchLoading ? "animate-spin" : ""} /> Refresh Stack
-              </button>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                {/* Search */}
+                <div className="relative flex-1 sm:flex-initial sm:w-64">
+                  <Search
+                    size={14}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                  />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search records…"
+                    className="w-full pl-8 pr-8 py-1.5 text-xs border border-gray-200 rounded-lg bg-white text-slate-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-400"
+                  />
+                  {hasActiveSearch && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
+                      aria-label="Clear search"
+                    >
+                      <X size={12} />
+                    </button>
+                  )}
+                </div>
+
+                <button
+                  onClick={fetchRecords}
+                  className="flex items-center gap-1.5 text-xs text-emerald-600 font-medium border border-emerald-100 bg-emerald-50/50 hover:bg-emerald-50 px-3 py-1.5 rounded-lg transition whitespace-nowrap"
+                >
+                  <RefreshCw size={12} className={fetchLoading ? "animate-spin" : ""} /> Refresh Stack
+                </button>
+              </div>
             </div>
 
             {fetchLoading ? (
               <p className="text-center py-12 text-sm text-gray-400 tracking-wide">Querying cloud schema database...</p>
             ) : filteredRecords.length === 0 ? (
-              <p className="text-center py-12 text-sm text-gray-400">No active {currentTabConfig?.label} records indexed.</p>
+              <p className="text-center py-12 text-sm text-gray-400">
+                {hasActiveSearch
+                  ? "No records match the current search."
+                  : `No active ${currentTabConfig?.label} records indexed.`}
+              </p>
             ) : (
               <div className="overflow-x-auto border border-gray-100 rounded-xl">
                 <table className="w-full border-collapse text-xs text-left">
                   <thead>
                     <tr className="bg-gray-50 text-gray-500 font-medium border-b border-gray-200">
-                      <th className="px-4 py-3 text-left w-72">Company</th>
+                      <SortableHeader label="Company" sortKey="company" width="w-72" />
+
                       {activeTab === "dividends" && (
                         <>
-                          <th className="px-4 py-3 text-left w-48">Dividend Type</th>
-                          <th className="px-4 py-3 text-left w-36">Yield %</th>
-                          <th className="px-4 py-3 text-left w-40">Dividend/Share</th>
+                          <SortableHeader label="Dividend Type" sortKey="type" width="w-48" />
+                          <SortableHeader label="Yield %" sortKey="percentage" width="w-36" />
+                          <SortableHeader label="Dividend/Share" sortKey="dividend_share" width="w-40" />
                         </>
                       )}
+
                       {activeTab === "rights" && (
                         <>
-                          <th className="px-4 py-3 text-left w-36">Ratio</th>
-                          <th className="px-4 py-3 text-left w-36">Rights Price</th>
-                          <th className="px-4 py-3 text-left w-36">Market Price</th>
-                          <th className="px-4 py-3 text-left w-36">Discount</th>
+                          <SortableHeader label="Ratio" sortKey="ratio" width="w-36" />
+                          <SortableHeader label="Rights Price" sortKey="rights_price" width="w-36" />
+                          <SortableHeader label="Market Price" sortKey="market_price" width="w-36" />
+                          <SortableHeader label="Discount" sortKey="discount" width="w-36" />
                         </>
                       )}
-                      {activeTab === "bonus" && <th className="px-4 py-3 text-left w-36">Bonus Ratio</th>}
+
+                      {activeTab === "bonus" && (
+                        <SortableHeader label="Bonus Ratio" sortKey="ratio" width="w-36" />
+                      )}
+
                       {activeTab === "splits" && (
                         <>
-                          <th className="px-4 py-3 text-left w-36">Split Ratio</th>
-                          <th className="px-4 py-3 text-left w-36">Old FV</th>
-                          <th className="px-4 py-3 text-left w-36">New FV</th>
+                          <SortableHeader label="Split Ratio" sortKey="ratio" width="w-36" />
+                          <SortableHeader label="Old FV" sortKey="old_fv" width="w-36" />
+                          <SortableHeader label="New FV" sortKey="new_fv" width="w-36" />
                         </>
                       )}
+
                       {activeTab === "buyback" && (
                         <>
-                          <th className="px-4 py-3 text-left w-36">Buyback Price</th>
-                          <th className="px-4 py-3 text-left w-36">CMP</th>
-                          <th className="px-4 py-3 text-left w-36">Premium %</th>
-                          <th className="px-4 py-3 text-left w-44">Size</th>
+                          <SortableHeader label="Buyback Price" sortKey="buyback_price" width="w-36" />
+                          <SortableHeader label="CMP" sortKey="cmp" width="w-36" />
+                          <SortableHeader label="Premium %" sortKey="premium" width="w-36" />
+                          <SortableHeader label="Size" sortKey="size" width="w-44" />
                         </>
                       )}
+
                       {activeTab === "other" && (
                         <>
-                          <th className="px-4 py-3 text-left w-64">Action Type</th>
-                          <th className="px-4 py-3 text-left w-72">Key Detail</th>
-                          <th className="px-4 py-3 text-left w-40">Status</th>
+                          <SortableHeader label="Action Type" sortKey="action_type_detail" width="w-64" />
+                          <SortableHeader label="Key Detail" sortKey="key_detail" width="w-72" />
+                          <SortableHeader label="Status" sortKey="status" width="w-40" />
                         </>
                       )}
-                      <th className="px-4 py-3 text-left w-40">Announcement</th>
-                      <th className="px-4 py-3 text-left w-40">Record Date</th>
-                      <th className="px-4 py-3 text-left w-40">Ex Date</th>
-                      {activeTab === "dividends" && <th className="px-4 py-3 text-left w-44">Payment Date</th>}
-                      <th className="w-20 text-center">Actions</th>
+
+                      <SortableHeader label="Announcement" sortKey="announcement" width="w-40" />
+                      <SortableHeader label="Record Date" sortKey="record" width="w-40" />
+                      <SortableHeader label="Ex Date" sortKey="ex_date" width="w-40" />
+
+                      {activeTab === "dividends" && (
+                        <SortableHeader label="Payment Date" sortKey="payment_date" width="w-44" />
+                      )}
+
+                      <th className="w-20 text-center px-4 py-3 text-xs font-medium uppercase tracking-wider text-gray-500">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 bg-white text-sm">

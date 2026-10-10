@@ -216,7 +216,7 @@ const IPOGuideClient = () => {
       />
       <BreadcrumbSchema items={breadcrumbItems} />
 
-      <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 bg-white pb-12 lg:pb-16">
         {/* Visual Breadcrumb */}
         <nav aria-label="Breadcrumb" className="text-sm font-medium text-slate-500 pt-6">
           <ol className="flex items-center space-x-2">
