@@ -644,13 +644,7 @@ const BrokerAnalyzerClient = () => {
             )}
           </div>
 
-          {/* RISK DISCLOSURE */}
-          <div className="bg-amber-50 border border-amber-200 rounded-3xl p-8 flex gap-5">
-            <AlertTriangle className="w-8 h-8 text-amber-600 flex-shrink-0 mt-0.5" />
-            <p className="text-amber-800 leading-relaxed">
-              Investments in securities market are subject to market risks. Read all related documents carefully before investing.
-            </p>
-          </div>
+        
         </div>
       </div>
     </>

@@ -974,13 +974,8 @@ const IPOGuideClient = () => {
             </div>
           </section>
 
-          {/* Risk Disclaimer - Before FAQs */}
-          <div className="p-6 bg-amber-50 border border-amber-200 rounded-2xl flex items-center gap-4">
-            <AlertTriangle className="w-6 h-6 text-amber-600 flex-shrink-0" />
-            <p className="text-base lg:text-lg text-amber-900 font-medium">
-              IPO investments carry market risk. Always conduct thorough research before investing.
-            </p>
-          </div>
+         
+         
 
           {/* IPO FAQs - Full Width */}
           <section className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 lg:p-8">

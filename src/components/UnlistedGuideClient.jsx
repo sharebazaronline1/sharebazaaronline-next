@@ -466,11 +466,6 @@ const UnlistedGuideClient = () => {
 
           {/* Risk Warning & CTA */}
           <div className="p-6 bg-amber-50 border border-amber-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <p className="text-base lg:text-lg text-amber-900 font-medium text-center sm:text-left">
-                Unlisted share investments carry higher risks. Buy now through our trusted platforms.
-              </p>
-            </div>
             <button
               onClick={() => router.push('/login')}
               className="px-8 py-3 bg-[#16A34A] hover:bg-[#15803D] text-white font-bold rounded-full transition shadow-md whitespace-nowrap"

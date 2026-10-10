@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { fetchInsightDetails } from "@/api/mockApi";
 import InsightHubDetail from "@/components/InsightHubDetails";
+import { AUTHOR } from "@/data/author";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
 
@@ -219,6 +220,10 @@ export default async function Page({ params }) {
 
   const keywords = normalizeKeywords(blog.keywords);
 
+  const authorId = `${SITE_URL}/about#${AUTHOR.name
+    .toLowerCase()
+    .replace(/\s+/g, "-")}`;
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -226,7 +231,14 @@ export default async function Page({ params }) {
     headline: articleTitle,
     description: articleDescription,
     url: canonicalUrl,
-    image: [articleImage],
+    image: [
+      {
+        "@type": "ImageObject",
+        url: articleImage,
+        width: 1200,
+        height: 630,
+      },
+    ],
     ...(publishedDate ? { datePublished: publishedDate } : {}),
     ...(modifiedDate ? { dateModified: modifiedDate } : {}),
     ...(wordCount ? { wordCount } : {}),
@@ -235,9 +247,12 @@ export default async function Page({ params }) {
     inLanguage: "en-IN",
     author: {
       "@type": "Person",
-      name: "Kavya Talanki",
-      jobTitle: "Head of Research & Content",
-      url: `${SITE_URL}/about`,
+      "@id": authorId,
+      name: AUTHOR.name,
+      jobTitle: AUTHOR.role,
+      url: AUTHOR.url,
+      image: `${SITE_URL}${AUTHOR.photo}`,
+      ...(AUTHOR.sameAs?.length ? { sameAs: AUTHOR.sameAs } : {}),
     },
     publisher: {
       "@type": "Organization",
