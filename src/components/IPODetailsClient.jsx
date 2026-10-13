@@ -24,6 +24,10 @@ import {
   PieChart,
   ClipboardList,
   ArrowRight,
+  ChevronRight,   // ✅ added
+  Award,          // ✅ added
+  CheckCircle2,   // ✅ added
+  Home,           // ✅ added
 } from "lucide-react";
 
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
@@ -197,73 +201,130 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
       <BreadcrumbSchema items={breadcrumbItems} />
 
       <div className="min-h-screen bg-gray-50 w-full">
-        {/* HEADER */}
-        <header className="bg-white shadow-sm w-full">
-          <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 py-4">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div className="flex items-center gap-4">
-                {ipo.logo ? (
-                  <img
-                    src={ipo.logo}
-                    alt={`${ipoName} IPO GMP and company logo`}
-                    className="w-14 h-14 object-contain border rounded-lg"
-                  />
-                ) : (
-                  <div className="w-14 h-14 bg-gray-700 text-white flex items-center justify-center rounded-lg text-xl font-bold">
-                    {ipoName.charAt(0)}
-                  </div>
-                )}
+     {/* HEADER — dark theme matching Broker Review hero */}
+<header className="bg-gradient-to-b from-[#060a22] to-[#0c133a] text-white border-b border-slate-800/60 w-full">
+  {/* Breadcrumb row */}
+  <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-4">
+    <nav aria-label="Breadcrumb" className="text-sm font-medium text-slate-500">
+      <ol className="flex items-center space-x-2 flex-wrap">
+        <li>
+          <Link
+            href="/"
+            className="hover:text-emerald-400 flex items-center gap-1 transition-colors"
+          >
+            <Home className="w-4 h-4" />
+            <span>Home</span>
+          </Link>
+        </li>
+        <ChevronRight className="w-4 h-4 text-slate-600 shrink-0" />
+        <li>
+          <Link
+            href="/ipo"
+            className="hover:text-emerald-400 transition-colors"
+          >
+            IPO Tracker
+          </Link>
+        </li>
+        <ChevronRight className="w-4 h-4 text-slate-600 shrink-0" />
+        <li className="text-slate-300 font-semibold truncate max-w-[200px] sm:max-w-none">
+          {safeText(ipoName)} IPO
+        </li>
+      </ol>
+    </nav>
+  </div>
 
-                <div>
-                  <h1 className="text-2xl font-bold">{safeText(ipoName)}</h1>
-                 {(ipo.fullName || ipo.ipo_basic_details?.company_name) &&
-  (ipo.fullName || ipo.ipo_basic_details?.company_name) !== ipoName && (
-    <p className="text-sm text-gray-600">
-      {safeText(ipo.fullName || ipo.ipo_basic_details?.company_name)}
-    </p>
-)}
+  {/* Hero content */}
+  <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-5 pb-8">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      {/* LEFT — 8 cols */}
+      <div className="lg:col-span-8 space-y-3 text-left">
+        <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[11px] font-semibold px-2.5 py-0.5 rounded-md uppercase tracking-wider">
+          <Award size={12} /> IPO Details
+        </div>
 
-                </div>
-              </div>
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white leading-tight">
+          {safeText(ipoName)} IPO
+        </h1>
 
-              <div className="text-right">
-                <p className="text-2xl font-bold">
-                  {minInvestment.toLocaleString()}
-                </p>
-                <p className="text-sm text-gray-600">Minimum Investment</p>
-              </div>
+        {(ipo.fullName || ipo.ipo_basic_details?.company_name) &&
+          (ipo.fullName || ipo.ipo_basic_details?.company_name) !== ipoName && (
+            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl opacity-80 font-normal">
+              {safeText(
+                ipo.fullName || ipo.ipo_basic_details?.company_name
+              )}
+            </p>
+          )}
+
+        {/* Buttons */}
+        <div className="flex flex-wrap items-center gap-3 pt-1">
+          <Link
+            href="/how-to-apply-ipo"
+            className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg text-xs tracking-wide transition-all shadow-md"
+          >
+            Apply Now
+          </Link>
+
+          <Link
+            href="/ipo"
+            className="bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium px-4 py-2.5 rounded-lg text-xs transition"
+          >
+            Track All IPOs
+          </Link>
+        </div>
+      </div>
+
+      {/* RIGHT — 4 cols: glass card */}
+      <div className="lg:col-span-4 flex justify-start lg:justify-end w-full">
+        <div className="bg-white/5 border border-white/10 p-4 rounded-xl flex flex-col items-center justify-center text-center gap-2 backdrop-blur-md w-full max-w-xs">
+          {ipo.logo ? (
+            <div className="w-16 h-16 bg-white rounded-lg p-2 flex items-center justify-center shadow-md">
+              <img
+                src={ipo.logo}
+                alt={`${ipoName} logo`}
+                className="max-w-full max-h-full object-contain"
+              />
             </div>
+          ) : (
+            <div className="w-16 h-16 bg-slate-700 rounded-lg flex items-center justify-center text-white font-bold text-2xl shadow-md">
+              {ipoName.charAt(0)}
+            </div>
+          )}
+
+          <div className="inline-block bg-blue-500/20 border border-blue-400/30 text-blue-300 text-[10px] font-semibold tracking-wider px-2 py-0.5 rounded-full uppercase">
+            {safeText(ipo.ipo_basic_details?.ipo_type) || "MAINBOARD IPO"}
           </div>
 
-          {/* Blue Banner */}
-          <div className="bg-blue-50 border-t border-blue-100 w-full">
-            <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
-              <div className="flex items-center gap-2 text-blue-900 text-sm">
-                <AlertTriangle size={16} />
-                Ready to invest in this opportunity? Apply now.
-              </div>
-
-              <Link
-                href="/how-to-apply-ipo"
-                className="bg-[#16A34A] text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-[#15803D] transition"
-              >
-                Apply Now
-              </Link>
+          <div className="space-y-0.5">
+            <div className="flex items-center justify-center gap-1">
+              <span className="text-xl font-black text-white tracking-tight">
+                ₹{minInvestment.toLocaleString("en-IN")}
+              </span>
             </div>
+            <p className="text-[11px] text-slate-400">
+              Minimum Investment
+            </p>
           </div>
-        </header>
+        </div>
+      </div>
+    </div>
+
+    {/* Bottom verification row */}
+    <div className="flex flex-wrap items-center gap-x-6 gap-y-1 pt-3 mt-5 border-t border-slate-800/60 text-[11px] text-slate-400">
+      <span className="flex items-center gap-1.5 font-normal">
+        <CheckCircle2 size={12} className="text-emerald-400" />
+        Exchange Listed · NSE / BSE
+      </span>
+      <span className="flex items-center gap-1.5 font-normal">
+        <CheckCircle2 size={12} className="text-emerald-400" />
+        SEBI Regulated Issue
+      </span>
+    </div>
+  </div>
+</header>
 
         {/* PAGE CONTENT */}
         <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-8 pb-16">
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm text-gray-500 mb-8 flex-wrap">
-            <Link href="/" className="hover:text-green-600 transition">Home</Link>
-            <span>›</span>
-            <Link href="/ipo" className="hover:text-green-600 transition">IPO Tracker</Link>
-            <span>›</span>
-            <span className="text-gray-900 font-medium">{safeText(ipoName)} IPO</span>
-          </div>
-
+         
           {/* 12-col layout: Quick Nav (2) | Main (8) | Right Promo (2) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 w-full">
             {/* LEFT SIDEBAR — Quick Navigation */}
@@ -626,13 +687,13 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
         description:
           "Real-time subscription numbers, GMP trends and upcoming issues.",
         accentText: "text-blue-400",
-        accentBg: "bg-emerald-400 hover:bg-emerald-500",
+        accentBg: "bg-blue-600 hover:bg-blue-700",
         accentDot: "bg-blue-400",
         accentBorder: "border-blue-400/25",
         accentBadgeBg: "bg-blue-400/10",
         accentGlow1: "bg-blue-400/15",
         accentGlow2: "bg-indigo-400/10",
-        shadow: "shadow-emerald-500/20",
+        shadow: "shadow-blue-500/20",
         links: [
           { label: "Live IPOs", href: "/ipo" },
           { label: "Upcoming Issues", href: "/ipo" },
@@ -666,13 +727,13 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
         description:
           "Brokerage charges, platform features and account-opening benefits.",
         accentText: "text-blue-400",
-        accentBg: "bg-emerald-400 hover:bg-emerald-500",
+        accentBg: "bg-blue-600 hover:bg-blue-700",
         accentDot: "bg-blue-400",
         accentBorder: "border-blue-400/25",
         accentBadgeBg: "bg-blue-400/10",
         accentGlow1: "bg-blue-400/15",
         accentGlow2: "bg-indigo-400/10",
-        shadow: "shadow-emerald-500/20",
+        shadow: "shadow-blue-500/20",
         links: [
           { label: "Broker Analyzer", href: "/broker-analyzer" },
           { label: "Compare Charges", href: "/comparebrokers" },
@@ -785,7 +846,7 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
 
           <Link
             href={card.cta.href}
-            className={`mt-3 w-full py-1.5 rounded-md text-slate-900 font-bold transition-colors text-[11px] text-center inline-flex items-center justify-center gap-1 ${card.accentBg} ${card.shadow}`}
+            className={`mt-3 w-full py-1.5 rounded-md text-white font-bold transition-colors text-[11px] text-center inline-flex items-center justify-center gap-1 ${card.accentBg} ${card.shadow}`}
           >
             {card.cta.label}
             <ArrowRight size={12} className="stroke-[2.5]" />

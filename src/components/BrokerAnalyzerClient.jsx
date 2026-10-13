@@ -250,10 +250,7 @@ const BrokerAnalyzerClient = () => {
         </div>
 
         {/* HERO SECTION */}
-        <section className="relative overflow-hidden border-b border-gray-200 bg-white py-16 lg:py-20">
-          <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-green-100/40 blur-3xl rounded-full -translate-x-1/2 -translate-y-1/2"></div>
-          <div className="absolute bottom-0 right-0 w-[350px] h-[350px] bg-blue-100/40 blur-3xl rounded-full translate-x-1/3 translate-y-1/3"></div>
-
+        <section className="relative overflow-hidden bg-white py-10 lg:py-14">
           <div className="relative w-full px-4 sm:px-6 lg:px-10 xl:px-16">
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-14 items-center">
               <div className="xl:col-span-6">
@@ -633,78 +630,78 @@ const BrokerAnalyzerClient = () => {
               </div>
             )}
           </div>
-{/* EXPLORE MORE */}
-<div className="mt-10 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
-  <div className="mb-6">
-    <h3 className="text-2xl font-bold text-slate-900">
-      Explore More Investment Opportunities
-    </h3>
-    <p className="text-slate-500 mt-2 text-sm lg:text-base">
-      Discover IPOs, unlisted shares, and market insights curated for smart
-      investors.
-    </p>
-  </div>
 
-  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-    <Link
-      href="/ipo"
-      className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-    >
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-lg font-semibold text-slate-900">
-            Latest IPOs
-          </p>
-          <p className="text-sm text-slate-400 mt-1">
-            Track live & upcoming IPOs
-          </p>
-        </div>
-        <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-          →
-        </span>
-      </div>
-    </Link>
+          {/* EXPLORE MORE */}
+          <div className="mt-10 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+            <div className="mb-6">
+              <h3 className="text-2xl font-bold text-slate-900">
+                Explore More Investment Opportunities
+              </h3>
+              <p className="text-slate-500 mt-2 text-sm lg:text-base">
+                Discover IPOs, unlisted shares, and market insights curated for smart
+                investors.
+              </p>
+            </div>
 
-    <Link
-      href="/preipo"
-      className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-    >
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-lg font-semibold text-slate-900">
-            Unlisted Shares
-          </p>
-          <p className="text-sm text-slate-400 mt-1">
-            Invest before public listing
-          </p>
-        </div>
-        <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-          →
-        </span>
-      </div>
-    </Link>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <Link
+                href="/ipo"
+                className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg font-semibold text-slate-900">
+                      Latest IPOs
+                    </p>
+                    <p className="text-sm text-slate-400 mt-1">
+                      Track live & upcoming IPOs
+                    </p>
+                  </div>
+                  <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                    →
+                  </span>
+                </div>
+              </Link>
 
-    <Link
-      href="/insight-hub"
-      className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-    >
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-lg font-semibold text-slate-900">
-            Insight Hub
-          </p>
-          <p className="text-sm text-slate-400 mt-1">
-            Read IPO news, blogs & market insights
-          </p>
-        </div>
-        <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-          →
-        </span>
-      </div>
-    </Link>
-  </div>
-</div>
-        
+              <Link
+                href="/preipo"
+                className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg font-semibold text-slate-900">
+                      Unlisted Shares
+                    </p>
+                    <p className="text-sm text-slate-400 mt-1">
+                      Invest before public listing
+                    </p>
+                  </div>
+                  <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                    →
+                  </span>
+                </div>
+              </Link>
+
+              <Link
+                href="/insight-hub"
+                className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg font-semibold text-slate-900">
+                      Insight Hub
+                    </p>
+                    <p className="text-sm text-slate-400 mt-1">
+                      Read IPO news, blogs & market insights
+                    </p>
+                  </div>
+                  <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                    →
+                  </span>
+                </div>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </>
