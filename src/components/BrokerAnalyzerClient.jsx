@@ -115,13 +115,6 @@ const SegmentBadge = ({ label, segments = [] }) => {
   );
 };
 
-const AdBanner = () => (
-  <div className="w-full flex justify-center my-6">
-    <div className="bg-slate-50 border border-slate-200 rounded-2xl w-full h-20 flex items-center justify-center text-slate-400 text-sm tracking-wider uppercase font-medium">
-      Advertisement
-    </div>
-  </div>
-);
 
 const BrokerAnalyzerClient = () => {
   const router = useRouter();
@@ -374,8 +367,6 @@ const BrokerAnalyzerClient = () => {
             </div>
           </div>
 
-          <AdBanner />
-
           {/* COMPACT BLUE FILTER BAR */}
           <div className="bg-white border border-gray-200 rounded-xl p-1.5 inline-flex gap-1.5 shadow-sm">
             {["All", "Discount", "Full Service", "Both"].map((filterOpt) => (
@@ -540,7 +531,6 @@ const BrokerAnalyzerClient = () => {
             )}
           </section>
 
-          <AdBanner />
 
           {/* TOP RECOMMENDATIONS SECTION */}
           <div className="bg-white rounded-3xl border border-gray-200 p-10">
@@ -643,7 +633,77 @@ const BrokerAnalyzerClient = () => {
               </div>
             )}
           </div>
+{/* EXPLORE MORE */}
+<div className="mt-10 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+  <div className="mb-6">
+    <h3 className="text-2xl font-bold text-slate-900">
+      Explore More Investment Opportunities
+    </h3>
+    <p className="text-slate-500 mt-2 text-sm lg:text-base">
+      Discover IPOs, unlisted shares, and market insights curated for smart
+      investors.
+    </p>
+  </div>
 
+  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <Link
+      href="/ipo"
+      className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+    >
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-lg font-semibold text-slate-900">
+            Latest IPOs
+          </p>
+          <p className="text-sm text-slate-400 mt-1">
+            Track live & upcoming IPOs
+          </p>
+        </div>
+        <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+          →
+        </span>
+      </div>
+    </Link>
+
+    <Link
+      href="/preipo"
+      className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+    >
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-lg font-semibold text-slate-900">
+            Unlisted Shares
+          </p>
+          <p className="text-sm text-slate-400 mt-1">
+            Invest before public listing
+          </p>
+        </div>
+        <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+          →
+        </span>
+      </div>
+    </Link>
+
+    <Link
+      href="/insight-hub"
+      className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+    >
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-lg font-semibold text-slate-900">
+            Insight Hub
+          </p>
+          <p className="text-sm text-slate-400 mt-1">
+            Read IPO news, blogs & market insights
+          </p>
+        </div>
+        <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+          →
+        </span>
+      </div>
+    </Link>
+  </div>
+</div>
         
         </div>
       </div>

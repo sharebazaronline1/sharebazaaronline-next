@@ -3,7 +3,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import Link from 'next/link';
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import {
   BookOpen,
@@ -13,7 +13,7 @@ import {
   ChevronRight,
   ChevronUp,
   ChevronDown,
-  ChevronLeft
+  ChevronLeft,
 } from "lucide-react";
 
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
@@ -21,61 +21,85 @@ import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 const SITE_URL = "https://sharebazaaronline.com";
 const ITEMS_PER_PAGE = 20;
 
-const CorporateActionsClient = () => {
+const TABS = [
+  { id: "buyback", label: "Buyback", dbType: "buyback" },
+  { id: "dividends", label: "Dividends", dbType: "dividend" },
+  { id: "rights", label: "Rights Issue", dbType: "rights" },
+  { id: "bonus", label: "Bonus Issue", dbType: "bonus" },
+  { id: "splits", label: "Stock Split", dbType: "split" },
+  { id: "others", label: "Other Actions", dbType: "other" },
+];
+
+const CorporateActionsClient = ({ initialGrouped = null }) => {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("buyback");
-  const [records, setRecords] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [fallbackRecords, setFallbackRecords] = useState([]);
+  const [loading, setLoading] = useState(!initialGrouped);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedYear, setSelectedYear] = useState("2026");
   const [currentPage, setCurrentPage] = useState(1);
+
   const supabase = createClient();
 
-  const [sortConfig, setSortConfig] = useState({
-    key: "ex_date",
-    direction: "desc",
-  });
+  const tabs = TABS;
+  const currentTabLabel =
+    tabs.find((t) => t.id === activeTab)?.label || "Dividends";
+  const currentDbType =
+    tabs.find((t) => t.id === activeTab)?.dbType || "buyback";
 
-  const tabs = [
-    { id: "buyback", label: "Buyback", dbType: "buyback" },
-    { id: "dividends", label: "Dividends", dbType: "dividend" },
-    { id: "rights", label: "Rights Issue", dbType: "rights" },
-    { id: "bonus", label: "Bonus Issue", dbType: "bonus" },
-    { id: "splits", label: "Stock Split", dbType: "split" },
-    { id: "others", label: "Other Actions", dbType: "other" },
-  ];
+  // Records for the active tab — instant when SSR data is present
+  const records = useMemo(() => {
+    if (initialGrouped) {
+      return initialGrouped[currentDbType] || [];
+    }
+    return fallbackRecords;
+  }, [initialGrouped, currentDbType, fallbackRecords]);
 
-  const currentTabLabel = tabs.find((t) => t.id === activeTab)?.label || "Dividends";
-
+  // Fallback: only runs if no SSR data was provided
   useEffect(() => {
+    if (initialGrouped) return;
+
+    let cancelled = false;
+
     const fetchCorporateActions = async () => {
       setLoading(true);
       try {
-        const currentConfig = tabs.find((t) => t.id === activeTab);
         const { data, error } = await supabase
           .from("corporate_actions")
-          .select(`
+          .select(
+            `
             *,
             blog:blogs (
               id,
               slug,
               heading
             )
-          `)
-          .eq("action_type", currentConfig?.dbType || "buyback")
+          `
+          )
+          .eq("action_type", currentDbType)
           .order("ex_date", { ascending: false });
 
         if (error) throw error;
-        setRecords(data || []);
+        if (!cancelled) setFallbackRecords(data || []);
       } catch (err) {
         console.error("Error fetching corporate actions:", err);
+        if (!cancelled) setFallbackRecords([]);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
 
     fetchCorporateActions();
-  }, [activeTab]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [activeTab, currentDbType, initialGrouped, supabase]);
+
+  const [sortConfig, setSortConfig] = useState({
+    key: "ex_date",
+    direction: "desc",
+  });
 
   useEffect(() => {
     setSortConfig({ key: "ex_date", direction: "desc" });
@@ -85,12 +109,18 @@ const CorporateActionsClient = () => {
     setCurrentPage(1);
   }, [activeTab, searchQuery, selectedYear, sortConfig]);
 
-  const filteredRecords = records.filter((item) => {
-    const matchesSearch = item.company?.toLowerCase().includes(searchQuery.toLowerCase());
-    const dateToCheck = item.ex_date || item.announcement || "";
-    const matchesYear = dateToCheck ? dateToCheck.startsWith(selectedYear) : true;
-    return matchesSearch && matchesYear;
-  });
+  const filteredRecords = useMemo(() => {
+    return records.filter((item) => {
+      const matchesSearch = item.company
+        ?.toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const dateToCheck = item.ex_date || item.announcement || "";
+      const matchesYear = dateToCheck
+        ? dateToCheck.startsWith(selectedYear)
+        : true;
+      return matchesSearch && matchesYear;
+    });
+  }, [records, searchQuery, selectedYear]);
 
   const parseDateValue = (dateStr) => {
     if (!dateStr) return 0;
@@ -160,10 +190,7 @@ const CorporateActionsClient = () => {
           direction: prev.direction === "asc" ? "desc" : "asc",
         };
       }
-      return {
-        key,
-        direction: "asc",
-      };
+      return { key, direction: "asc" };
     });
   };
 
@@ -193,7 +220,12 @@ const CorporateActionsClient = () => {
     return sortedRecords.slice(start, start + ITEMS_PER_PAGE);
   }, [sortedRecords, currentPage]);
 
-  const SortableHeader = ({ label, sortKey, align = "center", borderRight = false }) => {
+  const SortableHeader = ({
+    label,
+    sortKey,
+    align = "center",
+    borderRight = false,
+  }) => {
     const isActive = sortConfig.key === sortKey;
     const isAscending = sortConfig.direction === "asc";
 
@@ -256,8 +288,10 @@ const CorporateActionsClient = () => {
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: "Corporate Actions Calendar 2026 - Buyback, Dividends, Bonus, Split",
-    description: "Track all corporate actions including buybacks, dividends, bonus issues, stock splits, rights issues and more. Stay updated with record dates, ex-dates, and announcements.",
+    headline:
+      "Corporate Actions Calendar 2026 - Buyback, Dividends, Bonus, Split",
+    description:
+      "Track all corporate actions including buybacks, dividends, bonus issues, stock splits, rights issues and more. Stay updated with record dates, ex-dates, and announcements.",
     image: `${SITE_URL}/og-image.jpg`,
     datePublished: new Date().toISOString(),
     dateModified: new Date().toISOString(),
@@ -271,7 +305,7 @@ const CorporateActionsClient = () => {
       name: "ShareBazaarOnline",
       logo: {
         "@type": "ImageObject",
-        url: `${SITE_URL}/logo.png`,
+        url: `${SITE_URL}/images/sharebazaar.png`,
       },
     },
     mainEntityOfPage: {
@@ -289,27 +323,33 @@ const CorporateActionsClient = () => {
       <BreadcrumbSchema items={breadcrumbItems} />
 
       <div className="w-full min-h-screen bg-white pb-20">
-
         {/* Visual Breadcrumb */}
         <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-6">
-          <nav aria-label="Breadcrumb" className="text-sm font-medium text-slate-500">
+          <nav
+            aria-label="Breadcrumb"
+            className="text-sm font-medium text-slate-500"
+          >
             <ol className="flex items-center space-x-2">
               <li>
-                <Link href="/" className="hover:text-emerald-600 flex items-center gap-1 transition-colors">
+                <Link
+                  href="/"
+                  className="hover:text-emerald-600 flex items-center gap-1 transition-colors"
+                >
                   <Home className="w-4 h-4" />
                   <span>Home</span>
                 </Link>
               </li>
               <ChevronRight className="w-4 h-4 text-slate-400" />
-              <li className="text-slate-900 font-semibold">Corporate Actions</li>
+              <li className="text-slate-900 font-semibold">
+                Corporate Actions
+              </li>
             </ol>
           </nav>
         </div>
 
-        {/* ==================== HERO SECTION ==================== */}
+        {/* HERO */}
         <section className="relative overflow-hidden py-16 bg-white border-b border-gray-100">
           <div className="relative w-full px-4 sm:px-6 lg:px-10 xl:px-16 text-center">
-
             <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
               <div className="inline-flex items-center gap-2 bg-emerald-50 text-[#16A34A] px-4 py-1.5 rounded-full text-xs font-bold border border-emerald-200/60 shadow-xs">
                 <BookOpen size={14} />
@@ -326,7 +366,9 @@ const CorporateActionsClient = () => {
             </h1>
 
             <p className="text-base text-slate-600 max-w-3xl mx-auto leading-relaxed">
-              Stay informed on essential stock distributions, company restructurings, and upcoming eligibility dates. Want to explore delistings or mergers?{" "}
+              Stay informed on essential stock distributions, company
+              restructurings, and upcoming eligibility dates. Want to explore
+              delistings or mergers?{" "}
               <button
                 onClick={() => {
                   setActiveTab("others");
@@ -340,7 +382,7 @@ const CorporateActionsClient = () => {
           </div>
         </section>
 
-        {/* ==================== KEY DATES YOU NEED TO KNOW (TOP) ==================== */}
+        {/* KEY DATES */}
         <section className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-12">
           <div className="w-full">
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-6 text-center">
@@ -392,7 +434,7 @@ const CorporateActionsClient = () => {
           </div>
         </section>
 
-        {/* ==================== TABS BAR ==================== */}
+        {/* TABS BAR */}
         <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 mt-12 flex justify-center">
           <div className="flex bg-slate-100 p-1.5 rounded-xl items-center gap-1 shadow-inner border border-slate-200/60 overflow-x-auto max-w-full scrollbar-none">
             {tabs.map((tab) => (
@@ -414,10 +456,9 @@ const CorporateActionsClient = () => {
           </div>
         </div>
 
-        {/* ==================== MAIN TABLE ==================== */}
+        {/* MAIN TABLE */}
         <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 mt-10">
           <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-
             <div className="px-6 py-5 border-b border-slate-100 bg-white flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div className="text-slate-800 font-bold text-base">
                 Upcoming {currentTabLabel} Records
@@ -425,7 +466,10 @@ const CorporateActionsClient = () => {
 
               <div className="flex items-center gap-3 w-full lg:w-auto justify-end">
                 <div className="relative max-w-xs w-full lg:w-64">
-                  <Search className="absolute left-3 top-2.5 text-slate-400" size={16} />
+                  <Search
+                    className="absolute left-3 top-2.5 text-slate-400"
+                    size={16}
+                  />
                   <input
                     type="text"
                     placeholder="Search Company..."
@@ -470,64 +514,142 @@ const CorporateActionsClient = () => {
 
                       {activeTab === "buyback" && (
                         <>
-                          <SortableHeader label="Buyback Price" sortKey="buyback_price" />
+                          <SortableHeader
+                            label="Buyback Price"
+                            sortKey="buyback_price"
+                          />
                           <SortableHeader label="CMP" sortKey="cmp" />
                           <SortableHeader label="Premium" sortKey="premium" />
-                          <SortableHeader label="Record Date" sortKey="record" />
-                          <SortableHeader label="Ex Date" sortKey="ex_date" />
+                          <SortableHeader
+                            label="Record Date"
+                            sortKey="record"
+                          />
+                          <SortableHeader
+                            label="Ex Date"
+                            sortKey="ex_date"
+                          />
                           <SortableHeader label="Size" sortKey="size" />
                         </>
                       )}
 
                       {activeTab === "dividends" && (
                         <>
-                          <SortableHeader label="Dividend Type" sortKey="type" />
+                          <SortableHeader
+                            label="Dividend Type"
+                            sortKey="type"
+                          />
                           <SortableHeader label="Yield %" sortKey="yield" />
-                          <SortableHeader label="Announcement" sortKey="announcement" />
-                          <SortableHeader label="Record Date" sortKey="record" />
-                          <SortableHeader label="Ex Date" sortKey="ex_date" />
-                          <SortableHeader label="Payment Date" sortKey="payment_date" />
+                          <SortableHeader
+                            label="Announcement"
+                            sortKey="announcement"
+                          />
+                          <SortableHeader
+                            label="Record Date"
+                            sortKey="record"
+                          />
+                          <SortableHeader
+                            label="Ex Date"
+                            sortKey="ex_date"
+                          />
+                          <SortableHeader
+                            label="Payment Date"
+                            sortKey="payment_date"
+                          />
                         </>
                       )}
 
                       {activeTab === "rights" && (
                         <>
                           <SortableHeader label="Ratio" sortKey="ratio" />
-                          <SortableHeader label="Rights Price" sortKey="rights_price" />
-                          <SortableHeader label="Market Price" sortKey="market_price" />
-                          <SortableHeader label="Discount" sortKey="discount" />
-                          <SortableHeader label="Record Date" sortKey="record" />
-                          <SortableHeader label="Ex Date" sortKey="ex_date" />
+                          <SortableHeader
+                            label="Rights Price"
+                            sortKey="rights_price"
+                          />
+                          <SortableHeader
+                            label="Market Price"
+                            sortKey="market_price"
+                          />
+                          <SortableHeader
+                            label="Discount"
+                            sortKey="discount"
+                          />
+                          <SortableHeader
+                            label="Record Date"
+                            sortKey="record"
+                          />
+                          <SortableHeader
+                            label="Ex Date"
+                            sortKey="ex_date"
+                          />
                         </>
                       )}
 
                       {activeTab === "bonus" && (
                         <>
-                          <SortableHeader label="Bonus Ratio" sortKey="ratio" />
-                          <SortableHeader label="Announcement" sortKey="announcement" />
-                          <SortableHeader label="Record Date" sortKey="record" />
-                          <SortableHeader label="Ex Date" sortKey="ex_date" />
+                          <SortableHeader
+                            label="Bonus Ratio"
+                            sortKey="ratio"
+                          />
+                          <SortableHeader
+                            label="Announcement"
+                            sortKey="announcement"
+                          />
+                          <SortableHeader
+                            label="Record Date"
+                            sortKey="record"
+                          />
+                          <SortableHeader
+                            label="Ex Date"
+                            sortKey="ex_date"
+                          />
                         </>
                       )}
 
                       {activeTab === "splits" && (
                         <>
-                          <SortableHeader label="Split Ratio" sortKey="ratio" />
+                          <SortableHeader
+                            label="Split Ratio"
+                            sortKey="ratio"
+                          />
                           <SortableHeader label="Old FV" sortKey="old_fv" />
                           <SortableHeader label="New FV" sortKey="new_fv" />
-                          <SortableHeader label="Announcement" sortKey="announcement" />
-                          <SortableHeader label="Record Date" sortKey="record" />
-                          <SortableHeader label="Ex Date" sortKey="ex_date" />
+                          <SortableHeader
+                            label="Announcement"
+                            sortKey="announcement"
+                          />
+                          <SortableHeader
+                            label="Record Date"
+                            sortKey="record"
+                          />
+                          <SortableHeader
+                            label="Ex Date"
+                            sortKey="ex_date"
+                          />
                         </>
                       )}
 
                       {activeTab === "others" && (
                         <>
-                          <SortableHeader label="Action Type" sortKey="action_type_detail" />
-                          <SortableHeader label="Key Detail" sortKey="key_detail" />
-                          <SortableHeader label="Announcement" sortKey="announcement" />
-                          <SortableHeader label="Record Date" sortKey="record" />
-                          <SortableHeader label="Ex Date" sortKey="ex_date" />
+                          <SortableHeader
+                            label="Action Type"
+                            sortKey="action_type_detail"
+                          />
+                          <SortableHeader
+                            label="Key Detail"
+                            sortKey="key_detail"
+                          />
+                          <SortableHeader
+                            label="Announcement"
+                            sortKey="announcement"
+                          />
+                          <SortableHeader
+                            label="Record Date"
+                            sortKey="record"
+                          />
+                          <SortableHeader
+                            label="Ex Date"
+                            sortKey="ex_date"
+                          />
                           <SortableHeader label="Status" sortKey="status" />
                         </>
                       )}
@@ -539,7 +661,9 @@ const CorporateActionsClient = () => {
                         key={row.id}
                         onClick={() => {
                           if (row.blog?.id) {
-                            router.push(`/insight-hub/${row.blog.id}/${row.blog.slug}`);
+                            router.push(
+                              `/corporateactions/${row.blog.id}/${row.blog.slug}`
+                            );
                           }
                         }}
                         className={`hover:bg-slate-50/60 transition-colors ${
@@ -558,64 +682,130 @@ const CorporateActionsClient = () => {
 
                         {activeTab === "buyback" && (
                           <>
-                            <td className="px-4 py-4 text-center font-bold">₹{row.buyback_price || "-"}</td>
-                            <td className="px-4 py-4 text-center">₹{row.cmp || "-"}</td>
-                            <td className="px-4 py-4 text-center font-semibold text-emerald-600">{row.premium || "-"}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.record)}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.ex_date)}</td>
-                            <td className="px-4 py-4 text-center font-medium">{row.size || "-"}</td>
+                            <td className="px-4 py-4 text-center font-bold">
+                              ₹{row.buyback_price || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center">
+                              ₹{row.cmp || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center font-semibold text-emerald-600">
+                              {row.premium || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.record)}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.ex_date)}
+                            </td>
+                            <td className="px-4 py-4 text-center font-medium">
+                              {row.size || "-"}
+                            </td>
                           </>
                         )}
 
                         {activeTab === "dividends" && (
                           <>
-                            <td className="px-4 py-4 text-center">{row.type || "-"}</td>
-                            <td className="px-4 py-4 text-center font-bold">{row.ratio_or_percentage || "-"}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.announcement)}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.record)}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.ex_date)}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.payment_date)}</td>
+                            <td className="px-4 py-4 text-center">
+                              {row.type || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center font-bold">
+                              {row.ratio_or_percentage || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.announcement)}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.record)}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.ex_date)}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.payment_date)}
+                            </td>
                           </>
                         )}
 
                         {activeTab === "rights" && (
                           <>
-                            <td className="px-4 py-4 text-center font-bold">{row.ratio_or_percentage || "-"}</td>
-                            <td className="px-4 py-4 text-center">₹{row.rights_price || "-"}</td>
-                            <td className="px-4 py-4 text-center">₹{row.market_price || "-"}</td>
-                            <td className="px-4 py-4 text-center text-amber-600 font-semibold">{row.discount || "-"}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.record)}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.ex_date)}</td>
+                            <td className="px-4 py-4 text-center font-bold">
+                              {row.ratio_or_percentage || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center">
+                              ₹{row.rights_price || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center">
+                              ₹{row.market_price || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center text-amber-600 font-semibold">
+                              {row.discount || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.record)}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.ex_date)}
+                            </td>
                           </>
                         )}
 
                         {activeTab === "bonus" && (
                           <>
-                            <td className="px-4 py-4 text-center font-bold">{row.ratio_or_percentage || "-"}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.announcement)}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.record)}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.ex_date)}</td>
+                            <td className="px-4 py-4 text-center font-bold">
+                              {row.ratio_or_percentage || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.announcement)}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.record)}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.ex_date)}
+                            </td>
                           </>
                         )}
 
                         {activeTab === "splits" && (
                           <>
-                            <td className="px-4 py-4 text-center font-bold">{row.ratio_or_percentage || "-"}</td>
-                            <td className="px-4 py-4 text-center">₹{row.old_fv || "-"}</td>
-                            <td className="px-4 py-4 text-center font-bold text-emerald-600">₹{row.new_fv || "-"}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.announcement)}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.record)}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.ex_date)}</td>
+                            <td className="px-4 py-4 text-center font-bold">
+                              {row.ratio_or_percentage || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center">
+                              ₹{row.old_fv || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center font-bold text-emerald-600">
+                              ₹{row.new_fv || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.announcement)}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.record)}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.ex_date)}
+                            </td>
                           </>
                         )}
 
                         {activeTab === "others" && (
                           <>
-                            <td className="px-4 py-4 text-center font-semibold">{row.action_type_detail || "-"}</td>
-                            <td className="px-4 py-4 text-center max-w-xs truncate">{row.key_detail || "-"}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.announcement)}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.record)}</td>
-                            <td className="px-4 py-4 text-center text-xs tracking-wider">{formatDate(row.ex_date)}</td>
+                            <td className="px-4 py-4 text-center font-semibold">
+                              {row.action_type_detail || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center max-w-xs truncate">
+                              {row.key_detail || "-"}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.announcement)}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.record)}
+                            </td>
+                            <td className="px-4 py-4 text-center text-xs tracking-wider">
+                              {formatDate(row.ex_date)}
+                            </td>
                             <td className="px-4 py-4 text-center">
                               <span className="bg-slate-100 px-3 py-1 rounded text-emerald-700 text-xs font-bold">
                                 {row.status || "Completed"}
@@ -630,7 +820,7 @@ const CorporateActionsClient = () => {
               )}
             </div>
 
-            {/* ==================== PAGINATION ==================== */}
+            {/* PAGINATION */}
             {!loading && sortedRecords.length > 0 && totalPages > 1 && (
               <div className="px-6 py-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p className="text-sm text-slate-500">
@@ -640,7 +830,10 @@ const CorporateActionsClient = () => {
                   </span>{" "}
                   to{" "}
                   <span className="font-semibold text-slate-700">
-                    {Math.min(currentPage * ITEMS_PER_PAGE, sortedRecords.length)}
+                    {Math.min(
+                      currentPage * ITEMS_PER_PAGE,
+                      sortedRecords.length
+                    )}
                   </span>{" "}
                   of{" "}
                   <span className="font-semibold text-slate-700">
@@ -681,12 +874,12 @@ const CorporateActionsClient = () => {
           </div>
         </div>
 
-        {/* ==================== ARTICLE (BOTTOM) ==================== */}
+        {/* ARTICLE */}
         <section className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 mt-14">
           <div className="w-full space-y-6 text-slate-700 text-base sm:text-lg leading-relaxed">
-
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
-              Corporate Actions Calendar — Dividends, Bonus Issues, Splits &amp; More
+              Corporate Actions Calendar — Dividends, Bonus Issues, Splits &amp;
+              More
             </h2>
 
             <p>

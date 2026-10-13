@@ -81,17 +81,7 @@ const faqs = [
   { q: "What is book building?", a: "Price discovery process." }
 ];
 
-const AdBanner = ({ size = "horizontal" }) => (
-  <div className="w-full flex justify-center py-4">
-    <div
-      className={`bg-gray-200 border-2 border-dashed border-gray-400 rounded-xl flex items-center justify-center text-gray-500 font-medium ${
-        size === "horizontal" ? "w-full max-w-5xl h-32" : "w-80 h-96"
-      }`}
-    >
-      Advertisement
-    </div>
-  </div>
-);
+
 
 const FAQSection = () => {
   const [showAllFAQs, setShowAllFAQs] = useState(false);
@@ -523,7 +513,7 @@ const IPOGuideClient = () => {
             </div>
           </section>
 
-          <AdBanner />
+     
 
           {/* IPO Investor Categories - Full Width */}
           <section className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 lg:p-8">
@@ -661,7 +651,7 @@ const IPOGuideClient = () => {
             </div>
           </section>
 
-          <AdBanner />
+        
 
           {/* IPO Price Band, Lot Size & Issue Size - Full Width */}
           <section className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 lg:p-8">
@@ -987,6 +977,76 @@ const IPOGuideClient = () => {
             </div>
             <FAQSection />
           </section>
+          <div className="mt-8 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+  <div className="mb-6">
+    <h3 className="text-2xl font-bold text-slate-900">
+      Explore More Investment Opportunities
+    </h3>
+    <p className="text-slate-500 mt-2 text-sm lg:text-base">
+      Discover IPOs, unlisted shares, and broker comparison tools
+      curated for smart investors.
+    </p>
+  </div>
+
+  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <Link
+      href="/insight-hub"
+      className="group relative bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:shadow-lg hover:-translate-y-0.5 hover:border-emerald-400 transition-all duration-200"
+    >
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-lg font-semibold text-slate-900">
+            Insight Hub
+          </p>
+          <p className="text-sm text-slate-400 mt-1">
+            Read IPO news, blogs & market insights
+          </p>
+        </div>
+        <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+          →
+        </span>
+      </div>
+    </Link>
+
+    <Link
+      href="/preipo"
+      className="group relative bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:shadow-lg hover:-translate-y-0.5 hover:border-emerald-400 transition-all duration-200"
+    >
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-lg font-semibold text-slate-900">
+            Unlisted Shares
+          </p>
+          <p className="text-sm text-slate-400 mt-1">
+            Invest before public listing
+          </p>
+        </div>
+        <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+          →
+        </span>
+      </div>
+    </Link>
+
+    <Link
+      href="/broker-analyzer"
+      className="group relative bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:shadow-lg hover:-translate-y-0.5 hover:border-emerald-400 transition-all duration-200"
+    >
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-lg font-semibold text-slate-900">
+            Compare Brokers
+          </p>
+          <p className="text-sm text-slate-400 mt-1">
+            Find the best broker platform
+          </p>
+        </div>
+        <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+          →
+        </span>
+      </div>
+    </Link>
+  </div>
+</div>
         </div>
       </div>
     </>

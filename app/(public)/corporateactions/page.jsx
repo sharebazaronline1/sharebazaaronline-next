@@ -1,10 +1,58 @@
-
 // app/corporateactions/page.jsx
+import { createClient } from "@supabase/supabase-js";
 import CorporateActionsClient from '@/components/CorporateActionsClient';
 
 const SITE_URL = "https://www.sharebazaaronline.com";
 
-// Generate metadata for SEO
+// Anonymous client — no cookies, safe for RSC / SSR
+const supabasePublic = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  {
+    auth: { persistSession: false, autoRefreshToken: false },
+  }
+);
+
+// Revalidate every 5 minutes
+export const revalidate = 300;
+
+// ==========================================
+// SERVER-SIDE DATA FETCH
+// ==========================================
+
+async function getCorporateActions() {
+  try {
+    const { data, error } = await supabasePublic
+      .from("corporate_actions")
+      .select(
+        `
+        *,
+        blog:blogs (
+          id,
+          slug,
+          heading
+        )
+      `
+      )
+      .order("ex_date", { ascending: false })
+      .limit(2000);
+
+    if (error) {
+      console.error("[getCorporateActions] supabase error:", error.message);
+      return [];
+    }
+
+    return data || [];
+  } catch (err) {
+    console.error("[getCorporateActions] exception:", err?.message || err);
+    return [];
+  }
+}
+
+// ==========================================
+// METADATA
+// ==========================================
+
 export async function generateMetadata() {
   return {
     title: "Corporate Actions - Buyback, Dividends, Bonus, Split | ShareBazaarOnline",
@@ -56,9 +104,23 @@ export async function generateMetadata() {
   };
 }
 
-// Main page component - SERVER COMPONENT
-export default function CorporateActionsPage() {
+// ==========================================
+// MAIN PAGE — SERVER COMPONENT
+// ==========================================
+
+export default async function CorporateActionsPage() {
   const canonicalUrl = `${SITE_URL}/corporateactions`;
+
+  // Fetch once on the server
+  const records = await getCorporateActions();
+
+  // Group by action_type so the client can switch tabs without refetching
+  const grouped = records.reduce((acc, row) => {
+    const type = (row.action_type || "other").toLowerCase().trim();
+    if (!acc[type]) acc[type] = [];
+    acc[type].push(row);
+    return acc;
+  }, {});
 
   // ==========================================
   // WEBPAGE JSON-LD
@@ -129,12 +191,6 @@ export default function CorporateActionsPage() {
     ],
   };
 
-  /*
-   * Safely serialize JSON-LD.
-   *
-   * Prevents a "<" character inside dynamic values
-   * from interfering with the script element.
-   */
   const webPageSchemaJson = JSON.stringify(webPageSchema).replace(
     /</g,
     "\\u003c"
@@ -163,7 +219,8 @@ export default function CorporateActionsPage() {
         }}
       />
 
-      <CorporateActionsClient />
+      {/* Client component receives SSR data — no client fetch needed */}
+      <CorporateActionsClient initialGrouped={grouped} />
     </>
   );
 }

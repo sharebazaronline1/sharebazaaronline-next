@@ -413,7 +413,7 @@ const HeaderAndNav = () => {
             <div>
               <div className="flex justify-between items-center py-2">
                 <Link
-                  href="/pre-ipoguide"
+                  href="/pre-ipo-guide"
                   onClick={() => setMobileMenuOpen(false)}
                   className="font-medium text-gray-800"
                 >

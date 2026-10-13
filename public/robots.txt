@@ -1,0 +1,39 @@
+# robots.txt for ShareBazaarOnline
+# https://www.sharebazaaronline.com
+
+User-agent: *
+Allow: /
+
+# Block private and non-content routes
+Disallow: /login
+Disallow: /dashboard
+Disallow: /settings
+Disallow: /notifications
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /report-issue
+
+# Allow Google AdSense crawler
+User-agent: Mediapartners-Google
+Allow: /
+
+# Allow Google's image proxy
+User-agent: Googlebot-Image
+Allow: /
+
+# Block aggressive SEO scrapers
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Sitemap
+Sitemap: https://www.sharebazaaronline.com/sitemap.xml

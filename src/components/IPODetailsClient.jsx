@@ -52,18 +52,6 @@ const TableWrapper = ({ children }) => (
   <div className="p-4 sm:p-5 overflow-x-auto">{children}</div>
 );
 
-/* Reusable advertisement placeholder */
-const AdBlock = ({ size = "horizontal", label = "Advertisement" }) => (
-  <div className="w-full flex justify-center py-2">
-    <div
-      className={`bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center text-gray-500 font-medium ${
-        size === "horizontal" ? "w-full h-28 sm:h-32" : "w-80 h-96"
-      }`}
-    >
-      {label}
-    </div>
-  </div>
-);
 
 /* ================= MAIN COMPONENT ================= */
 export default function IPODetailsClient({ initialIpo, id, slug }) {
@@ -365,7 +353,7 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
               </Card>
 
               {/* AD BLOCK #1 */}
-              <AdBlock />
+            
 
               {/* IPO Important Dates */}
               <Card>
@@ -628,130 +616,186 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
               )}
             </main>
 
-            {/* RIGHT SIDEBAR — 3 compact sticky promo cards */}
-            <aside className="hidden lg:block lg:col-span-2">
-              <div className="sticky top-28 space-y-3">
-                {[
-                  {
-                    badge: "IPO Insights",
-                    title: "Track Live",
-                    titleAccent: "IPOs & GMP",
-                    description:
-                      "Real-time subscription numbers, GMP trends and upcoming issues.",
-                    accentText: "text-cyan-400",
-                    accentBg: "bg-cyan-500 hover:bg-cyan-400",
-                    accentDot: "bg-cyan-400",
-                    accentBorder: "border-cyan-400/25",
-                    accentBadgeBg: "bg-cyan-400/10",
-                    accentGlow1: "bg-cyan-400/15",
-                    accentGlow2: "bg-blue-400/10",
-                    shadow: "shadow-cyan-500/20",
-                    links: [
-                      { label: "Live IPOs", href: "/ipo" },
-                      { label: "Upcoming Issues", href: "/ipo" },
-                    ],
-                    cta: { label: "IPO Tracker", href: "/ipo" },
-                  },
-                  {
-                    badge: "Pre-IPO",
-                    title: "Explore",
-                    titleAccent: "Unlisted Shares",
-                    description:
-                      "Verified prices and valuations of India's top pre-IPO companies.",
-                    accentText: "text-emerald-400",
-                    accentBg: "bg-emerald-500 hover:bg-emerald-400",
-                    accentDot: "bg-emerald-400",
-                    accentBorder: "border-emerald-400/25",
-                    accentBadgeBg: "bg-emerald-400/10",
-                    accentGlow1: "bg-emerald-400/15",
-                    accentGlow2: "bg-teal-400/10",
-                    shadow: "shadow-emerald-500/20",
-                    links: [
-                      { label: "Unlisted Stocks", href: "/preipo" },
-                      { label: "Top Valuations", href: "/preipo" },
-                    ],
-                    cta: { label: "View Pre-IPO", href: "/preipo" },
-                  },
-                  {
-                    badge: "Brokers",
-                    title: "Compare",
-                    titleAccent: "Top Brokers",
-                    description:
-                      "Brokerage charges, platform features and account-opening benefits.",
-                    accentText: "text-violet-400",
-                    accentBg: "bg-violet-500 hover:bg-violet-400",
-                    accentDot: "bg-violet-400",
-                    accentBorder: "border-violet-400/25",
-                    accentBadgeBg: "bg-violet-400/10",
-                    accentGlow1: "bg-violet-400/15",
-                    accentGlow2: "bg-fuchsia-400/10",
-                    shadow: "shadow-violet-500/20",
-                    links: [
-                      { label: "Broker Analyzer", href: "/broker-analyzer" },
-                      { label: "Compare Charges", href: "/comparebrokers" },
-                    ],
-                    cta: { label: "Compare Brokers", href: "/comparebrokers" },
-                  },
-                ].map((card, i) => (
-                  <div
-                    key={i}
-                    className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#061A40] via-[#0A2558] to-[#0E3A73] p-3.5 shadow-lg border border-cyan-500/10 text-white"
-                  >
-                    {/* Decorative glows */}
-                    <div
-                      className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-3xl pointer-events-none ${card.accentGlow1}`}
-                    />
-                    <div
-                      className={`absolute bottom-0 left-0 w-24 h-24 rounded-full blur-3xl pointer-events-none ${card.accentGlow2}`}
-                    />
+{/* RIGHT SIDEBAR — 3 compact sticky promo cards */}
+<aside className="hidden lg:block lg:col-span-2">
+  <div className="sticky top-28 space-y-3">
+    {[
+      {
+        badge: "IPO Insights",
+        title: "Track Live",
+        titleAccent: "IPOs & GMP",
+        description:
+          "Real-time subscription numbers, GMP trends and upcoming issues.",
+        accentText: "text-blue-400",
+        accentBg: "bg-emerald-400 hover:bg-emerald-500",
+        accentDot: "bg-blue-400",
+        accentBorder: "border-blue-400/25",
+        accentBadgeBg: "bg-blue-400/10",
+        accentGlow1: "bg-blue-400/15",
+        accentGlow2: "bg-indigo-400/10",
+        shadow: "shadow-emerald-500/20",
+        links: [
+          { label: "Live IPOs", href: "/ipo" },
+          { label: "Upcoming Issues", href: "/ipo" },
+        ],
+        cta: { label: "IPO Tracker", href: "/ipo" },
+      },
+      {
+        badge: "Pre-IPO",
+        title: "Explore",
+        titleAccent: "Unlisted Shares",
+        description:
+          "Verified prices and valuations of India's top pre-IPO companies.",
+        accentText: "text-emerald-400",
+        accentBg: "bg-emerald-400 hover:bg-emerald-500",
+        accentDot: "bg-emerald-400",
+        accentBorder: "border-emerald-400/25",
+        accentBadgeBg: "bg-emerald-400/10",
+        accentGlow1: "bg-emerald-400/15",
+        accentGlow2: "bg-teal-400/10",
+        shadow: "shadow-emerald-500/20",
+        links: [
+          { label: "Unlisted Stocks", href: "/preipo" },
+          { label: "Top Valuations", href: "/preipo" },
+        ],
+        cta: { label: "View Pre-IPO", href: "/preipo" },
+      },
+      {
+        badge: "Brokers",
+        title: "Compare",
+        titleAccent: "Top Brokers",
+        description:
+          "Brokerage charges, platform features and account-opening benefits.",
+        accentText: "text-blue-400",
+        accentBg: "bg-emerald-400 hover:bg-emerald-500",
+        accentDot: "bg-blue-400",
+        accentBorder: "border-blue-400/25",
+        accentBadgeBg: "bg-blue-400/10",
+        accentGlow1: "bg-blue-400/15",
+        accentGlow2: "bg-indigo-400/10",
+        shadow: "shadow-emerald-500/20",
+        links: [
+          { label: "Broker Analyzer", href: "/broker-analyzer" },
+          { label: "Compare Charges", href: "/comparebrokers" },
+        ],
+        cta: { label: "Compare Brokers", href: "/comparebrokers" },
+      },
+    ].map((card, i) => (
+      <div
+        key={i}
+        className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#061A40] via-[#0A2558] to-[#0E3A73] p-3.5 shadow-lg border border-cyan-500/10 text-white"
+      >
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.06] pointer-events-none">
+          <svg width="100%" height="100%">
+            <defs>
+              <pattern
+                id={`grid-${i}`}
+                width="24"
+                height="24"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M24 0 L0 0 0 24"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="1"
+                />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill={`url(#grid-${i})`} />
+          </svg>
+        </div>
 
-                    <div className="relative z-10">
-                      <div
-                        className={`inline-flex items-center px-2 py-0.5 rounded-full border text-[10px] font-semibold tracking-wide ${card.accentBadgeBg} ${card.accentBorder} ${card.accentText}`}
-                      >
-                        {card.badge}
-                      </div>
+        {/* Candlestick chart — bottom-right */}
+        <div className="absolute bottom-2 right-2 opacity-[0.08] pointer-events-none">
+          <svg width="140" height="80" viewBox="0 0 140 80" fill="none">
+            {[
+              { x: 8, h: 22, y: 44, up: true },
+              { x: 26, h: 14, y: 52, up: false },
+              { x: 44, h: 30, y: 32, up: true },
+              { x: 62, h: 18, y: 42, up: false },
+              { x: 80, h: 36, y: 22, up: true },
+              { x: 98, h: 12, y: 56, up: false },
+              { x: 116, h: 40, y: 16, up: true },
+            ].map((c, idx) => (
+              <g key={idx}>
+                <line
+                  x1={c.x + 3}
+                  y1={c.y - 6}
+                  x2={c.x + 3}
+                  y2={c.y + c.h + 6}
+                  stroke="#22D3EE"
+                  strokeWidth="1"
+                />
+                <rect
+                  x={c.x}
+                  y={c.y}
+                  width="7"
+                  height={c.h}
+                  rx="1"
+                  fill={c.up ? "#22D3EE" : "#38BDF8"}
+                />
+              </g>
+            ))}
+          </svg>
+        </div>
 
-                      <h3 className="mt-2.5 text-base font-black leading-tight">
-                        {card.title}
-                        <span className={`block ${card.accentText}`}>
-                          {card.titleAccent}
-                        </span>
-                      </h3>
+        {/* Decorative glows */}
+        <div
+          className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-3xl pointer-events-none ${card.accentGlow1}`}
+        />
+        <div
+          className={`absolute bottom-0 left-0 w-24 h-24 rounded-full blur-3xl pointer-events-none ${card.accentGlow2}`}
+        />
 
-                      <p className="mt-2 text-slate-300 text-[11px] leading-snug">
-                        {card.description}
-                      </p>
+        <div className="relative z-10">
+          <div
+            className={`inline-flex items-center px-2 py-0.5 rounded-full border text-[10px] font-semibold tracking-wide ${card.accentBadgeBg} ${card.accentBorder} ${card.accentText}`}
+          >
+            {card.badge}
+          </div>
 
-                      <div className="mt-2.5 space-y-1">
-                        {card.links.map((item) => (
-                          <Link
-                            key={item.label}
-                            href={item.href}
-                            className="flex items-center gap-2 text-[11px] group"
-                          >
-                            <div
-                              className={`w-1 h-1 rounded-full shrink-0 group-hover:scale-150 transition ${card.accentDot}`}
-                            />
-                            <span className="text-slate-200 group-hover:text-white transition">
-                              {item.label}
-                            </span>
-                          </Link>
-                        ))}
-                      </div>
+          <h3 className="mt-2.5 text-base font-black leading-tight">
+            {card.title}
+            <span className={`block ${card.accentText}`}>
+              {card.titleAccent}
+            </span>
+          </h3>
 
-                      <Link
-                        href={card.cta.href}
-                        className={`mt-3 w-full py-1.5 rounded-md text-slate-950 font-bold transition-all shadow-md text-[11px] text-center inline-flex items-center justify-center gap-1 ${card.accentBg} ${card.shadow}`}
-                      >
-                        {card.cta.label}
-                        <ArrowRight size={12} className="stroke-[2.5]" />
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </aside>
+          <p className="mt-2 text-slate-300 text-[11px] leading-snug">
+            {card.description}
+          </p>
+
+          <div className="mt-2.5 space-y-1">
+            {card.links.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="flex items-center gap-2 text-[11px] group"
+              >
+                <div
+                  className={`w-1 h-1 rounded-full shrink-0 group-hover:scale-150 transition ${card.accentDot}`}
+                />
+                <span className="text-slate-200 group-hover:text-white transition">
+                  {item.label}
+                </span>
+              </Link>
+            ))}
+          </div>
+
+          <Link
+            href={card.cta.href}
+            className={`mt-3 w-full py-1.5 rounded-md text-slate-900 font-bold transition-colors text-[11px] text-center inline-flex items-center justify-center gap-1 ${card.accentBg} ${card.shadow}`}
+          >
+            {card.cta.label}
+            <ArrowRight size={12} className="stroke-[2.5]" />
+          </Link>
+        </div>
+      </div>
+    ))}
+  </div>
+</aside>
           </div>
         </div>
       </div>

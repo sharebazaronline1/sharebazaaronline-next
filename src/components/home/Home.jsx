@@ -34,17 +34,7 @@ const features = [
   "Mutual Funds", "NFO", "Corporate Actions",
 ];
 
-const AdBanner = ({ size = "horizontal" }) => (
-  <div className="w-full flex justify-center py-4">
-    <div
-      className={`bg-gray-200 border-2 border-dashed border-gray-400 rounded-xl flex items-center justify-center text-gray-500 font-medium ${
-        size === "horizontal" ? "w-full max-w-5xl h-32" : "w-80 h-96"
-      }`}
-    >
-      Advertisement
-    </div>
-  </div>
-);
+
 
 export default function Home({
   initialIpos = [],
@@ -431,7 +421,7 @@ export default function Home({
         </div>
       </section>
 
-      <AdBanner />
+    
 
       {/* LIVE & UPCOMING IPOS */}
       <section className="py-12 lg:py-16 w-full px-4 sm:px-6 lg:px-10 xl:px-16">
@@ -475,7 +465,7 @@ export default function Home({
 </div>
         </div>
       </section>
-      <AdBanner />
+     
 
       {/* BLOGS & MARKET INSIGHTS */}
       <section className="py-12 lg:py-16 w-full px-4 sm:px-6 lg:px-10 xl:px-16">
@@ -515,7 +505,6 @@ export default function Home({
         </div>
       </section>
 
-      <AdBanner />
 
       {/* WHY CHOOSE US SECTION */}
       <section className="py-12 lg:py-16 w-full px-4 sm:px-6 lg:px-10 xl:px-16">

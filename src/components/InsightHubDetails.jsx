@@ -6,7 +6,13 @@ import { useState } from "react";
 import { ArrowLeft, Share2, ChevronRight, Home } from "lucide-react";
 import { AUTHOR } from "@/data/author";
 
-const InsightHubDetail = ({ blog, id, slug }) => {
+const InsightHubDetail = ({
+  blog,
+  id,
+  slug,
+  sectionLabel = "Insight Hub",
+  sectionHref = "/insight-hub",
+}) => {
   const [imageFailed, setImageFailed] = useState(false);
 
   const corporateCategories = [
@@ -28,8 +34,11 @@ const InsightHubDetail = ({ blog, id, slug }) => {
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="text-center">
           <span className="text-gray-600 text-xl">Article not found</span>
-          <Link href="/insight-hub" className="block mt-6 text-green-600 hover:underline">
-            ← Back to Insights
+          <Link
+            href={sectionHref}
+            className="block mt-6 text-green-600 hover:underline"
+          >
+            ← Back to {sectionLabel}
           </Link>
         </div>
       </div>
@@ -115,18 +124,27 @@ const InsightHubDetail = ({ blog, id, slug }) => {
     <div className="bg-gray-50 min-h-screen">
       <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 py-6 sm:py-8">
 
-        <nav aria-label="Breadcrumb" className="mb-5 text-xs sm:text-sm font-medium text-slate-500">
+        <nav
+          aria-label="Breadcrumb"
+          className="mb-5 text-xs sm:text-sm font-medium text-slate-500"
+        >
           <ol className="flex items-center space-x-2 flex-wrap">
             <li>
-              <Link href="/" className="hover:text-green-600 flex items-center gap-1 transition-colors">
+              <Link
+                href="/"
+                className="hover:text-green-600 flex items-center gap-1 transition-colors"
+              >
                 <Home className="w-3.5 h-3.5" />
                 <span>Home</span>
               </Link>
             </li>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
             <li>
-              <Link href="/insight-hub" className="hover:text-green-600 transition-colors">
-                Insight Hub
+              <Link
+                href={sectionHref}
+                className="hover:text-green-600 transition-colors"
+              >
+                {sectionLabel}
               </Link>
             </li>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -146,35 +164,39 @@ const InsightHubDetail = ({ blog, id, slug }) => {
           {articleTitle}
         </h1>
 
-        <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 text-xs sm:text-sm text-slate-500 border-b border-slate-200 pb-5 mb-8">
-          <div className="flex items-center gap-2">
-            <Avatar size={24} />
-            <span>
-              By{" "}
-              <Link
-                href="/about"
-                className="font-semibold text-slate-900 hover:text-emerald-600 transition"
-              >
-                {AUTHOR.name}
-              </Link>
-              <span className="hidden sm:inline text-slate-400">
-                {" "}· {AUTHOR.shortRole}
-              </span>
-            </span>
-          </div>
-          <span className="text-slate-300">•</span>
-          <span>
-            Published <time dateTime={publishedDate}>{publishedFmt}</time>
+     <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 text-xs sm:text-sm text-slate-500 border-b border-slate-200 pb-5 mb-8">
+  {!isCorporateAction && (
+    <>
+      <div className="flex items-center gap-2">
+        <Avatar size={24} />
+        <span>
+          By{" "}
+          <Link
+            href="/about"
+            className="font-semibold text-slate-900 hover:text-emerald-600 transition"
+          >
+            {AUTHOR.name}
+          </Link>
+          <span className="hidden sm:inline text-slate-400">
+            {" "}· {AUTHOR.shortRole}
           </span>
-          {showUpdated && (
-            <>
-              <span className="text-slate-300">•</span>
-              <span className="text-slate-400">
-                Updated <time dateTime={modifiedDate}>{modifiedFmt}</time>
-              </span>
-            </>
-          )}
-        </div>
+        </span>
+      </div>
+      <span className="text-slate-300">•</span>
+    </>
+  )}
+  <span>
+    Published <time dateTime={publishedDate}>{publishedFmt}</time>
+  </span>
+  {showUpdated && (
+    <>
+      <span className="text-slate-300">•</span>
+      <span className="text-slate-400">
+        Updated <time dateTime={modifiedDate}>{modifiedFmt}</time>
+      </span>
+    </>
+  )}
+</div>
 
         {blog.image_url && (
           <div className="mb-8">
@@ -194,35 +216,39 @@ const InsightHubDetail = ({ blog, id, slug }) => {
         </div>
 
         {/* Author bio */}
-        <section
-          aria-label="About the author"
-          className="mt-12 pt-8 border-t border-slate-200"
+       {/* Author bio — only shown for blog posts, not corporate actions */}
+{!isCorporateAction && (
+  <section
+    aria-label="About the author"
+    className="mt-12 pt-8 border-t border-slate-200"
+  >
+    <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start">
+      <Avatar size={56} />
+      <div className="flex-1 min-w-0">
+        <p className="text-[11px] uppercase tracking-wide text-slate-500 font-semibold mb-1">
+          Written by
+        </p>
+        <h2 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">
+          {AUTHOR.name}
+        </h2>
+        <p className="text-xs sm:text-sm text-slate-500 mb-3">
+          {AUTHOR.role}
+        </p>
+        <p className="text-sm text-slate-700 leading-relaxed">
+          {AUTHOR.bio}
+        </p>
+        <Link
+          href="/about"
+          className="inline-block mt-3 text-sm font-semibold text-green-600 hover:text-green-700 transition-colors"
         >
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start">
-            <Avatar size={56} />
-            <div className="flex-1 min-w-0">
-              <p className="text-[11px] uppercase tracking-wide text-slate-500 font-semibold mb-1">
-                Written by
-              </p>
-              <h2 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">
-                {AUTHOR.name}
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-500 mb-3">
-                {AUTHOR.role}
-              </p>
-              <p className="text-sm text-slate-700 leading-relaxed">
-                {AUTHOR.bio}
-              </p>
-              <Link
-                href="/about"
-                className="inline-block mt-3 text-sm font-semibold text-green-600 hover:text-green-700 transition-colors"
-              >
-                About the author →
-              </Link>
-            </div>
-          </div>
-        </section>
+          About the author →
+        </Link>
+      </div>
+    </div>
+  </section>
+)}
 
+        {/* Share + Back */}
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium text-gray-700">
@@ -238,12 +264,84 @@ const InsightHubDetail = ({ blog, id, slug }) => {
           </div>
 
           <Link
-            href="/insight-hub"
+            href={sectionHref}
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#16A34A] text-white text-sm font-semibold rounded-full hover:bg-[#15803D] transition"
           >
             <ArrowLeft size={16} />
-            Back to Insights
+            Back to {sectionLabel}
           </Link>
+        </div>
+
+        {/* EXPLORE MORE */}
+        <div className="mt-10 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+          <div className="mb-6">
+            <h3 className="text-2xl font-bold text-slate-900">
+              Explore More Investment Opportunities
+            </h3>
+            <p className="text-slate-500 mt-2 text-sm lg:text-base">
+              Discover IPOs, unlisted shares, and broker comparison tools
+              curated for smart investors.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <Link
+              href="/ipo"
+              className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-lg font-semibold text-slate-900">
+                    Latest IPOs
+                  </p>
+                  <p className="text-sm text-slate-400 mt-1">
+                    Track live & upcoming IPOs
+                  </p>
+                </div>
+                <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                  →
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              href="/preipo"
+              className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-lg font-semibold text-slate-900">
+                    Unlisted Shares
+                  </p>
+                  <p className="text-sm text-slate-400 mt-1">
+                    Invest before public listing
+                  </p>
+                </div>
+                <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                  →
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              href="/broker-analyzer"
+              className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-lg font-semibold text-slate-900">
+                    Compare Brokers
+                  </p>
+                  <p className="text-sm text-slate-400 mt-1">
+                    Find the best broker platform
+                  </p>
+                </div>
+                <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                  →
+                </span>
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
 
