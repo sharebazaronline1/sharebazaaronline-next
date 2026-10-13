@@ -216,7 +216,6 @@ const InsightHubDetail = ({
         </div>
 
         {/* Author bio */}
-       {/* Author bio — only shown for blog posts, not corporate actions */}
 {!isCorporateAction && (
   <section
     aria-label="About the author"

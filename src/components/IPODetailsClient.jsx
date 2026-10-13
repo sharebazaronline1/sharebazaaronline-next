@@ -482,8 +482,7 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
                 </TableWrapper>
               </Card>
 
-              {/* AD BLOCK #2 */}
-              <AdBlock />
+            
 
               {/* Grey Market Premium */}
               <Card>
