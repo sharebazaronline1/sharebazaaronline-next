@@ -16,6 +16,9 @@ export const metadata = {
     index: true,
     follow: true,
   },
+  authors: [
+    { name: "Manjunath Talanki", url: `${SITE_URL}/about` },
+  ],
   openGraph: {
     title: "IPO Guide - Master IPO Investing in India",
     description:
@@ -25,6 +28,7 @@ export const metadata = {
     images: [{ url: `${SITE_URL}/og-image.jpg` }],
     siteName: "ShareBazaarOnline",
     locale: "en_IN",
+    authors: ["Manjunath Talanki"],
   },
   twitter: {
     card: "summary_large_image",
@@ -50,18 +54,32 @@ export default function IPOGuidePage() {
       "Complete IPO guide for Indian investors covering IPO types, allotment, GMP, SME IPOs, taxation, and how to apply for IPOs online.",
     url: canonicalUrl,
     image: [`${SITE_URL}/og-image.jpg`],
+    datePublished: "2024-01-15",
+    dateModified: "2026-10-13",
     articleSection: "IPO Guide",
+    inLanguage: "en-IN",
     author: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}/#organization`,
-      name: "ShareBazaarOnline",
-      url: SITE_URL,
+      "@type": "Person",
+      name: "Manjunath Talanki",
+      jobTitle: "Founder & CEO",
+      url: `${SITE_URL}/about`,
+      image: `${SITE_URL}/images/team/manjunath-talanki.jpg`,
+      sameAs: [
+        "https://twitter.com/Sharebazaaronli",
+        "https://www.linkedin.com/company/sharebazaaronline",
+      ],
     },
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,
       name: "ShareBazaarOnline",
       url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/images/sharebazaar.png`,
+        width: 512,
+        height: 512,
+      },
     },
     mainEntityOfPage: {
       "@type": "WebPage",

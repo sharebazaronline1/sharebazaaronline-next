@@ -1,10 +1,9 @@
 // src/components/CorporateActionsClient.jsx
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
 import {
   BookOpen,
   Search,
@@ -30,16 +29,17 @@ const TABS = [
   { id: "others", label: "Other Actions", dbType: "other" },
 ];
 
-const CorporateActionsClient = ({ initialGrouped = null }) => {
+const CorporateActionsClient = ({ initialGrouped = {} }) => {
   const router = useRouter();
+
   const [activeTab, setActiveTab] = useState("buyback");
-  const [fallbackRecords, setFallbackRecords] = useState([]);
-  const [loading, setLoading] = useState(!initialGrouped);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedYear, setSelectedYear] = useState("2026");
   const [currentPage, setCurrentPage] = useState(1);
-
-  const supabase = createClient();
+  const [sortConfig, setSortConfig] = useState({
+    key: "ex_date",
+    direction: "desc",
+  });
 
   const tabs = TABS;
   const currentTabLabel =
@@ -47,59 +47,11 @@ const CorporateActionsClient = ({ initialGrouped = null }) => {
   const currentDbType =
     tabs.find((t) => t.id === activeTab)?.dbType || "buyback";
 
-  // Records for the active tab — instant when SSR data is present
-  const records = useMemo(() => {
-    if (initialGrouped) {
-      return initialGrouped[currentDbType] || [];
-    }
-    return fallbackRecords;
-  }, [initialGrouped, currentDbType, fallbackRecords]);
-
-  // Fallback: only runs if no SSR data was provided
-  useEffect(() => {
-    if (initialGrouped) return;
-
-    let cancelled = false;
-
-    const fetchCorporateActions = async () => {
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from("corporate_actions")
-          .select(
-            `
-            *,
-            blog:blogs (
-              id,
-              slug,
-              heading
-            )
-          `
-          )
-          .eq("action_type", currentDbType)
-          .order("ex_date", { ascending: false });
-
-        if (error) throw error;
-        if (!cancelled) setFallbackRecords(data || []);
-      } catch (err) {
-        console.error("Error fetching corporate actions:", err);
-        if (!cancelled) setFallbackRecords([]);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    };
-
-    fetchCorporateActions();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [activeTab, currentDbType, initialGrouped, supabase]);
-
-  const [sortConfig, setSortConfig] = useState({
-    key: "ex_date",
-    direction: "desc",
-  });
+  // Records come from the server — no client fetch
+  const records = useMemo(
+    () => initialGrouped[currentDbType] || [],
+    [initialGrouped, currentDbType]
+  );
 
   useEffect(() => {
     setSortConfig({ key: "ex_date", direction: "desc" });
@@ -285,41 +237,8 @@ const CorporateActionsClient = ({ initialGrouped = null }) => {
     { name: "Corporate Actions", url: "/corporateactions" },
   ];
 
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline:
-      "Corporate Actions Calendar 2026 - Buyback, Dividends, Bonus, Split",
-    description:
-      "Track all corporate actions including buybacks, dividends, bonus issues, stock splits, rights issues and more. Stay updated with record dates, ex-dates, and announcements.",
-    image: `${SITE_URL}/og-image.jpg`,
-    datePublished: new Date().toISOString(),
-    dateModified: new Date().toISOString(),
-    author: {
-      "@type": "Organization",
-      name: "ShareBazaarOnline",
-      url: SITE_URL,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "ShareBazaarOnline",
-      logo: {
-        "@type": "ImageObject",
-        url: `${SITE_URL}/images/sharebazaar.png`,
-      },
-    },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `${SITE_URL}/corporateactions`,
-    },
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
-      />
       <BreadcrumbSchema items={breadcrumbItems} />
 
       <div className="w-full min-h-screen bg-white pb-20">
@@ -492,12 +411,7 @@ const CorporateActionsClient = ({ initialGrouped = null }) => {
             </div>
 
             <div className="overflow-x-auto">
-              {loading ? (
-                <div className="text-center py-20 text-slate-500 space-y-3">
-                  <div className="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-[#16A34A] rounded-full" />
-                  <p className="text-sm tracking-wide">Syncing market data...</p>
-                </div>
-              ) : sortedRecords.length === 0 ? (
+              {sortedRecords.length === 0 ? (
                 <div className="text-center py-20 text-slate-400">
                   No data matched your selected metrics for {currentTabLabel}.
                 </div>
@@ -821,7 +735,7 @@ const CorporateActionsClient = ({ initialGrouped = null }) => {
             </div>
 
             {/* PAGINATION */}
-            {!loading && sortedRecords.length > 0 && totalPages > 1 && (
+            {sortedRecords.length > 0 && totalPages > 1 && (
               <div className="px-6 py-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p className="text-sm text-slate-500">
                   Showing{" "}
@@ -961,6 +875,136 @@ const CorporateActionsClient = ({ initialGrouped = null }) => {
             </p>
           </div>
         </section>
+        {/* EXPLORE MORE */}
+<div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 mt-12">
+  <div className="mt-4 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+    <div className="mb-6">
+      <h3 className="text-2xl font-bold text-slate-900">
+        Explore More Investment Opportunities
+      </h3>
+      <p className="text-slate-500 mt-2 text-sm lg:text-base">
+        Discover IPOs, unlisted shares, broker comparison tools, and market
+        insights curated for smart investors.
+      </p>
+    </div>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <Link
+        href="/ipo"
+        className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-lg font-semibold text-slate-900">
+              Latest IPOs
+            </p>
+            <p className="text-sm text-slate-400 mt-1">
+              Track live &amp; upcoming IPOs
+            </p>
+          </div>
+          <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+            →
+          </span>
+        </div>
+      </Link>
+
+      <Link
+        href="/preipo"
+        className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-lg font-semibold text-slate-900">
+              Unlisted Shares
+            </p>
+            <p className="text-sm text-slate-400 mt-1">
+              Invest before public listing
+            </p>
+          </div>
+          <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+            →
+          </span>
+        </div>
+      </Link>
+
+      <Link
+        href="/broker-analyzer"
+        className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-lg font-semibold text-slate-900">
+              Compare Brokers
+            </p>
+            <p className="text-sm text-slate-400 mt-1">
+              Find the best broker platform
+            </p>
+          </div>
+          <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+            →
+          </span>
+        </div>
+      </Link>
+
+      <Link
+        href="/insight-hub"
+        className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-lg font-semibold text-slate-900">
+              Insight Hub
+            </p>
+            <p className="text-sm text-slate-400 mt-1">
+              Read IPO news, blogs &amp; market insights
+            </p>
+          </div>
+          <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+            →
+          </span>
+        </div>
+      </Link>
+
+      <Link
+        href="/ipo-calendar"
+        className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-lg font-semibold text-slate-900">
+              IPO Calendar
+            </p>
+            <p className="text-sm text-slate-400 mt-1">
+              Track upcoming IPO dates
+            </p>
+          </div>
+          <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+            →
+          </span>
+        </div>
+      </Link>
+
+      <Link
+        href="/how-to-apply-ipo"
+        className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-lg font-semibold text-slate-900">
+              How to Apply IPO
+            </p>
+            <p className="text-sm text-slate-400 mt-1">
+              Step-by-step IPO guide
+            </p>
+          </div>
+          <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+            →
+          </span>
+        </div>
+      </Link>
+    </div>
+  </div>
+</div>
       </div>
     </>
   );

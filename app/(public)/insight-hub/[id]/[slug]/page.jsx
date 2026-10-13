@@ -245,15 +245,16 @@ export default async function Page({ params }) {
     ...(keywords.length ? { keywords: keywords.join(", ") } : {}),
     articleSection: blog.category || "Market Insight",
     inLanguage: "en-IN",
-    author: {
-      "@type": "Person",
-      "@id": authorId,
-      name: AUTHOR.name,
-      jobTitle: AUTHOR.role,
-      url: AUTHOR.url,
-      image: `${SITE_URL}${AUTHOR.photo}`,
-      ...(AUTHOR.sameAs?.length ? { sameAs: AUTHOR.sameAs } : {}),
-    },
+  author: {
+  "@type": "Person",
+  name: "Kavya Talanki",
+  jobTitle: "Head of Research & Content",
+  url: `${SITE_URL}/about`,
+  sameAs: [
+    "https://twitter.com/Sharebazaaronli",
+    "https://www.linkedin.com/company/sharebazaaronline",
+  ],
+},
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}#organization`,

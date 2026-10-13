@@ -16,6 +16,8 @@ import {
   ChevronUp,
   ChevronRight,
   Home,
+  Award,
+  CheckCircle2,
 } from "lucide-react";
 
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
@@ -181,80 +183,110 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
       )}
 
       <div className="bg-slate-50 min-h-screen">
-        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-
-          {/* VISUAL BREADCRUMB NAVIGATION */}
-          <nav
-            aria-label="Breadcrumb"
-            className="text-sm font-medium text-slate-500"
+        {/* HEADER — dark theme matching IPO details */}
+      {/* HEADER — dark theme matching IPO details */}
+<header className="bg-gradient-to-b from-[#060a22] to-[#0c133a] text-white border-b border-slate-800/60 w-full">
+  {/* Breadcrumb row */}
+  <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-4">
+    <nav
+      aria-label="Breadcrumb"
+      className="text-sm font-medium text-slate-500"
+    >
+      <ol className="flex items-center space-x-2 flex-wrap">
+        <li>
+          <Link
+            href="/"
+            className="hover:text-emerald-400 flex items-center gap-1 transition-colors"
           >
-            <ol className="flex items-center space-x-2">
-              <li>
-                <Link
-                  href="/"
-                  className="hover:text-emerald-600 flex items-center gap-1 transition-colors"
-                >
-                  <Home className="w-4 h-4" />
-                  <span>Home</span>
-                </Link>
-              </li>
-              <ChevronRight className="w-4 h-4 text-slate-400" />
-              <li>
-                <Link
-                  href="/preipo"
-                  className="hover:text-emerald-600 transition-colors"
-                >
-                  Unlisted Shares
-                </Link>
-              </li>
-              <ChevronRight className="w-4 h-4 text-slate-400" />
-              <li className="text-slate-900 font-semibold truncate max-w-[200px] sm:max-w-none">
-                {data.name}
-              </li>
-            </ol>
-          </nav>
+            <Home className="w-4 h-4" />
+            <span>Home</span>
+          </Link>
+        </li>
+        <ChevronRight className="w-4 h-4 text-slate-600 shrink-0" />
+        <li>
+          <Link
+            href="/preipo"
+            className="hover:text-emerald-400 transition-colors"
+          >
+            Unlisted Shares
+          </Link>
+        </li>
+        <ChevronRight className="w-4 h-4 text-slate-600 shrink-0" />
+        <li className="text-slate-300 font-semibold truncate max-w-[200px] sm:max-w-none">
+          {data.name}
+        </li>
+      </ol>
+    </nav>
+  </div>
 
-          {/* HERO */}
-          <header className="relative bg-slate-50">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6 py-6 relative">
-              <div className="shrink-0">
-                <div className="w-28 h-28 lg:w-36 lg:h-36 rounded-xl p-4 bg-white shadow-md border border-gray-100">
-                  <img
-                    src={data.logo}
-                    alt={`${data.name} unlisted share logo`}
-                    loading="lazy"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-              </div>
+  {/* Hero content */}
+  <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-5 pb-8">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      {/* LEFT — 8 cols */}
+      <div className="lg:col-span-8 space-y-3 text-left">
+        <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[11px] font-semibold px-2.5 py-0.5 rounded-md uppercase tracking-wider">
+          <Award size={12} /> Unlisted Shares
+        </div>
 
-              <div className="pt-2 lg:pt-4">
-                <h1 className="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-2 tracking-tight">
-                  {data.name}
-                </h1>
-                <p className="text-base lg:text-lg text-slate-600 leading-relaxed max-w-4xl">
-                  {data.shareDetails?.companyName || data.name}
-                </p>
-              </div>
-            </div>
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white leading-tight">
+          {data.name}
+        </h1>
 
-            <div className="sticky top-[72px] sm:top-[88px] left-0 right-0 w-screen rounded-lg z-40 bg-blue-100 shadow-lg">
-              <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 py-4 px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center gap-4 text-blue-700 font-medium">
-                  <span className="text-lg">
-                    Ready to invest in this opportunity? Apply now through our
-                    trusted platforms.
-                  </span>
-                </div>
-                <button
-                  onClick={() => router.push("/login")}
-                  className="px-10 py-4 bg-[#16A34A] text-white font-bold text-lg rounded-full shadow-2xl hover:shadow-xl hover:bg-[#15803D] transform hover:-translate-y-1 transition-all duration-200 flex items-center gap-2 whitespace-nowrap"
-                >
-                  Buy Now @ ₹{displayPrice}
-                </button>
-              </div>
-            </div>
-          </header>
+        {data.shareDetails?.companyName &&
+          data.shareDetails.companyName !== data.name && (
+            <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl opacity-80 font-normal">
+              {data.shareDetails.companyName}
+            </p>
+          )}
+
+        <div className="flex flex-wrap items-center gap-3 pt-1">
+          <button
+            onClick={() => router.push("/login")}
+            className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg text-xs tracking-wide transition-all shadow-md"
+          >
+            Buy Now @ ₹{displayPrice}
+          </button>
+
+          <button
+            onClick={() => router.push("/how-to-apply-ipo")}
+            className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg text-xs tracking-wide transition-all shadow-md"
+          >
+            Apply Now
+          </button>
+        </div>
+      </div>
+
+      {/* RIGHT — 4 cols, big clean logo, no border, no card */}
+      <div className="lg:col-span-4 flex justify-center lg:justify-end items-center w-full">
+        {data.logo ? (
+          <img
+            src={data.logo}
+            alt={`${data.name} logo`}
+            className="w-40 h-40 sm:w-48 sm:h-48 lg:w-56 lg:h-56 object-contain drop-shadow-2xl"
+          />
+        ) : (
+          <div className="w-40 h-40 sm:w-48 sm:h-48 lg:w-56 lg:h-56 flex items-center justify-center text-white font-black text-6xl">
+            {data.name.charAt(0)}
+          </div>
+        )}
+      </div>
+    </div>
+
+    {/* Bottom verification row */}
+    <div className="flex flex-wrap items-center gap-x-6 gap-y-1 pt-3 mt-5 border-t border-slate-800/60 text-[11px] text-slate-400">
+      <span className="flex items-center gap-1.5 font-normal">
+        <CheckCircle2 size={12} className="text-emerald-400" />
+        Verified Unlisted Company
+      </span>
+      <span className="flex items-center gap-1.5 font-normal">
+        <CheckCircle2 size={12} className="text-emerald-400" />
+        Off-market Transfer · NSDL / CDSL
+      </span>
+    </div>
+  </div>
+</header>
+
+        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
           {/* COMPANY OVERVIEW */}
           <Card>

@@ -164,88 +164,91 @@ const InsightHubDetail = ({
           {articleTitle}
         </h1>
 
-     <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 text-xs sm:text-sm text-slate-500 border-b border-slate-200 pb-5 mb-8">
-  {!isCorporateAction && (
-    <>
-      <div className="flex items-center gap-2">
-        <Avatar size={24} />
-        <span>
-          By{" "}
-          <Link
-            href="/about"
-            className="font-semibold text-slate-900 hover:text-emerald-600 transition"
-          >
-            {AUTHOR.name}
-          </Link>
-          <span className="hidden sm:inline text-slate-400">
-            {" "}· {AUTHOR.shortRole}
-          </span>
+        <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 text-xs sm:text-sm text-slate-500 border-b border-slate-200 pb-5 mb-8">
+     {/* Byline + dates row — hidden entirely for corporate actions */}
+{!isCorporateAction && (
+  <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 text-xs sm:text-sm text-slate-500 border-b border-slate-200 pb-5 mb-8">
+    <div className="flex items-center gap-2">
+      <Avatar size={24} />
+      <span>
+        By{" "}
+        <Link
+          href="/about"
+          className="font-semibold text-slate-900 hover:text-emerald-600 transition"
+        >
+          {AUTHOR.name}
+        </Link>
+        <span className="hidden sm:inline text-slate-400">
+          {" "}· {AUTHOR.shortRole}
         </span>
-      </div>
-      <span className="text-slate-300">•</span>
-    </>
-  )}
-  <span>
-    Published <time dateTime={publishedDate}>{publishedFmt}</time>
-  </span>
-  {showUpdated && (
-    <>
-      <span className="text-slate-300">•</span>
-      <span className="text-slate-400">
-        Updated <time dateTime={modifiedDate}>{modifiedFmt}</time>
       </span>
-    </>
-  )}
-</div>
+    </div>
+    <span className="text-slate-300">•</span>
+    <span>
+      Published <time dateTime={publishedDate}>{publishedFmt}</time>
+    </span>
+    {showUpdated && (
+      <>
+        <span className="text-slate-300">•</span>
+        <span className="text-slate-400">
+          Updated <time dateTime={modifiedDate}>{modifiedFmt}</time>
+        </span>
+      </>
+    )}
+  </div>
+)}
+        </div>
 
         {blog.image_url && (
-          <div className="mb-8">
+          <div className="mb-8 flex justify-center">
             <img
               src={blog.image_url}
               alt={articleTitle}
-              className="w-full h-auto object-contain rounded-xl shadow-sm"
+              className="w-full max-w-3xl h-auto object-contain rounded-xl shadow-sm"
             />
           </div>
         )}
 
         <div className="w-full mx-auto">
           <article
-            className="prose-content"
+            className={`prose-content ${
+              isCorporateAction ? "corporate-content" : "blog-content"
+            }`}
             dangerouslySetInnerHTML={{ __html: blog.content || "" }}
           />
         </div>
 
         {/* Author bio */}
-{!isCorporateAction && (
-  <section
-    aria-label="About the author"
-    className="mt-12 pt-8 border-t border-slate-200"
-  >
-    <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start">
-      <Avatar size={56} />
-      <div className="flex-1 min-w-0">
-        <p className="text-[11px] uppercase tracking-wide text-slate-500 font-semibold mb-1">
-          Written by
-        </p>
-        <h2 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">
-          {AUTHOR.name}
-        </h2>
-        <p className="text-xs sm:text-sm text-slate-500 mb-3">
-          {AUTHOR.role}
-        </p>
-        <p className="text-sm text-slate-700 leading-relaxed">
-          {AUTHOR.bio}
-        </p>
-        <Link
-          href="/about"
-          className="inline-block mt-3 text-sm font-semibold text-green-600 hover:text-green-700 transition-colors"
-        >
-          About the author →
-        </Link>
-      </div>
-    </div>
-  </section>
-)}
+        {!isCorporateAction && (
+          <section
+            aria-label="About the author"
+            className="mt-12 pt-8 border-t border-slate-200"
+          >
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start">
+              <Avatar size={56} />
+              <div className="flex-1 min-w-0">
+                <p className="text-[11px] uppercase tracking-wide text-slate-500 font-semibold mb-1">
+                  Written by
+                </p>
+                <h2 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">
+                  {AUTHOR.name}
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-500 mb-3">
+                  {AUTHOR.role}
+                </p>
+                <p className="text-sm text-slate-700 leading-relaxed">
+                  {AUTHOR.bio}
+                </p>
+                <Link
+                  href="/about"
+                  className="inline-block mt-3 text-sm font-semibold text-green-600 hover:text-green-700 transition-colors"
+                >
+                  About the author →
+                </Link>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Share + Back */}
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -345,6 +348,7 @@ const InsightHubDetail = ({
       </div>
 
       <style jsx global>{`
+        /* Base — applies to BOTH blog and corporate */
         .prose-content {
           width: 100%;
           max-width: 100%;
@@ -362,23 +366,6 @@ const InsightHubDetail = ({
           height: auto;
           border-radius: 12px;
         }
-        .prose-content table {
-          width: 100%;
-          border-collapse: collapse;
-          display: block;
-          overflow-x: auto;
-        }
-        .prose-content th,
-        .prose-content td {
-          padding: 0.5rem 1rem;
-          border-bottom: 1px solid #e5e7eb;
-          text-align: left;
-          color: #374151;
-        }
-        .prose-content th {
-          color: #6b7280;
-          font-weight: 600;
-        }
         .prose-content ul {
           list-style: disc;
           padding-left: 1.25rem;
@@ -390,48 +377,202 @@ const InsightHubDetail = ({
           color: #111827;
           font-weight: 700;
         }
-        .prose-content .bg-emerald-600,
-        .prose-content [class*="bg-emerald"] {
+
+        /* =========================================================
+           CORPORATE ACTIONS — unchanged (their own inline styles)
+        ========================================================= */
+        .prose-content.corporate-content table {
+          width: 100%;
+          border-collapse: collapse;
+          display: block;
+          overflow-x: auto;
+        }
+        .prose-content.corporate-content th,
+        .prose-content.corporate-content td {
+          padding: 0.5rem 1rem;
+          border-bottom: 1px solid #e5e7eb;
+          text-align: left;
+          color: #374151;
+        }
+        .prose-content.corporate-content th {
+          color: #6b7280;
+          font-weight: 600;
+        }
+        .prose-content.corporate-content .bg-emerald-600,
+        .prose-content.corporate-content [class*="bg-emerald"] {
           background-color: #059669 !important;
           padding: 0.5rem 1.25rem !important;
         }
-        .prose-content .bg-emerald-600 h2,
-        .prose-content [class*="bg-emerald"] h2 {
+        .prose-content.corporate-content .bg-emerald-600 h2,
+        .prose-content.corporate-content [class*="bg-emerald"] h2 {
           color: #ffffff !important;
           font-size: 1rem !important;
           font-weight: 700 !important;
           margin: 0 !important;
         }
-        .prose-content .bg-slate-50,
-        .prose-content .bg-gray-50 {
+        .prose-content.corporate-content .bg-slate-50,
+        .prose-content.corporate-content .bg-gray-50 {
           background-color: #f8fafc !important;
           border: 1px solid #e5e7eb !important;
           border-radius: 0.75rem !important;
         }
-        .prose-content details {
+        .prose-content.corporate-content details {
           background: #fff;
           border: 1px solid #e5e7eb;
           border-radius: 0.75rem;
           margin-bottom: 0.75rem;
           overflow: hidden;
         }
-        .prose-content details summary {
+        .prose-content.corporate-content details summary {
           cursor: pointer;
           padding: 1rem 1.25rem;
           font-weight: 600;
           color: #1f2937;
           list-style: none;
         }
-        .prose-content details summary::-webkit-details-marker {
+        .prose-content.corporate-content details summary::-webkit-details-marker {
           display: none;
         }
-        .prose-content details[open] summary {
+        .prose-content.corporate-content details[open] summary {
           border-bottom: 1px solid #f3f4f6;
         }
-        .prose-content details > div {
+        .prose-content.corporate-content details > div {
           padding: 0 1.25rem 1.25rem;
           color: #4b5563;
         }
+
+        /* =========================================================
+           BLOGS — plain standard blog format, no boxes, no bars
+        ========================================================= */
+
+        /* Strip any inline emerald / gray box classes */
+        .prose-content.blog-content [class*="bg-emerald"],
+        .prose-content.blog-content .bg-gray-700,
+        .prose-content.blog-content .bg-slate-50,
+        .prose-content.blog-content .bg-gray-50,
+        .prose-content.blog-content .bg-slate-100 {
+          background: none !important;
+          border: none !important;
+          border-radius: 0 !important;
+          padding: 0 !important;
+          margin: 0 !important;
+        }
+
+        /* Kill section/card wrappers from source HTML */
+        .prose-content.blog-content > section,
+        .prose-content.blog-content > div:not([class]) {
+          background: none !important;
+          border: none !important;
+          border-radius: 0 !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          box-shadow: none !important;
+        }
+
+        /* Headings — plain bold, no bars, no boxes */
+        .prose-content.blog-content h2 {
+          color: #111827 !important;
+          font-size: 1.35rem !important;
+          font-weight: 700 !important;
+          margin: 1.75rem 0 0.5rem !important;
+          padding: 0 !important;
+          background: none !important;
+          border: none !important;
+          line-height: 1.35 !important;
+        }
+        .prose-content.blog-content h3 {
+          color: #111827 !important;
+          font-size: 1.15rem !important;
+          font-weight: 700 !important;
+          margin: 1.5rem 0 0.5rem !important;
+          padding: 0 !important;
+          background: none !important;
+          border: none !important;
+          line-height: 1.4 !important;
+        }
+        .prose-content.blog-content h4 {
+          color: #1f2937 !important;
+          font-size: 1rem !important;
+          font-weight: 700 !important;
+          margin: 1.25rem 0 0.5rem !important;
+          padding: 0 !important;
+          background: none !important;
+          border: none !important;
+        }
+
+        /* Paragraphs — flat, no padding, tight rhythm */
+        .prose-content.blog-content p {
+          color: #374151 !important;
+          margin: 0 0 1rem !important;
+          padding: 0 !important;
+          line-height: 1.75 !important;
+        }
+
+        /* Lists */
+        .prose-content.blog-content ul,
+        .prose-content.blog-content ol {
+          margin: 0 0 1rem !important;
+          padding-left: 1.25rem !important;
+        }
+        .prose-content.blog-content li {
+          color: #374151 !important;
+          line-height: 1.7 !important;
+          margin-bottom: 0.4rem !important;
+        }
+
+        /* Links */
+        .prose-content.blog-content a {
+          color: #059669 !important;
+          text-decoration: underline !important;
+          text-underline-offset: 2px !important;
+        }
+        .prose-content.blog-content a:hover {
+          color: #047857 !important;
+        }
+
+        /* Tables — plain */
+        .prose-content.blog-content table {
+          width: 100% !important;
+          border-collapse: collapse !important;
+          margin: 1rem 0 !important;
+          font-size: 0.9rem !important;
+        }
+        .prose-content.blog-content th,
+        .prose-content.blog-content td {
+          padding: 0.5rem 0.75rem !important;
+          border: 1px solid #e5e7eb !important;
+          text-align: left !important;
+          color: #374151 !important;
+        }
+        .prose-content.blog-content th {
+          background: #f8fafc !important;
+          font-weight: 600 !important;
+          color: #111827 !important;
+        }
+
+        /* Blockquote — thin left border only */
+        .prose-content.blog-content blockquote {
+          border-left: 3px solid #d1d5db !important;
+          padding: 0.25rem 0 0.25rem 1rem !important;
+          margin: 1rem 0 !important;
+          color: #4b5563 !important;
+          font-style: italic !important;
+          background: none !important;
+        }
+        .prose-content.blog-content blockquote p {
+          margin: 0 !important;
+        }
+
+        /* Kill any inline spacing classes that came from the source HTML */
+        .prose-content.blog-content [class*="mb-"],
+        .prose-content.blog-content [class*="mt-"],
+        .prose-content.blog-content [class*="p-"],
+        .prose-content.blog-content [class*="py-"],
+        .prose-content.blog-content [class*="px-"],
+        .prose-content.blog-content [class*="gap-"] {
+          /* leave margins/gaps to the wrapper rules above */
+        }
+
         @media (min-width: 1024px) {
           .prose-content [class*="lg:grid-cols-2"] {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;

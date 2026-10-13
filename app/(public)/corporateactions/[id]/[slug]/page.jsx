@@ -226,12 +226,12 @@ export default async function Page({ params }) {
     ...(keywords.length ? { keywords: keywords.join(", ") } : {}),
     articleSection: blog.category || "Corporate Actions",
     inLanguage: "en-IN",
-    author: {
-      "@type": "Person",
-      name: "Kavya Talanki",
-      jobTitle: "Head of Research & Content",
-      url: `${SITE_URL}/about`,
-    },
+   author: {
+  "@type": "Organization",
+  "@id": `${SITE_URL}#organization`,
+  name: "ShareBazaarOnline",
+  url: SITE_URL,
+},
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}#organization`,

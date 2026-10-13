@@ -745,61 +745,7 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
         key={i}
         className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#061A40] via-[#0A2558] to-[#0E3A73] p-3.5 shadow-lg border border-cyan-500/10 text-white"
       >
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 opacity-[0.06] pointer-events-none">
-          <svg width="100%" height="100%">
-            <defs>
-              <pattern
-                id={`grid-${i}`}
-                width="24"
-                height="24"
-                patternUnits="userSpaceOnUse"
-              >
-                <path
-                  d="M24 0 L0 0 0 24"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="1"
-                />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill={`url(#grid-${i})`} />
-          </svg>
-        </div>
-
-        {/* Candlestick chart — bottom-right */}
-        <div className="absolute bottom-2 right-2 opacity-[0.08] pointer-events-none">
-          <svg width="140" height="80" viewBox="0 0 140 80" fill="none">
-            {[
-              { x: 8, h: 22, y: 44, up: true },
-              { x: 26, h: 14, y: 52, up: false },
-              { x: 44, h: 30, y: 32, up: true },
-              { x: 62, h: 18, y: 42, up: false },
-              { x: 80, h: 36, y: 22, up: true },
-              { x: 98, h: 12, y: 56, up: false },
-              { x: 116, h: 40, y: 16, up: true },
-            ].map((c, idx) => (
-              <g key={idx}>
-                <line
-                  x1={c.x + 3}
-                  y1={c.y - 6}
-                  x2={c.x + 3}
-                  y2={c.y + c.h + 6}
-                  stroke="#22D3EE"
-                  strokeWidth="1"
-                />
-                <rect
-                  x={c.x}
-                  y={c.y}
-                  width="7"
-                  height={c.h}
-                  rx="1"
-                  fill={c.up ? "#22D3EE" : "#38BDF8"}
-                />
-              </g>
-            ))}
-          </svg>
-        </div>
+      
 
         {/* Decorative glows */}
         <div

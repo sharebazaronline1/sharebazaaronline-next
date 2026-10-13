@@ -20,6 +20,7 @@ export default function Footer() {
   const resourceLinks = [
     { label: "Blogs & Insight Hub", href: "/insight-hub" },
     { label: "IPO Calendar", href: "/ipo-calendar" },
+    { label: "Corporate Actions Calendar", href: "/corporate-actions-calendar" },
     { label: "How to Invest", href: "/how-to-apply-ipo" },
     { label: "Help Center", href: "mailto:sharebazaronline1@gmail.com" },
   ];
@@ -35,62 +36,7 @@ export default function Footer() {
       <div className="w-full bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 text-white shadow-2xl">
         {/* TOP CTA SECTION */}
         <div className="relative overflow-hidden bg-gradient-to-r from-cyan-700 via-cyan-800 to-blue-900 px-4 sm:px-8 lg:px-14 py-10 lg:py-12">
-          {/* Grid pattern overlay */}
-          <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
-            <svg width="100%" height="100%">
-              <defs>
-                <pattern
-                  id="footer-cta-grid"
-                  width="32"
-                  height="32"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path
-                    d="M32 0 L0 0 0 32"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="1"
-                  />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#footer-cta-grid)" />
-            </svg>
-          </div>
-
-          {/* Candlestick chart — bottom-right */}
-          <div className="absolute bottom-4 right-6 opacity-[0.10] pointer-events-none hidden lg:block">
-            <svg width="220" height="110" viewBox="0 0 220 110" fill="none">
-              {[
-                { x: 8, h: 28, y: 60, up: true },
-                { x: 34, h: 18, y: 70, up: false },
-                { x: 60, h: 38, y: 44, up: true },
-                { x: 86, h: 22, y: 56, up: false },
-                { x: 112, h: 44, y: 32, up: true },
-                { x: 138, h: 16, y: 72, up: false },
-                { x: 164, h: 52, y: 22, up: true },
-                { x: 190, h: 26, y: 58, up: true },
-              ].map((c, idx) => (
-                <g key={idx}>
-                  <line
-                    x1={c.x + 4}
-                    y1={c.y - 8}
-                    x2={c.x + 4}
-                    y2={c.y + c.h + 8}
-                    stroke="#ffffff"
-                    strokeWidth="1"
-                  />
-                  <rect
-                    x={c.x}
-                    y={c.y}
-                    width="8"
-                    height={c.h}
-                    rx="1"
-                    fill={c.up ? "#ffffff" : "#e0f2fe"}
-                  />
-                </g>
-              ))}
-            </svg>
-          </div>
+        
 
           <div className="relative z-10 flex flex-col xl:flex-row items-center justify-between gap-8 w-full">
             <div className="text-center xl:text-left">
@@ -127,31 +73,9 @@ export default function Footer() {
 
         {/* MAIN FOOTER */}
         <div
-  className="relative px-4 sm:px-8 lg:px-20 pt-10 lg:pt-12 pb-32 lg:pb-12 overflow-hidden"
-  style={{ paddingBottom: "max(8rem, env(safe-area-inset-bottom, 0px) + 6rem)" }}
->
-          {/* Grid pattern overlay (subtle) */}
-          <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
-            <svg width="100%" height="100%">
-              <defs>
-                <pattern
-                  id="footer-grid"
-                  width="32"
-                  height="32"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path
-                    d="M32 0 L0 0 0 32"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="1"
-                  />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#footer-grid)" />
-            </svg>
-          </div>
-
+          className="relative px-4 sm:px-8 lg:px-20 pt-10 lg:pt-12 pb-32 lg:pb-12 overflow-hidden"
+          style={{ paddingBottom: "max(8rem, env(safe-area-inset-bottom, 0px) + 6rem)" }}
+        >
           {/* Candlestick chart (subtle, bottom-right) */}
           <div className="absolute bottom-6 right-6 opacity-[0.05] pointer-events-none hidden lg:block">
             <svg width="220" height="110" viewBox="0 0 220 110" fill="none">
@@ -211,7 +135,7 @@ export default function Footer() {
 
                 <div className="space-y-4 flex flex-col items-center md:items-start">
                   <div className="text-center md:text-left">
-                    <p className="text-sm font-semibold text-white mb-3">Contact Us</p>
+                
                     <div className="flex gap-4 justify-center md:justify-start">
                       <a
                         href="https://twitter.com/Sharebazaaronli"
@@ -248,14 +172,7 @@ export default function Footer() {
                     </div>
                   </div>
 
-                  <div className="w-full text-center md:text-left">
-                    <a
-                      href="mailto:support@sharebazaaronline.com"
-                      className="text-sm text-slate-300 hover:text-green-400 transition break-all"
-                    >
-                      support@sharebazaaronline.com
-                    </a>
-                  </div>
+                
                 </div>
               </div>
 

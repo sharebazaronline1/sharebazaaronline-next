@@ -114,13 +114,12 @@ export default async function CorporateActionsPage() {
   // Fetch once on the server
   const records = await getCorporateActions();
 
-  // Group by action_type so the client can switch tabs without refetching
-  const grouped = records.reduce((acc, row) => {
-    const type = (row.action_type || "other").toLowerCase().trim();
-    if (!acc[type]) acc[type] = [];
-    acc[type].push(row);
-    return acc;
-  }, {});
+const grouped = (records || []).reduce((acc, row) => {
+  const type = (row.action_type || "other").toLowerCase().trim();
+  if (!acc[type]) acc[type] = [];
+  acc[type].push(row);
+  return acc;
+}, {});
 
   // ==========================================
   // WEBPAGE JSON-LD
