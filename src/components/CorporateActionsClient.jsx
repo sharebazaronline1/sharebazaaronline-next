@@ -5,9 +5,9 @@ import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Link from 'next/link';
 import { createClient } from "@/lib/supabase/client";
-import { 
-  BookOpen, 
-  Search, 
+import {
+  BookOpen,
+  Search,
   TrendingUp,
   Home,
   ChevronRight,
@@ -77,12 +77,10 @@ const CorporateActionsClient = () => {
     fetchCorporateActions();
   }, [activeTab]);
 
-  // Reset sort to default whenever the tab changes
   useEffect(() => {
     setSortConfig({ key: "ex_date", direction: "desc" });
   }, [activeTab]);
 
-  // Reset page to 1 whenever filters / sort / tab change
   useEffect(() => {
     setCurrentPage(1);
   }, [activeTab, searchQuery, selectedYear, sortConfig]);
@@ -94,9 +92,6 @@ const CorporateActionsClient = () => {
     return matchesSearch && matchesYear;
   });
 
-  // ==========================================================
-  // SORTING ENGINE
-  // ==========================================================
   const parseDateValue = (dateStr) => {
     if (!dateStr) return 0;
     const d = new Date(dateStr);
@@ -191,9 +186,6 @@ const CorporateActionsClient = () => {
     });
   }, [filteredRecords, sortConfig]);
 
-  // ==========================================================
-  // PAGINATION
-  // ==========================================================
   const totalPages = Math.ceil(sortedRecords.length / ITEMS_PER_PAGE);
 
   const paginatedRecords = useMemo(() => {
@@ -201,9 +193,6 @@ const CorporateActionsClient = () => {
     return sortedRecords.slice(start, start + ITEMS_PER_PAGE);
   }, [sortedRecords, currentPage]);
 
-  // ==========================================================
-  // SORTABLE HEADER
-  // ==========================================================
   const SortableHeader = ({ label, sortKey, align = "center", borderRight = false }) => {
     const isActive = sortConfig.key === sortKey;
     const isAscending = sortConfig.direction === "asc";
@@ -259,13 +248,11 @@ const CorporateActionsClient = () => {
       .replace(/ /g, "-");
   };
 
-  // Breadcrumb items for JSON-LD
   const breadcrumbItems = [
     { name: "Home", url: "/" },
     { name: "Corporate Actions", url: "/corporateactions" },
   ];
 
-  // Generate Article JSON-LD Schema
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -295,7 +282,6 @@ const CorporateActionsClient = () => {
 
   return (
     <>
-      {/* JSON-LD Schemas for SEO */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
@@ -303,7 +289,7 @@ const CorporateActionsClient = () => {
       <BreadcrumbSchema items={breadcrumbItems} />
 
       <div className="w-full min-h-screen bg-white pb-20">
-        
+
         {/* Visual Breadcrumb */}
         <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-6">
           <nav aria-label="Breadcrumb" className="text-sm font-medium text-slate-500">
@@ -323,7 +309,7 @@ const CorporateActionsClient = () => {
         {/* ==================== HERO SECTION ==================== */}
         <section className="relative overflow-hidden py-16 bg-white border-b border-gray-100">
           <div className="relative w-full px-4 sm:px-6 lg:px-10 xl:px-16 text-center">
-            
+
             <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
               <div className="inline-flex items-center gap-2 bg-emerald-50 text-[#16A34A] px-4 py-1.5 rounded-full text-xs font-bold border border-emerald-200/60 shadow-xs">
                 <BookOpen size={14} />
@@ -338,10 +324,10 @@ const CorporateActionsClient = () => {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 mb-4">
               Corporate Actions Matrix
             </h1>
-            
+
             <p className="text-base text-slate-600 max-w-3xl mx-auto leading-relaxed">
               Stay informed on essential stock distributions, company restructurings, and upcoming eligibility dates. Want to explore delistings or mergers?{" "}
-              <button 
+              <button
                 onClick={() => {
                   setActiveTab("others");
                   setSearchQuery("");
@@ -351,6 +337,58 @@ const CorporateActionsClient = () => {
                 Track More Actions
               </button>
             </p>
+          </div>
+        </section>
+
+        {/* ==================== KEY DATES YOU NEED TO KNOW (TOP) ==================== */}
+        <section className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-12">
+          <div className="w-full">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-6 text-center">
+              Key Dates You Need to Know
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-4">
+                  <BookOpen size={18} className="text-emerald-700" />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">
+                  Record Date
+                </h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  The day the company checks its register to decide who’s
+                  eligible. You must hold the shares in your Demat account on
+                  this date.
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center mb-4">
+                  <TrendingUp size={18} className="text-blue-700" />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">
+                  Ex-Date
+                </h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  The day the stock starts trading without the benefit of the
+                  action. To qualify, buy at least one trading day before the
+                  ex-date (T+1 settlement).
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center mb-4">
+                  <ChevronRight size={18} className="text-purple-700" />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">
+                  Payment Date
+                </h3>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  When dividends hit your bank account, or bonus shares are
+                  credited to your Demat.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -379,7 +417,7 @@ const CorporateActionsClient = () => {
         {/* ==================== MAIN TABLE ==================== */}
         <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 mt-10">
           <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-            
+
             <div className="px-6 py-5 border-b border-slate-100 bg-white flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div className="text-slate-800 font-bold text-base">
                 Upcoming {currentTabLabel} Records
@@ -497,8 +535,8 @@ const CorporateActionsClient = () => {
                   </thead>
                   <tbody className="divide-y divide-slate-100 text-slate-800">
                     {paginatedRecords.map((row) => (
-                      <tr 
-                        key={row.id} 
+                      <tr
+                        key={row.id}
                         onClick={() => {
                           if (row.blog?.id) {
                             router.push(`/insight-hub/${row.blog.id}/${row.blog.slug}`);
@@ -508,10 +546,10 @@ const CorporateActionsClient = () => {
                           row.blog?.id ? "cursor-pointer" : ""
                         }`}
                       >
-                        <td 
+                        <td
                           className={`px-6 py-4 text-left font-bold border-r border-slate-100 ${
-                            row.blog?.id 
-                              ? "text-[#16A34A] hover:underline" 
+                            row.blog?.id
+                              ? "text-[#16A34A] hover:underline"
                               : "text-slate-900"
                           }`}
                         >
@@ -592,7 +630,7 @@ const CorporateActionsClient = () => {
               )}
             </div>
 
-            {/* ==================== PAGINATION (Prev / Next only) ==================== */}
+            {/* ==================== PAGINATION ==================== */}
             {!loading && sortedRecords.length > 0 && totalPages > 1 && (
               <div className="px-6 py-5 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <p className="text-sm text-slate-500">
@@ -642,6 +680,94 @@ const CorporateActionsClient = () => {
             )}
           </div>
         </div>
+
+        {/* ==================== ARTICLE (BOTTOM) ==================== */}
+        <section className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 mt-14">
+          <div className="w-full space-y-6 text-slate-700 text-base sm:text-lg leading-relaxed">
+
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900">
+              Corporate Actions Calendar — Dividends, Bonus Issues, Splits &amp; More
+            </h2>
+
+            <p>
+              Corporate actions are events a listed company initiates that
+              directly affect its shareholders. They can change your portfolio
+              value, your share count, your tax liability, and whether you
+              qualify for a cash payout — which is exactly why every investor
+              needs to track them closely.
+            </p>
+
+            <p>
+              ShareBazaarOnline’s Corporate Actions Calendar follows all the
+              major events across Indian listed companies — upcoming record
+              dates, ex-dates, and eligibility deadlines — in one place,
+              updated daily.
+            </p>
+
+            <div>
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-4">
+                Types of Corporate Actions We Track
+              </h3>
+              <div className="space-y-4">
+                <p>
+                  <strong className="text-slate-900">Dividends</strong> — Cash a
+                  company pays shareholders out of its profits. To receive one,
+                  you must hold the shares before the ex-dividend date. In
+                  India, dividends are taxable at your income-tax slab rate.
+                </p>
+                <p>
+                  <strong className="text-slate-900">Bonus Issues</strong> —
+                  Free additional shares given to existing shareholders in a
+                  fixed ratio (e.g. 1:1 = one free share for every share held).
+                  Your share count goes up, but your total investment value
+                  stays the same because the price adjusts proportionally.
+                </p>
+                <p>
+                  <strong className="text-slate-900">Stock Splits</strong> — The
+                  company divides existing shares into smaller units (e.g. a
+                  1:5 split turns one ₹100 face-value share into five ₹20
+                  shares). This makes the stock more affordable and improves
+                  liquidity without changing the company’s market
+                  capitalisation.
+                </p>
+                <p>
+                  <strong className="text-slate-900">Rights Issues</strong> —
+                  Existing shareholders get the right to buy additional shares
+                  at a discount before they’re offered publicly. You can
+                  subscribe, renounce (sell your rights), or let them lapse.
+                </p>
+                <p>
+                  <strong className="text-slate-900">Buybacks</strong> — The
+                  company repurchases its own shares from shareholders, usually
+                  at a premium to the market price. Buybacks cut the total
+                  shares outstanding and can signal management’s confidence in
+                  the company’s value.
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
+                How to Use This Calendar
+              </h3>
+              <p>
+                Pick a corporate action type from the tabs below to see
+                upcoming events. Each entry shows the company name, action
+                type, ratio or amount, record date, and ex-date. We refresh
+                this data daily from official exchange filings and company
+                announcements — see the full list on our Corporate Actions
+                page.
+              </p>
+            </div>
+
+            <p className="text-base text-slate-600 border-l-4 border-amber-400 bg-amber-50 px-4 py-3 rounded-r-lg">
+              <strong className="text-slate-800">Important Note:</strong>{" "}
+              Companies can revise corporate action dates. Always cross-verify
+              critical dates against the official BSE / NSE announcements
+              before trading on eligibility.
+            </p>
+          </div>
+        </section>
       </div>
     </>
   );

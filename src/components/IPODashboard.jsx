@@ -510,32 +510,86 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
   return (
     <div className="bg-white w-full min-h-screen">
       {/* HERO SECTION */}
-      <section className="relative overflow-hidden bg-white py-16 lg:py-2">
-        <div className="relative w-full px-4 sm:px-6 lg:px-10 xl:px-16">
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-14 items-center">
-            <div className="xl:col-span-6">
-              <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-5 py-2 rounded-full text-sm font-semibold border border-green-200 shadow-sm">
-                <TrendingUp size={16} />
-                IPO Tracker
-              </div>
+    {/* IPO Tracker Hero */}
+<section className="relative overflow-hidden bg-white">
+  <div className="relative w-full px-4 sm:px-6 lg:px-10 xl:px-16">
+    <div className="grid grid-cols-1 xl:grid-cols-12 gap-14 items-center">
+      <div className="xl:col-span-6">
+        <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-5 py-2 rounded-full text-sm font-semibold border border-green-200 shadow-sm">
+          <TrendingUp size={16} />
+          IPO Tracker
+        </div>
 
-              <h1 className="mt-7 text-5xl md:text-6xl lg:text-7xl font-black tracking-[-3px] leading-[0.95] text-[#0f172a]">
-                Track India’s{" "}
-                <span className="text-green-600 block">Complete IPOs</span>
-              </h1>
+        <h1 className="mt-7 text-5xl md:text-6xl lg:text-7xl font-black tracking-[-3px] leading-[0.95] text-[#0f172a]">
+          Track India’s{" "}
+          <span className="text-green-600 block">Complete IPOs</span>
+        </h1>
 
-              <p className="mt-6 text-lg lg:text-[22px] leading-9 text-slate-600 max-w-2xl">
-                Track live &amp; upcoming IPOs in India with listing dates,
-                price bands, GMP trends, lot sizes, and subscription insights.
+        <p className="mt-6 text-lg lg:text-[22px] leading-9 text-slate-600 max-w-2xl">
+          Track live &amp; upcoming IPOs in India with listing dates,
+          price bands, GMP trends, lot sizes, and subscription insights.
+        </p>
+      </div>
+
+      <div className="xl:col-span-6">
+          <div className="relative flex justify-center">
+        <img
+          src="/images/hero-ipo.png"
+          alt="IPO Tracker"
+          className="w-full max-w-[780px] object-contain drop-shadow-2xl"
+        />
+     
+      </div>
+         </div>
+    </div>
+  </div>
+</section>
+
+      {/* KEY DATA POINTS SECTION */}
+      <section className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-6 pb-2">
+        <div className="w-full">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-5">
+            Key data points we track for every IPO
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-sm font-bold text-slate-900 mb-1">Price Band</p>
+              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                The range within which you can place your bid
               </p>
             </div>
 
-            <div className="xl:col-span-6">
-              <img
-                src="/images/hero-ipo.png"
-                alt="IPO Tracker"
-                className="w-full max-w-[780px] object-contain drop-shadow-2xl"
-              />
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-sm font-bold text-slate-900 mb-1">Lot Size</p>
+              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                Minimum number of shares per application
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-sm font-bold text-slate-900 mb-1">
+                Open &amp; Close Dates
+              </p>
+              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                The subscription window for applying
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-sm font-bold text-slate-900 mb-1">
+                Listing Date
+              </p>
+              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                Expected date of listing on NSE / BSE
+              </p>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-sm font-bold text-slate-900 mb-1">IPO Type</p>
+              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+                Mainboard or SME; Fresh Issue or Offer for Sale (OFS)
+              </p>
             </div>
           </div>
         </div>
@@ -816,80 +870,169 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
           )}
         </div>
 
-        <div className="mt-8 bg-white">
+        {/* ARTICLE — about the IPO market (before FAQ) */}
+        <div className="mt-10 space-y-6 text-slate-700 text-base sm:text-lg leading-relaxed">
+          <p>
+            India’s primary market is still one of the busiest in Asia, with a
+            steady flow of Mainboard and SME IPOs opening almost every week.
+            Whether you’re applying for your first IPO or you track grey market
+            premium (GMP) and subscription numbers daily, knowing what’s live,
+            what’s coming, and what’s just closed is the difference between a
+            timely application and a missed allotment.
+          </p>
+
+          <p>
+            New to the process? Start with our step-by-step{" "}
+            <Link
+              href="/ipoguide"
+              className="text-emerald-600 font-semibold hover:underline"
+            >
+              IPO Guide
+            </Link>{" "}
+            — it explains how allotment, price bands, lot sizes, and investor
+            categories actually work before you commit any money.
+          </p>
+
+          <div>
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
+              What’s Happening in the IPO Market Right Now
+            </h3>
+            <div className="space-y-4">
+              <p>
+                As of October 2026, the IPO calendar is packed. Several SME
+                IPOs are open for subscription alongside select Mainboard
+                issues. The SME segment has drawn heavy retail interest this
+                year on the back of smaller ticket sizes and strong listing-day
+                gains in a handful of recent offers. But not every SME IPO
+                lists in the green — before you apply, weigh the company’s
+                financials, promoter track record, and how the IPO proceeds
+                will be used.
+              </p>
+              <p>
+                On the Mainboard side, QIB (institutional) subscription remains
+                one of the more dependable signals of listing-day strength.
+                Issues with heavy QIB demand tend to list at a premium — though,
+                as always, past trends are no promise of future returns.
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
+              How to Use This IPO Tracker
+            </h3>
+            <p>
+              The table below lists every open, upcoming, and recently closed
+              IPO in India. Scan each issue’s price band, lot size,
+              subscription dates, and expected listing date at a glance. Click
+              any IPO name to open the full analysis — company overview,
+              financial highlights, live GMP trend, subscription status, and
+              our apply-or-avoid verdict.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
+              Before You Apply — A Quick Reminder
+            </h3>
+            <p>
+              Every IPO carries market risk. Listing gains are never
+              guaranteed, and GMP is an unofficial, unregulated indicator — it
+              should never be the sole basis for your decision. Always read the
+              Red Herring Prospectus (RHP) and check the company’s fundamentals
+              first.
+            </p>
+          </div>
+
+          <p>
+            If any of these terms are new to you, our complete{" "}
+            <Link
+              href="/ipoguide"
+              className="text-emerald-600 font-semibold hover:underline"
+            >
+              IPO Guide
+            </Link>{" "}
+            breaks down allotment, pricing, categories, and how to apply —
+            everything a first-time applicant needs in one place.
+          </p>
+        </div>
+
+        {/* FAQ */}
+        <div className="mt-10 bg-white">
           <IPOFAQ />
         </div>
-           {/* EXPLORE MORE */}
-                         <div className="mt-8 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
-                      <div className="mb-6">
-                        <h3 className="text-2xl font-bold text-slate-900">
-                          Explore More Investment Opportunities
-                        </h3>
-                        <p className="text-slate-500 mt-2 text-sm lg:text-base">
-                          Discover IPOs, unlisted shares, and broker comparison tools
-                          curated for smart investors.
-                        </p>
-                      </div>
-          
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <Link
-                            href="/insight-hub"
-                            className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
-                          >
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <p className="text-lg font-semibold text-slate-900">
-                                  Insight Hub
-                                </p>
-                                <p className="text-sm text-slate-400 mt-1">
-                                  Read IPO news, blogs & market insights
-                                </p>
-                              </div>
-                              <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-                                →
-                              </span>
-                            </div>
-                          </Link>
-          
-                        <Link
-                          href="/preipo"
-                          className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
-                        >
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <p className="text-lg font-semibold text-slate-900">
-                                Unlisted Shares
-                              </p>
-                              <p className="text-sm text-slate-400 mt-1">
-                                Invest before public listing
-                              </p>
-                            </div>
-                            <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-                              →
-                            </span>
-                          </div>
-                        </Link>
-          
-                        <Link
-                          href="/broker-analyzer"
-                          className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
-                        >
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <p className="text-lg font-semibold text-slate-900">
-                                Compare Brokers
-                              </p>
-                              <p className="text-sm text-slate-400 mt-1">
-                                Find the best broker platform
-                              </p>
-                            </div>
-                            <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-                              →
-                            </span>
-                          </div>
-                        </Link>
-                      </div>
-                    </div>
+
+        {/* EXPLORE MORE */}
+        <div className="mt-8 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+          <div className="mb-6">
+            <h3 className="text-2xl font-bold text-slate-900">
+              Explore More Investment Opportunities
+            </h3>
+            <p className="text-slate-500 mt-2 text-sm lg:text-base">
+              Discover IPOs, unlisted shares, and broker comparison tools
+              curated for smart investors.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <Link
+              href="/insight-hub"
+              className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-lg font-semibold text-slate-900">
+                    Insight Hub
+                  </p>
+                  <p className="text-sm text-slate-400 mt-1">
+                    Read IPO news, blogs & market insights
+                  </p>
+                </div>
+                <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                  →
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              href="/preipo"
+              className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-lg font-semibold text-slate-900">
+                    Unlisted Shares
+                  </p>
+                  <p className="text-sm text-slate-400 mt-1">
+                    Invest before public listing
+                  </p>
+                </div>
+                <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                  →
+                </span>
+              </div>
+            </Link>
+
+            <Link
+              href="/broker-analyzer"
+              className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-lg font-semibold text-slate-900">
+                    Compare Brokers
+                  </p>
+                  <p className="text-sm text-slate-400 mt-1">
+                    Find the best broker platform
+                  </p>
+                </div>
+                <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                  →
+                </span>
+              </div>
+            </Link>
+          </div>
+        </div>
       </section>
     </div>
   );

@@ -382,55 +382,41 @@ const IPOCalendarClient = ({ initialIpos = [] }) => {
               </div>
             </div>
 
-            {/* Filter */}
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Filter size={14} className="text-slate-500" />
-                <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wide">
-                  Filter events
-                </h3>
-              </div>
-              <div className="space-y-1">
-                {[
-                  { key: "all", label: "All events" },
-                  { key: "open", label: "Subscription Opens" },
-                  { key: "close", label: "Subscription Closes" },
-                  { key: "listing", label: "Listing Days" },
-                ].map((f) => (
-                  <button
-                    key={f.key}
-                    onClick={() => setTypeFilter(f.key)}
-                    className={`w-full text-left text-xs px-3 py-2 rounded-lg transition flex items-center gap-2 ${
-                      typeFilter === f.key
-                        ? "bg-slate-100 text-slate-900 font-semibold"
-                        : "text-slate-600 hover:bg-gray-50"
-                    }`}
-                  >
-                    {f.key !== "all" && (
-                      <span
-                        className={`w-2 h-2 rounded-full ${EVENT_TYPES[f.key].dot}`}
-                      />
-                    )}
-                    {f.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Legend */}
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4">
-              <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wide mb-3">
-                Legend
-              </h3>
-              <div className="space-y-2 text-xs">
-                {Object.entries(EVENT_TYPES).map(([key, cfg]) => (
-                  <div key={key} className="flex items-center gap-2">
-                    <span className={`w-2.5 h-2.5 rounded-full ${cfg.dot}`} />
-                    <span className="text-slate-600">{cfg.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* Filter */}
+<div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4">
+  <div className="flex items-center gap-2 mb-3">
+    <Filter size={14} className="text-slate-500" />
+    <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wide">
+      Filter events
+    </h3>
+  </div>
+  <div className="space-y-1">
+    {[
+      { key: "all", label: "All events" },
+      { key: "open", label: "Subscription Opens" },
+      { key: "close", label: "Subscription Closes" },
+      { key: "listing", label: "Listing Days" },
+    ].map((f) => (
+      <button
+        key={f.key}
+        onClick={() => setTypeFilter(f.key)}
+        className={`w-full text-left text-sm px-3 py-2 rounded-lg transition flex items-center gap-2 font-bold ${
+          typeFilter === f.key
+            ? "bg-slate-100 text-slate-900"
+            : "text-slate-600 hover:bg-gray-50"
+        }`}
+      >
+        {f.key !== "all" && (
+          <span
+            className={`w-2 h-2 rounded-full ${EVENT_TYPES[f.key].dot}`}
+          />
+        )}
+        {f.label}
+      </button>
+    ))}
+  </div>
+</div>
+           
 
             {/* Upcoming list */}
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 hidden lg:block">
@@ -498,17 +484,17 @@ const IPOCalendarClient = ({ initialIpos = [] }) => {
               </div>
 
               {/* Weekday header */}
-              <div className="grid grid-cols-7 border-b border-gray-100 bg-gray-50/50">
+             <div className="grid grid-cols-7 border-b border-gray-100 bg-gray-50/50">
                 {WEEKDAYS.map((d) => (
                   <div
                     key={d}
-                    className="px-2 py-2.5 text-center text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-slate-500"
+                    className="px-2 py-2.5 text-center text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500"
                   >
                     {d}
                   </div>
                 ))}
               </div>
-
+             
               {/* Grid cells */}
               <div className="grid grid-cols-7">
                 {gridCells.map((cell, i) => {
