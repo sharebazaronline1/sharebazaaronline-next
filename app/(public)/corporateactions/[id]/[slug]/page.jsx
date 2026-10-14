@@ -1,6 +1,6 @@
 // app/(public)/corporateactions/[id]/[slug]/page.jsx
 
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { fetchInsightDetails } from "@/api/mockApi";
 import InsightHubDetail from "@/components/InsightHubDetails";
@@ -15,13 +15,8 @@ const supabasePublic = createClient(
   }
 );
 
-// Categories that belong to this route (not the general Insight Hub)
 const CORPORATE_ACTION_CATEGORIES = [
-  "Buyback",
-  "Dividend",
-  "Bonus Issue",
-  "Stock Split",
-  "Rights Issue",
+  "Buyback", "Dividend", "Bonus Issue", "Stock Split", "Rights Issue",
 ];
 
 function slugify(text) {
@@ -41,10 +36,8 @@ async function getMockBlog(id) {
     const mockId = String(id).replace(/^mock-/, "");
     const mockData = await fetchInsightDetails();
     if (!Array.isArray(mockData)) return null;
-
     const found = mockData.find((item) => String(item.id) === mockId);
     if (!found) return null;
-
     return {
       id: `mock-${found.id}`,
       title: found.title,
@@ -59,6 +52,7 @@ async function getMockBlog(id) {
       published_at: found.date,
       updated_at: found.date,
       created_at: found.date,
+      slug: slugify(found.heading || found.title),
       status: "published",
       source: "mock",
     };
@@ -70,23 +64,20 @@ async function getMockBlog(id) {
 
 async function getBlog(id) {
   if (!id) return null;
-
-  if (isMockId(id)) {
-    return getMockBlog(id);
-  }
+  if (isMockId(id)) return getMockBlog(id);
 
   try {
     const { data, error } = await supabasePublic
       .from("blogs")
       .select("*")
       .eq("id", id)
+      .eq("status", "published")   // ← drafts excluded
       .maybeSingle();
 
     if (error) {
       console.error("[getBlog] supabase error:", error.message, "| code:", error.code);
       return null;
     }
-
     return data || null;
   } catch (err) {
     console.error("[getBlog] exception:", err?.message || err);
@@ -98,23 +89,21 @@ export async function generateStaticParams() {
   try {
     const { data, error } = await supabasePublic
       .from("blogs")
-      .select("id, title, heading, category")
+      .select("id, title, heading, slug, category")
       .eq("status", "published")
       .in("category", CORPORATE_ACTION_CATEGORIES)
       .limit(500);
 
     if (error || !data) return [];
 
-    const dbParams = data
+    return data
       .map((b) => {
         const title = b.title || b.heading || "";
-        const slug = slugify(title);
+        const slug = b.slug || slugify(title);
         if (!b.id || !slug) return null;
         return { id: String(b.id), slug };
       })
       .filter(Boolean);
-
-    return dbParams;
   } catch (err) {
     console.error("generateStaticParams error:", err?.message || err);
     return [];
@@ -126,16 +115,19 @@ export const dynamicParams = true;
 
 function normalizeKeywords(raw) {
   if (!raw) return [];
-  if (Array.isArray(raw)) {
-    return raw.map((k) => String(k).trim()).filter(Boolean);
-  }
+  if (Array.isArray(raw)) return raw.map((k) => String(k).trim()).filter(Boolean);
   if (typeof raw === "string") {
-    return raw
-      .split(/[,\n]+/)
-      .map((k) => k.trim())
-      .filter(Boolean);
+    return raw.split(/[,\n]+/).map((k) => k.trim()).filter(Boolean);
   }
   return [];
+}
+
+/* UTC-safe ISO date for schema */
+function ensureTZ(dateStr) {
+  if (!dateStr) return undefined;
+  const s = String(dateStr);
+  if (/[Zz]$|[+-]\d{2}:?\d{2}$/.test(s)) return s;
+  return `${s}+05:30`;
 }
 
 export async function generateMetadata({ params }) {
@@ -149,23 +141,20 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const title =
-    blog.meta_title || blog.heading || blog.title || "ShareBazaarOnline";
-
+  const title = blog.meta_title || blog.heading || blog.title || "ShareBazaarOnline";
   const description =
-    blog.meta_description ||
-    blog.excerpt ||
-    "Read the latest corporate action analysis on ShareBazaarOnline.";
+    blog.meta_description || blog.excerpt || "Read the latest corporate action analysis on ShareBazaarOnline.";
 
   const keywords = normalizeKeywords(blog.keywords);
   const canonical = `${SITE_URL}/corporateactions/${id}/${slug}`;
+  const isMock = isMockId(id);
 
   return {
-    title,
+    title: { absolute: title },  // ← avoid " | ShareBazaarOnline" doubling
     description,
     keywords,
     alternates: { canonical },
-    robots: { index: true, follow: true },
+    robots: isMock ? { index: false, follow: false } : { index: true, follow: true },
     openGraph: {
       title,
       description,
@@ -186,23 +175,26 @@ export default async function Page({ params }) {
   const { id, slug } = await params;
   const blog = await getBlog(id);
 
-  if (!blog) {
-    notFound();
+  if (!blog) notFound();
+
+  // Redirect any slug mismatch to the canonical slug
+  const expectedSlug =
+    blog.slug || slugify(blog.title || blog.heading || "");
+  if (!isMockId(id) && expectedSlug && slug !== expectedSlug) {
+    permanentRedirect(`/corporateactions/${id}/${expectedSlug}`);
   }
 
-  const articleTitle =
-    blog.meta_title || blog.heading || blog.title || "ShareBazaarOnline";
-
+  const articleTitle = blog.meta_title || blog.heading || blog.title || "ShareBazaarOnline";
   const articleDescription =
-    blog.meta_description ||
-    blog.excerpt ||
-    "Read the latest corporate action analysis on ShareBazaarOnline.";
+    blog.meta_description || blog.excerpt || "Read the latest corporate action analysis on ShareBazaarOnline.";
 
   const canonicalUrl = `${SITE_URL}/corporateactions/${id}/${slug}`;
   const articleImage = blog.image_url || `${SITE_URL}/og-image.jpg`;
 
-  const publishedDate = blog.published_at || blog.created_at;
-  const modifiedDate = blog.updated_at || blog.published_at || blog.created_at;
+  const publishedDate = ensureTZ(blog.published_at || blog.created_at);
+  const modifiedDate = ensureTZ(
+    blog.updated_at || blog.published_at || blog.created_at
+  );
 
   const plainText =
     typeof blog.content === "string" ? blog.content.replace(/<[^>]+>/g, " ") : "";
@@ -226,12 +218,12 @@ export default async function Page({ params }) {
     ...(keywords.length ? { keywords: keywords.join(", ") } : {}),
     articleSection: blog.category || "Corporate Actions",
     inLanguage: "en-IN",
-   author: {
-  "@type": "Organization",
-  "@id": `${SITE_URL}#organization`,
-  name: "ShareBazaarOnline",
-  url: SITE_URL,
-},
+    author: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}#organization`,
+      name: "ShareBazaarOnline",
+      url: SITE_URL,
+    },
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}#organization`,
@@ -244,10 +236,7 @@ export default async function Page({ params }) {
         height: 512,
       },
     },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": canonicalUrl,
-    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonicalUrl },
   };
 
   const breadcrumbSchema = {
@@ -261,12 +250,7 @@ export default async function Page({ params }) {
         name: "Corporate Actions",
         item: `${SITE_URL}/corporateactions`,
       },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: articleTitle,
-        item: canonicalUrl,
-      },
+      { "@type": "ListItem", position: 3, name: articleTitle, item: canonicalUrl },
     ],
   };
 

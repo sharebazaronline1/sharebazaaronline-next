@@ -79,6 +79,36 @@ export default async function sitemap() {
       priority: 0.85,
     },
     {
+      url: `${BASE_URL}/corporateactions/dividends`,
+      lastModified: fallbackDate,
+      changeFrequency: "daily",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/corporateactions/rights-issue`,
+      lastModified: fallbackDate,
+      changeFrequency: "daily",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/corporateactions/bonus-issue`,
+      lastModified: fallbackDate,
+      changeFrequency: "daily",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/corporateactions/stock-split`,
+      lastModified: fallbackDate,
+      changeFrequency: "daily",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/corporateactions/other-actions`,
+      lastModified: fallbackDate,
+      changeFrequency: "daily",
+      priority: 0.75,
+    },
+    {
       url: `${BASE_URL}/broker-analyzer`,
       lastModified: fallbackDate,
       changeFrequency: "weekly",
@@ -240,13 +270,18 @@ export default async function sitemap() {
       });
     });
 
-  
+    // --------------------------------------------------
+    // BLOGS — split into two paths by category
+    // Corporate actions → /corporateactions/[id]/[slug]
+    // Everything else   → /insight-hub/[id]/[slug]
+    // ✅ Slug now uses blog.slug when available (matches detail route's canonical)
+    // --------------------------------------------------
     const blogs = Array.isArray(blogsResult) ? blogsResult : [];
 
     blogs.forEach((blog) => {
-      if (!blog?.id || !blog?.title) return;
+      if (!blog?.id) return;
 
-      const slug = slugify(blog.title);
+      const slug = blog.slug || slugify(blog.title || "");
       if (!slug) return;
 
       const isCorporateAction = CORPORATE_ACTION_CATEGORIES.includes(
@@ -263,6 +298,9 @@ export default async function sitemap() {
       });
     });
 
+    // --------------------------------------------------
+    // BROKERS
+    // --------------------------------------------------
     const brokers = Array.isArray(brokersResult) ? brokersResult : [];
 
     brokers.forEach((broker) => {
