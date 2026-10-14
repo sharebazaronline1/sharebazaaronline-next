@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowLeft, Share2, ChevronRight, Home } from "lucide-react";
 import { AUTHOR } from "@/data/author";
+import PromoSidebar from "./PromoSidebar";
 
 const InsightHubDetail = ({
   blog,
@@ -164,117 +165,125 @@ const InsightHubDetail = ({
           {articleTitle}
         </h1>
 
-        <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 text-xs sm:text-sm text-slate-500 border-b border-slate-200 pb-5 mb-8">
-     {/* Byline + dates row — hidden entirely for corporate actions */}
-{!isCorporateAction && (
-  <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 text-xs sm:text-sm text-slate-500 border-b border-slate-200 pb-5 mb-8">
-    <div className="flex items-center gap-2">
-      <Avatar size={24} />
-      <span>
-        By{" "}
-        <Link
-          href="/about"
-          className="font-semibold text-slate-900 hover:text-emerald-600 transition"
-        >
-          {AUTHOR.name}
-        </Link>
-        <span className="hidden sm:inline text-slate-400">
-          {" "}· {AUTHOR.shortRole}
-        </span>
-      </span>
-    </div>
-    <span className="text-slate-300">•</span>
-    <span>
-      Published <time dateTime={publishedDate}>{publishedFmt}</time>
-    </span>
-    {showUpdated && (
-      <>
-        <span className="text-slate-300">•</span>
-        <span className="text-slate-400">
-          Updated <time dateTime={modifiedDate}>{modifiedFmt}</time>
-        </span>
-      </>
-    )}
-  </div>
-)}
-        </div>
-
-        {blog.image_url && (
-          <div className="mb-8 flex justify-center">
-            <img
-              src={blog.image_url}
-              alt={articleTitle}
-              className="w-full max-w-3xl h-auto object-contain rounded-xl shadow-sm"
-            />
-          </div>
-        )}
-
-        <div className="w-full mx-auto">
-          <article
-            className={`prose-content ${
-              isCorporateAction ? "corporate-content" : "blog-content"
-            }`}
-            dangerouslySetInnerHTML={{ __html: blog.content || "" }}
-          />
-        </div>
-
-        {/* Author bio */}
+        {/* Byline + dates row — hidden entirely for corporate actions */}
         {!isCorporateAction && (
-          <section
-            aria-label="About the author"
-            className="mt-12 pt-8 border-t border-slate-200"
-          >
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start">
-              <Avatar size={56} />
-              <div className="flex-1 min-w-0">
-                <p className="text-[11px] uppercase tracking-wide text-slate-500 font-semibold mb-1">
-                  Written by
-                </p>
-                <h2 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">
-                  {AUTHOR.name}
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-500 mb-3">
-                  {AUTHOR.role}
-                </p>
-                <p className="text-sm text-slate-700 leading-relaxed">
-                  {AUTHOR.bio}
-                </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 text-xs sm:text-sm text-slate-500 border-b border-slate-200 pb-5 mb-8">
+            <div className="flex items-center gap-2">
+              <Avatar size={24} />
+              <span>
+                By{" "}
                 <Link
                   href="/about"
-                  className="inline-block mt-3 text-sm font-semibold text-green-600 hover:text-green-700 transition-colors"
+                  className="font-semibold text-slate-900 hover:text-emerald-600 transition"
                 >
-                  About the author →
+                  {AUTHOR.name}
                 </Link>
-              </div>
+                <span className="hidden sm:inline text-slate-400">
+                  {" "}· {AUTHOR.shortRole}
+                </span>
+              </span>
             </div>
-          </section>
+            <span className="text-slate-300">•</span>
+            <span>
+              Published <time dateTime={publishedDate}>{publishedFmt}</time>
+            </span>
+            {showUpdated && (
+              <>
+                <span className="text-slate-300">•</span>
+                <span className="text-slate-400">
+                  Updated <time dateTime={modifiedDate}>{modifiedFmt}</time>
+                </span>
+              </>
+            )}
+          </div>
         )}
 
-        {/* Share + Back */}
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-gray-700">
-              Share this article
-            </span>
-            <button
-              onClick={handleShare}
-              className="p-2 bg-white rounded-full border hover:bg-gray-100 transition"
-              aria-label="Share"
-            >
-              <Share2 size={16} />
-            </button>
+        {/* MAIN GRID — article + promo sidebar on all pages */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* ARTICLE COLUMN */}
+          <div className="lg:col-span-10 min-w-0">
+          {/* Before */}
+{blog.image_url && (
+  <div className="mb-8 w-full">
+    <img
+      src={blog.image_url}
+      alt={articleTitle}
+      className="w-full h-auto object-contain rounded-xl shadow-sm"
+    />
+  </div>
+)}
+
+            <div className="w-full mx-auto">
+              <article
+                className={`prose-content ${
+                  isCorporateAction ? "corporate-content" : "blog-content"
+                }`}
+                dangerouslySetInnerHTML={{ __html: blog.content || "" }}
+              />
+            </div>
+
+            {/* Author bio */}
+            {!isCorporateAction && (
+              <section
+                aria-label="About the author"
+                className="mt-12 pt-8 border-t border-slate-200"
+              >
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start">
+                  <Avatar size={56} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[11px] uppercase tracking-wide text-slate-500 font-semibold mb-1">
+                      Written by
+                    </p>
+                    <h2 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">
+                      {AUTHOR.name}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-500 mb-3">
+                      {AUTHOR.role}
+                    </p>
+                    <p className="text-sm text-slate-700 leading-relaxed">
+                      {AUTHOR.bio}
+                    </p>
+                    <Link
+                      href="/about"
+                      className="inline-block mt-3 text-sm font-semibold text-green-600 hover:text-green-700 transition-colors"
+                    >
+                      About the author →
+                    </Link>
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* Share + Back */}
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-gray-700">
+                  Share this article
+                </span>
+                <button
+                  onClick={handleShare}
+                  className="p-2 bg-white rounded-full border hover:bg-gray-100 transition"
+                  aria-label="Share"
+                >
+                  <Share2 size={16} />
+                </button>
+              </div>
+
+              <Link
+                href={sectionHref}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#16A34A] text-white text-sm font-semibold rounded-full hover:bg-[#15803D] transition"
+              >
+                <ArrowLeft size={16} />
+                Back to {sectionLabel}
+              </Link>
+            </div>
           </div>
 
-          <Link
-            href={sectionHref}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#16A34A] text-white text-sm font-semibold rounded-full hover:bg-[#15803D] transition"
-          >
-            <ArrowLeft size={16} />
-            Back to {sectionLabel}
-          </Link>
+          {/* PROMO SIDEBAR — shown for all article types */}
+          <PromoSidebar />
         </div>
 
-        {/* EXPLORE MORE */}
+        {/* EXPLORE MORE — full width */}
         <div className="mt-10 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
           <div className="mb-6">
             <h3 className="text-2xl font-bold text-slate-900">
@@ -379,7 +388,7 @@ const InsightHubDetail = ({
         }
 
         /* =========================================================
-           CORPORATE ACTIONS — unchanged (their own inline styles)
+           CORPORATE ACTIONS — unchanged
         ========================================================= */
         .prose-content.corporate-content table {
           width: 100%;
@@ -442,10 +451,8 @@ const InsightHubDetail = ({
         }
 
         /* =========================================================
-           BLOGS — plain standard blog format, no boxes, no bars
+           BLOGS — plain standard blog format
         ========================================================= */
-
-        /* Strip any inline emerald / gray box classes */
         .prose-content.blog-content [class*="bg-emerald"],
         .prose-content.blog-content .bg-gray-700,
         .prose-content.blog-content .bg-slate-50,
@@ -458,7 +465,6 @@ const InsightHubDetail = ({
           margin: 0 !important;
         }
 
-        /* Kill section/card wrappers from source HTML */
         .prose-content.blog-content > section,
         .prose-content.blog-content > div:not([class]) {
           background: none !important;
@@ -469,7 +475,6 @@ const InsightHubDetail = ({
           box-shadow: none !important;
         }
 
-        /* Headings — plain bold, no bars, no boxes */
         .prose-content.blog-content h2 {
           color: #111827 !important;
           font-size: 1.35rem !important;
@@ -500,7 +505,6 @@ const InsightHubDetail = ({
           border: none !important;
         }
 
-        /* Paragraphs — flat, no padding, tight rhythm */
         .prose-content.blog-content p {
           color: #374151 !important;
           margin: 0 0 1rem !important;
@@ -508,7 +512,6 @@ const InsightHubDetail = ({
           line-height: 1.75 !important;
         }
 
-        /* Lists */
         .prose-content.blog-content ul,
         .prose-content.blog-content ol {
           margin: 0 0 1rem !important;
@@ -520,7 +523,6 @@ const InsightHubDetail = ({
           margin-bottom: 0.4rem !important;
         }
 
-        /* Links */
         .prose-content.blog-content a {
           color: #059669 !important;
           text-decoration: underline !important;
@@ -530,7 +532,6 @@ const InsightHubDetail = ({
           color: #047857 !important;
         }
 
-        /* Tables — plain */
         .prose-content.blog-content table {
           width: 100% !important;
           border-collapse: collapse !important;
@@ -550,7 +551,6 @@ const InsightHubDetail = ({
           color: #111827 !important;
         }
 
-        /* Blockquote — thin left border only */
         .prose-content.blog-content blockquote {
           border-left: 3px solid #d1d5db !important;
           padding: 0.25rem 0 0.25rem 1rem !important;
@@ -561,16 +561,6 @@ const InsightHubDetail = ({
         }
         .prose-content.blog-content blockquote p {
           margin: 0 !important;
-        }
-
-        /* Kill any inline spacing classes that came from the source HTML */
-        .prose-content.blog-content [class*="mb-"],
-        .prose-content.blog-content [class*="mt-"],
-        .prose-content.blog-content [class*="p-"],
-        .prose-content.blog-content [class*="py-"],
-        .prose-content.blog-content [class*="px-"],
-        .prose-content.blog-content [class*="gap-"] {
-          /* leave margins/gaps to the wrapper rules above */
         }
 
         @media (min-width: 1024px) {
