@@ -1,4 +1,4 @@
-// src/utils/buildSearchIndex.js
+
 import slugify from "./slugify";
 
 const stripHtml = (html = "") => {
@@ -54,37 +54,46 @@ export const buildSearchIndex = (
     preview: `Rating: ${b.rating || "N/A"} • Brokerage: ${b.brokerage || "N/A"}`,
     url: `/brokers`,
   }));
+const blogIndex = blogs.map((b) => {
+  const title = b.heading || b.title || "";
 
-  const blogIndex = blogs.map((b) => {
-    const title = b.heading || b.title || "";
+  const cleanContent = stripHtml(b.content);
+  const cleanSummary = stripHtml(b.summary);
+  const cleanExcerpt = stripHtml(b.excerpt);
 
-    const cleanContent = stripHtml(b.content);
-    const cleanSummary = stripHtml(b.summary);
-    const cleanExcerpt = stripHtml(b.excerpt);
+  const fullTextContent = [
+    cleanContent,
+    cleanSummary,
+    cleanExcerpt,
+    b.category,
+    b.action_type,
+    Array.isArray(b.tags) ? b.tags.join(" ") : b.tags,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
-    const fullTextContent = [
-      cleanContent,
-      cleanSummary,
-      cleanExcerpt,
-      b.category,
-      b.action_type,
-      Array.isArray(b.tags) ? b.tags.join(" ") : b.tags,
-    ]
-      .filter(Boolean)
-      .join(" ");
+  const rawPreview = cleanSummary || cleanExcerpt || cleanContent;
+  const preview =
+    rawPreview.length > 120 ? `${rawPreview.slice(0, 120)}...` : rawPreview;
 
-    const rawPreview = cleanSummary || cleanExcerpt || cleanContent;
-    const preview =
-      rawPreview.length > 120 ? `${rawPreview.slice(0, 120)}...` : rawPreview;
+  const category = String(b.category || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[-_]/g, " ")
+    .replace(/\s+/g, " ");
 
-    return {
-      id: `blog-${b.id}`,
-      title,
-      content: fullTextContent,
-      preview,
-      url: `/insight-hub/${b.id}/${slugify(title)}`,
-    };
-  });
+  const isCorporateAction = category === "corporate action";
+
+  return {
+    id: `blog-${b.id}`,
+    title,
+    content: fullTextContent,
+    preview,
+    url: isCorporateAction
+      ? `/corporateactions/${b.id}/${slugify(title)}`
+      : `/insight-hub/${b.id}/${slugify(title)}`,
+  };
+});
 
   const unlistedIndex = unlistedShares.map((u) => ({
     id: `unlisted-${u.id}`,

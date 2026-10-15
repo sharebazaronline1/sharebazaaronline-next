@@ -699,7 +699,7 @@ const getMinInvestment = (ipoData) => {
 
 {/* RIGHT SIDEBAR — 3 compact sticky promo cards */}
 <aside className="hidden lg:block lg:col-span-2">
-  <div className="sticky top-28 space-y-3">
+  <div className="sticky top-24 space-y-2">
     {[
       {
         badge: "IPO Insights",
@@ -761,13 +761,30 @@ const getMinInvestment = (ipoData) => {
         ],
         cta: { label: "Compare Brokers", href: "/comparebrokers" },
       },
+      {
+        badge: "Insight Hub",
+        title: "Read",
+        titleAccent: "Market Insights",
+        description: "Latest stock market news, IPO analysis, and expert financial blogs.",
+        accentText: "text-emerald-400",
+        accentBg: "bg-emerald-400 hover:bg-emerald-500",
+        accentDot: "bg-emerald-400",
+        accentBorder: "border-emerald-400/25",
+        accentBadgeBg: "bg-emerald-400/10",
+        accentGlow1: "bg-emerald-400/15",
+        accentGlow2: "bg-teal-400/10",
+        shadow: "shadow-emerald-500/20",
+        links: [
+          { label: "Latest News", href: "/insight-hub" },
+          { label: "IPO Analysis", href: "/insight-hub" },
+        ],
+        cta: { label: "Explore Insights", href: "/insight-hub" },
+      },
     ].map((card, i) => (
       <div
         key={i}
-        className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#061A40] via-[#0A2558] to-[#0E3A73] p-3.5 shadow-lg border border-cyan-500/10 text-white"
+        className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#061A40] via-[#0A2558] to-[#0E3A73] p-3 shadow-lg border border-cyan-500/10 text-white"
       >
-      
-
         {/* Decorative glows */}
         <div
           className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-3xl pointer-events-none ${card.accentGlow1}`}
@@ -778,28 +795,28 @@ const getMinInvestment = (ipoData) => {
 
         <div className="relative z-10">
           <div
-            className={`inline-flex items-center px-2 py-0.5 rounded-full border text-[10px] font-semibold tracking-wide ${card.accentBadgeBg} ${card.accentBorder} ${card.accentText}`}
+            className={`inline-flex items-center px-1.5 py-0.5 rounded-full border text-[9px] font-semibold tracking-wide ${card.accentBadgeBg} ${card.accentBorder} ${card.accentText}`}
           >
             {card.badge}
           </div>
 
-          <h3 className="mt-2.5 text-base font-black leading-tight">
+          <h3 className="mt-1.5 text-sm font-black leading-tight">
             {card.title}
             <span className={`block ${card.accentText}`}>
               {card.titleAccent}
             </span>
           </h3>
 
-          <p className="mt-2 text-slate-300 text-[11px] leading-snug">
+          <p className="mt-1 text-slate-300 text-[10px] leading-snug">
             {card.description}
           </p>
 
-          <div className="mt-2.5 space-y-1">
+          <div className="mt-2 space-y-0.5">
             {card.links.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
-                className="flex items-center gap-2 text-[11px] group"
+                className="flex items-center gap-2 text-[10px] group"
               >
                 <div
                   className={`w-1 h-1 rounded-full shrink-0 group-hover:scale-150 transition ${card.accentDot}`}
@@ -813,7 +830,7 @@ const getMinInvestment = (ipoData) => {
 
           <Link
             href={card.cta.href}
-            className={`mt-3 w-full py-1.5 rounded-md text-white font-bold transition-colors text-[11px] text-center inline-flex items-center justify-center gap-1 ${card.accentBg} ${card.shadow}`}
+            className={`mt-2 w-full py-1 rounded-md text-white font-bold transition-colors text-[10px] text-center inline-flex items-center justify-center gap-1 ${card.accentBg} ${card.shadow}`}
           >
             {card.cta.label}
             <ArrowRight size={12} className="stroke-[2.5]" />

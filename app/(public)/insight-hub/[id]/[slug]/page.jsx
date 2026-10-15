@@ -1,3 +1,4 @@
+
 // app/(public)/insight-hub/[id]/[slug]/page.jsx
 
 import { notFound } from "next/navigation";
@@ -15,6 +16,64 @@ const supabasePublic = createClient(
     auth: { persistSession: false, autoRefreshToken: false },
   }
 );
+
+// Corporate-action categories must not render under Insight Hub.
+const CORPORATE_ACTION_CATEGORIES = [
+  "Buyback",
+  "Dividend",
+  "Dividends",
+  "Bonus Issue",
+  "Stock Split",
+  "Stock Splits",
+  "Rights Issue",
+  "Merger",
+  "Demerger",
+  "Takeover / Acquisition",
+  "Open Offer",
+  "Delisting",
+  "OFS",
+  "QIP",
+  "Preferential Allotment",
+  "Warrants Issue",
+  "ESOP Allotment",
+  "FPO",
+  "Bond Issue",
+  "NCD Issue",
+  "Distribution",
+  "Unit Split",
+  "AGM",
+  "EGM",
+  "Board Meeting",
+  "Postal Ballot",
+  "E-Voting",
+  "Promoter Stake Increase",
+  "Promoter Stake Sale",
+  "Pledge Release",
+  "Scheme of Arrangement",
+  "Insolvency Resolution",
+  "CIRP Process",
+  "Subsidiary Incorporation",
+  "Joint Venture",
+  "Change of Company Name",
+  "IPO Listing",
+  "Change in Director",
+  "CEO Appointment",
+  "Auditor Appointment",
+  "Regulatory Action",
+  "Trading Suspension",
+  "Revocation of Suspension",
+];
+
+function isCorporateActionCategory(category) {
+  const normalized = String(category || "").trim().toLowerCase();
+
+  return (
+    normalized.includes("corporate action") ||
+    CORPORATE_ACTION_CATEGORIES.some(
+      (item) => item.toLowerCase() === normalized
+    )
+  );
+}
 
 function slugify(text) {
   if (!text) return "";
@@ -75,7 +134,12 @@ async function getBlog(id) {
       .maybeSingle();
 
     if (error) {
-      console.error("[getBlog] supabase error:", error.message, "| code:", error.code);
+      console.error(
+        "[getBlog] supabase error:",
+        error.message,
+        "| code:",
+        error.code
+      );
       return null;
     }
 
@@ -90,13 +154,14 @@ export async function generateStaticParams() {
   try {
     const { data, error } = await supabasePublic
       .from("blogs")
-      .select("id, title, heading")
+      .select("id, title, heading, category")
       .eq("status", "published")
       .limit(500);
 
     if (error || !data) return [];
 
     const dbParams = data
+      .filter((b) => !isCorporateActionCategory(b.category))
       .map((b) => {
         const title = b.title || b.heading || "";
         const slug = slugify(title);
@@ -110,6 +175,7 @@ export async function generateStaticParams() {
       const mockData = await fetchInsightDetails();
       if (Array.isArray(mockData)) {
         mockParams = mockData
+          .filter((m) => !isCorporateActionCategory(m.category))
           .map((m) => {
             const title = m.heading || m.title || "";
             const slug = slugify(title);
@@ -150,7 +216,7 @@ export async function generateMetadata({ params }) {
   const { id, slug } = await params;
   const blog = await getBlog(id);
 
-  if (!blog) {
+  if (!blog || isCorporateActionCategory(blog.category)) {
     return {
       title: "Article Not Found | ShareBazaarOnline",
       robots: { index: false, follow: false },
@@ -194,7 +260,7 @@ export default async function Page({ params }) {
   const { id, slug } = await params;
   const blog = await getBlog(id);
 
-  if (!blog) {
+  if (!blog || isCorporateActionCategory(blog.category)) {
     notFound();
   }
 
@@ -213,7 +279,10 @@ export default async function Page({ params }) {
   const modifiedDate = blog.updated_at || blog.published_at || blog.created_at;
 
   const plainText =
-    typeof blog.content === "string" ? blog.content.replace(/<[^>]+>/g, " ") : "";
+    typeof blog.content === "string"
+      ? blog.content.replace(/<[^>]+>/g, " ")
+      : "";
+
   const wordCount = plainText.trim()
     ? plainText.trim().split(/\s+/).length
     : undefined;
@@ -245,16 +314,16 @@ export default async function Page({ params }) {
     ...(keywords.length ? { keywords: keywords.join(", ") } : {}),
     articleSection: blog.category || "Market Insight",
     inLanguage: "en-IN",
-  author: {
-  "@type": "Person",
-  name: "Kavya Talanki",
-  jobTitle: "Head of Research & Content",
-  url: `${SITE_URL}/about`,
-  sameAs: [
-    "https://twitter.com/Sharebazaaronli",
-    "https://www.linkedin.com/company/sharebazaaronline",
-  ],
-},
+    author: {
+      "@type": "Person",
+      name: "Kavya Talanki",
+      jobTitle: "Head of Research & Content",
+      url: `${SITE_URL}/about`,
+      sameAs: [
+        "https://twitter.com/Sharebazaaronli",
+        "https://www.linkedin.com/company/sharebazaaronline",
+      ],
+    },
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}#organization`,
@@ -277,7 +346,12 @@ export default async function Page({ params }) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${SITE_URL}/`,
+      },
       {
         "@type": "ListItem",
         position: 2,

@@ -45,9 +45,17 @@ const InsightHubDetail = ({
     );
   }
 
-  const isCorporateAction = blog?.category
-    ? corporateCategories.includes(blog.category)
-    : false;
+
+const normalizedCategory = String(blog?.category || "")
+  .trim()
+  .toLowerCase();
+
+const isCorporateAction =
+  corporateCategories.some(
+    (category) => category.toLowerCase() === normalizedCategory
+  ) ||
+  normalizedCategory.includes("corporate action");
+
 
   const handleShare = async () => {
     const url = window.location.href;

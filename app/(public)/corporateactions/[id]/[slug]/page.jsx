@@ -3,7 +3,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { fetchInsightDetails } from "@/api/mockApi";
-import InsightHubDetail from "@/components/InsightHubDetails";
+import CorporateActionDetails from "@/components/CorporateActionDetails";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
 
@@ -15,17 +15,66 @@ const supabasePublic = createClient(
   }
 );
 
-// Categories that belong to this route (not the general Insight Hub)
 const CORPORATE_ACTION_CATEGORIES = [
   "Buyback",
   "Dividend",
+  "Dividends",
   "Bonus Issue",
   "Stock Split",
+  "Stock Splits",
   "Rights Issue",
+  "Merger",
+  "Demerger",
+  "Takeover / Acquisition",
+  "Open Offer",
+  "Delisting",
+  "OFS",
+  "QIP",
+  "Preferential Allotment",
+  "Warrants Issue",
+  "ESOP Allotment",
+  "FPO",
+  "Bond Issue",
+  "NCD Issue",
+  "Distribution",
+  "Unit Split",
+  "AGM",
+  "EGM",
+  "Board Meeting",
+  "Postal Ballot",
+  "E-Voting",
+  "Promoter Stake Increase",
+  "Promoter Stake Sale",
+  "Pledge Release",
+  "Scheme of Arrangement",
+  "Insolvency Resolution",
+  "CIRP Process",
+  "Subsidiary Incorporation",
+  "Joint Venture",
+  "Change of Company Name",
+  "IPO Listing",
+  "Change in Director",
+  "CEO Appointment",
+  "Auditor Appointment",
+  "Regulatory Action",
+  "Trading Suspension",
+  "Revocation of Suspension",
 ];
+
+function isCorporateActionCategory(category) {
+  const normalized = String(category || "").trim().toLowerCase();
+
+  return (
+    normalized.includes("corporate action") ||
+    CORPORATE_ACTION_CATEGORIES.some(
+      (item) => item.toLowerCase() === normalized
+    )
+  );
+}
 
 function slugify(text) {
   if (!text) return "";
+
   return text
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
@@ -40,9 +89,13 @@ async function getMockBlog(id) {
   try {
     const mockId = String(id).replace(/^mock-/, "");
     const mockData = await fetchInsightDetails();
+
     if (!Array.isArray(mockData)) return null;
 
-    const found = mockData.find((item) => String(item.id) === mockId);
+    const found = mockData.find(
+      (item) => String(item.id) === mockId
+    );
+
     if (!found) return null;
 
     return {
@@ -83,7 +136,12 @@ async function getBlog(id) {
       .maybeSingle();
 
     if (error) {
-      console.error("[getBlog] supabase error:", error.message, "| code:", error.code);
+      console.error(
+        "[getBlog] supabase error:",
+        error.message,
+        "| code:",
+        error.code
+      );
       return null;
     }
 
@@ -94,29 +152,52 @@ async function getBlog(id) {
   }
 }
 
+function normalizeKeywords(raw) {
+  if (!raw) return [];
+
+  if (Array.isArray(raw)) {
+    return raw.map((k) => String(k).trim()).filter(Boolean);
+  }
+
+  if (typeof raw === "string") {
+    return raw
+      .split(/[,\n]+/)
+      .map((k) => k.trim())
+      .filter(Boolean);
+  }
+
+  return [];
+}
+
 export async function generateStaticParams() {
   try {
     const { data, error } = await supabasePublic
       .from("blogs")
       .select("id, title, heading, category")
       .eq("status", "published")
-      .in("category", CORPORATE_ACTION_CATEGORIES)
       .limit(500);
 
     if (error || !data) return [];
 
-    const dbParams = data
-      .map((b) => {
-        const title = b.title || b.heading || "";
+    return data
+      .filter((blog) => isCorporateActionCategory(blog.category))
+      .map((blog) => {
+        const title = blog.title || blog.heading || "";
         const slug = slugify(title);
-        if (!b.id || !slug) return null;
-        return { id: String(b.id), slug };
+
+        if (!blog.id || !slug) return null;
+
+        return {
+          id: String(blog.id),
+          slug,
+        };
       })
       .filter(Boolean);
-
-    return dbParams;
   } catch (err) {
-    console.error("generateStaticParams error:", err?.message || err);
+    console.error(
+      "generateStaticParams error:",
+      err?.message || err
+    );
     return [];
   }
 }
@@ -124,25 +205,11 @@ export async function generateStaticParams() {
 export const revalidate = 300;
 export const dynamicParams = true;
 
-function normalizeKeywords(raw) {
-  if (!raw) return [];
-  if (Array.isArray(raw)) {
-    return raw.map((k) => String(k).trim()).filter(Boolean);
-  }
-  if (typeof raw === "string") {
-    return raw
-      .split(/[,\n]+/)
-      .map((k) => k.trim())
-      .filter(Boolean);
-  }
-  return [];
-}
-
 export async function generateMetadata({ params }) {
   const { id, slug } = await params;
   const blog = await getBlog(id);
 
-  if (!blog) {
+  if (!blog || !isCorporateActionCategory(blog.category)) {
     return {
       title: "Article Not Found | ShareBazaarOnline",
       robots: { index: false, follow: false },
@@ -150,7 +217,10 @@ export async function generateMetadata({ params }) {
   }
 
   const title =
-    blog.meta_title || blog.heading || blog.title || "ShareBazaarOnline";
+    blog.meta_title ||
+    blog.heading ||
+    blog.title ||
+    "ShareBazaarOnline";
 
   const description =
     blog.meta_description ||
@@ -186,12 +256,15 @@ export default async function Page({ params }) {
   const { id, slug } = await params;
   const blog = await getBlog(id);
 
-  if (!blog) {
+  if (!blog || !isCorporateActionCategory(blog.category)) {
     notFound();
   }
 
   const articleTitle =
-    blog.meta_title || blog.heading || blog.title || "ShareBazaarOnline";
+    blog.meta_title ||
+    blog.heading ||
+    blog.title ||
+    "ShareBazaarOnline";
 
   const articleDescription =
     blog.meta_description ||
@@ -202,10 +275,14 @@ export default async function Page({ params }) {
   const articleImage = blog.image_url || `${SITE_URL}/og-image.jpg`;
 
   const publishedDate = blog.published_at || blog.created_at;
-  const modifiedDate = blog.updated_at || blog.published_at || blog.created_at;
+  const modifiedDate =
+    blog.updated_at || blog.published_at || blog.created_at;
 
   const plainText =
-    typeof blog.content === "string" ? blog.content.replace(/<[^>]+>/g, " ") : "";
+    typeof blog.content === "string"
+      ? blog.content.replace(/<[^>]+>/g, " ")
+      : "";
+
   const wordCount = plainText.trim()
     ? plainText.trim().split(/\s+/).length
     : undefined;
@@ -226,12 +303,12 @@ export default async function Page({ params }) {
     ...(keywords.length ? { keywords: keywords.join(", ") } : {}),
     articleSection: blog.category || "Corporate Actions",
     inLanguage: "en-IN",
-   author: {
-  "@type": "Organization",
-  "@id": `${SITE_URL}#organization`,
-  name: "ShareBazaarOnline",
-  url: SITE_URL,
-},
+    author: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}#organization`,
+      name: "ShareBazaarOnline",
+      url: SITE_URL,
+    },
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}#organization`,
@@ -254,7 +331,12 @@ export default async function Page({ params }) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${SITE_URL}/`,
+      },
       {
         "@type": "ListItem",
         position: 2,
@@ -275,16 +357,24 @@ export default async function Page({ params }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(articleSchema).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(articleSchema).replace(
+            /</g,
+            "\\u003c"
+          ),
         }}
       />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
+          __html: JSON.stringify(breadcrumbSchema).replace(
+            /</g,
+            "\\u003c"
+          ),
         }}
       />
-      <InsightHubDetail
+
+      <CorporateActionDetails
         blog={blog}
         id={id}
         slug={slug}
