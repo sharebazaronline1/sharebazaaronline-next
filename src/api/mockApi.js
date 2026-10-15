@@ -10705,24 +10705,264 @@ export const fetchIPOs = async () => {
   }
 },
 {
-  "id": 54,
-  "name": "Srinibas Pradhan Constructions",
-  "fullName": "Srinibas Pradhan Constructions Limited",
-  "logo":"/images/ipo/srinibaspradhan.png",
-  "symbol": null,
+  "id":  54,
+  "name": "Srinibas Pradhan Constructions Limited",
+  "logo": "/images/ipo/srinibaspradhan.png",
+  "minInvestment": "₹2,18,400",
   "open": "06 Mar 2026",
   "close": "10 Mar 2026",
   "listing": "13 Mar 2026",
-  "price": "91 – 98",
+  "price": "91 - 98",
   "lot": 1200,
-  "minBidQuantity": 2400,
-  "issueSizeShares": 2073600,
-  "faceValue": 10,
-  "subscription": null,
-  "listingPrice": null,
-  "performance": null,
-  "type": "SME",
-  "status": "Active"
+
+  "about_company": {
+    "company_name": "Srinibas Pradhan Constructions Limited",
+    "industry_sector": "Infrastructure Development / Civil Construction",
+    "founded_year": "2020",
+    "promoters": [
+      "Mr. Ramakanta Pradhan",
+      "Mr. Srinibas Pradhan",
+      "Mrs. Jyotshna Pradhan"
+    ],
+    "description": "Srinibas Pradhan Constructions is engaged in infrastructure development in the State of Odisha, with a primary focus on roads and highways, including rural roads, major district roads, and urban road projects. The company also undertakes the construction of bridges, high-level bridges, and steel structures used in bridge works and industrial sheds. Its civil construction activities cover foundations, superstructures, multi-storied buildings, factories, industrial facilities, irrigation works, and canal-related projects. The company executes projects primarily through participation in competitive bidding processes floated by government departments, state and central public sector undertakings, and other public authorities. It uses materials such as aggregate, sand, tar, cement, and steel to deliver infrastructure works as per project specifications and contractual requirements. The company operates with a P.W.D. Contractors Registration Certificate as a 'B' Class contractor in Odisha. Its wholly owned subsidiary, Srinibas Pradhan Infra Private Limited, holds an 'A' Class contractor registration, enabling participation in higher-value tenders. Together, they undertake projects across roads, bridges, civil, irrigation, and industrial construction segments within the state."
+  },
+
+  "ipo_basic_details": {
+    "company_name": "Srinibas Pradhan Constructions Limited",
+    "ipo_type": "SME IPO",
+    "issue_type": "Book Building Issue",
+    "face_value": "₹10 per share",
+    "price_band_min": "₹91",
+    "price_band_max": "₹98",
+    "lot_size": "1200 Shares",
+    "total_issue_size": "20,73,600 Equity Shares (₹20.32 Cr)",
+    "fresh_issue_size": "17,13,600 Equity Shares (₹16.79 Cr)",
+    "offer_for_sale": "3,60,000 Equity Shares (₹3.53 Cr)",
+    "shares_offered": "20,73,600 Equity Shares",
+    "listing_exchange": "NSE SME (NSE Emerge)",
+    "issue_price": "₹98",
+    "minimum_investment": "₹2,18,400",
+    "market_cap_post_issue": "Not explicitly stated in the source",
+    "pre_issue_shareholding": "Not explicitly stated in the source",
+    "post_issue_shareholding": "Not explicitly stated in the source"
+  },
+
+  "company_overview": {
+    "business_model": "Infrastructure development company focused on roads, highways, and bridges, executing projects through competitive bidding for government departments, state and central PSUs, and other public authorities in Odisha.",
+    "products_services": [
+      "Roads and Highways Construction (Rural, Major District, Urban)",
+      "Bridge and High-Level Bridge Construction",
+      "Steel Structures for Bridge Works and Industrial Sheds",
+      "Civil Construction (Foundations, Superstructures, Multi-Storied Buildings)",
+      "Industrial Facilities Construction",
+      "Irrigation Works and Canal-Related Projects"
+    ],
+    "competitive_strengths": [
+      "Focused on infrastructure development in Odisha with a prime focus on roads, highways, and bridges",
+      "P.W.D. Contractors Registration Certificate as a 'B' Class contractor",
+      "Wholly owned subsidiary, Srinibas Pradhan Infra Private Limited, holds an 'A' Class contractor registration",
+      "Steady growth in top and bottom lines for reported periods"
+    ],
+    "risks": [
+      "Revenue is entirely concentrated in Odisha, exposing the company to regional economic and political risks",
+      "The company is significantly dependent on government tenders and contracts",
+      "The issue appears aggressively priced according to independent reviews",
+      "Small paid-up equity capital post-IPO hints at a longer duration for mainboard migration"
+    ]
+  },
+
+  "ipo_important_dates": {
+    "anchor_bidding_date": "05 Mar 2026",
+    "ipo_open_date": "06 Mar 2026",
+    "ipo_close_date": "10 Mar 2026",
+    "basis_of_allotment_date": "11 Mar 2026",
+    "refund_initiation_date": "12 Mar 2026",
+    "demat_credit_date": "12 Mar 2026",
+    "listing_date": "13 Mar 2026"
+  },
+
+  "ipo_objectives": {
+    "funding_capital_expenditure_for_construction_of_office_premises": "₹4.80 Cr",
+    "funding_capital_expenditure_for_purchase_of_construction_equipment": "₹2.36 Cr",
+    "funding_long_term_working_capital_requirements": "₹8.00 Cr",
+    "general_corporate_purposes": "Balance Amount"
+  },
+
+  "investor_reservation": {
+    "qib_quota": "0.98% of Net Issue (19,200 shares)",
+    "hni_nii_quota": "49.48% of Net Issue (9,75,600 shares)",
+    "retail_quota": "49.48% of Net Issue (9,75,600 shares)",
+    "anchor_investor_quota": "Not specified in the source",
+    "market_maker_reservation": "4,00,000 shares"
+  },
+
+  "market_lot_details": {
+    "retail_minimum": {
+      "lot_size": "2 Lots",
+      "shares": "2400",
+      "amount": "₹2,18,400"
+    },
+    "retail_maximum": {
+      "lot_size": "2 Lots",
+      "shares": "2400",
+      "amount": "₹2,18,400"
+    },
+    "shni_minimum": {
+      "lot_size": "Not specified in the source",
+      "shares": "",
+      "amount": ""
+    },
+    "shni_maximum": {
+      "lot_size": "Not specified in the source",
+      "shares": "",
+      "amount": ""
+    },
+    "bhni_minimum": {
+      "lot_size": "Not specified in the source",
+      "shares": "",
+      "amount": ""
+    }
+  },
+
+  "key_performance_indicators": {
+    "roe": "16.82% (FY2025), 22.54% (FY2024)",
+    "roce": "Not explicitly stated in the source",
+    "pat_margin": "Not explicitly stated in the source",
+    "ebitda_margin": "Not explicitly stated in the source",
+    "eps": "₹10.45 (Post-IPO)",
+    "nav": "Not explicitly stated in the source",
+    "debt_to_equity": "Not explicitly stated in the source"
+  },
+
+  "company_financial_data": [
+    {
+      "period": "FY2026",
+      "assets": "Not explicitly stated in the source",
+      "total_income": "₹90.21 Cr",
+      "pat": "Not explicitly stated in the source",
+      "ebitda": "Not explicitly stated in the source",
+      "net_worth": "Not explicitly stated in the source",
+      "total_borrowing": "Not explicitly stated in the source"
+    },
+    {
+      "period": "FY2025",
+      "assets": "Not explicitly stated in the source",
+      "total_income": "₹89.73 Cr",
+      "pat": "₹6.59 Cr",
+      "ebitda": "Not explicitly stated in the source",
+      "net_worth": "Not explicitly stated in the source",
+      "total_borrowing": "Not explicitly stated in the source"
+    },
+    {
+      "period": "FY2024",
+      "assets": "Not explicitly stated in the source",
+      "total_income": "₹35.08 Cr",
+      "pat": "₹3.55 Cr",
+      "ebitda": "Not explicitly stated in the source",
+      "net_worth": "Not explicitly stated in the source",
+      "total_borrowing": "Not explicitly stated in the source"
+    },
+    {
+      "period": "FY2023",
+      "assets": "Not explicitly stated in the source",
+      "total_income": "₹26.35 Cr",
+      "pat": "₹1.49 Cr",
+      "ebitda": "Not explicitly stated in the source",
+      "net_worth": "Not explicitly stated in the source",
+      "total_borrowing": "Not explicitly stated in the source"
+    }
+  ],
+
+  "grey_market_premium": {
+    "gmp_price": "₹0",
+    "kostak_rate": "Not Available",
+    "subject_to_sauda": "Not Available",
+    "gmp_last_updated": "13 Mar 2026",
+    "estimated_listing_price": "₹98 (0.00% premium over issue price)"
+  },
+
+  "ipo_subscription_data": {
+    "total_subscription": "1.19x",
+    "qib_ex_anchor": "1.13x",
+    "hni_subscription": "1.68x",
+    "retail_subscription": "0.69x"
+  },
+
+  "ipo_intermediaries": {
+    "registrar": "Maashitla Securities Pvt. Ltd.",
+    "registrar_website": "Not explicitly stated in the source",
+    "registrar_phone": "011-45121795",
+    "registrar_email": "ipo@maashitla.com"
+  },
+
+  "ipo_lead_manager": {
+    "lead_manager": "Novus Capital Advisors Pvt. Ltd."
+  },
+
+  "company_information": {
+    "company_address": "Plot No. 813, Khata No. 106/548, Brajraj Nagar, Chhualiberna, Jharsuguda, Belpahar Rs, Jharsuguda, Belpahar, Orissa - 768217",
+    "company_website": "https://www.srinibaspradhan.com",
+    "company_email": "cs@srinibaspradhan.com",
+    "company_phone": "+91 6645 251105"
+  },
+
+  "ipo_documents": {
+    "drhp_link": "",
+    "rhp_link": "https://srinibaspradhan.com/assets/pdf/SPCL_Redherringprospectus.pdf",
+    "prospectus_pdf": "",
+    "investor_presentation": ""
+  },
+
+  "faq": [
+    {
+      "question": "What is Srinibas Pradhan Constructions IPO?",
+      "answer": "Srinibas Pradhan Constructions IPO is a SME book building issue of 20,73,600 equity shares of the face value of ₹10 aggregating up to ₹20.32 Crores. The issue is priced at ₹91 to ₹98 per share."
+    },
+    {
+      "question": "When does the Srinibas Pradhan Constructions IPO open and close?",
+      "answer": "The IPO opens on Friday, March 6, 2026, and closes on Tuesday, March 10, 2026."
+    },
+    {
+      "question": "What is the price band of the Srinibas Pradhan Constructions IPO?",
+      "answer": "The IPO price band is set at ₹91 to ₹98 per share."
+    },
+    {
+      "question": "What is the lot size and minimum investment for Srinibas Pradhan Constructions IPO?",
+      "answer": "The lot size is 1,200 shares. The minimum investment required for retail investors is ₹2,18,400 (2 lots of 1,200 shares) based on the upper price band."
+    },
+    {
+      "question": "What is the total issue size of the Srinibas Pradhan Constructions IPO?",
+      "answer": "The total issue size is up to ₹20.32 crores, comprising a fresh issue of up to ₹16.79 crores and an offer for sale (OFS) of up to ₹3.53 crores."
+    },
+    {
+      "question": "Where will Srinibas Pradhan Constructions shares be listed?",
+      "answer": "The shares are proposed to be listed on the NSE SME (NSE Emerge) platform."
+    },
+    {
+      "question": "Who is the registrar for the Srinibas Pradhan Constructions IPO?",
+      "answer": "Maashitla Securities Pvt. Ltd. is the registrar for the IPO."
+    },
+    {
+      "question": "What is the post-IPO market cap of Srinibas Pradhan Constructions?",
+      "answer": "Not explicitly stated in the source."
+    },
+    {
+      "question": "What are the company's key services?",
+      "answer": "The company is engaged in infrastructure development, focusing on roads, highways, bridges, civil construction, irrigation works, and industrial facilities in Odisha."
+    },
+    {
+      "question": "Who are the promoters of Srinibas Pradhan Constructions?",
+      "answer": "The promoters are Mr. Ramakanta Pradhan, Mr. Srinibas Pradhan, and Mrs. Jyotshna Pradhan."
+    },
+    {
+      "question": "What are the risks of investing in Srinibas Pradhan Constructions IPO?",
+      "answer": "Key risks include complete revenue concentration in Odisha, heavy dependence on government tenders, an aggressively priced issue according to independent reviews, and a small post-IPO equity capital that may delay mainboard migration."
+    },
+    {
+      "question": "How to apply for Srinibas Pradhan Constructions IPO online?",
+      "answer": "To apply for the Srinibas Pradhan Constructions IPO online, you need a demat account with a SEBI-registered stock broker. You can apply through UPI or ASBA using your bank's net banking. Brokers like Zerodha, Angel One, Groww, and Upstox offer easy online IPO application processes."
+    }
+  ]
 },
 {
   "id": 55,

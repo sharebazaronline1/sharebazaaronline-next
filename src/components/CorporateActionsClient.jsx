@@ -29,12 +29,15 @@ const TABS = [
   { id: "others", label: "Other Actions", dbType: "other" },
 ];
 
-const CorporateActionsClient = ({ initialGrouped = {} }) => {
+const CorporateActionsClient = ({
+  initialGrouped = {},
+  initialActiveTab = "buyback",
+}) => {
   const router = useRouter();
 
-  const [activeTab, setActiveTab] = useState("buyback");
+  const [activeTab, setActiveTab] = useState(initialActiveTab);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedYear, setSelectedYear] = useState("2026");
+  const [selectedYear, setSelectedYear] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
   const [sortConfig, setSortConfig] = useState({
     key: "ex_date",
@@ -63,13 +66,17 @@ const CorporateActionsClient = ({ initialGrouped = {} }) => {
 
   const filteredRecords = useMemo(() => {
     return records.filter((item) => {
-      const matchesSearch = item.company
-        ?.toLowerCase()
+      const matchesSearch = (item.company || "")
+        .toLowerCase()
         .includes(searchQuery.toLowerCase());
+
       const dateToCheck = item.ex_date || item.announcement || "";
-      const matchesYear = dateToCheck
-        ? dateToCheck.startsWith(selectedYear)
-        : true;
+
+      const matchesYear =
+        selectedYear === "All" ||
+        (dateToCheck &&
+          String(dateToCheck).startsWith(selectedYear));
+
       return matchesSearch && matchesYear;
     });
   }, [records, searchQuery, selectedYear]);
@@ -403,6 +410,7 @@ const CorporateActionsClient = ({ initialGrouped = {} }) => {
                   onChange={(e) => setSelectedYear(e.target.value)}
                   className="bg-slate-50 border border-slate-200 px-3 py-2 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-[#16A34A]"
                 >
+                  <option value="All">All Years</option>
                   <option value="2026">2026</option>
                   <option value="2025">2025</option>
                   <option value="2024">2024</option>
@@ -926,26 +934,6 @@ const CorporateActionsClient = ({ initialGrouped = {} }) => {
           </span>
         </div>
       </Link>
-
-      <Link
-        href="/broker-analyzer"
-        className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-lg font-semibold text-slate-900">
-              Compare Brokers
-            </p>
-            <p className="text-sm text-slate-400 mt-1">
-              Find the best broker platform
-            </p>
-          </div>
-          <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-            →
-          </span>
-        </div>
-      </Link>
-
       <Link
         href="/insight-hub"
         className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
@@ -965,43 +953,8 @@ const CorporateActionsClient = ({ initialGrouped = {} }) => {
         </div>
       </Link>
 
-      <Link
-        href="/ipo-calendar"
-        className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-lg font-semibold text-slate-900">
-              IPO Calendar
-            </p>
-            <p className="text-sm text-slate-400 mt-1">
-              Track upcoming IPO dates
-            </p>
-          </div>
-          <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-            →
-          </span>
-        </div>
-      </Link>
 
-      <Link
-        href="/how-to-apply-ipo"
-        className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-lg font-semibold text-slate-900">
-              How to Apply IPO
-            </p>
-            <p className="text-sm text-slate-400 mt-1">
-              Step-by-step IPO guide
-            </p>
-          </div>
-          <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-            →
-          </span>
-        </div>
-      </Link>
+      
     </div>
   </div>
 </div>

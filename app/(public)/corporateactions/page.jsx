@@ -50,6 +50,70 @@ async function getCorporateActions() {
 }
 
 // ==========================================
+// GROUPING & NORMALIZATION HELPERS
+// ==========================================
+
+const ACTION_TYPES = [
+  { id: "buyback", dbType: "buyback", aliases: ["buy_back"] },
+  { id: "dividends", dbType: "dividend", aliases: ["dividends"] },
+  {
+    id: "rights",
+    dbType: "rights",
+    aliases: ["rights_issue", "rights issue"],
+  },
+  {
+    id: "bonus",
+    dbType: "bonus",
+    aliases: ["bonus_issue", "bonus issue"],
+  },
+  {
+    id: "splits",
+    dbType: "split",
+    aliases: ["stock_split", "stock split"],
+  },
+  {
+    id: "others",
+    dbType: "other",
+    aliases: ["others", "other_action"],
+  },
+];
+
+function normalizeActionType(value) {
+  const normalized = String(value || "other")
+    .toLowerCase()
+    .trim()
+    .replace(/-/g, "_");
+
+  return (
+    ACTION_TYPES.find(
+      (item) =>
+        item.dbType === normalized ||
+        item.aliases.includes(normalized)
+    )?.dbType || "other"
+  );
+}
+
+function groupCorporateActions(records) {
+  const grouped = Object.fromEntries(
+    ACTION_TYPES.map(({ dbType }) => [dbType, []])
+  );
+
+  for (const record of records) {
+    grouped[normalizeActionType(record.action_type)].push(record);
+  }
+
+  return grouped;
+}
+
+function getInitialActiveTab(grouped) {
+  return (
+    ACTION_TYPES.find(
+      ({ dbType }) => grouped[dbType]?.length > 0
+    )?.id || "buyback"
+  );
+}
+
+// ==========================================
 // METADATA
 // ==========================================
 
@@ -114,12 +178,8 @@ export default async function CorporateActionsPage() {
   // Fetch once on the server
   const records = await getCorporateActions();
 
-const grouped = (records || []).reduce((acc, row) => {
-  const type = (row.action_type || "other").toLowerCase().trim();
-  if (!acc[type]) acc[type] = [];
-  acc[type].push(row);
-  return acc;
-}, {});
+  const grouped = groupCorporateActions(records);
+  const initialActiveTab = getInitialActiveTab(grouped);
 
   // ==========================================
   // WEBPAGE JSON-LD
@@ -219,7 +279,10 @@ const grouped = (records || []).reduce((acc, row) => {
       />
 
       {/* Client component receives SSR data — no client fetch needed */}
-      <CorporateActionsClient initialGrouped={grouped} />
+      <CorporateActionsClient
+        initialGrouped={grouped}
+        initialActiveTab={initialActiveTab}
+      />
     </>
   );
 }
