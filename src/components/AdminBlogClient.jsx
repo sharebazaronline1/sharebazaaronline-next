@@ -46,6 +46,7 @@ const AdminBlogClient = () => {
     "Commodity Market",
     "ETF News",
     "Mutual Funds",
+    "Broker Reviews",
     "NFO Updates",
     "Corporate Actions",
     "Unlisted Shares",

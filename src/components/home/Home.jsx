@@ -188,7 +188,7 @@ export default function Home({
                     { value: "50+", label: "Live IPOs", icon: TrendingUp },
                     { value: "150+", label: "Unlisted Shares", icon: Building2 },
                     { value: "50+", label: "Brokers Compared", icon: UserCog2Icon },
-                    { value: "2M+", label: "Investors", icon: UserCheck },
+                    { value: "500+", label: "Market Insights", icon: UserCheck },
                   ].map(({ value, label, icon: Icon }, i) => (
                     <div
                       key={label}

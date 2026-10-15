@@ -247,12 +247,6 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
             Buy Now @ ₹{displayPrice}
           </button>
 
-          <button
-            onClick={() => router.push("/how-to-apply-ipo")}
-            className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg text-xs tracking-wide transition-all shadow-md"
-          >
-            Apply Now
-          </button>
         </div>
       </div>
 

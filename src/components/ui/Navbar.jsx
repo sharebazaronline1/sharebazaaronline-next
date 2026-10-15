@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { User, Menu, X, LogOut, Settings, Bell } from "lucide-react";
-
+import { createClient } from "@/lib/supabase/client";
 import GlobalSearch from "@/components/GlobalSearch"; 
 
 const HeaderAndNav = () => {
@@ -20,70 +20,74 @@ const HeaderAndNav = () => {
   const [user, setUser] = useState(null);
   const [profileOpen, setProfileOpen] = useState(false);
   const [userID, setUserID] = useState("SB-XXXXXX");
-
+const supabase = createClient();
   const ipoTimer = useRef(null);
   const preIpoTimer = useRef(null);
   const brokerTimer = useRef(null);
   const router = useRouter();
 
-  // ───────────────────────────────────────────────
-  // Auth logic (uncomment & adjust when you connect Supabase)
-  // ───────────────────────────────────────────────
-  /*
+ 
+  // Authentication state
   useEffect(() => {
-    const initializeUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+    let mounted = true;
 
-      if (!session?.user) {
+    const initializeUser = async () => {
+      const {
+        data: { user: currentUser },
+        error,
+      } = await supabase.auth.getUser();
+
+      if (!mounted) return;
+
+      if (error || !currentUser) {
         setUser(null);
         setUserID("SB-GUEST000");
         return;
       }
 
-      const currentUser = session.user;
       setUser(currentUser);
 
-      let { data: profile } = await supabase
+      const { data: profile } = await supabase
         .from("profiles")
         .select("sb_user_id")
         .eq("id", currentUser.id)
         .maybeSingle();
 
-      let code = profile?.sb_user_id;
+      if (!mounted) return;
 
-      if (!code) {
-        code = generateShortId(currentUser.id);
-
-        const { error } = await supabase
-          .from("profiles")
-          .update({ sb_user_id: code })
-          .eq("id", currentUser.id);
-
-        if (error) {
-          console.error("Failed to save sb_user_id:", error);
-        }
-      }
-
-      setUserID(code);
+      setUserID(profile?.sb_user_id || "SB-XXXXXX");
     };
 
     initializeUser();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (!session?.user) {
-          setUser(null);
-          setUserID("SB-GUEST000");
-          setProfileOpen(false);
-        } else {
-          initializeUser();
-        }
-      }
-    );
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!mounted) return;
 
-    return () => subscription.unsubscribe();
+      if (event === "SIGNED_OUT" || !session?.user) {
+        setUser(null);
+        setUserID("SB-GUEST000");
+        setProfileOpen(false);
+        return;
+      }
+
+      setUser(session.user);
+      setProfileOpen(false);
+
+      // Fetch the profile after the auth callback completes.
+      if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+        setTimeout(() => {
+          initializeUser();
+        }, 0);
+      }
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
-  */
 
   const handleLogout = async () => {
     // await supabase.auth.signOut();
