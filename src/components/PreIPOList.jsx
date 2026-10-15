@@ -15,6 +15,7 @@ import {
   Star,
   BellRing,
   BadgeCheck,
+  ArrowRight,
 } from "lucide-react";
 
 import slugify from "../utils/slugify";
@@ -136,419 +137,571 @@ const PreIPOStocks = ({ initialIPOs = [] }) => {
   return (
     <div className="w-full bg-white min-h-screen">
       {/* HERO */}
-{/* Pre-IPO Hero */}
-<section className="relative overflow-hidden bg-white py-20 lg:py-16">
-  <div className="relative w-full px-4 sm:px-6 lg:px-10 xl:px-16">
-    <div className="grid grid-cols-1 xl:grid-cols-12 gap-14 items-center">
-      <div className="xl:col-span-6">
-        <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-5 py-2 rounded-full text-sm font-semibold border border-green-200 shadow-sm">
-          <TrendingUp size={16} />
-          Pre-IPO &amp; Unlisted Shares
-        </div>
+      {/* Pre-IPO Hero */}
+      <section className="relative overflow-hidden bg-white py-20 lg:py-16">
+        <div className="relative w-full px-4 sm:px-6 lg:px-10 xl:px-16">
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-14 items-center">
+            <div className="xl:col-span-6">
+              <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-5 py-2 rounded-full text-sm font-semibold border border-green-200 shadow-sm">
+                <TrendingUp size={16} />
+                Pre-IPO &amp; Unlisted Shares
+              </div>
 
-        <h1 className="mt-7 text-5xl md:text-6xl lg:text-7xl font-black tracking-[-3px] leading-[0.95] text-[#0f172a]">
-          Invest in Tomorrow’s
-          <br />
-          <span className="text-green-600">Top Companies</span>
-        </h1>
+              <h1 className="mt-7 text-5xl md:text-6xl lg:text-7xl font-black tracking-[-3px] leading-[0.95] text-[#0f172a]">
+                Invest in Tomorrow’s
+                <br />
+                <span className="text-green-600">Top Companies</span>
+              </h1>
 
-        <p className="mt-6 text-lg lg:text-[22px] leading-9 text-slate-600 max-w-2xl">
-          Discover high-growth private companies before they go public.
-          Explore pre-IPO opportunities and invest smart.
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-green-100 flex items-center justify-center">
-              <TrendingUp size={22} className="text-green-600" />
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900">High Growth</p>
-              <p className="text-sm text-gray-500 mt-1">
-                Early access to future leaders
+              <p className="mt-6 text-lg lg:text-[22px] leading-9 text-slate-600 max-w-2xl">
+                Discover high-growth private companies before they go public.
+                Explore pre-IPO opportunities and invest smart.
               </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-green-100 flex items-center justify-center">
+                    <TrendingUp size={22} className="text-green-600" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">High Growth</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Early access to future leaders
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center">
+                    <ShieldCheck size={22} className="text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">Secure Deals</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Trusted &amp; transparent investments
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center">
+                    <BriefcaseBusiness size={22} className="text-purple-600" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">Curated Picks</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Handpicked opportunities
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="xl:col-span-6 relative">
+              <div className="relative flex justify-center">
+                <img
+                  src="/images/hero-preipo.png"
+                  alt="Pre IPO"
+                  className="w-full max-w-[780px] object-contain drop-shadow-2xl"
+                />
+              </div>
             </div>
           </div>
-
-          <div className="flex items-start gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-blue-100 flex items-center justify-center">
-              <ShieldCheck size={22} className="text-blue-600" />
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900">Secure Deals</p>
-              <p className="text-sm text-gray-500 mt-1">
-                Trusted &amp; transparent investments
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center">
-              <BriefcaseBusiness size={22} className="text-purple-600" />
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900">Curated Picks</p>
-              <p className="text-sm text-gray-500 mt-1">
-                Handpicked opportunities
-              </p>
-            </div>
-          </div>
         </div>
-      </div>
-
-      <div className="xl:col-span-6 relative">
-        <div className="relative flex justify-center">
-          <img
-            src="/images/hero-preipo.png"
-            alt="Pre IPO"
-            className="w-full max-w-[780px] object-contain drop-shadow-2xl"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
 
       {/* MAIN CONTENT */}
       <section className="w-full bg-white px-4 lg:px-8 py-10">
-        <div className="w-full">
-          {/* HEADER — outside card */}
-          <div className="px-1 pt-2 pb-6">
-            <h2 className="text-4xl font-black tracking-[-1px] text-[#0f172a]">
-              Pre-IPO &amp; Unlisted Shares
-            </h2>
-            <p className="mt-2 text-lg text-gray-500">
-              Invest early in high-growth companies before they list
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+          {/* MAIN CONTENT COLUMN */}
+          <div className="lg:col-span-10">
+
+            {/* HEADER — outside card */}
+            <div className="px-1 pt-2 pb-6">
+              <h2 className="text-4xl font-black tracking-[-1px] text-[#0f172a]">
+                Pre-IPO &amp; Unlisted Shares
+              </h2>
+              <p className="mt-2 text-lg text-gray-500">
+                Invest early in high-growth companies before they list
+              </p>
+            </div>
+
+            {/* INTRO — outside card, larger font */}
+            <p className="text-lg sm:text-xl leading-relaxed text-slate-700 mb-8 px-1">
+              Unlisted shares are equity in companies not yet traded on a
+              recognised exchange like the NSE, BSE or MSEI. They’re legally
+              issued, fully valid equity instruments held in Demat form through
+              NSDL or CDSL — the difference is that they’re bought and sold
+              off-market, rather than on a public exchange.
             </p>
-          </div>
 
-          {/* INTRO — outside card, larger font */}
-          <p className="text-lg sm:text-xl leading-relaxed text-slate-700 mb-8 px-1">
-            Unlisted shares are equity in companies not yet traded on a
-            recognised exchange like the NSE, BSE or MSEI. They’re legally
-            issued, fully valid equity instruments held in Demat form through
-            NSDL or CDSL — the difference is that they’re bought and sold
-            off-market, rather than on a public exchange.
-          </p>
-
-          {/* TABLE CARD */}
-          <div className="w-full bg-white rounded-[28px] border border-slate-200 shadow-[0_10px_40px_rgba(15,23,42,0.05)] overflow-hidden">
-            {/* MOBILE SWIPE */}
-            <div className="sm:hidden flex items-center justify-end gap-2 px-4 py-2 bg-white text-[11px] text-blue-700 font-medium border-b border-gray-100">
-              ← Swipe →
-            </div>
-
-            {/* TABLE */}
-            <div className="w-full overflow-x-auto bg-white">
-              <table className="w-full min-w-[1100px] bg-white">
-                <thead>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
-                      Company
-                    </th>
-                    <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">
-                      Price / Share
-                    </th>
-                    <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">
-                      Min. Lot
-                    </th>
-                    <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">
-                      Depository
-                    </th>
-                    <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody className="bg-white divide-y divide-gray-100">
-                  {loading && ipos.length === 0 &&
-                    Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => (
-                      <tr key={i} className="animate-pulse bg-white">
-                        <td className="px-6 py-5">
-                          <div className="h-5 bg-gray-200 rounded w-52"></div>
-                        </td>
-                      </tr>
-                    ))}
-
-                  {visibleIPOs.map((ipo, i) => (
-                    <motion.tr
-                      key={ipo.id}
-                      id={`preipo-${ipo.id}`}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.02 }}
-                      className="bg-white hover:bg-gray-50 transition cursor-pointer"
-                      onClick={() =>
-                        router.push(`/preipo/${ipo.id}/${slugify(ipo.name)}`)
-                      }
-                    >
-                      <td className="px-6 py-5">
-                        <div className="flex items-center gap-4 min-w-[280px]">
-                          <CompanyLogo name={ipo.name} logo={ipo.logo} />
-                          <div>
-                            <p className="font-semibold text-gray-900 text-base">
-                              {ipo.name}
-                            </p>
-                            <p className="text-sm text-gray-500 mt-1">
-                              Private Equity • Unlisted Market
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-
-                      <td className="px-6 py-5 text-center">
-                        <div className="font-semibold text-gray-900">
-                          ₹{ipo.price?.toLocaleString("en-IN") || "-"}
-                        </div>
-                      </td>
-
-                      <td className="px-6 py-5 text-center font-semibold text-gray-800">
-                        {ipo.minLotSize || "-"}
-                      </td>
-
-                      <td className="px-6 py-5 text-center text-gray-700 font-medium">
-                        {ipo.depository}
-                      </td>
-
-                      <td
-                        className="px-6 py-5 text-center"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <div className="flex items-center justify-center gap-3">
-                          <button
-                            onClick={() => router.push("/login")}
-                            className="h-12 px-5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition"
-                          >
-                            Buy Now
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              router.push(
-                                `/preipo/${ipo.id}/${slugify(ipo.name)}`
-                              )
-                            }
-                            className="h-12 px-5 rounded-xl border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition"
-                          >
-                            View Details
-                          </button>
-                        </div>
-                      </td>
-                    </motion.tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* FOOTER */}
-            {!loading && ipos.length > 0 && (
-              <div className="bg-white px-6 py-5 border-t border-gray-200">
-                <div className="flex items-center justify-between flex-wrap gap-4">
-                  <div className="flex items-center gap-3 text-green-700">
-                    <div className="w-10 h-10 rounded-2xl bg-green-100 flex items-center justify-center">
-                      <ShieldCheck size={18} />
-                    </div>
-                    <p className="text-sm font-medium">
-                      All investments are secured &amp; compliant with SEBI
-                      regulations.
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={() => router.push("/preipoguide")}
-                    className="text-green-700 font-semibold text-sm hover:underline"
-                  >
-                    Know More About Safety →
-                  </button>
-                </div>
+            {/* TABLE CARD */}
+            <div className="w-full bg-white rounded-[28px] border border-slate-200 shadow-[0_10px_40px_rgba(15,23,42,0.05)] overflow-hidden">
+              {/* MOBILE SWIPE */}
+              <div className="sm:hidden flex items-center justify-end gap-2 px-4 py-2 bg-white text-[11px] text-blue-700 font-medium border-b border-gray-100">
+                ← Swipe →
               </div>
-            )}
+
+              {/* TABLE */}
+              <div className="w-full overflow-x-auto bg-white">
+                <table className="w-full min-w-[1100px] bg-white">
+                  <thead>
+                    <tr className="bg-gray-50 border-b border-gray-200">
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">
+                        Company
+                      </th>
+                      <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">
+                        Price / Share
+                      </th>
+                      <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">
+                        Min. Lot
+                      </th>
+                      <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">
+                        Depository
+                      </th>
+                      <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody className="bg-white divide-y divide-gray-100">
+                    {loading && ipos.length === 0 &&
+                      Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => (
+                        <tr key={i} className="animate-pulse bg-white">
+                          <td className="px-6 py-5">
+                            <div className="h-5 bg-gray-200 rounded w-52"></div>
+                          </td>
+                        </tr>
+                      ))}
+
+                    {visibleIPOs.map((ipo, i) => (
+                      <motion.tr
+                        key={ipo.id}
+                        id={`preipo-${ipo.id}`}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.02 }}
+                        className="bg-white hover:bg-gray-50 transition cursor-pointer"
+                        onClick={() =>
+                          router.push(`/preipo/${ipo.id}/${slugify(ipo.name)}`)
+                        }
+                      >
+                        <td className="px-6 py-5">
+                          <div className="flex items-center gap-4 min-w-[280px]">
+                            <CompanyLogo name={ipo.name} logo={ipo.logo} />
+                            <div>
+                              <p className="font-semibold text-gray-900 text-base">
+                                {ipo.name}
+                              </p>
+                              <p className="text-sm text-gray-500 mt-1">
+                                Private Equity • Unlisted Market
+                              </p>
+                            </div>
+                          </div>
+                        </td>
+
+                        <td className="px-6 py-5 text-center">
+                          <div className="font-semibold text-gray-900">
+                            ₹{ipo.price?.toLocaleString("en-IN") || "-"}
+                          </div>
+                        </td>
+
+                        <td className="px-6 py-5 text-center font-semibold text-gray-800">
+                          {ipo.minLotSize || "-"}
+                        </td>
+
+                        <td className="px-6 py-5 text-center text-gray-700 font-medium">
+                          {ipo.depository}
+                        </td>
+
+                        <td
+                          className="px-6 py-5 text-center"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <div className="flex items-center justify-center gap-3">
+                            <button
+                              onClick={() => router.push("/login")}
+                              className="h-12 px-5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition"
+                            >
+                              Buy Now
+                            </button>
+
+                            <button
+                              onClick={() =>
+                                router.push(
+                                  `/preipo/${ipo.id}/${slugify(ipo.name)}`
+                                )
+                              }
+                              className="h-12 px-5 rounded-xl border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition"
+                            >
+                              View Details
+                            </button>
+                          </div>
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* FOOTER */}
+              {!loading && ipos.length > 0 && (
+                <div className="bg-white px-6 py-5 border-t border-gray-200">
+                  <div className="flex items-center justify-between flex-wrap gap-4">
+                    <div className="flex items-center gap-3 text-green-700">
+                      <div className="w-10 h-10 rounded-2xl bg-green-100 flex items-center justify-center">
+                        <ShieldCheck size={18} />
+                      </div>
+                      <p className="text-sm font-medium">
+                        All investments are secured &amp; compliant with SEBI
+                        regulations.
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => router.push("/preipoguide")}
+                      className="text-green-700 font-semibold text-sm hover:underline"
+                    >
+                      Know More About Safety →
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* ARTICLE — about pre-IPO investing */}
+            <div className="mt-10 space-y-6 text-slate-700 text-base sm:text-lg leading-relaxed">
+              <p>
+                For investors willing to take on higher risk for potentially
+                higher reward, pre-IPO shares are a way to enter a company’s
+                equity story before it lists. Several of India’s biggest listing
+                successes — names like Tata Technologies, IREDA, and Hyundai
+                India — rewarded early investors who got in before the public
+                issue. Browse the full list of companies currently available on
+                our Pre-IPO &amp; Unlisted Shares page.
+              </p>
+
+              <div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">
+                  How Pre-IPO Share Pricing Works
+                </h3>
+                <p>
+                  Listed share prices move on live exchange demand. Unlisted
+                  share prices don’t — they’re set by private transactions
+                  between buyers and sellers. Pricing is shaped by the company’s
+                  latest financials (revenue, profit, net worth), its expected
+                  IPO timeline, the sector outlook, and valuations from recent
+                  funding rounds. Prices can swing with demand in the unlisted
+                  market, and they may not line up with the eventual IPO price
+                  band.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">
+                  Who Should Consider Unlisted Shares?
+                </h3>
+                <p className="mb-3">Pre-IPO investing suits investors who:</p>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li>
+                    Have a long-term horizon — 12 to 36 months or more
+                  </li>
+                  <li>
+                    Can tolerate low liquidity — these shares can’t be sold
+                    instantly on an exchange
+                  </li>
+                  <li>
+                    Accept uncertain timelines — a company may delay or shelve
+                    its IPO entirely
+                  </li>
+                  <li>
+                    Are comfortable with limited disclosure — unlisted companies
+                    don’t publish quarterly results the way listed firms do
+                  </li>
+                </ul>
+                <p className="mt-3">
+                  It’s not suited to beginners or anyone who may need quick
+                  access to their capital.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">
+                  Risk Factors to Consider
+                </h3>
+                <ul className="list-disc pl-6 space-y-2">
+                  <li>
+                    <strong>Liquidity Risk</strong> — there’s no exchange to
+                    exit on; you’ll need to find a buyer through an off-market
+                    transfer
+                  </li>
+                  <li>
+                    <strong>Valuation Risk</strong> — the price you pay today
+                    may be above or below the eventual IPO or listing price
+                  </li>
+                  <li>
+                    <strong>Lock-in Period</strong> — non-promoter pre-IPO
+                    shareholders face a 6-month lock-in after listing, so you
+                    can’t sell on Day 1
+                  </li>
+                  <li>
+                    <strong>Information Asymmetry</strong> — financial data is
+                    often thinner than for listed companies
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">
+                  How to Read This Table
+                </h3>
+                <p>
+                  The table below lists 150+ unlisted and pre-IPO companies
+                  currently available in the Indian market. Each entry shows the
+                  current indicative price per share, minimum lot size, and
+                  depository support (NSDL / CDSL). Click “View Details” on any
+                  company for its financial overview and investment profile — or
+                  see them all on the Pre-IPO stocks list.
+                </p>
+              </div>
+
+              <p className="text-slate-700">
+                All pre-IPO investments are facilitated through off-market share
+                transfers compliant with depository regulations.
+                ShareBazaarOnline does not hold inventory — we connect buyers and
+                sellers through verified channels.
+              </p>
+
+              <p className="text-base text-slate-600 border-l-4 border-amber-400 bg-amber-50 px-4 py-3 rounded-r-lg">
+                <strong className="text-slate-800">Disclaimer:</strong> Investing
+                in unlisted shares carries substantial risk. Prices shown are
+                indicative and based on prevailing market demand. Past
+                performance of similar companies is not a guarantee of future
+                returns. Please consult a qualified financial advisor before
+                investing.
+              </p>
+            </div>
+
+            {/* EXPLORE MORE */}
+            <div className="mt-10 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-slate-900">
+                  Explore More Investment Opportunities
+                </h3>
+                <p className="text-slate-500 mt-2 text-sm lg:text-base">
+                  Discover IPOs, unlisted shares, and broker comparison tools
+                  curated for smart investors.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <Link
+                  href="/ipo"
+                  className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-lg font-semibold text-slate-900">
+                        Latest IPOs
+                      </p>
+                      <p className="text-sm text-slate-400 mt-1">
+                        Track live & upcoming IPOs
+                      </p>
+                    </div>
+                    <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                      →
+                    </span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/insight-hub"
+                  className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-lg font-semibold text-slate-900">
+                        Insight Hub
+                      </p>
+                      <p className="text-sm text-slate-400 mt-1">
+                        Read IPO news, blogs & market insights
+                      </p>
+                    </div>
+                    <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                      →
+                    </span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/broker-analyzer"
+                  className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-lg font-semibold text-slate-900">
+                        Compare Brokers
+                      </p>
+                      <p className="text-sm text-slate-400 mt-1">
+                        Find the best broker platform
+                      </p>
+                    </div>
+                    <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                      →
+                    </span>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
           </div>
-{/* ARTICLE — about pre-IPO investing */}
-<div className="mt-10 space-y-6 text-slate-700 text-base sm:text-lg leading-relaxed">
-  <p>
-    For investors willing to take on higher risk for potentially
-    higher reward, pre-IPO shares are a way to enter a company’s
-    equity story before it lists. Several of India’s biggest listing
-    successes — names like Tata Technologies, IREDA, and Hyundai
-    India — rewarded early investors who got in before the public
-    issue. Browse the full list of companies currently available on
-    our Pre-IPO &amp; Unlisted Shares page.
-  </p>
 
-  <div>
-    <h3 className="text-2xl font-bold text-slate-900 mb-3">
-      How Pre-IPO Share Pricing Works
-    </h3>
-    <p>
-      Listed share prices move on live exchange demand. Unlisted
-      share prices don’t — they’re set by private transactions
-      between buyers and sellers. Pricing is shaped by the company’s
-      latest financials (revenue, profit, net worth), its expected
-      IPO timeline, the sector outlook, and valuations from recent
-      funding rounds. Prices can swing with demand in the unlisted
-      market, and they may not line up with the eventual IPO price
-      band.
-    </p>
-  </div>
+          {/* RIGHT SIDEBAR — Promo cards */}
+          <aside className="hidden lg:block lg:col-span-2">
+            <div className="sticky top-24 space-y-2">
+              {[
+                {
+                  badge: "IPO Insights",
+                  title: "Track Live",
+                  titleAccent: "IPOs & GMP",
+                  description:
+                    "Real-time subscription numbers, GMP trends and upcoming issues.",
+                  accentText: "text-blue-400",
+                  accentBg: "bg-blue-600 hover:bg-blue-700",
+                  accentDot: "bg-blue-400",
+                  accentBorder: "border-blue-400/25",
+                  accentBadgeBg: "bg-blue-400/10",
+                  accentGlow1: "bg-blue-400/15",
+                  accentGlow2: "bg-indigo-400/10",
+                  shadow: "shadow-blue-500/20",
+                  links: [
+                    { label: "Live IPOs", href: "/ipo" },
+                    { label: "Upcoming Issues", href: "/ipo" },
+                  ],
+                  cta: { label: "IPO Tracker", href: "/ipo" },
+                },
+                {
+                  badge: "Pre-IPO",
+                  title: "Explore",
+                  titleAccent: "Unlisted Shares",
+                  description:
+                    "Verified prices and valuations of India's top pre-IPO companies.",
+                  accentText: "text-emerald-400",
+                  accentBg: "bg-emerald-400 hover:bg-emerald-500",
+                  accentDot: "bg-emerald-400",
+                  accentBorder: "border-emerald-400/25",
+                  accentBadgeBg: "bg-emerald-400/10",
+                  accentGlow1: "bg-emerald-400/15",
+                  accentGlow2: "bg-teal-400/10",
+                  shadow: "shadow-emerald-500/20",
+                  links: [
+                    { label: "Unlisted Stocks", href: "/preipo" },
+                    { label: "Top Valuations", href: "/preipo" },
+                  ],
+                  cta: { label: "View Pre-IPO", href: "/preipo" },
+                },
+                {
+                  badge: "Brokers",
+                  title: "Compare",
+                  titleAccent: "Top Brokers",
+                  description:
+                    "Brokerage charges, platform features and account-opening benefits.",
+                  accentText: "text-blue-400",
+                  accentBg: "bg-blue-600 hover:bg-blue-700",
+                  accentDot: "bg-blue-400",
+                  accentBorder: "border-blue-400/25",
+                  accentBadgeBg: "bg-blue-400/10",
+                  accentGlow1: "bg-blue-400/15",
+                  accentGlow2: "bg-indigo-400/10",
+                  shadow: "shadow-blue-500/20",
+                  links: [
+                    { label: "Broker Analyzer", href: "/broker-analyzer" },
+                    { label: "Compare Charges", href: "/comparebrokers" },
+                  ],
+                  cta: { label: "Compare Brokers", href: "/comparebrokers" },
+                },
+                {
+                  badge: "Insight Hub",
+                  title: "Read",
+                  titleAccent: "Market Insights",
+                  description: "Latest stock market news, IPO analysis, and expert financial blogs.",
+                  accentText: "text-emerald-400",
+                  accentBg: "bg-emerald-400 hover:bg-emerald-500",
+                  accentDot: "bg-emerald-400",
+                  accentBorder: "border-emerald-400/25",
+                  accentBadgeBg: "bg-emerald-400/10",
+                  accentGlow1: "bg-emerald-400/15",
+                  accentGlow2: "bg-teal-400/10",
+                  shadow: "shadow-emerald-500/20",
+                  links: [
+                    { label: "Latest News", href: "/insight-hub" },
+                    { label: "IPO Analysis", href: "/insight-hub" },
+                  ],
+                  cta: { label: "Explore Insights", href: "/insight-hub" },
+                },
+              ].map((card, i) => (
+                <div
+                  key={i}
+                  className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#061A40] via-[#0A2558] to-[#0E3A73] p-3 shadow-lg border border-cyan-500/10 text-white"
+                >
+                  {/* Decorative glows */}
+                  <div
+                    className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-3xl pointer-events-none ${card.accentGlow1}`}
+                  />
+                  <div
+                    className={`absolute bottom-0 left-0 w-24 h-24 rounded-full blur-3xl pointer-events-none ${card.accentGlow2}`}
+                  />
 
-  <div>
-    <h3 className="text-2xl font-bold text-slate-900 mb-3">
-      Who Should Consider Unlisted Shares?
-    </h3>
-    <p className="mb-3">Pre-IPO investing suits investors who:</p>
-    <ul className="list-disc pl-6 space-y-2">
-      <li>
-        Have a long-term horizon — 12 to 36 months or more
-      </li>
-      <li>
-        Can tolerate low liquidity — these shares can’t be sold
-        instantly on an exchange
-      </li>
-      <li>
-        Accept uncertain timelines — a company may delay or shelve
-        its IPO entirely
-      </li>
-      <li>
-        Are comfortable with limited disclosure — unlisted companies
-        don’t publish quarterly results the way listed firms do
-      </li>
-    </ul>
-    <p className="mt-3">
-      It’s not suited to beginners or anyone who may need quick
-      access to their capital.
-    </p>
-  </div>
+                  <div className="relative z-10">
+                    <div
+                      className={`inline-flex items-center px-1.5 py-0.5 rounded-full border text-[9px] font-semibold tracking-wide ${card.accentBadgeBg} ${card.accentBorder} ${card.accentText}`}
+                    >
+                      {card.badge}
+                    </div>
 
-  <div>
-    <h3 className="text-2xl font-bold text-slate-900 mb-3">
-      Risk Factors to Consider
-    </h3>
-    <ul className="list-disc pl-6 space-y-2">
-      <li>
-        <strong>Liquidity Risk</strong> — there’s no exchange to
-        exit on; you’ll need to find a buyer through an off-market
-        transfer
-      </li>
-      <li>
-        <strong>Valuation Risk</strong> — the price you pay today
-        may be above or below the eventual IPO or listing price
-      </li>
-      <li>
-        <strong>Lock-in Period</strong> — non-promoter pre-IPO
-        shareholders face a 6-month lock-in after listing, so you
-        can’t sell on Day 1
-      </li>
-      <li>
-        <strong>Information Asymmetry</strong> — financial data is
-        often thinner than for listed companies
-      </li>
-    </ul>
-  </div>
+                    <h3 className="mt-1.5 text-sm font-black leading-tight">
+                      {card.title}
+                      <span className={`block ${card.accentText}`}>
+                        {card.titleAccent}
+                      </span>
+                    </h3>
 
-  <div>
-    <h3 className="text-2xl font-bold text-slate-900 mb-3">
-      How to Read This Table
-    </h3>
-    <p>
-      The table below lists 150+ unlisted and pre-IPO companies
-      currently available in the Indian market. Each entry shows the
-      current indicative price per share, minimum lot size, and
-      depository support (NSDL / CDSL). Click “View Details” on any
-      company for its financial overview and investment profile — or
-      see them all on the Pre-IPO stocks list.
-    </p>
-  </div>
+                    <p className="mt-1 text-slate-300 text-[10px] leading-snug">
+                      {card.description}
+                    </p>
 
-  <p className="text-slate-700">
-    All pre-IPO investments are facilitated through off-market share
-    transfers compliant with depository regulations.
-    ShareBazaarOnline does not hold inventory — we connect buyers and
-    sellers through verified channels.
-  </p>
+                    <div className="mt-2 space-y-0.5">
+                      {card.links.map((item) => (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          className="flex items-center gap-2 text-[10px] group"
+                        >
+                          <div
+                            className={`w-1 h-1 rounded-full shrink-0 group-hover:scale-150 transition ${card.accentDot}`}
+                          />
+                          <span className="text-slate-200 group-hover:text-white transition">
+                            {item.label}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
 
-  <p className="text-base text-slate-600 border-l-4 border-amber-400 bg-amber-50 px-4 py-3 rounded-r-lg">
-    <strong className="text-slate-800">Disclaimer:</strong> Investing
-    in unlisted shares carries substantial risk. Prices shown are
-    indicative and based on prevailing market demand. Past
-    performance of similar companies is not a guarantee of future
-    returns. Please consult a qualified financial advisor before
-    investing.
-  </p>
-</div>
+                    <Link
+                      href={card.cta.href}
+                      className={`mt-2 w-full py-1 rounded-md text-white font-bold transition-colors text-[10px] text-center inline-flex items-center justify-center gap-1 ${card.accentBg} ${card.shadow}`}
+                    >
+                      {card.cta.label}
+                      <ArrowRight size={12} className="stroke-[2.5]" />
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </aside>
 
-          {/* EXPLORE MORE */}
-        <div className="mt-10 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
-  <div className="mb-6">
-    <h3 className="text-2xl font-bold text-slate-900">
-      Explore More Investment Opportunities
-    </h3>
-    <p className="text-slate-500 mt-2 text-sm lg:text-base">
-      Discover IPOs, unlisted shares, and broker comparison tools
-      curated for smart investors.
-    </p>
-  </div>
-
-  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-    <Link
-      href="/ipo"
-      className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-    >
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-lg font-semibold text-slate-900">
-            Latest IPOs
-          </p>
-          <p className="text-sm text-slate-400 mt-1">
-            Track live & upcoming IPOs
-          </p>
-        </div>
-        <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-          →
-        </span>
-      </div>
-    </Link>
-
-    <Link
-      href="/insight-hub"
-      className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-    >
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-lg font-semibold text-slate-900">
-            Insight Hub
-          </p>
-          <p className="text-sm text-slate-400 mt-1">
-            Read IPO news, blogs & market insights
-          </p>
-        </div>
-        <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-          →
-        </span>
-      </div>
-    </Link>
-
-    <Link
-      href="/broker-analyzer"
-      className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-    >
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-lg font-semibold text-slate-900">
-            Compare Brokers
-          </p>
-          <p className="text-sm text-slate-400 mt-1">
-            Find the best broker platform
-          </p>
-        </div>
-        <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-          →
-        </span>
-      </div>
-    </Link>
-  </div>
-</div>
         </div>
       </section>
     </div>

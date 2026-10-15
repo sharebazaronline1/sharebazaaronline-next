@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { 
   Star, StarHalf, Award, ChevronRight, CheckCircle2, 
   Monitor, BarChart3, Package, UserPlus, Scale, 
-  Repeat, ListChecks, DollarSign, Home
+  Repeat, ListChecks, DollarSign, Home, ArrowRight
 } from "lucide-react";
 
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
@@ -280,10 +280,10 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
 
       <BreadcrumbSchema items={breadcrumbItems} />
 
-      <div className="min-h-screen bg-white text-slate-900 antialiased w-full overflow-x-hidden">
+    
+      <div className="min-h-screen bg-white text-slate-900 antialiased w-full">
         
         {/* Visual Breadcrumb */}
-      
 
         {/* SECTION 1: HERO PANEL */}
         <div className="bg-gradient-to-b from-[#060a22] to-[#0c133a] text-white border-b border-slate-800/60 w-full">
@@ -425,67 +425,292 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
           </div>
         )}
 
-        {/* SECTION 3: EDITORIAL CONTENT VIEWPORT */}
+        {/* SECTION 3: EDITORIAL CONTENT VIEWPORT + SIDEBAR */}
         <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 py-10">
-          <article
-            className="prose max-w-none text-left prose-slate prose-sm"
-            dangerouslySetInnerHTML={{
-              __html: review.content || "<p class='text-slate-400 text-sm'>No editorial content has been populated yet for this entry.</p>",
-            }}
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-          {/* SECTION 4: ECOSYSTEM MATRIX FOOTER */}
-          {competitors && competitors.length > 0 && (
-            <div className="pt-8 mt-10 border-t border-slate-200 w-full text-left">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                <div>
-                  <h3 className="text-sm font-bold tracking-tight text-slate-950">Compare Equivalent Ecosystems</h3>
-                  <p className="text-xs text-slate-400 mt-0.5">Evaluate structural variance directly with alternative brokerage operations.</p>
-                </div>
-                <Link href="/comparebrokers" className="text-emerald-600 hover:text-emerald-700 font-semibold text-xs uppercase tracking-wider flex items-center gap-1 transition">
-                  Open Full Matrix Engine <ChevronRight size={14} />
-                </Link>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
-                {competitors.map((item) => (
-                  <div
-                    key={item.slug}
-                    className="flex flex-col justify-between p-3 border border-slate-200 rounded-xl bg-white hover:border-slate-300 transition text-left shadow-sm"
-                  >
+            {/* MAIN CONTENT COLUMN */}
+            <div className="lg:col-span-10">
+
+              <article
+                className="prose max-w-none text-left prose-slate prose-sm"
+                dangerouslySetInnerHTML={{
+                  __html: review.content || "<p class='text-slate-400 text-sm'>No editorial content has been populated yet for this entry.</p>",
+                }}
+              />
+
+              {/* SECTION 4: ECOSYSTEM MATRIX FOOTER */}
+              {competitors && competitors.length > 0 && (
+                <div className="pt-8 mt-10 border-t border-slate-200 w-full text-left">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                     <div>
-                      <div className="flex items-center justify-between gap-4 mb-2">
-                        {item.logo ? (
-                          <div className="h-7 max-w-[90px] flex items-center justify-center p-1 border border-slate-100 rounded-lg bg-white">
-                            <img src={item.logo} alt={item.name} className="max-w-full max-h-full object-contain" />
-                          </div>
-                        ) : (
-                          <div className="w-7 h-7 bg-slate-950 rounded-lg flex items-center justify-center text-white font-bold text-xs">
-                            {item.name.charAt(0)}
-                          </div>
-                        )}
-                        <span className="text-[10px] text-amber-500 font-medium bg-amber-50 px-1.5 py-0.5 rounded">
-                          ★ {item.rating ? parseFloat(item.rating).toFixed(1) : "4.2"}
-                        </span>
-                      </div>
-                      
-                      <h4 className="font-semibold text-slate-900 text-xs mb-0.5">{item.name}</h4>
-                      <p className="text-[10px] text-slate-400 truncate">{item.active_users?.trim() || "Verified Member"}</p>
+                      <h3 className="text-sm font-bold tracking-tight text-slate-950">Compare Equivalent Ecosystems</h3>
+                      <p className="text-xs text-slate-400 mt-0.5">Evaluate structural variance directly with alternative brokerage operations.</p>
                     </div>
+                    <Link href="/comparebrokers" className="text-emerald-600 hover:text-emerald-700 font-semibold text-xs uppercase tracking-wider flex items-center gap-1 transition">
+                      Open Full Matrix Engine <ChevronRight size={14} />
+                    </Link>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+                    {competitors.map((item) => (
+                      <div
+                        key={item.slug}
+                        className="flex flex-col justify-between p-3 border border-slate-200 rounded-xl bg-white hover:border-slate-300 transition text-left shadow-sm"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between gap-4 mb-2">
+                            {item.logo ? (
+                              <div className="h-7 max-w-[90px] flex items-center justify-center p-1 border border-slate-100 rounded-lg bg-white">
+                                <img src={item.logo} alt={item.name} className="max-w-full max-h-full object-contain" />
+                              </div>
+                            ) : (
+                              <div className="w-7 h-7 bg-slate-950 rounded-lg flex items-center justify-center text-white font-bold text-xs">
+                                {item.name.charAt(0)}
+                              </div>
+                            )}
+                            <span className="text-[10px] text-amber-500 font-medium bg-amber-50 px-1.5 py-0.5 rounded">
+                              ★ {item.rating ? parseFloat(item.rating).toFixed(1) : "4.2"}
+                            </span>
+                          </div>
+                          
+                          <h4 className="font-semibold text-slate-900 text-xs mb-0.5">{item.name}</h4>
+                          <p className="text-[10px] text-slate-400 truncate">{item.active_users?.trim() || "Verified Member"}</p>
+                        </div>
 
-                    <button
-                      onClick={() => router.push(`/comparebrokers?broker1=${item.slug}`)}
-                      className="mt-3 w-full bg-slate-50 hover:bg-slate-950 text-slate-600 hover:text-white border border-slate-200 hover:border-slate-950 py-1 rounded-md text-xs font-medium transition text-center"
-                    >
-                      Compare Matrix
-                    </button>
+                        <button
+                          onClick={() => router.push(`/comparebrokers?broker1=${item.slug}`)}
+                          className="mt-3 w-full bg-slate-50 hover:bg-slate-950 text-slate-600 hover:text-white border border-slate-200 hover:border-slate-950 py-1 rounded-md text-xs font-medium transition text-center"
+                        >
+                          Compare Matrix
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* EXPLORE MORE */}
+              <div className="mt-10 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold text-slate-900">
+                    Explore More Investment Opportunities
+                  </h3>
+                  <p className="text-slate-500 mt-2 text-sm lg:text-base">
+                    Discover IPOs, unlisted shares, and broker comparison tools
+                    curated for smart investors.
+                  </p>
+                </div>
+              
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <Link
+                    href="/ipo"
+                    className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-lg font-semibold text-slate-900">
+                          Latest IPOs
+                        </p>
+                        <p className="text-sm text-slate-400 mt-1">
+                          Track live & upcoming IPOs
+                        </p>
+                      </div>
+                      <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                        →
+                      </span>
+                    </div>
+                  </Link>
+              
+                  <Link
+                    href="/insight-hub"
+                    className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-lg font-semibold text-slate-900">
+                          Insight Hub
+                        </p>
+                        <p className="text-sm text-slate-400 mt-1">
+                          Read IPO news, blogs & market insights
+                        </p>
+                      </div>
+                      <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                        →
+                      </span>
+                    </div>
+                  </Link>
+              
+                  <Link
+                    href="/broker-analyzer"
+                    className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-lg font-semibold text-slate-900">
+                          Compare Brokers
+                        </p>
+                        <p className="text-sm text-slate-400 mt-1">
+                          Find the best broker platform
+                        </p>
+                      </div>
+                      <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                        →
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+
+            </div>
+
+            {/* RIGHT SIDEBAR — Promo cards (now properly sticky) */}
+            <aside className="hidden lg:block lg:col-span-2">
+              <div className="sticky top-24 space-y-2">
+                {[
+                  {
+                    badge: "IPO Insights",
+                    title: "Track Live",
+                    titleAccent: "IPOs & GMP",
+                    description:
+                      "Real-time subscription numbers, GMP trends and upcoming issues.",
+                    accentText: "text-blue-400",
+                    accentBg: "bg-blue-600 hover:bg-blue-700",
+                    accentDot: "bg-blue-400",
+                    accentBorder: "border-blue-400/25",
+                    accentBadgeBg: "bg-blue-400/10",
+                    accentGlow1: "bg-blue-400/15",
+                    accentGlow2: "bg-indigo-400/10",
+                    shadow: "shadow-blue-500/20",
+                    links: [
+                      { label: "Live IPOs", href: "/ipo" },
+                      { label: "Upcoming Issues", href: "/ipo" },
+                    ],
+                    cta: { label: "IPO Tracker", href: "/ipo" },
+                  },
+                  {
+                    badge: "Pre-IPO",
+                    title: "Explore",
+                    titleAccent: "Unlisted Shares",
+                    description:
+                      "Verified prices and valuations of India's top pre-IPO companies.",
+                    accentText: "text-emerald-400",
+                    accentBg: "bg-emerald-400 hover:bg-emerald-500",
+                    accentDot: "bg-emerald-400",
+                    accentBorder: "border-emerald-400/25",
+                    accentBadgeBg: "bg-emerald-400/10",
+                    accentGlow1: "bg-emerald-400/15",
+                    accentGlow2: "bg-teal-400/10",
+                    shadow: "shadow-emerald-500/20",
+                    links: [
+                      { label: "Unlisted Stocks", href: "/preipo" },
+                      { label: "Top Valuations", href: "/preipo" },
+                    ],
+                    cta: { label: "View Pre-IPO", href: "/preipo" },
+                  },
+                  {
+                    badge: "Brokers",
+                    title: "Compare",
+                    titleAccent: "Top Brokers",
+                    description:
+                      "Brokerage charges, platform features and account-opening benefits.",
+                    accentText: "text-blue-400",
+                    accentBg: "bg-blue-600 hover:bg-blue-700",
+                    accentDot: "bg-blue-400",
+                    accentBorder: "border-blue-400/25",
+                    accentBadgeBg: "bg-blue-400/10",
+                    accentGlow1: "bg-blue-400/15",
+                    accentGlow2: "bg-indigo-400/10",
+                    shadow: "shadow-blue-500/20",
+                    links: [
+                      { label: "Broker Analyzer", href: "/broker-analyzer" },
+                      { label: "Compare Charges", href: "/comparebrokers" },
+                    ],
+                    cta: { label: "Compare Brokers", href: "/comparebrokers" },
+                  },
+                  {
+                    badge: "Insight Hub",
+                    title: "Read",
+                    titleAccent: "Market Insights",
+                    description: "Latest stock market news, IPO analysis, and expert financial blogs.",
+                    accentText: "text-emerald-400",
+                    accentBg: "bg-emerald-400 hover:bg-emerald-500",
+                    accentDot: "bg-emerald-400",
+                    accentBorder: "border-emerald-400/25",
+                    accentBadgeBg: "bg-emerald-400/10",
+                    accentGlow1: "bg-emerald-400/15",
+                    accentGlow2: "bg-teal-400/10",
+                    shadow: "shadow-emerald-500/20",
+                    links: [
+                      { label: "Latest News", href: "/insight-hub" },
+                      { label: "IPO Analysis", href: "/insight-hub" },
+                    ],
+                    cta: { label: "Explore Insights", href: "/insight-hub" },
+                  },
+                ].map((card, i) => (
+                  <div
+                    key={i}
+                    className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#061A40] via-[#0A2558] to-[#0E3A73] p-3 shadow-lg border border-cyan-500/10 text-white"
+                  >
+                    {/* Decorative glows */}
+                    <div
+                      className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-3xl pointer-events-none ${card.accentGlow1}`}
+                    />
+                    <div
+                      className={`absolute bottom-0 left-0 w-24 h-24 rounded-full blur-3xl pointer-events-none ${card.accentGlow2}`}
+                    />
+
+                    <div className="relative z-10">
+                      <div
+                        className={`inline-flex items-center px-1.5 py-0.5 rounded-full border text-[9px] font-semibold tracking-wide ${card.accentBadgeBg} ${card.accentBorder} ${card.accentText}`}
+                      >
+                        {card.badge}
+                      </div>
+
+                      <h3 className="mt-1.5 text-sm font-black leading-tight">
+                        {card.title}
+                        <span className={`block ${card.accentText}`}>
+                          {card.titleAccent}
+                        </span>
+                      </h3>
+
+                      <p className="mt-1 text-slate-300 text-[10px] leading-snug">
+                        {card.description}
+                      </p>
+
+                      <div className="mt-2 space-y-0.5">
+                        {card.links.map((item) => (
+                          <Link
+                            key={item.label}
+                            href={item.href}
+                            className="flex items-center gap-2 text-[10px] group"
+                          >
+                            <div
+                              className={`w-1 h-1 rounded-full shrink-0 group-hover:scale-150 transition ${card.accentDot}`}
+                            />
+                            <span className="text-slate-200 group-hover:text-white transition">
+                              {item.label}
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+
+                      <Link
+                        href={card.cta.href}
+                        className={`mt-2 w-full py-1 rounded-md text-white font-bold transition-colors text-[10px] text-center inline-flex items-center justify-center gap-1 ${card.accentBg} ${card.shadow}`}
+                      >
+                        {card.cta.label}
+                        <ArrowRight size={12} className="stroke-[2.5]" />
+                      </Link>
+                    </div>
                   </div>
                 ))}
               </div>
-            </div>
-          )}
+            </aside>
 
+          </div>
         </div>
+       
       </div>
     </>
   );

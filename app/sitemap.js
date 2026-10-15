@@ -79,6 +79,12 @@ export default async function sitemap() {
       priority: 0.85,
     },
     {
+      url: `${BASE_URL}/corporate-actions-calendar`,
+      lastModified: fallbackDate,
+      changeFrequency: "daily",
+      priority: 0.85,
+    },
+    {
       url: `${BASE_URL}/broker-analyzer`,
       lastModified: fallbackDate,
       changeFrequency: "weekly",

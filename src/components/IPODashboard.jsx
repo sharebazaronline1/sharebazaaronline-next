@@ -13,6 +13,7 @@ import {
   ChevronDown,
   ChevronUp,
   X,
+  ArrowRight,
 } from "lucide-react";
 
 import IPOFAQ from "./home/IPOFaq";
@@ -510,40 +511,39 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
   return (
     <div className="bg-white w-full min-h-screen">
       {/* HERO SECTION */}
-    {/* IPO Tracker Hero */}
-<section className="relative overflow-hidden bg-white">
-  <div className="relative w-full px-4 sm:px-6 lg:px-10 xl:px-16">
-    <div className="grid grid-cols-1 xl:grid-cols-12 gap-14 items-center">
-      <div className="xl:col-span-6">
-        <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-5 py-2 rounded-full text-sm font-semibold border border-green-200 shadow-sm">
-          <TrendingUp size={16} />
-          IPO Tracker
+      {/* IPO Tracker Hero */}
+      <section className="relative overflow-hidden bg-white">
+        <div className="relative w-full px-4 sm:px-6 lg:px-10 xl:px-16">
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-14 items-center">
+            <div className="xl:col-span-6">
+              <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-5 py-2 rounded-full text-sm font-semibold border border-green-200 shadow-sm">
+                <TrendingUp size={16} />
+                IPO Tracker
+              </div>
+
+              <h1 className="mt-7 text-5xl md:text-6xl lg:text-7xl font-black tracking-[-3px] leading-[0.95] text-[#0f172a]">
+                Track India’s{" "}
+                <span className="text-green-600 block">Complete IPOs</span>
+              </h1>
+
+              <p className="mt-6 text-lg lg:text-[22px] leading-9 text-slate-600 max-w-2xl">
+                Track live &amp; upcoming IPOs in India with listing dates,
+                price bands, GMP trends, lot sizes, and subscription insights.
+              </p>
+            </div>
+
+            <div className="xl:col-span-6">
+              <div className="relative flex justify-center">
+                <img
+                  src="/images/hero-ipo.png"
+                  alt="IPO Tracker"
+                  className="w-full max-w-[780px] object-contain drop-shadow-2xl"
+                />
+              </div>
+            </div>
+          </div>
         </div>
-
-        <h1 className="mt-7 text-5xl md:text-6xl lg:text-7xl font-black tracking-[-3px] leading-[0.95] text-[#0f172a]">
-          Track India’s{" "}
-          <span className="text-green-600 block">Complete IPOs</span>
-        </h1>
-
-        <p className="mt-6 text-lg lg:text-[22px] leading-9 text-slate-600 max-w-2xl">
-          Track live &amp; upcoming IPOs in India with listing dates,
-          price bands, GMP trends, lot sizes, and subscription insights.
-        </p>
-      </div>
-
-      <div className="xl:col-span-6">
-          <div className="relative flex justify-center">
-        <img
-          src="/images/hero-ipo.png"
-          alt="IPO Tracker"
-          className="w-full max-w-[780px] object-contain drop-shadow-2xl"
-        />
-     
-      </div>
-         </div>
-    </div>
-  </div>
-</section>
+      </section>
 
       {/* KEY DATA POINTS SECTION */}
       <section className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-6 pb-2">
@@ -597,441 +597,594 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
 
       {/* TABLE SECTION */}
       <section className="bg-white w-full px-4 sm:px-6 lg:px-10 xl:px-16 py-8">
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-          {/* FILTERS */}
-          <div className="bg-white px-4 sm:px-8 py-5 border-b border-gray-200 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
-            <div className="flex flex-wrap gap-3">
-              {tabs.map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all flex items-center gap-2 ${
-                    activeTab === tab
-                      ? "bg-[#16A34A] text-white shadow-sm"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+          {/* MAIN CONTENT COLUMN */}
+          <div className="lg:col-span-10 space-y-8">
+
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              {/* FILTERS */}
+              <div className="bg-white px-4 sm:px-8 py-5 border-b border-gray-200 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+                <div className="flex flex-wrap gap-3">
+                  {tabs.map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className={`px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all flex items-center gap-2 ${
+                        activeTab === tab
+                          ? "bg-[#16A34A] text-white shadow-sm"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      {tab}
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+                          activeTab === tab
+                            ? "bg-white text-green-600"
+                            : "bg-gray-300 text-gray-700"
+                        }`}
+                      >
+                        {getCount(tab)}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-3">
+                  {hasActiveColumnFilters && (
+                    <button
+                      onClick={clearColumnFilters}
+                      className="inline-flex items-center gap-1.5 h-12 px-4 rounded-2xl border border-gray-300 bg-white text-sm font-semibold text-gray-600 hover:bg-gray-50"
+                    >
+                      <X size={16} />
+                      Clear filters
+                    </button>
+                  )}
+
+                  <div className="relative w-[180px]">
+                    <select
+                      value={typeFilter}
+                      onChange={(e) => setTypeFilter(e.target.value)}
+                      className="w-full h-12 rounded-2xl border border-gray-300 bg-white px-5 pr-12 text-sm font-semibold text-gray-700 outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 appearance-none"
+                    >
+                      <option value="All">All Types</option>
+                      <option value="Mainboard">Mainboard</option>
+                      <option value="SME">SME</option>
+                    </select>
+
+                    <ChevronDown
+                      size={18}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* TABLE */}
+              <div className="overflow-x-auto bg-white">
+                <table className="w-full min-w-[1250px] bg-white">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <SortableHeader
+                        label="Company"
+                        sortKey="company"
+                        align="left"
+                      />
+                      <SortableHeader label="Open" sortKey="open" />
+                      <SortableHeader label="Close" sortKey="close" />
+                      <SortableHeader label="Price Band" sortKey="price" />
+                      <SortableHeader label="Listing" sortKey="listing" />
+                      <SortableHeader label="Lot Size" sortKey="lot" />
+                      <th className="px-6 pt-4 pb-2 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody className="bg-white divide-y divide-gray-100">
+                    {paginatedIPOs.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan="7"
+                          className="text-center py-20 text-gray-500 text-lg"
+                        >
+                          No {activeTab.toLowerCase()} IPOs found
+                        </td>
+                      </tr>
+                    ) : (
+                      paginatedIPOs.map((ipo, i) => {
+                        const { name, open, close, price, listing, lot } =
+                          getDisplayValues(ipo);
+
+                        const logo = getValue(
+                          ipo,
+                          "logo",
+                          "company_information.logo",
+                          "image"
+                        );
+
+                        const type = getIPOType(ipo);
+
+                        return (
+                          <motion.tr
+                            key={ipo.id || i}
+                            initial={{ opacity: 0, y: 8 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.03 }}
+                            className="bg-white hover:bg-gray-50 transition cursor-pointer"
+                            onClick={() =>
+                              router.push(`/ipo/${ipo.id}/${slugify(name)}`)
+                            }
+                          >
+                            <td className="px-6 py-5">
+                              <div className="flex items-center gap-4 min-w-[260px]">
+                                {logo ? (
+                                  <img
+                                    src={logo}
+                                    alt={name}
+                                    className="w-14 h-14 object-contain rounded-2xl border border-gray-200 bg-white p-2 shadow-sm"
+                                    onError={(e) => {
+                                      e.target.style.display = "none";
+                                    }}
+                                  />
+                                ) : (
+                                  <LetterAvatar name={name} />
+                                )}
+
+                                <div>
+                                  <p className="font-semibold text-gray-900 text-base">
+                                    {name}
+                                  </p>
+
+                                  <p className="text-xs text-gray-500 mt-1">
+                                    {getValue(
+                                      ipo,
+                                      "about_company.company_name",
+                                      "description"
+                                    ) || ""}
+                                  </p>
+
+                                  <span
+                                    className={`inline-flex mt-2 px-2.5 py-1 text-[11px] font-semibold rounded-lg border ${
+                                      type === "SME"
+                                        ? "bg-blue-100 text-blue-700 border-blue-200"
+                                        : "bg-green-100 text-green-700 border-green-200"
+                                    }`}
+                                  >
+                                    {type}
+                                  </span>
+                                </div>
+                              </div>
+                            </td>
+
+                            <td className="px-6 py-5 text-center text-sm text-gray-700 font-medium">
+                              {open}
+                            </td>
+
+                            <td className="px-6 py-5 text-center text-sm text-gray-700 font-medium">
+                              {close}
+                            </td>
+
+                            <td className="px-6 py-5 text-center">
+                              <span className="font-semibold text-gray-900 text-base">
+                                ₹{price}
+                              </span>
+                            </td>
+
+                            <td className="px-6 py-5 text-center text-sm text-gray-700 font-medium">
+                              {listing}
+                            </td>
+
+                            <td className="px-6 py-5 text-center font-semibold text-gray-900 text-base">
+                              {lot}
+                            </td>
+
+                            <td
+                              className="px-6 py-5 text-center"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <div className="flex justify-center gap-3">
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    router.push("/how-to-apply-ipo");
+                                  }}
+                                  className="px-5 py-2 rounded-xl text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700"
+                                >
+                                  Apply
+                                </button>
+
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    router.push(
+                                      `/ipo/${ipo.id}/${slugify(name)}`
+                                    );
+                                  }}
+                                  className="px-5 py-2 rounded-xl border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-50"
+                                >
+                                  View
+                                </button>
+                              </div>
+                            </td>
+                          </motion.tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* PAGINATION */}
+              {totalPages > 1 && (
+                <div className="bg-white px-6 py-5 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
+                  <p className="text-gray-500 text-center sm:text-left">
+                    Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–
+                    {Math.min(currentPage * ITEMS_PER_PAGE, filteredIPOs.length)}{" "}
+                    of {filteredIPOs.length}
+                  </p>
+
+                  <div className="flex items-center gap-1.5 flex-wrap justify-center">
+                    <button
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                      className="h-9 px-3 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium flex items-center gap-1 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                      aria-label="Previous page"
+                    >
+                      <ChevronLeft size={16} />
+                      <span className="hidden sm:inline">Prev</span>
+                    </button>
+
+                    {paginationRange.map((item) =>
+                      typeof item === "string" ? (
+                        <span
+                          key={item}
+                          className="w-9 h-9 flex items-center justify-center text-gray-400 text-sm select-none"
+                        >
+                          …
+                        </span>
+                      ) : (
+                        <button
+                          key={item}
+                          onClick={() => setCurrentPage(item)}
+                          className={`min-w-[36px] h-9 px-3 rounded-lg text-sm font-semibold transition ${
+                            currentPage === item
+                              ? "bg-[#16A34A] text-white shadow-sm"
+                              : "border border-gray-300 text-gray-700 hover:bg-gray-50"
+                          }`}
+                          aria-current={currentPage === item ? "page" : undefined}
+                        >
+                          {item}
+                        </button>
+                      )
+                    )}
+
+                    <button
+                      disabled={currentPage === totalPages}
+                      onClick={() =>
+                        setCurrentPage((p) => Math.min(totalPages, p + 1))
+                      }
+                      className="h-9 px-3 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium flex items-center gap-1 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                      aria-label="Next page"
+                    >
+                      <span className="hidden sm:inline">Next</span>
+                      <ChevronRight size={16} />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* ARTICLE — about the IPO market (before FAQ) */}
+            <div className="space-y-6 text-slate-700 text-base sm:text-lg leading-relaxed">
+              <p>
+                India’s primary market is still one of the busiest in Asia, with a
+                steady flow of Mainboard and SME IPOs opening almost every week.
+                Whether you’re applying for your first IPO or you track grey market
+                premium (GMP) and subscription numbers daily, knowing what’s live,
+                what’s coming, and what’s just closed is the difference between a
+                timely application and a missed allotment.
+              </p>
+
+              <p>
+                New to the process? Start with our step-by-step{" "}
+                <Link
+                  href="/ipoguide"
+                  className="text-emerald-600 font-semibold hover:underline"
                 >
-                  {tab}
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-xs font-bold ${
-                      activeTab === tab
-                        ? "bg-white text-green-600"
-                        : "bg-gray-300 text-gray-700"
-                    }`}
-                  >
-                    {getCount(tab)}
-                  </span>
-                </button>
+                  IPO Guide
+                </Link>{" "}
+                — it explains how allotment, price bands, lot sizes, and investor
+                categories actually work before you commit any money.
+              </p>
+
+              <div>
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
+                  What’s Happening in the IPO Market Right Now
+                </h3>
+                <div className="space-y-4">
+                  <p>
+                    As of October 2026, the IPO calendar is packed. Several SME
+                    IPOs are open for subscription alongside select Mainboard
+                    issues. The SME segment has drawn heavy retail interest this
+                    year on the back of smaller ticket sizes and strong listing-day
+                    gains in a handful of recent offers. But not every SME IPO
+                    lists in the green — before you apply, weigh the company’s
+                    financials, promoter track record, and how the IPO proceeds
+                    will be used.
+                  </p>
+                  <p>
+                    On the Mainboard side, QIB (institutional) subscription remains
+                    one of the more dependable signals of listing-day strength.
+                    Issues with heavy QIB demand tend to list at a premium — though,
+                    as always, past trends are no promise of future returns.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
+                  How to Use This IPO Tracker
+                </h3>
+                <p>
+                  The table below lists every open, upcoming, and recently closed
+                  IPO in India. Scan each issue’s price band, lot size,
+                  subscription dates, and expected listing date at a glance. Click
+                  any IPO name to open the full analysis — company overview,
+                  financial highlights, live GMP trend, subscription status, and
+                  our apply-or-avoid verdict.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
+                  Before You Apply — A Quick Reminder
+                </h3>
+                <p>
+                  Every IPO carries market risk. Listing gains are never
+                  guaranteed, and GMP is an unofficial, unregulated indicator — it
+                  should never be the sole basis for your decision. Always read the
+                  Red Herring Prospectus (RHP) and check the company’s fundamentals
+                  first.
+                </p>
+              </div>
+
+              <p>
+                If any of these terms are new to you, our complete{" "}
+                <Link
+                  href="/ipoguide"
+                  className="text-emerald-600 font-semibold hover:underline"
+                >
+                  IPO Guide
+                </Link>{" "}
+                breaks down allotment, pricing, categories, and how to apply —
+                everything a first-time applicant needs in one place.
+              </p>
+            </div>
+
+            {/* FAQ */}
+            <div className="bg-white">
+              <IPOFAQ />
+            </div>
+
+            {/* EXPLORE MORE */}
+            <div className="bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-slate-900">
+                  Explore More Investment Opportunities
+                </h3>
+                <p className="text-slate-500 mt-2 text-sm lg:text-base">
+                  Discover IPOs, unlisted shares, and broker comparison tools
+                  curated for smart investors.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <Link
+                  href="/insight-hub"
+                  className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-lg font-semibold text-slate-900">
+                        Insight Hub
+                      </p>
+                      <p className="text-sm text-slate-400 mt-1">
+                        Read IPO news, blogs & market insights
+                      </p>
+                    </div>
+                    <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                      →
+                    </span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/preipo"
+                  className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-lg font-semibold text-slate-900">
+                        Unlisted Shares
+                      </p>
+                      <p className="text-sm text-slate-400 mt-1">
+                        Invest before public listing
+                      </p>
+                    </div>
+                    <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                      →
+                    </span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/broker-analyzer"
+                  className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-lg font-semibold text-slate-900">
+                        Compare Brokers
+                      </p>
+                      <p className="text-sm text-slate-400 mt-1">
+                        Find the best broker platform
+                      </p>
+                    </div>
+                    <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                      →
+                    </span>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+          </div>
+
+          {/* RIGHT SIDEBAR — Promo cards */}
+          <aside className="hidden lg:block lg:col-span-2">
+            <div className="sticky top-24 space-y-2">
+              {[
+                {
+                  badge: "IPO Insights",
+                  title: "Track Live",
+                  titleAccent: "IPOs & GMP",
+                  description:
+                    "Real-time subscription numbers, GMP trends and upcoming issues.",
+                  accentText: "text-blue-400",
+                  accentBg: "bg-blue-600 hover:bg-blue-700",
+                  accentDot: "bg-blue-400",
+                  accentBorder: "border-blue-400/25",
+                  accentBadgeBg: "bg-blue-400/10",
+                  accentGlow1: "bg-blue-400/15",
+                  accentGlow2: "bg-indigo-400/10",
+                  shadow: "shadow-blue-500/20",
+                  links: [
+                    { label: "Live IPOs", href: "/ipo" },
+                    { label: "Upcoming Issues", href: "/ipo" },
+                  ],
+                  cta: { label: "IPO Tracker", href: "/ipo" },
+                },
+                {
+                  badge: "Pre-IPO",
+                  title: "Explore",
+                  titleAccent: "Unlisted Shares",
+                  description:
+                    "Verified prices and valuations of India's top pre-IPO companies.",
+                  accentText: "text-emerald-400",
+                  accentBg: "bg-emerald-400 hover:bg-emerald-500",
+                  accentDot: "bg-emerald-400",
+                  accentBorder: "border-emerald-400/25",
+                  accentBadgeBg: "bg-emerald-400/10",
+                  accentGlow1: "bg-emerald-400/15",
+                  accentGlow2: "bg-teal-400/10",
+                  shadow: "shadow-emerald-500/20",
+                  links: [
+                    { label: "Unlisted Stocks", href: "/preipo" },
+                    { label: "Top Valuations", href: "/preipo" },
+                  ],
+                  cta: { label: "View Pre-IPO", href: "/preipo" },
+                },
+                {
+                  badge: "Brokers",
+                  title: "Compare",
+                  titleAccent: "Top Brokers",
+                  description:
+                    "Brokerage charges, platform features and account-opening benefits.",
+                  accentText: "text-blue-400",
+                  accentBg: "bg-blue-600 hover:bg-blue-700",
+                  accentDot: "bg-blue-400",
+                  accentBorder: "border-blue-400/25",
+                  accentBadgeBg: "bg-blue-400/10",
+                  accentGlow1: "bg-blue-400/15",
+                  accentGlow2: "bg-indigo-400/10",
+                  shadow: "shadow-blue-500/20",
+                  links: [
+                    { label: "Broker Analyzer", href: "/broker-analyzer" },
+                    { label: "Compare Charges", href: "/comparebrokers" },
+                  ],
+                  cta: { label: "Compare Brokers", href: "/comparebrokers" },
+                },
+                {
+                  badge: "Insight Hub",
+                  title: "Read",
+                  titleAccent: "Market Insights",
+                  description: "Latest stock market news, IPO analysis, and expert financial blogs.",
+                  accentText: "text-emerald-400",
+                  accentBg: "bg-emerald-400 hover:bg-emerald-500",
+                  accentDot: "bg-emerald-400",
+                  accentBorder: "border-emerald-400/25",
+                  accentBadgeBg: "bg-emerald-400/10",
+                  accentGlow1: "bg-emerald-400/15",
+                  accentGlow2: "bg-teal-400/10",
+                  shadow: "shadow-emerald-500/20",
+                  links: [
+                    { label: "Latest News", href: "/insight-hub" },
+                    { label: "IPO Analysis", href: "/insight-hub" },
+                  ],
+                  cta: { label: "Explore Insights", href: "/insight-hub" },
+                },
+              ].map((card, i) => (
+                <div
+                  key={i}
+                  className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#061A40] via-[#0A2558] to-[#0E3A73] p-3 shadow-lg border border-cyan-500/10 text-white"
+                >
+                  {/* Decorative glows */}
+                  <div
+                    className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-3xl pointer-events-none ${card.accentGlow1}`}
+                  />
+                  <div
+                    className={`absolute bottom-0 left-0 w-24 h-24 rounded-full blur-3xl pointer-events-none ${card.accentGlow2}`}
+                  />
+
+                  <div className="relative z-10">
+                    <div
+                      className={`inline-flex items-center px-1.5 py-0.5 rounded-full border text-[9px] font-semibold tracking-wide ${card.accentBadgeBg} ${card.accentBorder} ${card.accentText}`}
+                    >
+                      {card.badge}
+                    </div>
+
+                    <h3 className="mt-1.5 text-sm font-black leading-tight">
+                      {card.title}
+                      <span className={`block ${card.accentText}`}>
+                        {card.titleAccent}
+                      </span>
+                    </h3>
+
+                    <p className="mt-1 text-slate-300 text-[10px] leading-snug">
+                      {card.description}
+                    </p>
+
+                    <div className="mt-2 space-y-0.5">
+                      {card.links.map((item) => (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          className="flex items-center gap-2 text-[10px] group"
+                        >
+                          <div
+                            className={`w-1 h-1 rounded-full shrink-0 group-hover:scale-150 transition ${card.accentDot}`}
+                          />
+                          <span className="text-slate-200 group-hover:text-white transition">
+                            {item.label}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+
+                    <Link
+                      href={card.cta.href}
+                      className={`mt-2 w-full py-1 rounded-md text-white font-bold transition-colors text-[10px] text-center inline-flex items-center justify-center gap-1 ${card.accentBg} ${card.shadow}`}
+                    >
+                      {card.cta.label}
+                      <ArrowRight size={12} className="stroke-[2.5]" />
+                    </Link>
+                  </div>
+                </div>
               ))}
             </div>
+          </aside>
 
-            <div className="flex items-center gap-3">
-              {hasActiveColumnFilters && (
-                <button
-                  onClick={clearColumnFilters}
-                  className="inline-flex items-center gap-1.5 h-12 px-4 rounded-2xl border border-gray-300 bg-white text-sm font-semibold text-gray-600 hover:bg-gray-50"
-                >
-                  <X size={16} />
-                  Clear filters
-                </button>
-              )}
-
-              <div className="relative w-[180px]">
-                <select
-                  value={typeFilter}
-                  onChange={(e) => setTypeFilter(e.target.value)}
-                  className="w-full h-12 rounded-2xl border border-gray-300 bg-white px-5 pr-12 text-sm font-semibold text-gray-700 outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 appearance-none"
-                >
-                  <option value="All">All Types</option>
-                  <option value="Mainboard">Mainboard</option>
-                  <option value="SME">SME</option>
-                </select>
-
-                <ChevronDown
-                  size={18}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* TABLE */}
-          <div className="overflow-x-auto bg-white">
-            <table className="w-full min-w-[1250px] bg-white">
-              <thead>
-                <tr className="bg-gray-50">
-                  <SortableHeader
-                    label="Company"
-                    sortKey="company"
-                    align="left"
-                  />
-                  <SortableHeader label="Open" sortKey="open" />
-                  <SortableHeader label="Close" sortKey="close" />
-                  <SortableHeader label="Price Band" sortKey="price" />
-                  <SortableHeader label="Listing" sortKey="listing" />
-                  <SortableHeader label="Lot Size" sortKey="lot" />
-                  <th className="px-6 pt-4 pb-2 text-center text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody className="bg-white divide-y divide-gray-100">
-                {paginatedIPOs.length === 0 ? (
-                  <tr>
-                    <td
-                      colSpan="7"
-                      className="text-center py-20 text-gray-500 text-lg"
-                    >
-                      No {activeTab.toLowerCase()} IPOs found
-                    </td>
-                  </tr>
-                ) : (
-                  paginatedIPOs.map((ipo, i) => {
-                    const { name, open, close, price, listing, lot } =
-                      getDisplayValues(ipo);
-
-                    const logo = getValue(
-                      ipo,
-                      "logo",
-                      "company_information.logo",
-                      "image"
-                    );
-
-                    const type = getIPOType(ipo);
-
-                    return (
-                      <motion.tr
-                        key={ipo.id || i}
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: i * 0.03 }}
-                        className="bg-white hover:bg-gray-50 transition cursor-pointer"
-                        onClick={() =>
-                          router.push(`/ipo/${ipo.id}/${slugify(name)}`)
-                        }
-                      >
-                        <td className="px-6 py-5">
-                          <div className="flex items-center gap-4 min-w-[260px]">
-                            {logo ? (
-                              <img
-                                src={logo}
-                                alt={name}
-                                className="w-14 h-14 object-contain rounded-2xl border border-gray-200 bg-white p-2 shadow-sm"
-                                onError={(e) => {
-                                  e.target.style.display = "none";
-                                }}
-                              />
-                            ) : (
-                              <LetterAvatar name={name} />
-                            )}
-
-                            <div>
-                              <p className="font-semibold text-gray-900 text-base">
-                                {name}
-                              </p>
-
-                              <p className="text-xs text-gray-500 mt-1">
-                                {getValue(
-                                  ipo,
-                                  "about_company.company_name",
-                                  "description"
-                                ) || ""}
-                              </p>
-
-                              <span
-                                className={`inline-flex mt-2 px-2.5 py-1 text-[11px] font-semibold rounded-lg border ${
-                                  type === "SME"
-                                    ? "bg-blue-100 text-blue-700 border-blue-200"
-                                    : "bg-green-100 text-green-700 border-green-200"
-                                }`}
-                              >
-                                {type}
-                              </span>
-                            </div>
-                          </div>
-                        </td>
-
-                        <td className="px-6 py-5 text-center text-sm text-gray-700 font-medium">
-                          {open}
-                        </td>
-
-                        <td className="px-6 py-5 text-center text-sm text-gray-700 font-medium">
-                          {close}
-                        </td>
-
-                        <td className="px-6 py-5 text-center">
-                          <span className="font-semibold text-gray-900 text-base">
-                            ₹{price}
-                          </span>
-                        </td>
-
-                        <td className="px-6 py-5 text-center text-sm text-gray-700 font-medium">
-                          {listing}
-                        </td>
-
-                        <td className="px-6 py-5 text-center font-semibold text-gray-900 text-base">
-                          {lot}
-                        </td>
-
-                        <td
-                          className="px-6 py-5 text-center"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <div className="flex justify-center gap-3">
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                router.push("/how-to-apply-ipo");
-                              }}
-                              className="px-5 py-2 rounded-xl text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700"
-                            >
-                              Apply
-                            </button>
-
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                router.push(
-                                  `/ipo/${ipo.id}/${slugify(name)}`
-                                );
-                              }}
-                              className="px-5 py-2 rounded-xl border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-50"
-                            >
-                              View
-                            </button>
-                          </div>
-                        </td>
-                      </motion.tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* PAGINATION */}
-          {totalPages > 1 && (
-            <div className="bg-white px-6 py-5 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
-              <p className="text-gray-500 text-center sm:text-left">
-                Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1}–
-                {Math.min(currentPage * ITEMS_PER_PAGE, filteredIPOs.length)}{" "}
-                of {filteredIPOs.length}
-              </p>
-
-              <div className="flex items-center gap-1.5 flex-wrap justify-center">
-                <button
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  className="h-9 px-3 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium flex items-center gap-1 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
-                  aria-label="Previous page"
-                >
-                  <ChevronLeft size={16} />
-                  <span className="hidden sm:inline">Prev</span>
-                </button>
-
-                {paginationRange.map((item) =>
-                  typeof item === "string" ? (
-                    <span
-                      key={item}
-                      className="w-9 h-9 flex items-center justify-center text-gray-400 text-sm select-none"
-                    >
-                      …
-                    </span>
-                  ) : (
-                    <button
-                      key={item}
-                      onClick={() => setCurrentPage(item)}
-                      className={`min-w-[36px] h-9 px-3 rounded-lg text-sm font-semibold transition ${
-                        currentPage === item
-                          ? "bg-[#16A34A] text-white shadow-sm"
-                          : "border border-gray-300 text-gray-700 hover:bg-gray-50"
-                      }`}
-                      aria-current={currentPage === item ? "page" : undefined}
-                    >
-                      {item}
-                    </button>
-                  )
-                )}
-
-                <button
-                  disabled={currentPage === totalPages}
-                  onClick={() =>
-                    setCurrentPage((p) => Math.min(totalPages, p + 1))
-                  }
-                  className="h-9 px-3 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium flex items-center gap-1 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
-                  aria-label="Next page"
-                >
-                  <span className="hidden sm:inline">Next</span>
-                  <ChevronRight size={16} />
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* ARTICLE — about the IPO market (before FAQ) */}
-        <div className="mt-10 space-y-6 text-slate-700 text-base sm:text-lg leading-relaxed">
-          <p>
-            India’s primary market is still one of the busiest in Asia, with a
-            steady flow of Mainboard and SME IPOs opening almost every week.
-            Whether you’re applying for your first IPO or you track grey market
-            premium (GMP) and subscription numbers daily, knowing what’s live,
-            what’s coming, and what’s just closed is the difference between a
-            timely application and a missed allotment.
-          </p>
-
-          <p>
-            New to the process? Start with our step-by-step{" "}
-            <Link
-              href="/ipoguide"
-              className="text-emerald-600 font-semibold hover:underline"
-            >
-              IPO Guide
-            </Link>{" "}
-            — it explains how allotment, price bands, lot sizes, and investor
-            categories actually work before you commit any money.
-          </p>
-
-          <div>
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
-              What’s Happening in the IPO Market Right Now
-            </h3>
-            <div className="space-y-4">
-              <p>
-                As of October 2026, the IPO calendar is packed. Several SME
-                IPOs are open for subscription alongside select Mainboard
-                issues. The SME segment has drawn heavy retail interest this
-                year on the back of smaller ticket sizes and strong listing-day
-                gains in a handful of recent offers. But not every SME IPO
-                lists in the green — before you apply, weigh the company’s
-                financials, promoter track record, and how the IPO proceeds
-                will be used.
-              </p>
-              <p>
-                On the Mainboard side, QIB (institutional) subscription remains
-                one of the more dependable signals of listing-day strength.
-                Issues with heavy QIB demand tend to list at a premium — though,
-                as always, past trends are no promise of future returns.
-              </p>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
-              How to Use This IPO Tracker
-            </h3>
-            <p>
-              The table below lists every open, upcoming, and recently closed
-              IPO in India. Scan each issue’s price band, lot size,
-              subscription dates, and expected listing date at a glance. Click
-              any IPO name to open the full analysis — company overview,
-              financial highlights, live GMP trend, subscription status, and
-              our apply-or-avoid verdict.
-            </p>
-          </div>
-
-          <div>
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-900 mb-3">
-              Before You Apply — A Quick Reminder
-            </h3>
-            <p>
-              Every IPO carries market risk. Listing gains are never
-              guaranteed, and GMP is an unofficial, unregulated indicator — it
-              should never be the sole basis for your decision. Always read the
-              Red Herring Prospectus (RHP) and check the company’s fundamentals
-              first.
-            </p>
-          </div>
-
-          <p>
-            If any of these terms are new to you, our complete{" "}
-            <Link
-              href="/ipoguide"
-              className="text-emerald-600 font-semibold hover:underline"
-            >
-              IPO Guide
-            </Link>{" "}
-            breaks down allotment, pricing, categories, and how to apply —
-            everything a first-time applicant needs in one place.
-          </p>
-        </div>
-
-        {/* FAQ */}
-        <div className="mt-10 bg-white">
-          <IPOFAQ />
-        </div>
-
-        {/* EXPLORE MORE */}
-        <div className="mt-8 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
-          <div className="mb-6">
-            <h3 className="text-2xl font-bold text-slate-900">
-              Explore More Investment Opportunities
-            </h3>
-            <p className="text-slate-500 mt-2 text-sm lg:text-base">
-              Discover IPOs, unlisted shares, and broker comparison tools
-              curated for smart investors.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <Link
-              href="/insight-hub"
-              className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-lg font-semibold text-slate-900">
-                    Insight Hub
-                  </p>
-                  <p className="text-sm text-slate-400 mt-1">
-                    Read IPO news, blogs & market insights
-                  </p>
-                </div>
-                <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-                  →
-                </span>
-              </div>
-            </Link>
-
-            <Link
-              href="/preipo"
-              className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-lg font-semibold text-slate-900">
-                    Unlisted Shares
-                  </p>
-                  <p className="text-sm text-slate-400 mt-1">
-                    Invest before public listing
-                  </p>
-                </div>
-                <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-                  →
-                </span>
-              </div>
-            </Link>
-
-            <Link
-              href="/broker-analyzer"
-              className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-lg font-semibold text-slate-900">
-                    Compare Brokers
-                  </p>
-                  <p className="text-sm text-slate-400 mt-1">
-                    Find the best broker platform
-                  </p>
-                </div>
-                <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-                  →
-                </span>
-              </div>
-            </Link>
-          </div>
         </div>
       </section>
     </div>
