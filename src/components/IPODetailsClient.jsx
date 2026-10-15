@@ -313,9 +313,13 @@ const getMinInvestment = (ipoData) => {
 
           <div className="space-y-0.5">
             <div className="flex items-center justify-center gap-1">
-              <span className="text-xl font-black text-white tracking-tight">
-                ₹{minInvestment.toLocaleString("en-IN")}
-              </span>
+             
+<span className="text-xl font-black text-white tracking-tight">
+  {minInvestment !== null
+    ? `₹${minInvestment.toLocaleString("en-IN")}`
+    : "N/A"}
+</span>
+
             </div>
             <p className="text-[11px] text-slate-400">
               Minimum Investment

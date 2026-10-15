@@ -210,12 +210,12 @@ const InsightHubDetail = ({
         )}
 
         <div className="w-full mx-auto">
-          <article
-            className={`prose-content ${
-              isCorporateAction ? "corporate-content" : "blog-content"
-            }`}
-            dangerouslySetInnerHTML={{ __html: blog.content || "" }}
-          />
+         
+<article
+  className="prose-content corporate-content"
+  dangerouslySetInnerHTML={{ __html: blog.content || "" }}
+/>
+
         </div>
 
         {/* Author bio */}
@@ -441,143 +441,112 @@ const InsightHubDetail = ({
           color: #4b5563;
         }
 
-        /* =========================================================
-           BLOGS — plain standard blog format, no boxes, no bars
-        ========================================================= */
+/* Restore layout and spacing for Tailwind HTML stored in Supabase */
+.prose-content.corporate-content section.mb-8 {
+  margin-bottom: 2rem !important;
+  overflow: hidden;
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+}
 
-        /* Strip any inline emerald / gray box classes */
-        .prose-content.blog-content [class*="bg-emerald"],
-        .prose-content.blog-content .bg-gray-700,
-        .prose-content.blog-content .bg-slate-50,
-        .prose-content.blog-content .bg-gray-50,
-        .prose-content.blog-content .bg-slate-100 {
-          background: none !important;
-          border: none !important;
-          border-radius: 0 !important;
-          padding: 0 !important;
-          margin: 0 !important;
-        }
+.prose-content.corporate-content section.mb-8 > div:first-child {
+  padding: 0.5rem 1.5rem;
+  background-color: #059669 !important;
+}
 
-        /* Kill section/card wrappers from source HTML */
-        .prose-content.blog-content > section,
-        .prose-content.blog-content > div:not([class]) {
-          background: none !important;
-          border: none !important;
-          border-radius: 0 !important;
-          padding: 0 !important;
-          margin: 0 !important;
-          box-shadow: none !important;
-        }
+.prose-content.corporate-content section.mb-8 > div:first-child h2 {
+  margin: 0 !important;
+  color: #fff !important;
+  font-size: 1.125rem !important;
+  line-height: 1.75rem;
+  font-weight: 700 !important;
+}
 
-        /* Headings — plain bold, no bars, no boxes */
-        .prose-content.blog-content h2 {
-          color: #111827 !important;
-          font-size: 1.35rem !important;
-          font-weight: 700 !important;
-          margin: 1.75rem 0 0.5rem !important;
-          padding: 0 !important;
-          background: none !important;
-          border: none !important;
-          line-height: 1.35 !important;
-        }
-        .prose-content.blog-content h3 {
-          color: #111827 !important;
-          font-size: 1.15rem !important;
-          font-weight: 700 !important;
-          margin: 1.5rem 0 0.5rem !important;
-          padding: 0 !important;
-          background: none !important;
-          border: none !important;
-          line-height: 1.4 !important;
-        }
-        .prose-content.blog-content h4 {
-          color: #1f2937 !important;
-          font-size: 1rem !important;
-          font-weight: 700 !important;
-          margin: 1.25rem 0 0.5rem !important;
-          padding: 0 !important;
-          background: none !important;
-          border: none !important;
-        }
+.prose-content.corporate-content section.mb-8 > div:nth-child(2) {
+  padding: 1.25rem;
+}
 
-        /* Paragraphs — flat, no padding, tight rhythm */
-        .prose-content.blog-content p {
-          color: #374151 !important;
-          margin: 0 0 1rem !important;
-          padding: 0 !important;
-          line-height: 1.75 !important;
-        }
+.prose-content.corporate-content .p-5 {
+  padding: 1.25rem !important;
+}
 
-        /* Lists */
-        .prose-content.blog-content ul,
-        .prose-content.blog-content ol {
-          margin: 0 0 1rem !important;
-          padding-left: 1.25rem !important;
-        }
-        .prose-content.blog-content li {
-          color: #374151 !important;
-          line-height: 1.7 !important;
-          margin-bottom: 0.4rem !important;
-        }
+.prose-content.corporate-content .space-y-4 > * + * {
+  margin-top: 1rem !important;
+}
 
-        /* Links */
-        .prose-content.blog-content a {
-          color: #059669 !important;
-          text-decoration: underline !important;
-          text-underline-offset: 2px !important;
-        }
-        .prose-content.blog-content a:hover {
-          color: #047857 !important;
-        }
+.prose-content.corporate-content .grid {
+  display: grid !important;
+  gap: 1rem !important;
+}
 
-        /* Tables — plain */
-        .prose-content.blog-content table {
-          width: 100% !important;
-          border-collapse: collapse !important;
-          margin: 1rem 0 !important;
-          font-size: 0.9rem !important;
-        }
-        .prose-content.blog-content th,
-        .prose-content.blog-content td {
-          padding: 0.5rem 0.75rem !important;
-          border: 1px solid #e5e7eb !important;
-          text-align: left !important;
-          color: #374151 !important;
-        }
-        .prose-content.blog-content th {
-          background: #f8fafc !important;
-          font-weight: 600 !important;
-          color: #111827 !important;
-        }
+.prose-content.corporate-content .bg-slate-50 {
+  background-color: #f8fafc !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.75rem !important;
+}
 
-        /* Blockquote — thin left border only */
-        .prose-content.blog-content blockquote {
-          border-left: 3px solid #d1d5db !important;
-          padding: 0.25rem 0 0.25rem 1rem !important;
-          margin: 1rem 0 !important;
-          color: #4b5563 !important;
-          font-style: italic !important;
-          background: none !important;
-        }
-        .prose-content.blog-content blockquote p {
-          margin: 0 !important;
-        }
+.prose-content.corporate-content .rounded-xl {
+  border-radius: 0.75rem !important;
+}
 
-        /* Kill any inline spacing classes that came from the source HTML */
-        .prose-content.blog-content [class*="mb-"],
-        .prose-content.blog-content [class*="mt-"],
-        .prose-content.blog-content [class*="p-"],
-        .prose-content.blog-content [class*="py-"],
-        .prose-content.blog-content [class*="px-"],
-        .prose-content.blog-content [class*="gap-"] {
-          /* leave margins/gaps to the wrapper rules above */
-        }
+.prose-content.corporate-content .text-gray-600 {
+  color: #4b5563 !important;
+}
 
-        @media (min-width: 1024px) {
-          .prose-content [class*="lg:grid-cols-2"] {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-          }
-        }
+.prose-content.corporate-content .text-gray-800 {
+  color: #1f2937 !important;
+}
+
+.prose-content.corporate-content .leading-relaxed {
+  line-height: 1.625 !important;
+}
+
+.prose-content.corporate-content .mb-2 {
+  margin-bottom: 0.5rem !important;
+}
+
+.prose-content.corporate-content .mt-3 {
+  margin-top: 0.75rem !important;
+}
+
+.prose-content.corporate-content .px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.prose-content.corporate-content .py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.prose-content.corporate-content .pb-5 {
+  padding-bottom: 1.25rem;
+}
+
+.prose-content.corporate-content .text-white {
+  color: #fff !important;
+}
+
+.prose-content.corporate-content a.bg-emerald-600 {
+  background-color: #059669 !important;
+  color: #fff !important;
+  text-decoration: none;
+}
+
+.prose-content.corporate-content a.bg-emerald-600:hover {
+  background-color: #047857 !important;
+}
+
+@media (min-width: 1024px) {
+  .prose-content.corporate-content .lg\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+       
+        
       `}</style>
     </div>
   );
