@@ -101,20 +101,37 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
   };
 
   const getMinInvestment = (ipoData) => {
-    if (!ipoData) return 10000;
-    if (ipoData.minInvestment) {
-      const val = parseInt(ipoData.minInvestment.replace(/[^0-9]/g, ''), 10);
-      if (val > 0) return val;
-    }
-    if (ipoData.ipo_basic_details?.minimum_investment) {
-      const val = parseInt(String(ipoData.ipo_basic_details.minimum_investment).replace(/[^0-9]/g, ''), 10);
-      if (val > 0) return val;
-    }
-    const lot = ipoData.lot || ipoData.minBidQuantity || ipoData.ipo_basic_details?.lot_size || 1;
-    const price = getHigherPrice(ipoData.price) || getHigherPrice(ipoData.ipo_basic_details?.price_band) || 0;
-    const calculated = lot * price;
-    return calculated > 100 ? calculated : 10000;
-  };
+  if (!ipoData) return null;
+
+  const details = ipoData.ipo_basic_details || {};
+
+  const priceMin = Number(
+    String(
+      details.price_band_min ??
+      ipoData.price_band_min ??
+      ""
+    ).replace(/[₹,\s]/g, "")
+  );
+
+  const lot = Number(
+    String(
+      details.lot_size ??
+      ipoData.lot ??
+      ""
+    ).replace(/[^\d.]/g, "")
+  );
+
+  if (
+    Number.isFinite(priceMin) &&
+    priceMin > 0 &&
+    Number.isFinite(lot) &&
+    lot > 0
+  ) {
+    return priceMin * lot;
+  }
+
+  return null;
+};
 
   const minInvestment = getMinInvestment(ipo);
   const ipoName = ipo.name || ipo.fullName || "IPO";
