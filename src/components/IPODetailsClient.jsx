@@ -100,7 +100,7 @@ export default function IPODetailsClient({ initialIpo, id, slug }) {
     return isNaN(num) ? 0 : Math.round(num);
   };
 
-  const getMinInvestment = (ipoData) => {
+const getMinInvestment = (ipoData) => {
   if (!ipoData) return null;
 
   const details = ipoData.ipo_basic_details || {};
