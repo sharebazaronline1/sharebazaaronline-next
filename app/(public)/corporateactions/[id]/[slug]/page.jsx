@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { fetchInsightDetails } from "@/api/mockApi";
 import CorporateActionDetails from "@/components/CorporateActionDetails";
+import { cache } from "react"; // ✅ Added React cache
 
 const SITE_URL = "https://www.sharebazaaronline.com";
 
@@ -16,54 +17,20 @@ const supabasePublic = createClient(
 );
 
 const CORPORATE_ACTION_CATEGORIES = [
-  "Buyback",
-  "Dividend",
-  "Dividends",
-  "Bonus Issue",
-  "Stock Split",
-  "Stock Splits",
-  "Rights Issue",
-  "Merger",
-  "Demerger",
-  "Takeover / Acquisition",
-  "Open Offer",
-  "Delisting",
-  "OFS",
-  "QIP",
-  "Preferential Allotment",
-  "Warrants Issue",
-  "ESOP Allotment",
-  "FPO",
-  "Bond Issue",
-  "NCD Issue",
-  "Distribution",
-  "Unit Split",
-  "AGM",
-  "EGM",
-  "Board Meeting",
-  "Postal Ballot",
-  "E-Voting",
-  "Promoter Stake Increase",
-  "Promoter Stake Sale",
-  "Pledge Release",
-  "Scheme of Arrangement",
-  "Insolvency Resolution",
-  "CIRP Process",
-  "Subsidiary Incorporation",
-  "Joint Venture",
-  "Change of Company Name",
-  "IPO Listing",
-  "Change in Director",
-  "CEO Appointment",
-  "Auditor Appointment",
-  "Regulatory Action",
-  "Trading Suspension",
-  "Revocation of Suspension",
+  "Buyback", "Dividend", "Dividends", "Bonus Issue", "Stock Split", 
+  "Stock Splits", "Rights Issue", "Merger", "Demerger", "Takeover / Acquisition", 
+  "Open Offer", "Delisting", "OFS", "QIP", "Preferential Allotment", 
+  "Warrants Issue", "ESOP Allotment", "FPO", "Bond Issue", "NCD Issue", 
+  "Distribution", "Unit Split", "AGM", "EGM", "Board Meeting", "Postal Ballot", 
+  "E-Voting", "Promoter Stake Increase", "Promoter Stake Sale", "Pledge Release", 
+  "Scheme of Arrangement", "Insolvency Resolution", "CIRP Process", 
+  "Subsidiary Incorporation", "Joint Venture", "Change of Company Name", 
+  "IPO Listing", "Change in Director", "CEO Appointment", "Auditor Appointment", 
+  "Regulatory Action", "Trading Suspension", "Revocation of Suspension",
 ];
 
 function isCorporateActionCategory(category) {
   const normalized = String(category || "").trim().toLowerCase();
-
   return (
     normalized.includes("corporate action") ||
     CORPORATE_ACTION_CATEGORIES.some(
@@ -74,7 +41,6 @@ function isCorporateActionCategory(category) {
 
 function slugify(text) {
   if (!text) return "";
-
   return text
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
@@ -92,10 +58,7 @@ async function getMockBlog(id) {
 
     if (!Array.isArray(mockData)) return null;
 
-    const found = mockData.find(
-      (item) => String(item.id) === mockId
-    );
-
+    const found = mockData.find((item) => String(item.id) === mockId);
     if (!found) return null;
 
     return {
@@ -121,7 +84,8 @@ async function getMockBlog(id) {
   }
 }
 
-async function getBlog(id) {
+// ✅ Wrapped with React cache
+const getBlog = cache(async (id) => {
   if (!id) return null;
 
   if (isMockId(id)) {
@@ -150,7 +114,7 @@ async function getBlog(id) {
     console.error("[getBlog] exception:", err?.message || err);
     return null;
   }
-}
+});
 
 function normalizeKeywords(raw) {
   if (!raw) return [];
@@ -170,39 +134,10 @@ function normalizeKeywords(raw) {
 }
 
 export async function generateStaticParams() {
-  try {
-    const { data, error } = await supabasePublic
-      .from("blogs")
-      .select("id, title, heading, category")
-      .eq("status", "published")
-      .limit(500);
-
-    if (error || !data) return [];
-
-    return data
-      .filter((blog) => isCorporateActionCategory(blog.category))
-      .map((blog) => {
-        const title = blog.title || blog.heading || "";
-        const slug = slugify(title);
-
-        if (!blog.id || !slug) return null;
-
-        return {
-          id: String(blog.id),
-          slug,
-        };
-      })
-      .filter(Boolean);
-  } catch (err) {
-    console.error(
-      "generateStaticParams error:",
-      err?.message || err
-    );
-    return [];
-  }
+  return [];
 }
 
-export const revalidate = 300;
+export const revalidate = 21600;
 export const dynamicParams = true;
 
 export async function generateMetadata({ params }) {

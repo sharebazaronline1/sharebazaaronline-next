@@ -3,29 +3,26 @@
 import { notFound } from "next/navigation";
 import { fetchIPOs } from "@/api/mockApi";
 import IPODetailsClient from "@/components/IPODetailsClient";
+import { cache } from "react"; 
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
   "https://www.sharebazaaronline.com";
 
-// Slugify helper function
+export const revalidate = 3600;
+
 function slugify(text) {
   if (!text) return "";
-
   return text
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
 
-// Server-side function to fetch IPO data
-async function getIPOData(id) {
+const getIPOData = cache(async (id) => {
   try {
     const ipos = await fetchIPOs();
-
-    const selected = ipos.find(
-      (ipo) => String(ipo.id) === String(id)
-    );
+    const selected = ipos.find((ipo) => String(ipo.id) === String(id));
 
     if (!selected) {
       return null;
@@ -55,17 +52,14 @@ async function getIPOData(id) {
     console.error("Error fetching IPO data:", error);
     return null;
   }
-}
+});
 
-// Generate static params for SSG
 export async function generateStaticParams() {
   try {
     const ipos = await fetchIPOs();
-
     return ipos.map((ipo) => {
       const name = ipo.name || ipo.fullName || "";
       const slug = slugify(name);
-
       return {
         id: String(ipo.id),
         slug,
@@ -77,7 +71,6 @@ export async function generateStaticParams() {
   }
 }
 
-// Generate metadata for SEO
 export async function generateMetadata({ params }) {
   const { id, slug } = await params;
   const ipo = await getIPOData(id);
@@ -85,18 +78,14 @@ export async function generateMetadata({ params }) {
   if (!ipo) {
     return {
       title: "IPO Not Found | ShareBazaarOnline",
-      robots: {
-        index: false,
-        follow: false,
-      },
+      robots: { index: false, follow: false },
     };
   }
 
   const ipoName = ipo.name || ipo.fullName || "IPO";
 
   const priceBand =
-    ipo.ipo_basic_details?.price_band_min &&
-    ipo.ipo_basic_details?.price_band_max
+    ipo.ipo_basic_details?.price_band_min && ipo.ipo_basic_details?.price_band_max
       ? `₹${ipo.ipo_basic_details.price_band_min} - ₹${ipo.ipo_basic_details.price_band_max}`
       : "";
 
@@ -113,24 +102,13 @@ export async function generateMetadata({ params }) {
       : `${SITE_URL}${ipo.logo.startsWith("/") ? "" : "/"}${ipo.logo}`
     : `${SITE_URL}/og-image.jpg`;
 
-  const ipoDate =
-    ipo.ipo_basic_details?.issue_open_date ||
-    ipo.created_at ||
-    undefined;
+  const ipoDate = ipo.ipo_basic_details?.issue_open_date || ipo.created_at || undefined;
 
   return {
     title: `${ipoName} IPO - Price Band ${priceBand}, Lot Size, GMP & Details | ShareBazaarOnline`,
     description,
-
-    alternates: {
-      canonical,
-    },
-
-    robots: {
-      index: true,
-      follow: true,
-    },
-
+    alternates: { canonical },
+    robots: { index: true, follow: true },
     openGraph: {
       title: `${ipoName} IPO - Complete Details`,
       description,
@@ -142,7 +120,6 @@ export async function generateMetadata({ params }) {
       ...(ipoDate ? { publishedTime: ipoDate } : {}),
       ...(ipo.updated_at ? { modifiedTime: ipo.updated_at } : {}),
     },
-
     twitter: {
       card: "summary_large_image",
       title: `${ipoName} IPO - Price, Lot Size & GMP`,
@@ -152,10 +129,8 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// Main page component - SERVER COMPONENT
 export default async function Page({ params }) {
   const { id, slug } = await params;
-
   const ipo = await getIPOData(id);
 
   if (!ipo) {
@@ -205,20 +180,11 @@ export default async function Page({ params }) {
       "@id": `${canonicalUrl}#webpage`,
     },
     ...(ipo.ipo_basic_details?.issue_open_date
-      ? {
-          datePublished:
-            ipo.ipo_basic_details.issue_open_date,
-        }
+      ? { datePublished: ipo.ipo_basic_details.issue_open_date }
       : ipo.created_at
-        ? {
-            datePublished: ipo.created_at,
-          }
+        ? { datePublished: ipo.created_at }
         : {}),
-    ...(ipo.updated_at
-      ? {
-          dateModified: ipo.updated_at,
-        }
-      : {}),
+    ...(ipo.updated_at ? { dateModified: ipo.updated_at } : {}),
   };
 
   const financialProductSchema = {
@@ -240,8 +206,7 @@ export default async function Page({ params }) {
             priceCurrency: "INR",
             lowPrice: Number(priceMin),
             highPrice: Number(priceMax),
-            availability:
-              "https://schema.org/InStock",
+            availability: "https://schema.org/InStock",
             url: canonicalUrl,
           },
         }
@@ -281,30 +246,17 @@ export default async function Page({ params }) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: safeJsonLd(articleSchema),
-        }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(articleSchema) }}
       />
-
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: safeJsonLd(financialProductSchema),
-        }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(financialProductSchema) }}
       />
-
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: safeJsonLd(breadcrumbSchema),
-        }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbSchema) }}
       />
-
-      <IPODetailsClient
-        initialIpo={ipo}
-        id={id}
-        slug={slug}
-      />
+      <IPODetailsClient initialIpo={ipo} id={id} slug={slug} />
     </>
   );
 }

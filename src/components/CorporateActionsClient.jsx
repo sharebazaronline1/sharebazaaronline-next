@@ -16,26 +16,14 @@ import {
 } from "lucide-react";
 
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
+import { TABS } from "@/lib/corporateActionUtils";
 
 const SITE_URL = "https://sharebazaaronline.com";
 const ITEMS_PER_PAGE = 20;
 
-const TABS = [
-  { id: "buyback", label: "Buyback", dbType: "buyback" },
-  { id: "dividends", label: "Dividends", dbType: "dividend" },
-  { id: "rights", label: "Rights Issue", dbType: "rights" },
-  { id: "bonus", label: "Bonus Issue", dbType: "bonus" },
-  { id: "splits", label: "Stock Split", dbType: "split" },
-  { id: "others", label: "Other Actions", dbType: "other" },
-];
-
-const CorporateActionsClient = ({
-  initialGrouped = {},
-  initialActiveTab = "buyback",
-}) => {
+const CorporateActionsClient = ({ activeTab = "buyback", records = [] }) => {
   const router = useRouter();
 
-  const [activeTab, setActiveTab] = useState(initialActiveTab);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedYear, setSelectedYear] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,15 +34,7 @@ const CorporateActionsClient = ({
 
   const tabs = TABS;
   const currentTabLabel =
-    tabs.find((t) => t.id === activeTab)?.label || "Dividends";
-  const currentDbType =
-    tabs.find((t) => t.id === activeTab)?.dbType || "buyback";
-
-  // Records come from the server — no client fetch
-  const records = useMemo(
-    () => initialGrouped[currentDbType] || [],
-    [initialGrouped, currentDbType]
-  );
+    tabs.find((t) => t.id === activeTab)?.label || "Buyback";
 
   useEffect(() => {
     setSortConfig({ key: "ex_date", direction: "desc" });
@@ -74,8 +54,7 @@ const CorporateActionsClient = ({
 
       const matchesYear =
         selectedYear === "All" ||
-        (dateToCheck &&
-          String(dateToCheck).startsWith(selectedYear));
+        (dateToCheck && String(dateToCheck).startsWith(selectedYear));
 
       return matchesSearch && matchesYear;
     });
@@ -204,7 +183,6 @@ const CorporateActionsClient = ({
           }`}
         >
           <span className="leading-none">{label}</span>
-
           <span className="inline-flex items-center justify-center w-4 h-4 flex-shrink-0">
             {isActive ? (
               isAscending ? (
@@ -295,15 +273,12 @@ const CorporateActionsClient = ({
               Stay informed on essential stock distributions, company
               restructurings, and upcoming eligibility dates. Want to explore
               delistings or mergers?{" "}
-              <button
-                onClick={() => {
-                  setActiveTab("others");
-                  setSearchQuery("");
-                }}
+              <Link
+                href="/corporateactions/others"
                 className="text-[#16A34A] hover:text-[#15803D] font-bold inline-flex items-center gap-0.5 transition"
               >
                 Track More Actions
-              </button>
+              </Link>
             </p>
           </div>
         </section>
@@ -324,7 +299,7 @@ const CorporateActionsClient = ({
                   Record Date
                 </h3>
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  The day the company checks its register to decide who’s
+                  The day the company checks its register to decide who's
                   eligible. You must hold the shares in your Demat account on
                   this date.
                 </p>
@@ -360,16 +335,13 @@ const CorporateActionsClient = ({
           </div>
         </section>
 
-        {/* TABS BAR */}
+        {/* TABS BAR — Now using Links for separate routes */}
         <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 mt-12 flex justify-center">
           <div className="flex bg-slate-100 p-1.5 rounded-xl items-center gap-1 shadow-inner border border-slate-200/60 overflow-x-auto max-w-full scrollbar-none">
             {tabs.map((tab) => (
-              <button
+              <Link
                 key={tab.id}
-                onClick={() => {
-                  setActiveTab(tab.id);
-                  setSearchQuery("");
-                }}
+                href={tab.href}
                 className={`px-6 py-2 rounded-lg text-xs font-bold tracking-wide whitespace-nowrap transition-all duration-200 ${
                   activeTab === tab.id
                     ? "bg-white text-[#16A34A] shadow-sm border border-slate-200/40"
@@ -377,7 +349,7 @@ const CorporateActionsClient = ({
                 }`}
               >
                 {tab.label}
-              </button>
+              </Link>
             ))}
           </div>
         </div>
@@ -446,20 +418,14 @@ const CorporateActionsClient = ({
                             label="Record Date"
                             sortKey="record"
                           />
-                          <SortableHeader
-                            label="Ex Date"
-                            sortKey="ex_date"
-                          />
+                          <SortableHeader label="Ex Date" sortKey="ex_date" />
                           <SortableHeader label="Size" sortKey="size" />
                         </>
                       )}
 
                       {activeTab === "dividends" && (
                         <>
-                          <SortableHeader
-                            label="Dividend Type"
-                            sortKey="type"
-                          />
+                          <SortableHeader label="Dividend Type" sortKey="type" />
                           <SortableHeader label="Yield %" sortKey="yield" />
                           <SortableHeader
                             label="Announcement"
@@ -469,10 +435,7 @@ const CorporateActionsClient = ({
                             label="Record Date"
                             sortKey="record"
                           />
-                          <SortableHeader
-                            label="Ex Date"
-                            sortKey="ex_date"
-                          />
+                          <SortableHeader label="Ex Date" sortKey="ex_date" />
                           <SortableHeader
                             label="Payment Date"
                             sortKey="payment_date"
@@ -491,27 +454,18 @@ const CorporateActionsClient = ({
                             label="Market Price"
                             sortKey="market_price"
                           />
-                          <SortableHeader
-                            label="Discount"
-                            sortKey="discount"
-                          />
+                          <SortableHeader label="Discount" sortKey="discount" />
                           <SortableHeader
                             label="Record Date"
                             sortKey="record"
                           />
-                          <SortableHeader
-                            label="Ex Date"
-                            sortKey="ex_date"
-                          />
+                          <SortableHeader label="Ex Date" sortKey="ex_date" />
                         </>
                       )}
 
                       {activeTab === "bonus" && (
                         <>
-                          <SortableHeader
-                            label="Bonus Ratio"
-                            sortKey="ratio"
-                          />
+                          <SortableHeader label="Bonus Ratio" sortKey="ratio" />
                           <SortableHeader
                             label="Announcement"
                             sortKey="announcement"
@@ -520,19 +474,13 @@ const CorporateActionsClient = ({
                             label="Record Date"
                             sortKey="record"
                           />
-                          <SortableHeader
-                            label="Ex Date"
-                            sortKey="ex_date"
-                          />
+                          <SortableHeader label="Ex Date" sortKey="ex_date" />
                         </>
                       )}
 
                       {activeTab === "splits" && (
                         <>
-                          <SortableHeader
-                            label="Split Ratio"
-                            sortKey="ratio"
-                          />
+                          <SortableHeader label="Split Ratio" sortKey="ratio" />
                           <SortableHeader label="Old FV" sortKey="old_fv" />
                           <SortableHeader label="New FV" sortKey="new_fv" />
                           <SortableHeader
@@ -543,10 +491,7 @@ const CorporateActionsClient = ({
                             label="Record Date"
                             sortKey="record"
                           />
-                          <SortableHeader
-                            label="Ex Date"
-                            sortKey="ex_date"
-                          />
+                          <SortableHeader label="Ex Date" sortKey="ex_date" />
                         </>
                       )}
 
@@ -568,10 +513,7 @@ const CorporateActionsClient = ({
                             label="Record Date"
                             sortKey="record"
                           />
-                          <SortableHeader
-                            label="Ex Date"
-                            sortKey="ex_date"
-                          />
+                          <SortableHeader label="Ex Date" sortKey="ex_date" />
                           <SortableHeader label="Status" sortKey="status" />
                         </>
                       )}
@@ -813,7 +755,7 @@ const CorporateActionsClient = ({
             </p>
 
             <p>
-              ShareBazaarOnline’s Corporate Actions Calendar follows all the
+              ShareBazaarOnline's Corporate Actions Calendar follows all the
               major events across Indian listed companies — upcoming record
               dates, ex-dates, and eligibility deadlines — in one place,
               updated daily.
@@ -842,21 +784,21 @@ const CorporateActionsClient = ({
                   company divides existing shares into smaller units (e.g. a
                   1:5 split turns one ₹100 face-value share into five ₹20
                   shares). This makes the stock more affordable and improves
-                  liquidity without changing the company’s market
+                  liquidity without changing the company's market
                   capitalisation.
                 </p>
                 <p>
                   <strong className="text-slate-900">Rights Issues</strong> —
                   Existing shareholders get the right to buy additional shares
-                  at a discount before they’re offered publicly. You can
+                  at a discount before they're offered publicly. You can
                   subscribe, renounce (sell your rights), or let them lapse.
                 </p>
                 <p>
                   <strong className="text-slate-900">Buybacks</strong> — The
                   company repurchases its own shares from shareholders, usually
                   at a premium to the market price. Buybacks cut the total
-                  shares outstanding and can signal management’s confidence in
-                  the company’s value.
+                  shares outstanding and can signal management's confidence in
+                  the company's value.
                 </p>
               </div>
             </div>
@@ -883,81 +825,86 @@ const CorporateActionsClient = ({
             </p>
           </div>
         </section>
+
         {/* EXPLORE MORE */}
-<div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 mt-12">
-  <div className="mt-4 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
-    <div className="mb-6">
-      <h3 className="text-2xl font-bold text-slate-900">
-        Explore More Investment Opportunities
-      </h3>
-      <p className="text-slate-500 mt-2 text-sm lg:text-base">
-        Discover IPOs, unlisted shares, broker comparison tools, and market
-        insights curated for smart investors.
-      </p>
-    </div>
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 mt-12">
+          <div className="mt-4 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+            <div className="mb-6">
+              <h3 className="text-2xl font-bold text-slate-900">
+                Explore More Investment Opportunities
+              </h3>
+              <p className="text-slate-500 mt-2 text-sm lg:text-base">
+                Discover IPOs, unlisted shares, broker comparison tools, and
+                market insights curated for smart investors.
+              </p>
+            </div>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <Link
-        href="/ipo"
-        className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-lg font-semibold text-slate-900">
-              Latest IPOs
-            </p>
-            <p className="text-sm text-slate-400 mt-1">
-              Track live &amp; upcoming IPOs
-            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <Link
+                href="/ipo"
+                className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg font-semibold text-slate-900">
+                      Latest IPOs
+                    </p>
+                    <p className="text-sm text-slate-400 mt-1">
+                      Track live &amp; upcoming IPOs
+                    </p>
+                  </div>
+                  <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                    →
+                  </span>
+                </div>
+              </Link>
+
+              <Link
+                href="/preipo"
+                className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg font-semibold text-slate-900">
+                      Unlisted Shares
+                    </p>
+                    <p className="text-sm text-slate-400 mt-1">
+                      Invest before public listing
+                    </p>
+                  </div>
+                  <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                    →
+                  </span>
+                </div>
+              </Link>
+
+             
+
+              <Link
+                href="/insight-hub"
+                className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg font-semibold text-slate-900">
+                      Insight Hub
+                    </p>
+                    <p className="text-sm text-slate-400 mt-1">
+                      Read IPO news, blogs &amp; market insights
+                    </p>
+                  </div>
+                  <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                    →
+                  </span>
+                </div>
+              </Link>
+
+       
+
+         
+            </div>
           </div>
-          <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-            →
-          </span>
         </div>
-      </Link>
-
-      <Link
-        href="/preipo"
-        className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-lg font-semibold text-slate-900">
-              Unlisted Shares
-            </p>
-            <p className="text-sm text-slate-400 mt-1">
-              Invest before public listing
-            </p>
-          </div>
-          <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-            →
-          </span>
-        </div>
-      </Link>
-      <Link
-        href="/insight-hub"
-        className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-lg font-semibold text-slate-900">
-              Insight Hub
-            </p>
-            <p className="text-sm text-slate-400 mt-1">
-              Read IPO news, blogs &amp; market insights
-            </p>
-          </div>
-          <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-            →
-          </span>
-        </div>
-      </Link>
-
-
-      
-    </div>
-  </div>
-</div>
       </div>
     </>
   );
