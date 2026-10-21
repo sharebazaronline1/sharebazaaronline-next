@@ -7,14 +7,7 @@ const BASE_URL = "https://www.sharebazaaronline.com";
 // Regenerate sitemap every 5 minutes
 export const revalidate = 300;
 
-// Categories that live under /corporateactions, not /insight-hub
-const CORPORATE_ACTION_CATEGORIES = [
-  "Buyback",
-  "Dividend",
-  "Bonus Issue",
-  "Stock Split",
-  "Rights Issue",
-];
+
 
 /**
  * Slugifies string for readable canonical URLs
@@ -77,6 +70,36 @@ export default async function sitemap() {
       lastModified: fallbackDate,
       changeFrequency: "daily",
       priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/corporateactions/bonus`,
+      lastModified: fallbackDate,
+      changeFrequency: "daily",
+      priority: 0.75,
+    },
+    {
+      url: `${BASE_URL}/corporateactions/dividends`,
+      lastModified: fallbackDate,
+      changeFrequency: "daily",
+      priority: 0.75,
+    },
+    {
+      url: `${BASE_URL}/corporateactions/others`,
+      lastModified: fallbackDate,
+      changeFrequency: "daily",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/corporateactions/rights`,
+      lastModified: fallbackDate,
+      changeFrequency: "daily",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/corporateactions/splits`,
+      lastModified: fallbackDate,
+      changeFrequency: "daily",
+      priority: 0.7,
     },
     {
       url: `${BASE_URL}/corporate-actions-calendar`,

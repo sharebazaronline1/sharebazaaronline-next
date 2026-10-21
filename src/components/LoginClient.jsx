@@ -466,20 +466,14 @@ const LoginClient = () => {
       <BreadcrumbSchema items={breadcrumbItems} />
 
       <div className="min-h-screen bg-white">
-        <div
-          className="flex-1 flex items-center justify-end px-6 sm:px-12 py-12 bg-cover bg-center bg-no-repeat min-h-[calc(100vh-80px)]"
-          style={{
-            backgroundImage: "url('/images/login.jpeg')",
-            backgroundSize: "70%",
-          }}
-        >
+        <div className="flex-1 flex items-center justify-center px-6 sm:px-12 py-12 min-h-[calc(100vh-80px)]">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="w-full max-w-sm relative z-10"
           >
-            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
               <div className="p-6 pt-8 sm:p-7">
                 <div className="text-center mb-6">
                   <h1 className="text-2xl font-black text-gray-900">

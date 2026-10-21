@@ -175,7 +175,7 @@ export async function generateMetadata({ params }) {
       title,
       description,
       url: canonical,
-      type: "article",
+      type: "website",
       images: blog.image_url ? [{ url: blog.image_url }] : [],
     },
     twitter: {
@@ -226,7 +226,7 @@ export default async function Page({ params }) {
 
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "WebPage",
     "@id": `${canonicalUrl}#article`,
     headline: articleTitle,
     description: articleDescription,

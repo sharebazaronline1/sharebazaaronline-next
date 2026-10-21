@@ -25,6 +25,7 @@ import {
   DollarSign,
   Home,
   ChevronRight,
+  ArrowRight,
 } from "lucide-react";
 
 import BreadcrumbSchema from "@/components/BreadcrumbSchema";
@@ -304,403 +305,557 @@ const BrokerAnalyzerClient = () => {
           </div>
         </section>
 
-        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 py-8 space-y-8">
-          {/* EXPLANATORY SECTIONS */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600">
-                  <BarChart3 size={24} />
-                </div>
-                <h2 className="text-2xl font-bold text-slate-900">What is a Stock Broker?</h2>
-              </div>
-              <p className="text-slate-600 leading-relaxed">
-                A SEBI-registered intermediary that gives investors direct access to NSE & BSE for trading equities, derivatives, commodities, and more.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-green-50 rounded-2xl flex items-center justify-center text-green-600">
-                  <DollarSign size={24} />
-                </div>
-                <h2 className="text-2xl font-bold text-slate-900">Brokerage Charges</h2>
-              </div>
-              <p className="text-slate-600 leading-relaxed">
-                Fee paid to the broker for executing trades. Most discount brokers now offer ₹0 delivery brokerage.
-              </p>
-            </div>
-          </div>
-
-          {/* TYPES OF BROKERS */}
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600">
-                <Zap size={24} />
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900">Types of Brokers</h3>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {brokerTypes.map((type, idx) => (
-                <div
-                  key={idx}
-                  className="bg-slate-50 border border-gray-100 rounded-2xl p-8 hover:border-green-200 transition-all"
-                >
-                  <h4 className="text-xl font-bold mb-3 text-gray-900">{type.title}</h4>
-                  <p className="text-slate-600 mb-6">{type.description}</p>
-                  <ul className="space-y-3 mb-8">
-                    {type.features.map((f, i) => (
-                      <li key={i} className="flex items-center gap-3 text-slate-700">
-                        <CheckCircle2 size={18} className="text-emerald-500" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="font-bold text-green-600 bg-green-50 border border-green-100 px-5 py-3 rounded-xl inline-block">
-                    {type.brokerage}
+        {/* MAIN CONTENT GRID */}
+        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            {/* MAIN CONTENT COLUMN */}
+            <div className="lg:col-span-10 space-y-8">
+              
+              {/* EXPLANATORY SECTIONS */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600">
+                      <BarChart3 size={24} />
+                    </div>
+                    <h2 className="text-2xl font-bold text-slate-900">What is a Stock Broker?</h2>
+                  </div>
+                  <p className="text-slate-600 leading-relaxed">
+                    A SEBI-registered intermediary that gives investors direct access to NSE & BSE for trading equities, derivatives, commodities, and more.
                   </p>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          {/* COMPACT BLUE FILTER BAR */}
-          <div className="bg-white border border-gray-200 rounded-xl p-1.5 inline-flex gap-1.5 shadow-sm">
-            {["All", "Discount", "Full Service", "Both"].map((filterOpt) => (
-              <button
-                key={filterOpt}
-                onClick={() => setSelectedFilter(filterOpt)}
-                className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${
-                  selectedFilter === filterOpt
-                    ? "bg-blue-600 text-white shadow-sm"
-                    : "bg-transparent text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                {filterOpt}
-              </button>
-            ))}
-          </div>
-
-          {/* BROKERS LIST */}
-          <section className="space-y-4">
-            {loading ? (
-              <div className="bg-white rounded-2xl border border-gray-200 py-20 text-center">
-                <div className="animate-spin rounded-full h-14 w-14 border-t-4 border-b-4 border-green-600 mx-auto"></div>
-                <p className="mt-6 text-gray-600">Loading brokers...</p>
-              </div>
-            ) : filteredBrokers.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-gray-200 py-20 text-center text-xl text-gray-500">
-                No brokers found matching this filter configuration.
-              </div>
-            ) : (
-              filteredBrokers.map((broker) => {
-                const charges = broker.details?.brokerage_charges || {};
-                const openingCharges = broker.details?.account_opening_charges || {};
-                const platform = broker.details?.platform || {};
-
-                const openingFee = openingCharges.individual_account_opening_fee ?? "Free";
-                const deliveryFee = charges.equity_delivery_individual ?? "₹0";
-                const intradayFee = charges.intraday_individual ?? "₹20";
-                const activeUsersText = broker.active_users?.trim() || "N/A";
-                const segmentCollection = broker.segments || ["Equity", "F&O"];
-                const currentSlug = broker.slug || broker.name.toLowerCase().replace(/\s+/g, "-");
-
-                return (
-                  <div
-                    key={broker.id}
-                    className="w-full bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-5 flex flex-col md:flex-row justify-between items-stretch gap-6"
-                  >
-                    {/* Main Metadata Panel */}
-                    <div className="flex-1 flex flex-col justify-between gap-5">
-                      
-                      {/* Core Header Section */}
-                      <div className="flex items-center gap-4.5">
-                        <div className="w-20 h-20 md:w-24 md:h-24 rounded-xl border border-slate-100 p-3 bg-white flex-shrink-0 flex items-center justify-center shadow-sm">
-                          <img
-                            src={broker.logo || "/images/brokers/fallback.png"}
-                            alt={broker.name}
-                            className="max-h-full max-w-full object-contain"
-                            onError={(e) => { e.target.src = "/images/brokers/fallback.png"; }}
-                          />
-                        </div>
-                        
-                        <div className="flex flex-col gap-1.5">
-                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                            <h4 className="text-xl font-bold text-slate-900 tracking-tight leading-none">
-                              {broker.name}
-                            </h4>
-                            <span className="px-2.5 py-0.5 bg-blue-50/80 text-blue-600 border border-blue-100/40 rounded-md text-[10px] font-bold uppercase tracking-wider">
-                              {broker.broker_type?.includes("Discount") && (broker.broker_type?.includes("Full-Service") || broker.broker_type?.includes("Full Service"))
-                                ? "Hybrid" 
-                                : broker.broker_type?.includes("Discount") ? "Discount" : "Full-Service"}
-                            </span>
-                          </div>
-                          
-                          <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1">
-                            <StarRating rating={broker.rating} />
-                            <div className="h-3.5 w-[1px] bg-slate-200 hidden sm:block"></div>
-                            <span className="text-xs text-slate-400 font-medium">
-                              {activeUsersText} Active Clients
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Specifications Row */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-slate-50/60 p-4 rounded-xl border border-slate-100 items-start">
-                        <div className="flex flex-col gap-1 min-w-0">
-                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">A/C Opening</p>
-                          <p className="text-sm font-semibold text-slate-700 whitespace-normal break-words leading-snug">{openingFee}</p>
-                        </div>
-                        
-                        <div className="flex flex-col gap-1 min-w-0">
-                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Delivery Fee</p>
-                          <p className="text-sm font-semibold text-slate-700 whitespace-normal break-words leading-snug">{deliveryFee}</p>
-                        </div>
-                        
-                        <div className="flex flex-col gap-1 min-w-0">
-                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Intraday Fee</p>
-                          <p className="text-sm font-semibold text-slate-700 whitespace-normal break-words leading-snug">{intradayFee}</p>
-                        </div>
-                        
-                        <div className="flex flex-col gap-1 min-w-0">
-                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Platforms Available</p>
-                          <div className="flex flex-col gap-1 text-xs font-medium text-slate-600 mt-0.5">
-                            {platform.mobile_trading_platform || platform.web_trading_platform ? (
-                              <>
-                                {platform.mobile_trading_platform && (
-                                  <div className="flex items-center gap-1.5 break-words">
-                                    <Smartphone size={13} className="text-slate-400 flex-shrink-0" />
-                                    <span>{platform.mobile_trading_platform} (App)</span>
-                                  </div>
-                                )}
-                                {platform.web_trading_platform && (
-                                  <div className="flex items-center gap-1.5 break-words">
-                                    <Laptop size={13} className="text-slate-400 flex-shrink-0" />
-                                    <span>{platform.web_trading_platform} (Web)</span>
-                                  </div>
-                                )}
-                              </>
-                            ) : (
-                              <span className="text-slate-400 italic">Standard Trading Terminal</span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Segment Badges Container */}
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 px-1">
-                        <span className="text-[9px] font-bold uppercase text-slate-400 tracking-wider">Available Segments:</span>
-                        <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-gray-900">
-                          {["Equity", "Commodity", "Currency", "Futures", "Options"].map(seg => (
-                            <SegmentBadge key={seg} label={seg} segments={segmentCollection} />
-                          ))}
-                        </div>
-                      </div>
+                <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-green-50 rounded-2xl flex items-center justify-center text-green-600">
+                      <DollarSign size={24} />
                     </div>
-
-                    {/* Action Buttons Panel */}
-                    <div className="flex flex-row md:flex-col justify-center items-stretch gap-2.5 min-w-full md:min-w-[165px] border-t md:border-t-0 md:border-l border-slate-100 pt-4 md:pt-0 md:pl-5 flex-shrink-0">
-                      <button
-                        onClick={() => {
-                          if (broker.account_opening_url) {
-                            window.open(broker.account_opening_url, "_blank", "noopener,noreferrer");
-                          } else {
-                            router.push("/login");
-                          }
-                        }}
-                        className="flex-1 md:flex-initial order-2 md:order-1 py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-1 shadow-sm whitespace-nowrap"
-                      >
-                        Open Account
-                        <ArrowUpRight size={13} className="stroke-[2.5]" />
-                      </button>
-                      
-                      <button
-                        onClick={() => router.push(`/brokerdetails/${currentSlug}`)}
-                        className="flex-1 md:flex-initial order-1 md:order-2 text-center py-3 px-4 border border-slate-200 text-slate-600 bg-white hover:bg-slate-50 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap"
-                      >
-                        Full Details
-                      </button>
-                    </div>
+                    <h2 className="text-2xl font-bold text-slate-900">Brokerage Charges</h2>
                   </div>
-                );
-              })
-            )}
-          </section>
-
-
-          {/* TOP RECOMMENDATIONS SECTION */}
-          <div className="bg-white rounded-3xl border border-gray-200 p-10">
-            <h3 className="text-center uppercase tracking-[2px] text-sm font-bold text-slate-500 mb-8">
-              Our Top Recommendations
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {dynamicRecommendationCategories.map((rec, idx) => {
-                const cardSlugs = rec.brokers.map((brokerName) => {
-                  const match = brokersList.find(
-                    (b) => b.name?.toLowerCase().trim() === brokerName.toLowerCase().trim()
-                  );
-                  return match?.slug || brokerName.toLowerCase().replace(/\s+/g, "-");
-                });
-
-                const queryParams = cardSlugs
-                  .map((slug, i) => `broker${i + 1}=${slug}`)
-                  .join("&");
-
-                return (
-                  <div
-                    key={idx}
-                    onClick={() => router.push(`/comparebrokers?${queryParams}`)}
-                    className="bg-slate-50 rounded-2xl p-8 text-center border border-transparent hover:border-emerald-500/30 hover:shadow-md cursor-pointer transition-all duration-200 group"
-                  >
-                    <h4 className="font-bold uppercase tracking-wider text-sm mb-6 text-slate-600 group-hover:text-emerald-600 transition-colors">
-                      {rec.title}
-                    </h4>
-                    <div className="flex justify-center gap-8">
-                      {rec.brokers.map((brokerName, i) => {
-                        const brokerMatch = brokersList.find(
-                          (b) => b.name?.toLowerCase().trim() === brokerName.toLowerCase().trim()
-                        );
-                        const supabaseLogo = brokerMatch?.logo;
-
-                        return (
-                          <div key={i} className="text-center pointer-events-none">
-                            <div className="w-14 h-14 bg-white border rounded-2xl mx-auto mb-3 flex items-center justify-center text-2xl font-bold text-slate-400 overflow-hidden transition-all duration-200 group-hover:scale-105 group-hover:border-green-300">
-                              {supabaseLogo ? (
-                                <img
-                                  src={supabaseLogo}
-                                  alt={`${brokerName} logo`}
-                                  className="w-full h-full object-contain p-2"
-                                  onError={(e) => {
-                                    e.target.style.display = "none";
-                                    e.target.parentNode.innerText = brokerName[0];
-                                  }}
-                                />
-                              ) : (
-                                <span>{brokerName[0]}</span>
-                              )}
-                            </div>
-                            <p className="text-sm font-semibold text-slate-700">
-                              {brokerName}
-                            </p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* FAQ SECTION */}
-          <div className="bg-white rounded-3xl border border-gray-200 p-10">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-10 h-10 bg-indigo-50 rounded-2xl flex items-center justify-center">
-                <HelpCircle size={24} className="text-indigo-600" />
+                  <p className="text-slate-600 leading-relaxed">
+                    Fee paid to the broker for executing trades. Most discount brokers now offer ₹0 delivery brokerage.
+                  </p>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold">Frequently Asked Questions</h3>
-            </div>
 
-            <div className="divide-y divide-gray-100">
-              {visibleFaqs.map((faq, i) => (
-                <div key={i} className="py-6">
+              {/* TYPES OF BROKERS */}
+              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600">
+                    <Zap size={24} />
+                  </div>
+                  <h3 className="text-2xl font-bold text-slate-900">Types of Brokers</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {brokerTypes.map((type, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-slate-50 border border-gray-100 rounded-2xl p-8 hover:border-green-200 transition-all"
+                    >
+                      <h4 className="text-xl font-bold mb-3 text-gray-900">{type.title}</h4>
+                      <p className="text-slate-600 mb-6">{type.description}</p>
+                      <ul className="space-y-3 mb-8">
+                        {type.features.map((f, i) => (
+                          <li key={i} className="flex items-center gap-3 text-slate-700">
+                            <CheckCircle2 size={18} className="text-emerald-500" />
+                            {f}
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="font-bold text-green-600 bg-green-50 border border-green-100 px-5 py-3 rounded-xl inline-block">
+                        {type.brokerage}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* COMPACT BLUE FILTER BAR */}
+              <div className="bg-white border border-gray-200 rounded-xl p-1.5 inline-flex gap-1.5 shadow-sm">
+                {["All", "Discount", "Full Service", "Both"].map((filterOpt) => (
                   <button
-                    onClick={() => toggleFAQ(i)}
-                    className="w-full flex justify-between items-center text-left group"
+                    key={filterOpt}
+                    onClick={() => setSelectedFilter(filterOpt)}
+                    className={`px-5 py-2 rounded-lg text-sm font-semibold transition-all ${
+                      selectedFilter === filterOpt
+                        ? "bg-blue-600 text-white shadow-sm"
+                        : "bg-transparent text-gray-600 hover:bg-gray-100"
+                    }`}
                   >
-                    <span className="font-semibold text-lg pr-8 text-slate-800 group-hover:text-green-700 transition">{faq.q}</span>
-                    {openIndex === i ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+                    {filterOpt}
                   </button>
-                  {openIndex === i && (
-                    <p className="mt-5 text-slate-600 leading-relaxed text-[15.5px]">{faq.a}</p>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {!showAllFAQs && faqs.length > 10 && (
-              <div className="text-center mt-8">
-                <button
-                  onClick={() => setShowAllFAQs(true)}
-                  className="text-green-600 hover:text-green-700 font-semibold flex items-center gap-2 mx-auto"
-                >
-                  Show all FAQs <span>↓</span>
-                </button>
+                ))}
               </div>
-            )}
-          </div>
 
-          {/* EXPLORE MORE */}
-          <div className="mt-10 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
-            <div className="mb-6">
-              <h3 className="text-2xl font-bold text-slate-900">
-                Explore More Investment Opportunities
-              </h3>
-              <p className="text-slate-500 mt-2 text-sm lg:text-base">
-                Discover IPOs, unlisted shares, and market insights curated for smart
-                investors.
-              </p>
+              {/* BROKERS LIST */}
+              <section className="space-y-4">
+                {loading ? (
+                  <div className="bg-white rounded-2xl border border-gray-200 py-20 text-center">
+                    <div className="animate-spin rounded-full h-14 w-14 border-t-4 border-b-4 border-green-600 mx-auto"></div>
+                    <p className="mt-6 text-gray-600">Loading brokers...</p>
+                  </div>
+                ) : filteredBrokers.length === 0 ? (
+                  <div className="bg-white rounded-2xl border border-gray-200 py-20 text-center text-xl text-gray-500">
+                    No brokers found matching this filter configuration.
+                  </div>
+                ) : (
+                  filteredBrokers.map((broker) => {
+                    const charges = broker.details?.brokerage_charges || {};
+                    const openingCharges = broker.details?.account_opening_charges || {};
+                    const platform = broker.details?.platform || {};
+
+                    const openingFee = openingCharges.individual_account_opening_fee ?? "Free";
+                    const deliveryFee = charges.equity_delivery_individual ?? "₹0";
+                    const intradayFee = charges.intraday_individual ?? "₹20";
+                    const activeUsersText = broker.active_users?.trim() || "N/A";
+                    const segmentCollection = broker.segments || ["Equity", "F&O"];
+                    const currentSlug = broker.slug || broker.name.toLowerCase().replace(/\s+/g, "-");
+
+                    return (
+                      <div
+                        key={broker.id}
+                        className="w-full bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-5 flex flex-col md:flex-row justify-between items-stretch gap-6"
+                      >
+                        {/* Main Metadata Panel */}
+                        <div className="flex-1 flex flex-col justify-between gap-5">
+                          
+                          {/* Core Header Section */}
+                          <div className="flex items-center gap-4.5">
+                            <div className="w-20 h-20 md:w-24 md:h-24 rounded-xl border border-slate-100 p-3 bg-white flex-shrink-0 flex items-center justify-center shadow-sm">
+                              <img
+                                src={broker.logo || "/images/brokers/fallback.png"}
+                                alt={broker.name}
+                                className="max-h-full max-w-full object-contain"
+                                onError={(e) => { e.target.src = "/images/brokers/fallback.png"; }}
+                              />
+                            </div>
+                            
+                            <div className="flex flex-col gap-1.5">
+                              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                                <h4 className="text-xl font-bold text-slate-900 tracking-tight leading-none">
+                                  {broker.name}
+                                </h4>
+                                <span className="px-2.5 py-0.5 bg-blue-50/80 text-blue-600 border border-blue-100/40 rounded-md text-[10px] font-bold uppercase tracking-wider">
+                                  {broker.broker_type?.includes("Discount") && (broker.broker_type?.includes("Full-Service") || broker.broker_type?.includes("Full Service"))
+                                    ? "Hybrid" 
+                                    : broker.broker_type?.includes("Discount") ? "Discount" : "Full-Service"}
+                                </span>
+                              </div>
+                              
+                              <div className="flex flex-wrap items-center gap-x-3.5 gap-y-1">
+                                <StarRating rating={broker.rating} />
+                                <div className="h-3.5 w-[1px] bg-slate-200 hidden sm:block"></div>
+                                <span className="text-xs text-slate-400 font-medium">
+                                  {activeUsersText} Active Clients
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Specifications Row */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 bg-slate-50/60 p-4 rounded-xl border border-slate-100 items-start">
+                            <div className="flex flex-col gap-1 min-w-0">
+                              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">A/C Opening</p>
+                              <p className="text-sm font-semibold text-slate-700 whitespace-normal break-words leading-snug">{openingFee}</p>
+                            </div>
+                            
+                            <div className="flex flex-col gap-1 min-w-0">
+                              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Delivery Fee</p>
+                              <p className="text-sm font-semibold text-slate-700 whitespace-normal break-words leading-snug">{deliveryFee}</p>
+                            </div>
+                            
+                            <div className="flex flex-col gap-1 min-w-0">
+                              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Intraday Fee</p>
+                              <p className="text-sm font-semibold text-slate-700 whitespace-normal break-words leading-snug">{intradayFee}</p>
+                            </div>
+                            
+                            <div className="flex flex-col gap-1 min-w-0">
+                              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Platforms Available</p>
+                              <div className="flex flex-col gap-1 text-xs font-medium text-slate-600 mt-0.5">
+                                {platform.mobile_trading_platform || platform.web_trading_platform ? (
+                                  <>
+                                    {platform.mobile_trading_platform && (
+                                      <div className="flex items-center gap-1.5 break-words">
+                                        <Smartphone size={13} className="text-slate-400 flex-shrink-0" />
+                                        <span>{platform.mobile_trading_platform} (App)</span>
+                                      </div>
+                                    )}
+                                    {platform.web_trading_platform && (
+                                      <div className="flex items-center gap-1.5 break-words">
+                                        <Laptop size={13} className="text-slate-400 flex-shrink-0" />
+                                        <span>{platform.web_trading_platform} (Web)</span>
+                                      </div>
+                                    )}
+                                  </>
+                                ) : (
+                                  <span className="text-slate-400 italic">Standard Trading Terminal</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Segment Badges Container */}
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 px-1">
+                            <span className="text-[9px] font-bold uppercase text-slate-400 tracking-wider">Available Segments:</span>
+                            <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-gray-900">
+                              {["Equity", "Commodity", "Currency", "Futures", "Options"].map(seg => (
+                                <SegmentBadge key={seg} label={seg} segments={segmentCollection} />
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons Panel */}
+                        <div className="flex flex-row md:flex-col justify-center items-stretch gap-2.5 min-w-full md:min-w-[165px] border-t md:border-t-0 md:border-l border-slate-100 pt-4 md:pt-0 md:pl-5 flex-shrink-0">
+                          <button
+                            onClick={() => {
+                              if (broker.account_opening_url) {
+                                window.open(broker.account_opening_url, "_blank", "noopener,noreferrer");
+                              } else {
+                                router.push("/login");
+                              }
+                            }}
+                            className="flex-1 md:flex-initial order-2 md:order-1 py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-1 shadow-sm whitespace-nowrap"
+                          >
+                            Open Account
+                            <ArrowUpRight size={13} className="stroke-[2.5]" />
+                          </button>
+                          
+                          <button
+                            onClick={() => router.push(`/brokerdetails/${currentSlug}`)}
+                            className="flex-1 md:flex-initial order-1 md:order-2 text-center py-3 px-4 border border-slate-200 text-slate-600 bg-white hover:bg-slate-50 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap"
+                          >
+                            Full Details
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </section>
+
+
+              {/* TOP RECOMMENDATIONS SECTION */}
+              <div className="bg-white rounded-3xl border border-gray-200 p-10">
+                <h3 className="text-center uppercase tracking-[2px] text-sm font-bold text-slate-500 mb-8">
+                  Our Top Recommendations
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {dynamicRecommendationCategories.map((rec, idx) => {
+                    const cardSlugs = rec.brokers.map((brokerName) => {
+                      const match = brokersList.find(
+                        (b) => b.name?.toLowerCase().trim() === brokerName.toLowerCase().trim()
+                      );
+                      return match?.slug || brokerName.toLowerCase().replace(/\s+/g, "-");
+                    });
+
+                    const queryParams = cardSlugs
+                      .map((slug, i) => `broker${i + 1}=${slug}`)
+                      .join("&");
+
+                    return (
+                      <div
+                        key={idx}
+                        onClick={() => router.push(`/comparebrokers?${queryParams}`)}
+                        className="bg-slate-50 rounded-2xl p-8 text-center border border-transparent hover:border-emerald-500/30 hover:shadow-md cursor-pointer transition-all duration-200 group"
+                      >
+                        <h4 className="font-bold uppercase tracking-wider text-sm mb-6 text-slate-600 group-hover:text-emerald-600 transition-colors">
+                          {rec.title}
+                        </h4>
+                        <div className="flex justify-center gap-8">
+                          {rec.brokers.map((brokerName, i) => {
+                            const brokerMatch = brokersList.find(
+                              (b) => b.name?.toLowerCase().trim() === brokerName.toLowerCase().trim()
+                            );
+                            const supabaseLogo = brokerMatch?.logo;
+
+                            return (
+                              <div key={i} className="text-center pointer-events-none">
+                                <div className="w-14 h-14 bg-white border rounded-2xl mx-auto mb-3 flex items-center justify-center text-2xl font-bold text-slate-400 overflow-hidden transition-all duration-200 group-hover:scale-105 group-hover:border-green-300">
+                                  {supabaseLogo ? (
+                                    <img
+                                      src={supabaseLogo}
+                                      alt={`${brokerName} logo`}
+                                      className="w-full h-full object-contain p-2"
+                                      onError={(e) => {
+                                        e.target.style.display = "none";
+                                        e.target.parentNode.innerText = brokerName[0];
+                                      }}
+                                    />
+                                  ) : (
+                                    <span>{brokerName[0]}</span>
+                                  )}
+                                </div>
+                                <p className="text-sm font-semibold text-slate-700">
+                                  {brokerName}
+                                </p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* FAQ SECTION */}
+              <div className="bg-white rounded-3xl border border-gray-200 p-10">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="w-10 h-10 bg-indigo-50 rounded-2xl flex items-center justify-center">
+                    <HelpCircle size={24} className="text-indigo-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold">Frequently Asked Questions</h3>
+                </div>
+
+                <div className="divide-y divide-gray-100">
+                  {visibleFaqs.map((faq, i) => (
+                    <div key={i} className="py-6">
+                      <button
+                        onClick={() => toggleFAQ(i)}
+                        className="w-full flex justify-between items-center text-left group"
+                      >
+                        <span className="font-semibold text-lg pr-8 text-slate-800 group-hover:text-green-700 transition">{faq.q}</span>
+                        {openIndex === i ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+                      </button>
+                      {openIndex === i && (
+                        <p className="mt-5 text-slate-600 leading-relaxed text-[15.5px]">{faq.a}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {!showAllFAQs && faqs.length > 10 && (
+                  <div className="text-center mt-8">
+                    <button
+                      onClick={() => setShowAllFAQs(true)}
+                      className="text-green-600 hover:text-green-700 font-semibold flex items-center gap-2 mx-auto"
+                    >
+                      Show all FAQs <span>↓</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* EXPLORE MORE */}
+              <div className="mt-10 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold text-slate-900">
+                    Explore More Investment Opportunities
+                  </h3>
+                  <p className="text-slate-500 mt-2 text-sm lg:text-base">
+                    Discover IPOs, unlisted shares, and market insights curated for smart
+                    investors.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <Link
+                    href="/ipo"
+                    className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-lg font-semibold text-slate-900">
+                          Latest IPOs
+                        </p>
+                        <p className="text-sm text-slate-400 mt-1">
+                          Track live & upcoming IPOs
+                        </p>
+                      </div>
+                      <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                        →
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/preipo"
+                    className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-lg font-semibold text-slate-900">
+                          Unlisted Shares
+                        </p>
+                        <p className="text-sm text-slate-400 mt-1">
+                          Invest before public listing
+                        </p>
+                      </div>
+                      <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                        →
+                      </span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/insight-hub"
+                    className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-lg font-semibold text-slate-900">
+                          Insight Hub
+                        </p>
+                        <p className="text-sm text-slate-400 mt-1">
+                          Read IPO news, blogs & market insights
+                        </p>
+                      </div>
+                      <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                        →
+                      </span>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <Link
-                href="/ipo"
-                className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-lg font-semibold text-slate-900">
-                      Latest IPOs
-                    </p>
-                    <p className="text-sm text-slate-400 mt-1">
-                      Track live & upcoming IPOs
-                    </p>
-                  </div>
-                  <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-                    →
-                  </span>
-                </div>
-              </Link>
+            {/* RIGHT SIDEBAR — Promo cards */}
+            <aside className="hidden lg:block lg:col-span-2">
+              <div className="sticky top-24 space-y-2">
+                {[
+                  {
+                    badge: "IPO Insights",
+                    title: "Track Live",
+                    titleAccent: "IPOs & GMP",
+                    description:
+                      "Real-time subscription numbers, GMP trends and upcoming issues.",
+                    accentText: "text-blue-400",
+                    accentBg: "bg-blue-600 hover:bg-blue-700",
+                    accentDot: "bg-blue-400",
+                    accentBorder: "border-blue-400/25",
+                    accentBadgeBg: "bg-blue-400/10",
+                    accentGlow1: "bg-blue-400/15",
+                    accentGlow2: "bg-indigo-400/10",
+                    shadow: "shadow-blue-500/20",
+                    links: [
+                      { label: "Live IPOs", href: "/ipo" },
+                      { label: "Upcoming Issues", href: "/ipo" },
+                    ],
+                    cta: { label: "IPO Tracker", href: "/ipo" },
+                  },
+                  {
+                    badge: "Pre-IPO",
+                    title: "Explore",
+                    titleAccent: "Unlisted Shares",
+                    description:
+                      "Verified prices and valuations of India's top pre-IPO companies.",
+                    accentText: "text-emerald-400",
+                    accentBg: "bg-emerald-400 hover:bg-emerald-500",
+                    accentDot: "bg-emerald-400",
+                    accentBorder: "border-emerald-400/25",
+                    accentBadgeBg: "bg-emerald-400/10",
+                    accentGlow1: "bg-emerald-400/15",
+                    accentGlow2: "bg-teal-400/10",
+                    shadow: "shadow-emerald-500/20",
+                    links: [
+                      { label: "Unlisted Stocks", href: "/preipo" },
+                      { label: "Top Valuations", href: "/preipo" },
+                    ],
+                    cta: { label: "View Pre-IPO", href: "/preipo" },
+                  },
+                  {
+                    badge: "Brokers",
+                    title: "Compare",
+                    titleAccent: "Top Brokers",
+                    description:
+                      "Brokerage charges, platform features and account-opening benefits.",
+                    accentText: "text-blue-400",
+                    accentBg: "bg-blue-600 hover:bg-blue-700",
+                    accentDot: "bg-blue-400",
+                    accentBorder: "border-blue-400/25",
+                    accentBadgeBg: "bg-blue-400/10",
+                    accentGlow1: "bg-blue-400/15",
+                    accentGlow2: "bg-indigo-400/10",
+                    shadow: "shadow-blue-500/20",
+                    links: [
+                      { label: "Broker Analyzer", href: "/broker-analyzer" },
+                      { label: "Compare Charges", href: "/comparebrokers" },
+                    ],
+                    cta: { label: "Compare Brokers", href: "/comparebrokers" },
+                  },
+                  {
+                    badge: "Insight Hub",
+                    title: "Read",
+                    titleAccent: "Market Insights",
+                    description: "Latest stock market news, IPO analysis, and expert financial blogs.",
+                    accentText: "text-emerald-400",
+                    accentBg: "bg-emerald-400 hover:bg-emerald-500",
+                    accentDot: "bg-emerald-400",
+                    accentBorder: "border-emerald-400/25",
+                    accentBadgeBg: "bg-emerald-400/10",
+                    accentGlow1: "bg-emerald-400/15",
+                    accentGlow2: "bg-teal-400/10",
+                    shadow: "shadow-emerald-500/20",
+                    links: [
+                      { label: "Latest News", href: "/insight-hub" },
+                      { label: "IPO Analysis", href: "/insight-hub" },
+                    ],
+                    cta: { label: "Explore Insights", href: "/insight-hub" },
+                  },
+                ].map((card, i) => (
+                  <div
+                    key={i}
+                    className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#061A40] via-[#0A2558] to-[#0E3A73] p-3 shadow-lg border border-cyan-500/10 text-white"
+                  >
+                    {/* Decorative glows */}
+                    <div
+                      className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-3xl pointer-events-none ${card.accentGlow1}`}
+                    />
+                    <div
+                      className={`absolute bottom-0 left-0 w-24 h-24 rounded-full blur-3xl pointer-events-none ${card.accentGlow2}`}
+                    />
 
-              <Link
-                href="/preipo"
-                className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-lg font-semibold text-slate-900">
-                      Unlisted Shares
-                    </p>
-                    <p className="text-sm text-slate-400 mt-1">
-                      Invest before public listing
-                    </p>
-                  </div>
-                  <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-                    →
-                  </span>
-                </div>
-              </Link>
+                    <div className="relative z-10">
+                      <div
+                        className={`inline-flex items-center px-1.5 py-0.5 rounded-full border text-[9px] font-semibold tracking-wide ${card.accentBadgeBg} ${card.accentBorder} ${card.accentText}`}
+                      >
+                        {card.badge}
+                      </div>
 
-              <Link
-                href="/insight-hub"
-                className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-lg font-semibold text-slate-900">
-                      Insight Hub
-                    </p>
-                    <p className="text-sm text-slate-400 mt-1">
-                      Read IPO news, blogs & market insights
-                    </p>
+                      <h3 className="mt-1.5 text-sm font-black leading-tight">
+                        {card.title}
+                        <span className={`block ${card.accentText}`}>
+                          {card.titleAccent}
+                        </span>
+                      </h3>
+
+                      <p className="mt-1 text-slate-300 text-[10px] leading-snug">
+                        {card.description}
+                      </p>
+
+                      <div className="mt-2 space-y-0.5">
+                        {card.links.map((item) => (
+                          <Link
+                            key={item.label}
+                            href={item.href}
+                            className="flex items-center gap-2 text-[10px] group"
+                          >
+                            <div
+                              className={`w-1 h-1 rounded-full shrink-0 group-hover:scale-150 transition ${card.accentDot}`}
+                            />
+                            <span className="text-slate-200 group-hover:text-white transition">
+                              {item.label}
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
+
+                      <Link
+                        href={card.cta.href}
+                        className={`mt-2 w-full py-1 rounded-md text-white font-bold transition-colors text-[10px] text-center inline-flex items-center justify-center gap-1 ${card.accentBg} ${card.shadow}`}
+                      >
+                        {card.cta.label}
+                        <ArrowRight size={12} className="stroke-[2.5]" />
+                      </Link>
+                    </div>
                   </div>
-                  <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-                    →
-                  </span>
-                </div>
-              </Link>
-            </div>
+                ))}
+              </div>
+            </aside>
+
           </div>
         </div>
       </div>

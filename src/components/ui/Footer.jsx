@@ -23,6 +23,7 @@ export default function Footer() {
     { label: "Corporate Actions Calendar", href: "/corporate-actions-calendar" },
     { label: "How to Invest", href: "/how-to-apply-ipo" },
     { label: "Help Center", href: "mailto:sharebazaronline1@gmail.com" },
+    { label: "Report an Issue", href: "/report-issue" },
   ];
 
   const legalLinks = [
