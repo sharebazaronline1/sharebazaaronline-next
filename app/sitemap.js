@@ -7,7 +7,14 @@ const BASE_URL = "https://www.sharebazaaronline.com";
 // Regenerate sitemap every 5 minutes
 export const revalidate = 300;
 
-
+// Categories that live under /corporateactions, not /insight-hub
+const CORPORATE_ACTION_CATEGORIES = [
+  "Buyback",
+  "Dividend",
+  "Bonus Issue",
+  "Stock Split",
+  "Rights Issue",
+];
 
 /**
  * Slugifies string for readable canonical URLs
@@ -71,7 +78,7 @@ export default async function sitemap() {
       changeFrequency: "daily",
       priority: 0.85,
     },
-    {
+     {
       url: `${BASE_URL}/corporateactions/bonus`,
       lastModified: fallbackDate,
       changeFrequency: "daily",
