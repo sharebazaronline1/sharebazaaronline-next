@@ -1,3 +1,4 @@
+
 // app/layout.jsx
 import "./globals.css";
 
@@ -37,7 +38,12 @@ export const metadata = {
     follow: true,
   },
 
-  // ✅ AdSense verification meta tag
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
+
+  // AdSense verification meta tag
   other: {
     "google-adsense-account": "ca-pub-5607112752912440",
   },
@@ -51,7 +57,6 @@ export default function RootLayout({ children }) {
           {children}
         </ReactQueryProvider>
 
-       
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5607112752912440"
