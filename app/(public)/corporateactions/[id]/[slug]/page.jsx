@@ -224,31 +224,39 @@ export default async function Page({ params }) {
 
   const keywords = normalizeKeywords(blog.keywords);
 
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "@id": `${canonicalUrl}#article`,
-    headline: articleTitle,
+    "@id": `${canonicalUrl}#webpage`,
+    name: articleTitle,
     description: articleDescription,
     url: canonicalUrl,
-    image: [articleImage],
+    ...(articleImage ? {
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: articleImage,
+      },
+    } : {}),
     ...(publishedDate ? { datePublished: publishedDate } : {}),
     ...(modifiedDate ? { dateModified: modifiedDate } : {}),
-    ...(wordCount ? { wordCount } : {}),
     ...(keywords.length ? { keywords: keywords.join(", ") } : {}),
-    articleSection: blog.category || "Corporate Actions",
     inLanguage: "en-IN",
-    author: {
-      "@type": "Organization",
-      "@id": `${SITE_URL}#organization`,
+    isPartOf: {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
       name: "ShareBazaarOnline",
-      url: SITE_URL,
+      url: `${SITE_URL}/`,
+    },
+    about: {
+      "@type": "Thing",
+      name: articleTitle,
     },
     publisher: {
       "@type": "Organization",
-      "@id": `${SITE_URL}#organization`,
+      "@id": `${SITE_URL}/#organization`,
       name: "ShareBazaarOnline",
-      url: SITE_URL,
+      url: `${SITE_URL}/`,
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/images/sharebazaar.png`,
@@ -256,11 +264,8 @@ export default async function Page({ params }) {
         height: 512,
       },
     },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": canonicalUrl,
-    },
   };
+
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",

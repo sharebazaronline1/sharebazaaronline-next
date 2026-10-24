@@ -39,8 +39,16 @@ export const metadata = {
   },
 
   icons: {
-    icon: "/favicon.png",
-    apple: "/favicon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-touch-icon.png",
+    other: {
+      rel: "manifest",
+      url: "/site.webmanifest",
+    },
   },
 
   // AdSense verification meta tag
