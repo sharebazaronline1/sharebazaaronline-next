@@ -141,7 +141,9 @@ const AdminCorporateActionClient = () => {
     setLoading(true);
 
     try {
-      const slug = `${generateSlug(title)}-${Date.now()}`;
+    const slug = generateSlug(heading.trim() || title.trim())
+  .replace(/-+/g, "-")
+  .replace(/^-|-$/g, "");
 
       const cleanExcerpt =
         excerpt || stripHtml(content).substring(0, 160) + "...";

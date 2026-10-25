@@ -1,7 +1,7 @@
 
 // app/(public)/insight-hub/[id]/[slug]/page.jsx
 
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { fetchInsightDetails } from "@/api/mockApi";
 import InsightHubDetail from "@/components/InsightHubDetails";
@@ -77,10 +77,16 @@ function isCorporateActionCategory(category) {
 
 function slugify(text) {
   if (!text) return "";
-  return text
+
+  return String(text)
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+function getCanonicalSlug(blog) {
+  // Keep URL slugs consistent with the Insight Hub listing.
+  return slugify(blog?.heading || blog?.title || "");
 }
 
 function isMockId(id) {
@@ -91,6 +97,7 @@ async function getMockBlog(id) {
   try {
     const mockId = String(id).replace(/^mock-/, "");
     const mockData = await fetchInsightDetails();
+
     if (!Array.isArray(mockData)) return null;
 
     const found = mockData.find((item) => String(item.id) === mockId);
@@ -115,7 +122,7 @@ async function getMockBlog(id) {
     };
   } catch (err) {
     console.error("[getMockBlog] error:", err?.message || err);
-    return null;
+    throw err;
   }
 }
 
@@ -126,71 +133,91 @@ async function getBlog(id) {
     return getMockBlog(id);
   }
 
-  try {
-    const { data, error } = await supabasePublic
-      .from("blogs")
-      .select("*")
-      .eq("id", id)
-      .maybeSingle();
+  const { data, error } = await supabasePublic
+    .from("blogs")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
 
-    if (error) {
-      console.error(
-        "[getBlog] supabase error:",
-        error.message,
-        "| code:",
-        error.code
-      );
-      return null;
-    }
+  if (error) {
+    console.error(
+      "[getBlog] Supabase error:",
+      error.message,
+      "| code:",
+      error.code
+    );
 
-    return data || null;
-  } catch (err) {
-    console.error("[getBlog] exception:", err?.message || err);
-    return null;
+    // Do not turn database failures into false 404 responses.
+    throw new Error(`Failed to fetch blog ${id}: ${error.message}`);
   }
+
+  return data || null;
 }
 
 export async function generateStaticParams() {
   try {
     const { data, error } = await supabasePublic
       .from("blogs")
-      .select("id, title, heading, category")
+      .select("id, title, heading, meta_title, category")
       .eq("status", "published")
       .limit(500);
 
-    if (error || !data) return [];
+    if (error) {
+      console.error(
+        "[generateStaticParams] Supabase error:",
+        error.message
+      );
+      return [];
+    }
 
-    const dbParams = data
-      .filter((b) => !isCorporateActionCategory(b.category))
-      .map((b) => {
-        const title = b.title || b.heading || "";
-        const slug = slugify(title);
-        if (!b.id || !slug) return null;
-        return { id: String(b.id), slug };
+    const dbParams = (data || [])
+      .filter((blog) => !isCorporateActionCategory(blog.category))
+      .map((blog) => {
+        const slug = getCanonicalSlug(blog);
+
+        if (!blog.id || !slug) return null;
+
+        return {
+          id: String(blog.id),
+          slug,
+        };
       })
       .filter(Boolean);
 
     let mockParams = [];
+
     try {
       const mockData = await fetchInsightDetails();
+
       if (Array.isArray(mockData)) {
         mockParams = mockData
-          .filter((m) => !isCorporateActionCategory(m.category))
-          .map((m) => {
-            const title = m.heading || m.title || "";
-            const slug = slugify(title);
-            if (!m.id || !slug) return null;
-            return { id: `mock-${m.id}`, slug };
+          .filter((blog) => !isCorporateActionCategory(blog.category))
+          .map((blog) => {
+            const slug = getCanonicalSlug(blog);
+
+            if (!blog.id || !slug) return null;
+
+            return {
+              id: `mock-${blog.id}`,
+              slug,
+            };
           })
           .filter(Boolean);
       }
     } catch (err) {
-      console.error("mock params error:", err?.message || err);
+      console.error(
+        "[generateStaticParams] Mock params error:",
+        err?.message || err
+      );
     }
 
     return [...dbParams, ...mockParams];
   } catch (err) {
-    console.error("generateStaticParams error:", err?.message || err);
+    console.error(
+      "[generateStaticParams] error:",
+      err?.message || err
+    );
+
     return [];
   }
 }
@@ -200,23 +227,39 @@ export const dynamicParams = true;
 
 function normalizeKeywords(raw) {
   if (!raw) return [];
+
   if (Array.isArray(raw)) {
-    return raw.map((k) => String(k).trim()).filter(Boolean);
+    return raw.map((keyword) => String(keyword).trim()).filter(Boolean);
   }
+
   if (typeof raw === "string") {
     return raw
       .split(/[,\n]+/)
-      .map((k) => k.trim())
+      .map((keyword) => keyword.trim())
       .filter(Boolean);
   }
+
   return [];
 }
 
 export async function generateMetadata({ params }) {
-  const { id, slug } = await params;
+  const { id } = await params;
   const blog = await getBlog(id);
 
-  if (!blog || isCorporateActionCategory(blog.category)) {
+  if (
+    !blog ||
+    blog.status !== "published" ||
+    isCorporateActionCategory(blog.category)
+  ) {
+    return {
+      title: "Article Not Found | ShareBazaarOnline",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const canonicalSlug = getCanonicalSlug(blog);
+
+  if (!canonicalSlug) {
     return {
       title: "Article Not Found | ShareBazaarOnline",
       robots: { index: false, follow: false },
@@ -232,7 +275,7 @@ export async function generateMetadata({ params }) {
     "Read the latest market insights on ShareBazaarOnline.";
 
   const keywords = normalizeKeywords(blog.keywords);
-  const canonical = `${SITE_URL}/insight-hub/${id}/${slug}`;
+  const canonical = `${SITE_URL}/insight-hub/${id}/${canonicalSlug}`;
 
   return {
     title,
@@ -260,8 +303,35 @@ export default async function Page({ params }) {
   const { id, slug } = await params;
   const blog = await getBlog(id);
 
-  if (!blog || isCorporateActionCategory(blog.category)) {
+  if (!blog || blog.status !== "published") {
     notFound();
+  }
+
+  // If this record belongs to Corporate Actions, redirect it to its
+  // corresponding destination instead of rendering an Insight Hub article.
+if (isCorporateActionCategory(blog.category)) {
+  const corporateActionSlug = getCanonicalSlug(blog);
+
+  if (!corporateActionSlug) {
+    notFound();
+  }
+
+  permanentRedirect(
+    `/corporateactions/${encodeURIComponent(String(id))}/${corporateActionSlug}`
+  );
+}
+
+  const canonicalSlug = getCanonicalSlug(blog);
+
+  if (!canonicalSlug) {
+    notFound();
+  }
+
+  // Consolidate outdated or incorrect slugs into one permanent URL.
+  if (slug !== canonicalSlug) {
+    permanentRedirect(
+      `/insight-hub/${encodeURIComponent(String(id))}/${canonicalSlug}`
+    );
   }
 
   const articleTitle =
@@ -272,7 +342,7 @@ export default async function Page({ params }) {
     blog.excerpt ||
     "Read the latest market insights on ShareBazaarOnline.";
 
-  const canonicalUrl = `${SITE_URL}/insight-hub/${id}/${slug}`;
+  const canonicalUrl = `${SITE_URL}/insight-hub/${id}/${canonicalSlug}`;
   const articleImage = blog.image_url || `${SITE_URL}/og-image.jpg`;
 
   const publishedDate = blog.published_at || blog.created_at;
@@ -381,7 +451,7 @@ export default async function Page({ params }) {
           __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
         }}
       />
-      <InsightHubDetail blog={blog} id={id} slug={slug} />
+      <InsightHubDetail blog={blog} id={id} slug={canonicalSlug} />
     </>
   );
 }

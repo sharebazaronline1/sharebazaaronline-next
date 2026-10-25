@@ -1,7 +1,7 @@
 // app/preipo/[id]/[slug]/page.jsx
 
 import { notFound } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { publicSupabase } from "@/lib/supabase/public";
 import { fetchPreIPODetails } from "@/api/mockApi";
 import PreIPODetails from "@/components/PreIPODetails";
 
@@ -18,12 +18,11 @@ async function getPreIPOData(id) {
     }
 
     try {
-      const supabase = await createClient();
+   
 
-      const { data: dbData, error: dbError } = await supabase
-        .from("pre_ipo_companies")
-        .select("name, price, lot_size");
-
+      const { data: dbData, error: dbError } = await publicSupabase
+  .from("pre_ipo_companies")
+  .select("name, price, lot_size");
       if (!dbError && dbData && dbData.length > 0) {
         const normalize = (str) =>
           str.toLowerCase().replace(/[^a-z0-9]/g, "");

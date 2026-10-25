@@ -523,13 +523,25 @@ const CorporateActionsClient = ({ activeTab = "buyback", records = [] }) => {
                     {paginatedRecords.map((row) => (
                       <tr
                         key={row.id}
-                        onClick={() => {
-                          if (row.blog?.id) {
-                            router.push(
-                              `/corporateactions/${row.blog.id}/${row.blog.slug}`
-                            );
-                          }
-                        }}
+                       onClick={() => {
+  if (row.blog?.id) {
+    const title = row.blog.heading || row.blog.title || "";
+
+    const canonicalSlug = title
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
+
+    if (canonicalSlug) {
+      router.push(
+        `/corporateactions/${row.blog.id}/${canonicalSlug}`
+      );
+    }
+  }
+}}
                         className={`hover:bg-slate-50/60 transition-colors ${
                           row.blog?.id ? "cursor-pointer" : ""
                         }`}

@@ -12,7 +12,61 @@ const supabasePublic = createClient(
     auth: { persistSession: false, autoRefreshToken: false },
   }
 );
+// Exclude corporate-action articles from the Insight Hub listing.
+const CORPORATE_ACTION_CATEGORIES = new Set([
+  "buyback",
+  "dividend",
+  "dividends",
+  "bonus issue",
+  "stock split",
+  "stock splits",
+  "rights issue",
+  "merger",
+  "demerger",
+  "takeover / acquisition",
+  "open offer",
+  "delisting",
+  "ofs",
+  "qip",
+  "preferential allotment",
+  "warrants issue",
+  "esop allotment",
+  "fpo",
+  "bond issue",
+  "ncd issue",
+  "distribution",
+  "unit split",
+  "agm",
+  "egm",
+  "board meeting",
+  "postal ballot",
+  "e-voting",
+  "promoter stake increase",
+  "promoter stake sale",
+  "pledge release",
+  "scheme of arrangement",
+  "insolvency resolution",
+  "cirp process",
+  "subsidiary incorporation",
+  "joint venture",
+  "change of company name",
+  "ipo listing",
+  "change in director",
+  "ceo appointment",
+  "auditor appointment",
+  "regulatory action",
+  "trading suspension",
+  "revocation of suspension",
+]);
 
+function isCorporateActionCategory(category) {
+  const normalized = String(category || "").trim().toLowerCase();
+
+  return (
+    normalized.includes("corporate action") ||
+    CORPORATE_ACTION_CATEGORIES.has(normalized)
+  );
+}
 export const metadata = {
   title: "Insight Hub | ShareBazaarOnline",
   description:
@@ -95,7 +149,9 @@ export default async function InsightHubPage() {
     source: "mock",
   }));
 
-  const merged = [...formattedDB, ...formattedMock];
+  const merged = [...formattedDB, ...formattedMock].filter(
+  (item) => !isCorporateActionCategory(item.category)
+);
 
   const seen = new Set();
   const unique = merged.filter((item) => {

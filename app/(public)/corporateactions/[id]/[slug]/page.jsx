@@ -1,10 +1,10 @@
 // app/(public)/corporateactions/[id]/[slug]/page.jsx
 
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { fetchInsightDetails } from "@/api/mockApi";
 import CorporateActionDetails from "@/components/CorporateActionDetails";
-import { cache } from "react"; // ✅ Added React cache
+import { cache } from "react";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
 
@@ -17,20 +17,21 @@ const supabasePublic = createClient(
 );
 
 const CORPORATE_ACTION_CATEGORIES = [
-  "Buyback", "Dividend", "Dividends", "Bonus Issue", "Stock Split", 
-  "Stock Splits", "Rights Issue", "Merger", "Demerger", "Takeover / Acquisition", 
-  "Open Offer", "Delisting", "OFS", "QIP", "Preferential Allotment", 
-  "Warrants Issue", "ESOP Allotment", "FPO", "Bond Issue", "NCD Issue", 
-  "Distribution", "Unit Split", "AGM", "EGM", "Board Meeting", "Postal Ballot", 
-  "E-Voting", "Promoter Stake Increase", "Promoter Stake Sale", "Pledge Release", 
-  "Scheme of Arrangement", "Insolvency Resolution", "CIRP Process", 
-  "Subsidiary Incorporation", "Joint Venture", "Change of Company Name", 
-  "IPO Listing", "Change in Director", "CEO Appointment", "Auditor Appointment", 
+  "Buyback", "Dividend", "Dividends", "Bonus Issue", "Stock Split",
+  "Stock Splits", "Rights Issue", "Merger", "Demerger", "Takeover / Acquisition",
+  "Open Offer", "Delisting", "OFS", "QIP", "Preferential Allotment",
+  "Warrants Issue", "ESOP Allotment", "FPO", "Bond Issue", "NCD Issue",
+  "Distribution", "Unit Split", "AGM", "EGM", "Board Meeting", "Postal Ballot",
+  "E-Voting", "Promoter Stake Increase", "Promoter Stake Sale", "Pledge Release",
+  "Scheme of Arrangement", "Insolvency Resolution", "CIRP Process",
+  "Subsidiary Incorporation", "Joint Venture", "Change of Company Name",
+  "IPO Listing", "Change in Director", "CEO Appointment", "Auditor Appointment",
   "Regulatory Action", "Trading Suspension", "Revocation of Suspension",
 ];
 
 function isCorporateActionCategory(category) {
   const normalized = String(category || "").trim().toLowerCase();
+
   return (
     normalized.includes("corporate action") ||
     CORPORATE_ACTION_CATEGORIES.some(
@@ -41,10 +42,16 @@ function isCorporateActionCategory(category) {
 
 function slugify(text) {
   if (!text) return "";
+
   return text
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+function getCanonicalSlug(blog) {
+  // Match the URL convention used by the article listing.
+  return slugify(blog?.heading || blog?.title || "");
 }
 
 function isMockId(id) {
@@ -84,7 +91,6 @@ async function getMockBlog(id) {
   }
 }
 
-// ✅ Wrapped with React cache
 const getBlog = cache(async (id) => {
   if (!id) return null;
 
@@ -141,10 +147,19 @@ export const revalidate = 21600;
 export const dynamicParams = true;
 
 export async function generateMetadata({ params }) {
-  const { id, slug } = await params;
+  const { id } = await params;
   const blog = await getBlog(id);
 
   if (!blog || !isCorporateActionCategory(blog.category)) {
+    return {
+      title: "Article Not Found | ShareBazaarOnline",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const canonicalSlug = getCanonicalSlug(blog);
+
+  if (!canonicalSlug) {
     return {
       title: "Article Not Found | ShareBazaarOnline",
       robots: { index: false, follow: false },
@@ -163,7 +178,7 @@ export async function generateMetadata({ params }) {
     "Read the latest corporate action analysis on ShareBazaarOnline.";
 
   const keywords = normalizeKeywords(blog.keywords);
-  const canonical = `${SITE_URL}/corporateactions/${id}/${slug}`;
+  const canonical = `${SITE_URL}/corporateactions/${id}/${canonicalSlug}`;
 
   return {
     title,
@@ -195,6 +210,22 @@ export default async function Page({ params }) {
     notFound();
   }
 
+  const canonicalSlug = getCanonicalSlug(blog);
+
+  if (!canonicalSlug) {
+    notFound();
+  }
+
+  // Permanently redirect outdated, incorrect, or timestamp-based slugs.
+  if (slug !== canonicalSlug) {
+    permanentRedirect(
+      `/corporateactions/${encodeURIComponent(String(id))}/${canonicalSlug}`
+    );
+  }
+
+  const canonicalUrl =
+    `${SITE_URL}/corporateactions/${id}/${canonicalSlug}`;
+
   const articleTitle =
     blog.meta_title ||
     blog.heading ||
@@ -206,7 +237,6 @@ export default async function Page({ params }) {
     blog.excerpt ||
     "Read the latest corporate action analysis on ShareBazaarOnline.";
 
-  const canonicalUrl = `${SITE_URL}/corporateactions/${id}/${slug}`;
   const articleImage = blog.image_url || `${SITE_URL}/og-image.jpg`;
 
   const publishedDate = blog.published_at || blog.created_at;
@@ -224,7 +254,6 @@ export default async function Page({ params }) {
 
   const keywords = normalizeKeywords(blog.keywords);
 
-
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -232,12 +261,14 @@ export default async function Page({ params }) {
     name: articleTitle,
     description: articleDescription,
     url: canonicalUrl,
-    ...(articleImage ? {
-      primaryImageOfPage: {
-        "@type": "ImageObject",
-        url: articleImage,
-      },
-    } : {}),
+    ...(articleImage
+      ? {
+          primaryImageOfPage: {
+            "@type": "ImageObject",
+            url: articleImage,
+          },
+        }
+      : {}),
     ...(publishedDate ? { datePublished: publishedDate } : {}),
     ...(modifiedDate ? { dateModified: modifiedDate } : {}),
     ...(keywords.length ? { keywords: keywords.join(", ") } : {}),
@@ -265,7 +296,6 @@ export default async function Page({ params }) {
       },
     },
   };
-
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -297,27 +327,21 @@ export default async function Page({ params }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(articleSchema).replace(
-            /</g,
-            "\\u003c"
-          ),
+          __html: JSON.stringify(articleSchema).replace(/</g, "\\u003c"),
         }}
       />
 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbSchema).replace(
-            /</g,
-            "\\u003c"
-          ),
+          __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
         }}
       />
 
       <CorporateActionDetails
         blog={blog}
         id={id}
-        slug={slug}
+        slug={canonicalSlug}
         sectionLabel="Corporate Actions"
         sectionHref="/corporateactions"
       />

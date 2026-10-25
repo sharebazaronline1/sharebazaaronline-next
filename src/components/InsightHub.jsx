@@ -13,25 +13,66 @@ const EAGER_FIRST_BATCH = 8;
 const EAGER_SECOND_BATCH = 30;
 const HERO_IMAGE = "/images/hero-insight.png";
 
-const CORPORATE_ACTION_CATEGORIES = [
+
+const CORPORATE_ACTION_CATEGORIES = new Set([
   "buyback",
   "dividend",
+  "dividends",
   "bonus",
   "bonus issue",
   "stock split",
+  "stock splits",
   "rights",
   "rights issue",
-  "split",
   "merger",
   "demerger",
-];
+  "takeover / acquisition",
+  "open offer",
+  "delisting",
+  "ofs",
+  "qip",
+  "preferential allotment",
+  "warrants issue",
+  "esop allotment",
+  "fpo",
+  "bond issue",
+  "ncd issue",
+  "distribution",
+  "unit split",
+  "agm",
+  "egm",
+  "board meeting",
+  "postal ballot",
+  "e-voting",
+  "promoter stake increase",
+  "promoter stake sale",
+  "pledge release",
+  "scheme of arrangement",
+  "insolvency resolution",
+  "cirp process",
+  "subsidiary incorporation",
+  "joint venture",
+  "change of company name",
+  "ipo listing",
+  "change in director",
+  "ceo appointment",
+  "auditor appointment",
+  "regulatory action",
+  "trading suspension",
+  "revocation of suspension",
+]);
 
 const isCorporateAction = (post) => {
   if (!post) return false;
-  const cat = String(post.category || "").toLowerCase().trim();
-  if (!cat) return false;
-  return CORPORATE_ACTION_CATEGORIES.includes(cat);
+
+  const category = String(post.category || "").trim().toLowerCase();
+
+  return (
+    category.includes("corporate action") ||
+    CORPORATE_ACTION_CATEGORIES.has(category)
+  );
 };
+
 
 const preloadImages = (urls) => {
   const list = (urls || []).filter(Boolean);
