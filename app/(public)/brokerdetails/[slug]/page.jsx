@@ -6,6 +6,29 @@ import BrokerReviewDetailClient from "@/components/BrokerReviewDetailClient";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
 
+
+function createMetaDescription(content, brokerName) {
+  const cleanContent = (content || "")
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const fallback =
+    `Read our ${brokerName} broker review covering brokerage charges, ` +
+    `trading features, platform experience, and ratings.`;
+
+  const text = cleanContent || fallback;
+
+  return text.length > 155
+    ? `${text.slice(0, 152).trimEnd()}...`
+    : text;
+}
 // Server-side function to fetch broker review data
 async function getBrokerReviewData(slug) {
   try {
@@ -97,10 +120,10 @@ export async function generateMetadata({ params }) {
   const brokerName = data.broker?.name || "Broker";
   const reviewTitle = data.review.title || `${brokerName} Review`;
 
-  const description =
-    data.review.content?.slice(0, 160) ||
-    `Complete review of ${brokerName} including brokerage charges, platform features, ratings, and more.`;
-
+const description = createMetaDescription(
+  data.review.content,
+  brokerName
+);
   const canonical = `${SITE_URL}/brokerdetails/${slug}`;
 
   const imageUrl = data.broker?.logo
@@ -167,9 +190,10 @@ export default async function Page({ params }) {
   const reviewTitle =
     review.title || `${brokerName} Review`;
 
-  const description =
-    review.content?.slice(0, 200) ||
-    `Complete review of ${brokerName} including brokerage charges, platform features, ratings, and more.`;
+  const description = createMetaDescription(
+  review.content,
+  brokerName
+);
 
   const canonicalUrl =
     `${SITE_URL}/brokerdetails/${slug}`;

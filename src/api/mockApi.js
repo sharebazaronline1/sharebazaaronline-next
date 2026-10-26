@@ -14408,7 +14408,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.bseindia.com/downloads/ipo/RHP%20&%20GID_150420261848.zip",
     "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/mehul-telecom-ipo-anchor-allocation-letter.pdf"
@@ -14943,7 +14943,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE/NSE",
+    "drhp_link": null,
     "rhp_link": "https://www.bseindia.com/corporates/download/378749/IPO%20Open/6RedHerringProspectussigned_20260427195413.pdf",
     "prospectus_pdf": "Same as RHP",
     "investor_presentation": null
@@ -15137,7 +15137,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME",
+    "drhp_link": null,
     "rhp_link": "https://cdn.shopify.com/s/files/1/0477/3327/6826/files/RECODE_STUDIOS_LIMITED_RHP.pdf?v=1777437948",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -15717,7 +15717,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.cumulativecapital.group/Admin/UploadedFiles/RHP-Goldline-Pharmaceutical-Limited-May-06,-2026.pdf",
     "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/goldline-pharmaceutical-ipo-anchor-allocation-letter.pdf"
@@ -16261,7 +16261,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/harikanta-overseas-rhp.pdf",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -16898,7 +16898,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/vegorama-punjabi-angithi-rhp.pdf",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -17114,7 +17114,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/m-r-maniveni-foods-rhp.pdf",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -17335,7 +17335,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/rajnandini-fashion-india-rhp.pdf",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -17517,7 +17517,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/smr-jewels-rhp.pdf",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -17728,7 +17728,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME / Chittorgarh",
+    "drhp_link": null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/merritronix-rhp.pdf",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -17935,7 +17935,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE / Chittorgarh",
+    "drhp_link": null,
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_CMRGREEN.zip",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -18143,7 +18143,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.bseindia.com/downloads/ipo/RHP_030620261736.zip",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -18349,7 +18349,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE / Chittorgarh",
+    "drhp_link": null,
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_HEXAGON.zip",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -18558,7 +18558,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE / Chittorgarh",
+    "drhp_link": null,
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_GENXAI.zip",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -18981,7 +18981,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME",
+    "drhp_link": null,
     "rhp_link": "https://seil.net.in/wp-content/uploads/2026/06/SUSAN-ELECTRICALS-RHP-FINAL.pdf",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -19186,7 +19186,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME",
+    "drhp_link": null,
     "rhp_link": "https://gyrcapitaladvisors.com/wp-content/uploads/2026/06/rhphorizon.pdf",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -19816,7 +19816,7 @@ export const fetchIPOs = async () => {
 
   "ipo_documents": {
     "drhp_link": "https://www.sebi.gov.in/filings/public-issues/jun-2026/leapfrog-engineering-services-limited_102069.html",
-    "rhp_link": "Available on BSE SME / Chittorgarh",
+    "rhp_link": null,
     "prospectus_pdf": null,
     "investor_presentation": null
   },
@@ -20030,7 +20030,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/riyaasat-rhp.pdf",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -20245,7 +20245,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on BSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/anubhav-plast-rhp.pdf",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -20680,7 +20680,7 @@ export const fetchIPOs = async () => {
 
   "ipo_documents": {
     "drhp_link": "https://www.sebi.gov.in/filings/public-issues/jun-2026/advit-jewels-limited-rhp_102061.html",
-    "rhp_link": "Available on BSE / NSE",
+    "rhp_link": null,
     "prospectus_pdf": null,
     "investor_presentation": null
   },
@@ -21087,7 +21087,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on SEBI / BSE / NSE",
+    "drhp_link": null,
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jun-2026/waterways-leisure-tourism-limited-rhp_102226.html",
     "prospectus_pdf": null,
     "investor_presentation": null
@@ -21522,8 +21522,8 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE",
-    "rhp_link": "Available on NSE",
+    "drhp_link": null,
+    "rhp_link": null,
     "prospectus_pdf": "https://www.jivialrailings.com/assets/Invester-realtion-file/Prospect/Prospectus.pdf",
     "investor_presentation":  null
   },
@@ -21747,9 +21747,9 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available (RHP linked on site)",
+    "drhp_link": null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/sripriyankarhp.pdf",
-    "prospectus_pdf": "Available on company/RHP sources",
+    "prospectus_pdf": null,
     "investor_presentation":  null
   },
 
@@ -22192,7 +22192,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on SEBI",
+    "drhp_link": null,
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jun-2026/csm-technologies-limited-rhp_102194.html",
     "prospectus_pdf":  null,
     "investor_presentation":  null
@@ -22646,7 +22646,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on SEBI",
+    "drhp_link": null,
     "rhp_link": "https://aasthaspintex.com/pdf/RHP/RHP_Aastha.pdf",
     "prospectus_pdf":  null,
     "investor_presentation":  null
@@ -25107,7 +25107,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on SEBI site",
+    "drhp_link": null,
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jul-2026/kusumgar-limited-rhp_102510.html",
     "prospectus_pdf":  null,
     "investor_presentation":  null
@@ -26163,7 +26163,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on SEBI",
+    "drhp_link": null,
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jul-2026/alpine-texworld-limited-rhp_102719.html",
     "prospectus_pdf":  null,
     "investor_presentation":  null
@@ -26597,7 +26597,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on SEBI",
+    "drhp_link": null,
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jul-2026/caliber-mining-and-logistics-limited-rhp_102790.html",
     "prospectus_pdf":  null,
     "investor_presentation":  null
@@ -27260,7 +27260,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on SEBI",
+    "drhp_link": null,
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jul-2026/indo-mim-limited-rhp_102938.html",
     "prospectus_pdf":  null,
     "investor_presentation":  null
@@ -27473,7 +27473,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on SEBI",
+    "drhp_link": null,
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jul-2026/lohia-corp-limited-rhp_102936.html",
     "prospectus_pdf":  null,
     "investor_presentation":  null
