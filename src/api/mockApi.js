@@ -32,7 +32,7 @@ export const fetchIPOs = async () => {
     "lot_size": 1000,
     "total_issue_size": "₹46.62 Cr",
     "fresh_issue_size": "37,00,000 shares",
-    "offer_for_sale": "N/A",
+    "offer_for_sale": null,
     "shares_offered": "37,00,000 shares",
     "listing_exchange": "BSE SME",
     "issue_price": "₹126",
@@ -160,14 +160,14 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Dec 2025",
     "estimated_listing_price": "₹100.80"
   },
 
   "ipo_subscription_data": {
-    "qib_ex_anchor": "N/A",
+    "qib_ex_anchor": null,
     "hni_subscription": "0.32x",
     "retail_subscription": "2.90x",
     "total_subscription": "1.57x"
@@ -177,8 +177,8 @@ export const fetchIPOs = async () => {
     "registrar": "Bigshare Services Pvt Ltd",
     "registrar_website": "https://www.bigshareonline.com",
     "market_maker": "Asnani Stock Broker Pvt Ltd",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -547,7 +547,7 @@ export const fetchIPOs = async () => {
     "qib_quota": "50% (including anchor portion)",
     "retail_quota": "35%",
     "hni_quota": "15%",
-    "market_maker_quota": "N/A"
+    "market_maker_quota": null
   },
 
   "market_lot_details": {
@@ -620,10 +620,10 @@ export const fetchIPOs = async () => {
   ],
 
   "grey_market_premium": {
-    "gmp_price": "N/A",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
-    "gmp_last_updated": "N/A",
+    "gmp_price": null,
+    "kostak_rate": null,
+    "subject_to_sauda": null,
+    "gmp_last_updated": null,
     "estimated_listing_price": "Day-1 close around ₹148-156; Current trading ~₹198-200 (Mar 2026)"
   },
 
@@ -637,9 +637,9 @@ export const fetchIPOs = async () => {
   "ipo_intermediaries": {
     "registrar": "Kfin Technologies Ltd.",
     "registrar_website": "https://www.kfintech.com",
-    "market_maker": "N/A",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "market_maker": null,
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -656,8 +656,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://www.sebi.gov.in/filings/public-issues/dec-2025/park-medi-world-limited_98190.html",
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/dec-2025/park-medi-world-limited_98190.html",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -769,7 +769,7 @@ export const fetchIPOs = async () => {
     "qib_quota": "~50% (incl. anchor portion)",
     "retail_quota": "~35%",
     "hni_quota": "~15%",
-    "market_maker_quota": "N/A"
+    "market_maker_quota": null
   },
 
   "market_lot_details": {
@@ -842,10 +842,10 @@ export const fetchIPOs = async () => {
   ],
 
   "grey_market_premium": {
-    "gmp_price": "N/A",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
-    "gmp_last_updated": "N/A",
+    "gmp_price": null,
+    "kostak_rate": null,
+    "subject_to_sauda": null,
+    "gmp_last_updated": null,
     "estimated_listing_price": "Listed at ~₹490 (6-7% premium on Dec 17, 2025); traded higher post-listing"
   },
 
@@ -859,9 +859,9 @@ export const fetchIPOs = async () => {
   "ipo_intermediaries": {
     "registrar": "Kfin Technologies Ltd.",
     "registrar_website": "https://www.kfintech.com",
-    "market_maker": "N/A",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "market_maker": null,
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -939,7 +939,7 @@ export const fetchIPOs = async () => {
     "lot_size": 1000,
     "total_issue_size": "₹71.00 Cr",
     "fresh_issue_size": "₹71.00 Cr (50,00,000 shares)",
-    "offer_for_sale": "N/A",
+    "offer_for_sale": null,
     "shares_offered": "50,00,000 shares",
     "listing_exchange": "NSE SME",
     "issue_price": "₹142",
@@ -1003,8 +1003,8 @@ export const fetchIPOs = async () => {
     },
     "retail_maximum": {
       "lot_size": "N/A (SME limits apply)",
-      "shares": "N/A",
-      "amount": "N/A"
+      "shares": null,
+      "amount": null
     },
     "shni_minimum": {
       "lot_size": "3 lots",
@@ -1065,10 +1065,10 @@ export const fetchIPOs = async () => {
   ],
 
   "grey_market_premium": {
-    "gmp_price": "N/A",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
-    "gmp_last_updated": "N/A",
+    "gmp_price": null,
+    "kostak_rate": null,
+    "subject_to_sauda": null,
+    "gmp_last_updated": null,
     "estimated_listing_price": "N/A (SME GMP not prominently tracked; listed Dec 19, 2025)"
   },
 
@@ -1083,8 +1083,8 @@ export const fetchIPOs = async () => {
     "registrar": "Bigshare Services Pvt Ltd",
     "registrar_website": "https://www.bigshareonline.com",
     "market_maker": "Choice Equity Broking Pvt Ltd",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -1169,7 +1169,7 @@ export const fetchIPOs = async () => {
     "lot_size": 10000,
     "total_issue_size": "₹56.35 Cr",
     "fresh_issue_size": "₹56.35 Cr (4,69,60,000 shares)",
-    "offer_for_sale": "N/A",
+    "offer_for_sale": null,
     "shares_offered": "4,69,60,000 shares",
     "listing_exchange": "BSE SME",
     "issue_price": "₹12",
@@ -1299,14 +1299,14 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Dec 2025",
     "estimated_listing_price": "₹12 (flat listing expectation)"
   },
 
   "ipo_subscription_data": {
-    "qib_ex_anchor": "N/A",
+    "qib_ex_anchor": null,
     "hni_subscription": "Moderate demand",
     "retail_subscription": "Moderate demand",
     "total_subscription": "Approx 1x range"
@@ -1316,8 +1316,8 @@ export const fetchIPOs = async () => {
     "registrar": "Cameo Corporate Services Limited",
     "registrar_website": "https://cameoindia.com",
     "market_maker": "Anant Securities Limited",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -1519,9 +1519,9 @@ export const fetchIPOs = async () => {
   "ipo_intermediaries": {
     "registrar": "KFin Technologies Limited",
     "registrar_website": "https://kfintech.com",
-    "market_maker": "N/A",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "market_maker": null,
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -1697,7 +1697,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_subscription_data": {
-    "qib_ex_anchor": "N/A",
+    "qib_ex_anchor": null,
     "hni_subscription": "89.21x",
     "retail_subscription": "45.68x",
     "total_subscription": "67.45x"
@@ -1707,8 +1707,8 @@ export const fetchIPOs = async () => {
     "registrar": "Bigshare Services Pvt Ltd",
     "registrar_website": "https://www.bigshareonline.com",
     "market_maker": "Shreni Shares Limited",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -1890,7 +1890,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_subscription_data": {
-    "qib_ex_anchor": "N/A",
+    "qib_ex_anchor": null,
     "hni_subscription": "120.34x",
     "retail_subscription": "57.92x",
     "total_subscription": "89.12x"
@@ -1900,8 +1900,8 @@ export const fetchIPOs = async () => {
     "registrar": "Bigshare Services Pvt Ltd",
     "registrar_website": "https://www.bigshareonline.com",
     "market_maker": "NVS Brokerage Pvt Ltd",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -2083,7 +2083,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_subscription_data": {
-    "qib_ex_anchor": "N/A",
+    "qib_ex_anchor": null,
     "hni_subscription": "71.22x",
     "retail_subscription": "37.41x",
     "total_subscription": "54.33x"
@@ -2093,8 +2093,8 @@ export const fetchIPOs = async () => {
     "registrar": "Bigshare Services Pvt Ltd",
     "registrar_website": "https://www.bigshareonline.com",
     "market_maker": "Spread X Securities Pvt Ltd",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -2200,8 +2200,8 @@ export const fetchIPOs = async () => {
 
   "ipo_objectives": {
     "expansion": "Capital expenditure for setting up a second cashew processing facility in Vizianagaram, Andhra Pradesh",
-    "working_capital": "N/A",
-    "debt_repayment": "N/A",
+    "working_capital": null,
+    "debt_repayment": null,
     "general_corporate_purposes": "Balance of issue proceeds"
   },
 
@@ -2294,8 +2294,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹6",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Dec 2025",
     "estimated_listing_price": "₹124"
   },
@@ -2311,8 +2311,8 @@ export const fetchIPOs = async () => {
     "registrar": "Bigshare Services Pvt Ltd",
     "registrar_website": "https://www.bigshareonline.com",
     "market_maker": "Spread X Securities Pvt Ltd",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -2413,7 +2413,7 @@ export const fetchIPOs = async () => {
   "ipo_objectives": {
     "expansion": "Expansion of manufacturing facility and additional plant infrastructure",
     "working_capital": "Working capital requirements",
-    "debt_repayment": "N/A",
+    "debt_repayment": null,
     "general_corporate_purposes": "General corporate purposes and issue expenses"
   },
 
@@ -2506,8 +2506,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹22",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Dec 2025",
     "estimated_listing_price": "₹118"
   },
@@ -2523,8 +2523,8 @@ export const fetchIPOs = async () => {
     "registrar": "Purva Sharegistry (India) Pvt. Ltd.",
     "registrar_website": "https://www.purvashare.com",
     "market_maker": "MNM Stock Broking Pvt. Ltd.",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -2708,8 +2708,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹32",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Dec 2025",
     "estimated_listing_price": "₹120"
   },
@@ -2725,8 +2725,8 @@ export const fetchIPOs = async () => {
     "registrar": "Maashitla Securities Pvt Ltd",
     "registrar_website": "https://www.maashitla.com",
     "market_maker": "Nikunj Stock Brokers Ltd",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -2911,8 +2911,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Dec 2025",
     "estimated_listing_price": "₹30"
   },
@@ -2927,8 +2927,8 @@ export const fetchIPOs = async () => {
     "registrar": "Purva Sharegistry India Pvt Ltd",
     "registrar_website": "https://www.purvashare.com",
     "market_maker": "MNM Stock Broking Pvt Ltd",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -2946,7 +2946,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "https://www.bsesme.com/download/370036/SME_IPO%20InPrinciple/FinalDRHP05092025_20250905203451.pdf",
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/stanbik-agro-limited.html",
     "prospectus_pdf": "https://www.bseindia.com/downloads/ipo/Prospectus%20&%20GID_111220251445.zip",
-    "investor_presentation": "N/A"
+    "investor_presentation": null
   }
 }
  ,
@@ -3099,8 +3099,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Dec 2025",
     "estimated_listing_price": "₹384"
   },
@@ -3115,8 +3115,8 @@ export const fetchIPOs = async () => {
   "ipo_intermediaries": {
     "registrar": "MUFG Intime India Pvt Ltd",
     "registrar_website": "https://linkintime.co.in",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -3218,7 +3218,7 @@ export const fetchIPOs = async () => {
   },
 
   "investor_reservation": {
-    "qib_quota": "N/A",
+    "qib_quota": null,
     "retail_quota": "35%",
     "hni_quota": "65%"
   },
@@ -3248,12 +3248,12 @@ export const fetchIPOs = async () => {
 
   "key_performance_indicators": {
     "roe": "31%",
-    "roce": "N/A",
+    "roce": null,
     "ronw": "31%",
     "pat_margin": "15.66%",
-    "ebitda_margin": "N/A",
+    "ebitda_margin": null,
     "eps": "₹6.65",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "0.03",
     "pe_ratio": "13.98x",
     "industry_pe": "20x"
@@ -3265,7 +3265,7 @@ export const fetchIPOs = async () => {
       "assets": "₹30 Cr",
       "total_income": "₹26.94 Cr",
       "pat": "₹3.45 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹12 Cr",
       "total_borrowing": "₹0.3 Cr"
     },
@@ -3274,7 +3274,7 @@ export const fetchIPOs = async () => {
       "assets": "₹45 Cr",
       "total_income": "₹48.56 Cr",
       "pat": "₹7.48 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹20 Cr",
       "total_borrowing": "₹0.6 Cr"
     }
@@ -3282,22 +3282,22 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Dec 2025",
     "estimated_listing_price": "₹93"
   },
 
   "ipo_subscription_data": {
-    "qib_ex_anchor": "N/A",
-    "hni_subscription": "N/A",
-    "retail_subscription": "N/A",
+    "qib_ex_anchor": null,
+    "hni_subscription": null,
+    "retail_subscription": null,
     "total_subscription": "Strong (exact data varies)"
   },
 
   "ipo_intermediaries": {
     "registrar": "Maashitla Securities Pvt Ltd",
-    "registrar_website": "N/A",
+    "registrar_website": null,
     "market_maker": "Giriraj Stock Broking Pvt Ltd"
   },
 
@@ -3316,7 +3316,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "https://nsearchives.nseindia.com/emerge/corporates/content/Registration_06022025143621_MARC_DRHP.pdf",
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_MARC.zip",
     "prospectus_pdf": "https://www.mtplonline.in/dist/pdf/prospectus.pdf",
-    "investor_presentation": "N/A"
+    "investor_presentation": null
   }
 }
 ,
@@ -3403,7 +3403,7 @@ export const fetchIPOs = async () => {
   },
 
   "investor_reservation": {
-    "qib_quota": "N/A",
+    "qib_quota": null,
     "retail_quota": "35%",
     "hni_quota": "65%"
   },
@@ -3433,7 +3433,7 @@ export const fetchIPOs = async () => {
 
   "key_performance_indicators": {
     "roe": "41%",
-    "roce": "N/A",
+    "roce": null,
     "ronw": "41%",
     "pat_margin": "6.4%",
     "ebitda_margin": "11.7%",
@@ -3467,14 +3467,14 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹35 – ₹70",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Dec 2025",
     "estimated_listing_price": "₹105 – ₹140"
   },
 
   "ipo_subscription_data": {
-    "qib_ex_anchor": "N/A",
+    "qib_ex_anchor": null,
     "hni_subscription": "Very High",
     "retail_subscription": "Very High",
     "total_subscription": "918x"
@@ -3483,7 +3483,7 @@ export const fetchIPOs = async () => {
   "ipo_intermediaries": {
     "registrar": "Bigshare Services Pvt Ltd",
     "registrar_website": "https://www.bigshareonline.com",
-    "market_maker": "N/A"
+    "market_maker": null
   },
 
   "ipo_lead_manager": {
@@ -3617,8 +3617,8 @@ export const fetchIPOs = async () => {
 
   "key_performance_indicators": {
     "roe": "High growth phase",
-    "roce": "N/A",
-    "ronw": "N/A",
+    "roce": null,
+    "ronw": null,
     "pat_margin": "3–4%",
     "ebitda_margin": "4–5%",
     "eps": "₹3.5 (approx)",
@@ -3651,8 +3651,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Dec 2025",
     "estimated_listing_price": "₹78"
   },
@@ -3802,13 +3802,13 @@ export const fetchIPOs = async () => {
   },
 
   "key_performance_indicators": {
-    "roe": "N/A",
-    "roce": "N/A",
-    "ronw": "N/A",
+    "roe": null,
+    "roce": null,
+    "ronw": null,
     "pat_margin": "23% (approx)",
-    "ebitda_margin": "N/A",
+    "ebitda_margin": null,
     "eps": "₹1.86 (approx)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "Moderate",
     "pe_ratio": "61x (approx)",
     "industry_pe": "35x"
@@ -3820,7 +3820,7 @@ export const fetchIPOs = async () => {
       "assets": "₹60 Cr",
       "total_income": "₹4.8 Cr",
       "pat": "₹1.7 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹15 Cr",
       "total_borrowing": "Moderate"
     },
@@ -3829,7 +3829,7 @@ export const fetchIPOs = async () => {
       "assets": "₹85 Cr",
       "total_income": "₹40.24 Cr",
       "pat": "₹9.49 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹30 Cr",
       "total_borrowing": "Moderate"
     }
@@ -3837,8 +3837,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹4 – ₹7",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Dec 2025",
     "estimated_listing_price": "₹118 – ₹121"
   },
@@ -3988,7 +3988,7 @@ export const fetchIPOs = async () => {
     "ronw": "Negative",
     "pat_margin": "-6.7%",
     "ebitda_margin": "0.29%",
-    "eps": "N/A",
+    "eps": null,
     "nav_per_share": "₹87.54",
     "debt_to_equity": "High",
     "pe_ratio": "21.46x",
@@ -4027,8 +4027,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹120 – ₹130",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Dec 2025",
     "estimated_listing_price": "₹300+"
   },
@@ -4043,7 +4043,7 @@ export const fetchIPOs = async () => {
   "ipo_intermediaries": {
     "registrar": "MUFG Intime India Pvt Ltd",
     "registrar_website": "https://linkintime.co.in",
-    "market_maker": "N/A"
+    "market_maker": null
   },
 
   "ipo_lead_manager": {
@@ -4054,7 +4054,7 @@ export const fetchIPOs = async () => {
     "company_address": "10th Floor, Sattva Galleria Survey, Nos. 19/2 and 20/1,Bellary Road, Byatarayanapura, Bangalore North Bangalore Urban, Karnataka, 560092",
     "company_website": "https://etoerail.com/",
     "company_email": "srilakshmi.surendran@etoerail.com",
-    "company_phone": "N/A"
+    "company_phone": null
   },
 
   "ipo_documents": {
@@ -4081,7 +4081,7 @@ export const fetchIPOs = async () => {
     "industry_sector": "Infrastructure / Geotechnical Engineering",
     "founded_year": "2008",
     "promoters": [
-      "N/A"
+      null
     ],
     "description": "Gabion Technologies India Limited is engaged in the design, manufacturing, and installation of gabions, rockfall protection systems, and geosynthetic materials used in infrastructure, slope stabilisation, mining, and environmental protection projects."
   },
@@ -4180,7 +4180,7 @@ export const fetchIPOs = async () => {
     "pat_margin": "6.6%",
     "ebitda_margin": "14.9%",
     "eps": "₹6.65",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "High (~2.1)",
     "pe_ratio": "12–17x",
     "industry_pe": "25x"
@@ -4209,8 +4209,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹20 – ₹25",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jan 2026",
     "estimated_listing_price": "₹100 – ₹106"
   },
@@ -4357,13 +4357,13 @@ export const fetchIPOs = async () => {
   },
 
   "key_performance_indicators": {
-    "roe": "N/A",
-    "roce": "N/A",
-    "ronw": "N/A",
+    "roe": null,
+    "roce": null,
+    "ronw": null,
     "pat_margin": "9.6%",
-    "ebitda_margin": "N/A",
+    "ebitda_margin": null,
     "eps": "₹1.35 – ₹1.50 (approx)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "0.29",
     "pe_ratio": "30.4x",
     "industry_pe": "35–45x (EV sector)"
@@ -4375,7 +4375,7 @@ export const fetchIPOs = async () => {
       "assets": "₹25–30 Cr",
       "total_income": "₹52.14 Cr",
       "pat": "₹0.78 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹2.20 Cr",
       "total_borrowing": "Low–Moderate"
     },
@@ -4384,7 +4384,7 @@ export const fetchIPOs = async () => {
       "assets": "₹30–35 Cr",
       "total_income": "₹48.76 Cr",
       "pat": "₹4.89 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹7.09 Cr",
       "total_borrowing": "Moderate"
     },
@@ -4393,7 +4393,7 @@ export const fetchIPOs = async () => {
       "assets": "₹33–40 Cr",
       "total_income": "₹51.06 Cr",
       "pat": "₹5.17 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹7.04 Cr",
       "total_borrowing": "Moderate"
     }
@@ -4401,8 +4401,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 to ₹2 (very weak)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jan 2026",
     "estimated_listing_price": "₹40 – ₹42"
   },
@@ -4434,7 +4434,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "https://nsearchives.nseindia.com/emerge/corporates/content/AD_IPO_5056_06022025185755.zip",
     "rhp_link": "Available via NSE SME filings",
     "prospectus_pdf": "https://www.sebi.gov.in/filings/public-issues/jan-2026/victory-electric-vehicles-international-limited_98841.html",
-    "investor_presentation": "N/A"
+    "investor_presentation": null
   }
 },
 
@@ -4556,7 +4556,7 @@ export const fetchIPOs = async () => {
     "pat_margin": "8.3%",
     "ebitda_margin": "13.4%",
     "eps": "₹4.71 (post issue)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "1.35",
     "pe_ratio": "≈36.9x",
     "industry_pe": "20–25x"
@@ -4565,37 +4565,37 @@ export const fetchIPOs = async () => {
   "company_financial_data": [
     {
       "period": "31 Mar 2024",
-      "assets": "N/A",
+      "assets": null,
       "total_income": "₹84.85 Cr",
       "pat": "₹4.27 Cr",
       "ebitda": "₹8.01 Cr",
-      "net_worth": "N/A",
+      "net_worth": null,
       "total_borrowing": "₹66+ Cr"
     },
     {
       "period": "31 Mar 2025",
-      "assets": "N/A",
+      "assets": null,
       "total_income": "₹141.99 Cr",
       "pat": "₹11.68 Cr",
       "ebitda": "₹18.85 Cr",
-      "net_worth": "N/A",
+      "net_worth": null,
       "total_borrowing": "₹73+ Cr"
     },
     {
       "period": "Nov 2025",
-      "assets": "N/A",
+      "assets": null,
       "total_income": "₹69.41 Cr",
       "pat": "₹7.12 Cr",
-      "ebitda": "N/A",
-      "net_worth": "N/A",
-      "total_borrowing": "N/A"
+      "ebitda": null,
+      "net_worth": null,
+      "total_borrowing": null
     }
   ],
 
   "grey_market_premium": {
     "gmp_price": "₹0 to ₹5 (declined from ~₹50 early)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jan 2026",
     "estimated_listing_price": "₹170 – ₹174 (but sentiment weak)"
   },
@@ -4627,7 +4627,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "https://www.bseindia.com/corporates/download/398442/YajurDRHPFilingVersion17032025_20250317193944.pdf",
     "rhp_link": "https://www.bsesme.com/download/398442/SME_IPO%20Open/Yajur%20Fibres%20Limited%20RHP_20260106140059.pdf",
     "prospectus_pdf": "https://www.bsesme.com/download/398442/SME_IPO%20BasisOfAllotment/PROSPECTUS_20260112114959.pdf",
-    "investor_presentation": "N/A"
+    "investor_presentation": null
   }
 },
  {
@@ -4747,9 +4747,9 @@ export const fetchIPOs = async () => {
     "roce": "≈29–30%",
     "ronw": "≈20%",
     "pat_margin": "≈8–9%",
-    "ebitda_margin": "N/A",
+    "ebitda_margin": null,
     "eps": "₹2.66",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "Low / Near zero (historically)",
     "pe_ratio": "≈8–10x",
     "industry_pe": "10–15x"
@@ -4758,37 +4758,37 @@ export const fetchIPOs = async () => {
   "company_financial_data": [
     {
       "period": "31 Mar 2023",
-      "assets": "N/A",
+      "assets": null,
       "total_income": "₹12,624 Cr",
       "pat": "₹665 Cr",
-      "ebitda": "N/A",
-      "net_worth": "N/A",
+      "ebitda": null,
+      "net_worth": null,
       "total_borrowing": "Low"
     },
     {
       "period": "31 Mar 2024",
-      "assets": "N/A",
+      "assets": null,
       "total_income": "₹14,246 Cr",
       "pat": "₹1,564 Cr",
-      "ebitda": "N/A",
-      "net_worth": "N/A",
+      "ebitda": null,
+      "net_worth": null,
       "total_borrowing": "Low"
     },
     {
       "period": "31 Mar 2025",
-      "assets": "N/A",
+      "assets": null,
       "total_income": "₹13,803 – ₹14,402 Cr",
       "pat": "₹1,240 Cr",
-      "ebitda": "N/A",
-      "net_worth": "N/A",
+      "ebitda": null,
+      "net_worth": null,
       "total_borrowing": "Increasing (~₹1,500 Cr by Sep 2025)"
     }
   ],
 
   "grey_market_premium": {
     "gmp_price": "₹11 – ₹16",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jan 2026",
     "estimated_listing_price": "₹34 – ₹45"
   },
@@ -4940,12 +4940,12 @@ export const fetchIPOs = async () => {
 
   "key_performance_indicators": {
     "roe": "≈73% (FY25, exceptional but unsustainable)",
-    "roce": "N/A",
+    "roce": null,
     "ronw": "≈73%",
     "pat_margin": "≈5.5%",
-    "ebitda_margin": "N/A",
+    "ebitda_margin": null,
     "eps": "₹4.5–5 (approx)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "≈1.1–1.27",
     "pe_ratio": "≈15–17x",
     "industry_pe": "20–25x"
@@ -4954,37 +4954,37 @@ export const fetchIPOs = async () => {
   "company_financial_data": [
     {
       "period": "31 Mar 2024",
-      "assets": "N/A",
+      "assets": null,
       "total_income": "₹0.72 Cr",
       "pat": "₹0.11 Cr",
-      "ebitda": "N/A",
-      "net_worth": "N/A",
+      "ebitda": null,
+      "net_worth": null,
       "total_borrowing": "Low"
     },
     {
       "period": "31 Mar 2025",
-      "assets": "N/A",
+      "assets": null,
       "total_income": "₹62.22 Cr",
       "pat": "₹3.42 Cr",
-      "ebitda": "N/A",
-      "net_worth": "N/A",
+      "ebitda": null,
+      "net_worth": null,
       "total_borrowing": "₹11.5+ Cr"
     },
     {
       "period": "Sep 2025",
-      "assets": "N/A",
+      "assets": null,
       "total_income": "₹39.08 Cr",
       "pat": "₹1.51 Cr",
-      "ebitda": "N/A",
-      "net_worth": "N/A",
+      "ebitda": null,
+      "net_worth": null,
       "total_borrowing": "Moderate"
     }
   ],
 
   "grey_market_premium": {
     "gmp_price": "₹5 – ₹8 (~8–10%)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jan 2026",
     "estimated_listing_price": "₹80 – ₹85"
   },
@@ -5189,8 +5189,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹20 – ₹24 (~34–41%)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jan 2026",
     "estimated_listing_price": "₹80 – ₹85"
   },
@@ -5353,7 +5353,7 @@ export const fetchIPOs = async () => {
     "pat_margin": "≈11% (FY25) / ≈10% (Sep-25)",
     "ebitda_margin": "≈16–17%",
     "eps": "≈₹10–12 (post-issue approx)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "≈1.0–1.3",
     "pe_ratio": "≈12–15x",
     "industry_pe": "20–30x (electrical equipment)"
@@ -5400,8 +5400,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹10 – ₹25 (~7–17%)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jan 2026 (pre-listing ₹10–32 range, post-listing stabilized lower)",
     "estimated_listing_price": "₹159 – ₹174 (pre-listing estimates)"
   },
@@ -5432,7 +5432,7 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://www.bsesme.com/download/319382/SME_IPO%20InPrinciple/DRHPFinal_20250930031617.pdf",
     "rhp_link": "https://www.bseindia.com/downloads/ipo/RHP&GID_090120261911.zip",
-    "prospectus_pdf": "N/A",
+    "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/indo-smc-ipo-anchor-allocation-report.pdf"
   }
 },
@@ -5554,12 +5554,12 @@ export const fetchIPOs = async () => {
 
   "key_performance_indicators": {
     "roe": "≈21–25% (FY25 approx)",
-    "roce": "N/A",
+    "roce": null,
     "ronw": "High growth phase",
     "pat_margin": "≈10–11% (FY25)",
     "ebitda_margin": "≈13–14%",
     "eps": "≈₹8–10 (post-issue approx)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "≈0.25–0.3 (low)",
     "pe_ratio": "≈6–7x (at issue price)",
     "industry_pe": "15–25x (services sector)"
@@ -5606,8 +5606,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 – ₹4 (~0–7%)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jan 2026",
     "estimated_listing_price": "₹55 – ₹61 (muted GMP)"
   },
@@ -5639,7 +5639,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "https://nsearchives.nseindia.com/emerge/corporates/content/Registration_05032025221120_DRHP_ArmourSecurity.pdf",
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_ARMOUR.zip",
     "prospectus_pdf": "https://www.chittorgarh.net/reports/ipo_notes/armour-security-india-prospectus.pdf",
-    "investor_presentation": "N/A"
+    "investor_presentation": null
   }
 },
 {
@@ -5765,7 +5765,7 @@ export const fetchIPOs = async () => {
     "pat_margin": "0.88% (Sep 2025)",
     "ebitda_margin": "8.26% (Sep 2025) / improving from negative",
     "eps": "₹0.60 (post-issue approx)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "0 (debt-free)",
     "pe_ratio": "≈600x (annualized FY26)",
     "industry_pe": "High-growth tech/media SaaS peers 30–100x+"
@@ -5812,8 +5812,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 – ₹27 (~0–7.5%) pre-listing",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jan 2026",
     "estimated_listing_price": "₹361 – ₹382 (actual listing ~₹317–318, closed ~₹348–355)"
   },
@@ -5968,7 +5968,7 @@ export const fetchIPOs = async () => {
     "pat_margin": "9.13% (Sep 2025) / 8.39% (FY25)",
     "ebitda_margin": "13.06% (Sep 2025) / 11.33% (FY25)",
     "eps": "₹6.68 (pre) / ₹5.60 (post)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "0.04 (Sep 2025) / 0.05 (FY25)",
     "pe_ratio": "15.72x (pre) / 18.75x (post)",
     "industry_pe": "20–40x (renewable energy EPC)"
@@ -6015,8 +6015,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹1 – ₹7 (~1–7%) pre-listing (peaked at ₹7 early, settled low near listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jan 2026",
     "estimated_listing_price": "₹106 – ₹112 (actual listed at ₹96, -8.57% discount)"
   },
@@ -6176,7 +6176,7 @@ export const fetchIPOs = async () => {
     "pat_margin": "5.97% (Aug 2025) / 4.23% (FY25)",
     "ebitda_margin": "11.20% (Aug 2025) / 8.81% (FY25)",
     "eps": "₹3.26 (pre) / ₹2.95 (post)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "1.65 (Aug 2025)",
     "pe_ratio": "14.43x (pre) / 15.93x (post)",
     "industry_pe": "15–25x (textiles/leather)"
@@ -6223,8 +6223,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 (0%)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jan 2026",
     "estimated_listing_price": "₹47 (flat) – actual opened at ₹47 / closed lower; current ~₹16–17 (-64% from issue)"
   },
@@ -6256,7 +6256,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "https://www.bsesme.com/download/353892/Final%20DRHP_20250426183243.pdf",
     "rhp_link": "https://www.bsesme.com/download/353892/SME_IPO%20Open/RHP_final__20260109194347.pdf",
     "prospectus_pdf": "https://www.aritasvinyl.com/images/investor/offer-documents/RHP.pdf",
-    "investor_presentation": "N/A"
+    "investor_presentation": null
   }
 },
 {
@@ -6380,7 +6380,7 @@ export const fetchIPOs = async () => {
     "pat_margin": "5.39% (Sep 2025) / 5.43% (FY25)",
     "ebitda_margin": "7.38% (Sep 2025) / 7.50% (FY25)",
     "eps": "₹10.94 (pre) / ₹8.87 (post)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "Low (minimal borrowing)",
     "pe_ratio": "14.9x (pre) / 18.38x (post)",
     "industry_pe": "15–30x (FMCG distribution)"
@@ -6427,8 +6427,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 (0%) pre-listing (muted expectations)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "₹163 (flat debut; listed at ₹163 on NSE SME, ₹155.60 on BSE; later traded lower ~₹128)"
   },
@@ -6582,7 +6582,7 @@ export const fetchIPOs = async () => {
     "pat_margin": "12.29% (Dec 2025) / 8.84% (FY25)",
     "ebitda_margin": "18.41% (Dec 2025) / 13.30% (FY25)",
     "eps": "₹5.47 (pre) / ₹7.41 (post)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "0.76 (Dec 2025) / 0.57 (FY25)",
     "pe_ratio": "19.73x (pre) / 14.58x (post)",
     "industry_pe": "20–40x (specialty chemicals)"
@@ -6620,8 +6620,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 – ₹4 (~0–3.7%)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "₹111 (+2.78–3% premium); current ~₹97.25 (as of Mar 18, 2026)"
   },
@@ -6652,8 +6652,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://nsearchives.nseindia.com/emerge/corporates/content/Registration_29092025224013_BiopolChemicalsLimitedDRHP.pdf",
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_BIOPOL.zip",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   }
 },
 {
@@ -6776,7 +6776,7 @@ export const fetchIPOs = async () => {
       "pat": "0.41 Cr",
       "ebitda": "0.77 Cr",
       "net_worth": "8.54 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     },
     {
       "period": "31 Mar 2024",
@@ -6809,8 +6809,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 (flat)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "May 2026",
     "estimated_listing_price": "₹55 (flat)"
   },
@@ -6839,10 +6839,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.sampoornanuts.com/_files/ugd/6fcc6d_c8c3f3a226754a24939a595f8242c6f4.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   }
 },
 {
@@ -6965,7 +6965,7 @@ export const fetchIPOs = async () => {
     "pat_margin": "2.21% (Oct 2025) / 1.65% (FY25)",
     "ebitda_margin": "3.09% (Oct 2025) / 2.44% (FY25)",
     "eps": "₹7.15 (pre) / ₹12.35 (post)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "1.04 (Oct 2025) / 0.56 (FY25)",
     "pe_ratio": "12.31x (pre) / 7.12x (post)",
     "industry_pe": "15–30x (jewellery manufacturing)"
@@ -7012,8 +7012,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 (~0%) pre-listing",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "Flat ~₹88; actual listed at ₹96 (+9.09% premium)"
   },
@@ -7170,7 +7170,7 @@ export const fetchIPOs = async () => {
     "pat_margin": "20.64% (Dec 2025) / 15.49% (FY25)",
     "ebitda_margin": "28.35% (Dec 2025) / 23.02% (FY25)",
     "eps": "₹15.45 (pre) / ₹14.21 (post)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "0.26 (Dec 2025) / 0.40 (FY25)",
     "pe_ratio": "11.39x (pre) / 12.38x (post)",
     "industry_pe": "20–50x (premium retail/lifestyle)"
@@ -7208,8 +7208,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹17 – ₹28 (~9.7–15.9%) pre-listing",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "₹183–192 (actual opened ₹183 +3.98%, high ₹192.15, closed strong)"
   },
@@ -7364,7 +7364,7 @@ export const fetchIPOs = async () => {
     "pat_margin": "6.45% (Sep 2025) / 7.37% (FY25)",
     "ebitda_margin": "11.59% (Sep 2025) / 12.28% (FY25)",
     "eps": "₹7.35 (post-issue)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "1.02 (Sep 2025) / 1.39 (FY25)",
     "pe_ratio": "15.91x (post-issue)",
     "industry_pe": "20–40x (IT infra/distribution)"
@@ -7402,8 +7402,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 – ₹2 (~0–1.71%)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "₹117 – ₹120 (actual listed at ₹120, +2.56% premium on NSE SME)"
   },
@@ -7426,7 +7426,7 @@ export const fetchIPOs = async () => {
 
   "company_information": {
     "company_address": "Shop No. 5, Acharya Niketan, Mayur Vihar, East Delhi, New Delhi, Delhi 110091",
-    "company_website": "N/A",
+    "company_website": null,
     "company_email": "Info@marushika.in",
     "company_phone": "0120-4290383"
   },
@@ -7557,7 +7557,7 @@ export const fetchIPOs = async () => {
     "pat_margin": "3.33% (Nov 2025) / 1.75% (FY25)",
     "ebitda_margin": "4.12% (Nov 2025) / 2.42% (FY25)",
     "eps": "₹9.27 (pre) / ₹10.67 (post)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "Very low (₹0.08 Cr borrowings as of Nov 2025)",
     "pe_ratio": "8.41x (pre) / 7.31x (post)",
     "industry_pe": "15–30x (HR/staffing services)"
@@ -7570,7 +7570,7 @@ export const fetchIPOs = async () => {
       "total_income": "₹283.69 Cr",
       "pat": "₹5.02 Cr",
       "ebitda": "N/A (but margin 2.42%)",
-      "net_worth": "N/A",
+      "net_worth": null,
       "total_borrowing": "Low"
     },
     {
@@ -7586,8 +7586,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 (~0%)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "₹78 (flat; actual listed at ₹78.35, +0.44% premium)"
   },
@@ -7745,12 +7745,12 @@ export const fetchIPOs = async () => {
 
   "key_performance_indicators": {
     "roe": "3.6% (Sep 2025) / 12.6% (Mar 2025)",
-    "roce": "N/A",
+    "roce": null,
     "ronw": "3.6% (Sep 2025) / 12.6% (Mar 2025)",
     "pat_margin": "4.50% (Sep 2025) / 8.00% (Mar 2025)",
     "ebitda_margin": "11.90% (Sep 2025) / 14.40% (Mar 2025)",
     "eps": "₹13.74 (pre-IPO) / ₹8.25 (post-IPO)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "Moderate (borrowings ₹274.60 Cr as Sep 2025)",
     "pe_ratio": "65.5x (pre-IPO) / 109.12x (post-IPO)",
     "industry_pe": "High-growth AI/tech peers 50–150x+"
@@ -7797,8 +7797,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹5 – ₹98 (~0.55–10.89%) pre-listing (varied reports; peaked higher early, settled lower)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "₹905–998 (actual listed at ₹876 on NSE, -2.67% to -3% discount; muted debut)"
   },
@@ -7947,12 +7947,12 @@ export const fetchIPOs = async () => {
 
   "key_performance_indicators": {
     "roe": "7.63% (Sep 2025) / 12.12% (Mar 2025)",
-    "roce": "N/A",
+    "roce": null,
     "ronw": "3.82% (Sep 2025) / 12.12% (Mar 2025)",
     "pat_margin": "N/A (but PAT growth evident)",
-    "ebitda_margin": "N/A",
+    "ebitda_margin": null,
     "eps": "₹9.14 (pre-IPO) / ₹5.24 (post-IPO)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "3.02 (Sep 2025) / 2.73 (Mar 2025)",
     "pe_ratio": "14.11x (pre) / 24.64x (post)",
     "industry_pe": "15–30x (NBFC/micro-lending)"
@@ -7964,7 +7964,7 @@ export const fetchIPOs = async () => {
       "assets": "₹3,126.00 Cr",
       "total_income": "₹643.34 Cr",
       "pat": "₹39.87 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹754.49 Cr",
       "total_borrowing": "₹2,296.16 Cr"
     },
@@ -7973,7 +7973,7 @@ export const fetchIPOs = async () => {
       "assets": "₹4,869.59 Cr",
       "total_income": "₹1,071.75 Cr",
       "pat": "₹171.68 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹1,232.65 Cr",
       "total_borrowing": "₹3,498.99 Cr"
     },
@@ -7982,7 +7982,7 @@ export const fetchIPOs = async () => {
       "assets": "₹6,338.63 Cr",
       "total_income": "₹1,504.99 Cr",
       "pat": "₹175.25 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹1,658.87 Cr",
       "total_borrowing": "₹4,526.33 Cr"
     },
@@ -7991,7 +7991,7 @@ export const fetchIPOs = async () => {
       "assets": "₹7,116.01 Cr",
       "total_income": "₹863.02 Cr",
       "pat": "₹64.60 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹1,727.37 Cr",
       "total_borrowing": "₹5,218.50 Cr"
     }
@@ -7999,8 +7999,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 to negative (~0% to -1.55%)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "₹127–129 (actual listed at par ₹129 on BSE/NSE, flat/muted debut)"
   },
@@ -8167,7 +8167,7 @@ export const fetchIPOs = async () => {
       "pat": "₹51.75 Cr",
       "ebitda": "₹68.73 Cr",
       "net_worth": "₹-52.02 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     },
     {
       "period": "31 Mar 2024",
@@ -8176,7 +8176,7 @@ export const fetchIPOs = async () => {
       "pat": "₹42.41 Cr",
       "ebitda": "₹56.14 Cr",
       "net_worth": "₹-28.50 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     },
     {
       "period": "31 Mar 2025",
@@ -8200,8 +8200,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 (flat / muted pre-listing; some reports negative signals)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹375–386 (actual listed at ₹375 on NSE, -2.85% discount; settled ~₹411.7 later, +6.6% from issue)"
   },
@@ -8360,7 +8360,7 @@ export const fetchIPOs = async () => {
     "pat_margin": "14.34% (Sep 2025)",
     "ebitda_margin": "19.63% (Sep 2025)",
     "eps": "₹13.51 (pre-IPO) / ₹17.28 (post-IPO)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "1.04 (Sep 2025)",
     "pe_ratio": "15.99x (pre-IPO) / 12.5x (post-IPO)",
     "industry_pe": "15–30x (garment manufacturing/supply chain)"
@@ -8373,8 +8373,8 @@ export const fetchIPOs = async () => {
       "total_income": "₹88.91 Cr",
       "pat": "₹2.66 Cr",
       "ebitda": "₹4.13 Cr",
-      "net_worth": "N/A",
-      "total_borrowing": "N/A"
+      "net_worth": null,
+      "total_borrowing": null
     },
     {
       "period": "31 Mar 2024",
@@ -8382,8 +8382,8 @@ export const fetchIPOs = async () => {
       "total_income": "₹50.01 Cr",
       "pat": "₹2.27 Cr",
       "ebitda": "₹4.05 Cr",
-      "net_worth": "N/A",
-      "total_borrowing": "N/A"
+      "net_worth": null,
+      "total_borrowing": null
     },
     {
       "period": "31 Mar 2025",
@@ -8407,8 +8407,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "Modest / limited (pre-listing ~2% indicative)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "₹229 (actual listed at ₹229, +6.02% premium; high ₹229, low ₹217.55, closed ₹217.55)"
   },
@@ -8613,8 +8613,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "Not mentioned / muted (pre-listing data limited)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "N/A (actual listing performance: listed at ₹55.20, -23.99% discount from ₹69 issue price)"
   },
@@ -8628,7 +8628,7 @@ export const fetchIPOs = async () => {
 
   "ipo_intermediaries": {
     "registrar": "Not explicitly mentioned (typical BSE SME: Bigshare/Skyline/Maashitla)",
-    "registrar_website": "N/A"
+    "registrar_website": null
   },
 
   "ipo_lead_manager": {
@@ -8819,8 +8819,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹5 (6.33%) pre-listing (Day 3 reports)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "₹84 (moderate; actual listed at ₹83 on NSE/BSE, +5.06% premium)"
   },
@@ -8971,12 +8971,12 @@ export const fetchIPOs = async () => {
 
   "key_performance_indicators": {
     "roe": "Moderate (textile spinning typical 12–20%)",
-    "roce": "N/A",
-    "ronw": "N/A",
+    "roce": null,
+    "ronw": null,
     "pat_margin": "4–8% (typical for spinning mills)",
     "ebitda_margin": "10–15%",
     "eps": "₹12–16 (post-issue approx)",
-    "nav_per_share": "N/A",
+    "nav_per_share": null,
     "debt_to_equity": "Moderate (common in capital-intensive spinning)",
     "pe_ratio": "≈18–25x (post-issue)",
     "industry_pe": "15–30x (textile spinning)"
@@ -8988,7 +8988,7 @@ export const fetchIPOs = async () => {
       "assets": "₹300–400 Cr (approx from industry norms)",
       "total_income": "₹500–600 Cr",
       "pat": "₹20–30 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹150–200 Cr",
       "total_borrowing": "Moderate"
     },
@@ -8997,7 +8997,7 @@ export const fetchIPOs = async () => {
       "assets": "₹350–450 Cr",
       "total_income": "₹250–350 Cr",
       "pat": "₹10–15 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹160–220 Cr",
       "total_borrowing": "Moderate"
     }
@@ -9005,8 +9005,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹8 – ₹18 (~8–17%) pre-listing (moderate interest)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "₹112–122 (actual listed at ₹115 on BSE/NSE, +10.58% premium)"
   },
@@ -9038,7 +9038,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "https://www.sebi.gov.in/filings/public-issues/jul-2025/shree-ram-twistex-limited_95025.html",
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/feb-2026/shree-ram-twistex-limited-rhp_99765.html",
     "prospectus_pdf": "https://nsearchives.nseindia.com/corporate/FP_INE19GK01015_26FEB2026.pdf",
-    "investor_presentation": "N/A"
+    "investor_presentation": null
   }
 },
 {
@@ -9181,7 +9181,7 @@ export const fetchIPOs = async () => {
       "pat": "₹1.76 Cr",
       "ebitda": "₹2.30 Cr",
       "net_worth": "₹2.07 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     },
     {
       "period": "31 Mar 2024",
@@ -9190,7 +9190,7 @@ export const fetchIPOs = async () => {
       "pat": "₹3.10 Cr",
       "ebitda": "₹4.38 Cr",
       "net_worth": "₹3.58 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     },
     {
       "period": "31 Mar 2025",
@@ -9214,8 +9214,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹4 – ₹8 (~5–10%) pre-listing (varied; peaked at ₹13)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "₹84 – ₹88 (actual listed at ₹64.10 on NSE SME, -19.88% discount)"
   },
@@ -9418,8 +9418,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 – ₹10 (~0–8%) pre-listing (muted to moderate)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "₹127–137 (actual listed at ₹120 on NSE SME, -5.51% discount)"
   },
@@ -9451,7 +9451,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "https://www.bseindia.com/corporates/download/312066/Kiaasa%20Retail%20Limited_DRHP_18.04.2025_20250418142356.pdf",
     "rhp_link": "https://www.bseindia.com/downloads/ipo/RHP%20&%20GID_200220262359.zip",
     "prospectus_pdf": "https://www.bsesme.com/download/312066/SME_IPO%20BasisOfAllotment/Prospectus_20260226145216.pdf",
-    "investor_presentation": "N/A"
+    "investor_presentation": null
   }
 },
 {
@@ -9527,7 +9527,7 @@ export const fetchIPOs = async () => {
 
   "ipo_objectives": {
     "working_capital": "₹10 Cr",
-    "debt_repayment": "N/A",
+    "debt_repayment": null,
     "general_corporate_purposes": "Remaining amount from ₹23.03 Cr",
     "expansion": "Capital expenditure for machinery and equipment – ₹13.03 Cr"
   },
@@ -9625,8 +9625,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹4",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "March 2026",
     "estimated_listing_price": "₹50"
   },
@@ -9643,8 +9643,8 @@ export const fetchIPOs = async () => {
     "registrar": "Kfin Technologies Ltd.",
     "registrar_website": "https://kfintech.com",
     "market_maker": "Giriraj Stock Broking Pvt. Ltd.",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -9833,15 +9833,15 @@ export const fetchIPOs = async () => {
   },
 
   "key_performance_indicators": {
-    "roe": "N/A",
-    "roce": "N/A",
-    "ronw": "N/A",
-    "pat_margin": "N/A",
-    "ebitda_margin": "N/A",
-    "eps": "N/A",
-    "nav_per_share": "N/A",
+    "roe": null,
+    "roce": null,
+    "ronw": null,
+    "pat_margin": null,
+    "ebitda_margin": null,
+    "eps": null,
+    "nav_per_share": null,
     "debt_to_equity": "High (typical for renewable energy developer)",
-    "pe_ratio": "N/A",
+    "pe_ratio": null,
     "industry_pe": "High-growth renewable energy peers 40–80x+"
   },
 
@@ -9886,8 +9886,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 to negative (flat to -₹3 as of closure)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb 2026",
     "estimated_listing_price": "₹1,050 – ₹1,053 (flat to mild discount)"
   },
@@ -10088,8 +10088,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹4 (as of listing period)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹231 (approx +1.76% from upper band)"
   },
@@ -10236,15 +10236,15 @@ export const fetchIPOs = async () => {
   },
 
   "key_performance_indicators": {
-    "roe": "N/A",
-    "roce": "N/A",
-    "ronw": "N/A",
-    "pat_margin": "N/A",
-    "ebitda_margin": "N/A",
-    "eps": "N/A",
-    "nav_per_share": "N/A",
+    "roe": null,
+    "roce": null,
+    "ronw": null,
+    "pat_margin": null,
+    "ebitda_margin": null,
+    "eps": null,
+    "nav_per_share": null,
     "debt_to_equity": "Moderate",
-    "pe_ratio": "N/A",
+    "pe_ratio": null,
     "industry_pe": "15–30x (textiles/home textiles)"
   },
 
@@ -10254,7 +10254,7 @@ export const fetchIPOs = async () => {
       "assets": "₹95–110 Cr (approx)",
       "total_income": "₹140–160 Cr",
       "pat": "₹8–10 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹45–55 Cr",
       "total_borrowing": "Moderate"
     },
@@ -10263,7 +10263,7 @@ export const fetchIPOs = async () => {
       "assets": "₹105–120 Cr",
       "total_income": "₹70–85 Cr",
       "pat": "₹4–5 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹50–60 Cr",
       "total_borrowing": "Moderate"
     }
@@ -10271,8 +10271,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 – ₹2 (~0–2%) pre-listing",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Feb–Mar 2026",
     "estimated_listing_price": "₹72 – ₹74"
   },
@@ -10465,8 +10465,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 (flat)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹112 (flat)"
   },
@@ -10501,7 +10501,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "https://nsearchives.nseindia.com/emerge/corporates/content/Registration_19092025023405_Acetech_DRHP_clean.pdf",
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_ACETECH.zip",
     "prospectus_pdf": "https://acetechecommerce.com/wp-content/uploads/2026/03/Acetech_Prospectus-1.pdf",
-    "investor_presentation": "N/A"
+    "investor_presentation": null
   }
 },
 {
@@ -10634,7 +10634,7 @@ export const fetchIPOs = async () => {
       "pat": "₹8.57 Cr",
       "ebitda": "₹54.24 Cr",
       "net_worth": "₹N/A",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     },
     {
       "period": "31 Mar 2024",
@@ -10642,8 +10642,8 @@ export const fetchIPOs = async () => {
       "total_income": "₹535.90 Cr",
       "pat": "₹5.88 Cr",
       "ebitda": "₹83.12 Cr",
-      "net_worth": "N/A",
-      "total_borrowing": "N/A"
+      "net_worth": null,
+      "total_borrowing": null
     },
     {
       "period": "31 Mar 2025",
@@ -10651,8 +10651,8 @@ export const fetchIPOs = async () => {
       "total_income": "₹662.54 Cr",
       "pat": "₹47.05 Cr",
       "ebitda": "₹125.07 Cr",
-      "net_worth": "N/A",
-      "total_borrowing": "N/A"
+      "net_worth": null,
+      "total_borrowing": null
     },
     {
       "period": "31 Dec 2025",
@@ -10660,15 +10660,15 @@ export const fetchIPOs = async () => {
       "total_income": "₹775.31 Cr",
       "pat": "₹71.50 Cr",
       "ebitda": "₹161.07 Cr",
-      "net_worth": "N/A",
-      "total_borrowing": "N/A"
+      "net_worth": null,
+      "total_borrowing": null
     }
   ],
 
   "grey_market_premium": {
     "gmp_price": "₹0 to ₹50 (varied reports; final GMP near ₹0 to ₹20)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹1,352 – ₹1,402"
   },
@@ -10890,7 +10890,7 @@ export const fetchIPOs = async () => {
 
   "ipo_intermediaries": {
     "registrar": "Maashitla Securities Pvt. Ltd.",
-    "registrar_website": "Not explicitly stated in the source",
+    "registrar_website":  null,
     "registrar_phone": "011-45121795",
     "registrar_email": "ipo@maashitla.com"
   },
@@ -11040,7 +11040,7 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_objectives": {
-    "working_capital": "N/A",
+    "working_capital": null,
     "debt_repayment": "Repayment or prepayment of certain outstanding borrowings",
     "general_corporate_purposes": "Balance funds from the issue",
     "expansion": "Capital expenditure for setting up a stainless steel seamless pipes manufacturing facility"
@@ -11128,26 +11128,26 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹1",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "March 2026",
     "estimated_listing_price": "₹123"
   },
 
   "ipo_subscription_data": {
     "anchor": "Allocated before IPO opening",
-    "qib_ex_anchor": "N/A",
-    "hni_subscription": "N/A",
-    "retail_subscription": "N/A",
-    "total_subscription": "N/A"
+    "qib_ex_anchor": null,
+    "hni_subscription": null,
+    "retail_subscription": null,
+    "total_subscription": null
   },
 
   "ipo_intermediaries": {
     "registrar": "Kfin Technologies Ltd.",
     "registrar_website": "https://kfintech.com",
-    "market_maker": "N/A",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "market_maker": null,
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -11165,7 +11165,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "https://www.sebi.gov.in/filings/public-issues/jun-2025/rajputana-stainless-limited_94803.html",
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/mar-2026/rajputana-stainless-limited-rhp_100081.html",
     "prospectus_pdf": "https://www.nseindia.com",
-    "investor_presentation": "N/A"
+    "investor_presentation": null
   },
 
   "faq": [
@@ -11237,7 +11237,7 @@ export const fetchIPOs = async () => {
     "lot_size": 1200,
     "total_issue_size": "₹35.77 Cr",
     "fresh_issue_size": "32,52,000 shares",
-    "offer_for_sale": "N/A",
+    "offer_for_sale": null,
     "shares_offered": "32,52,000 shares",
     "listing_exchange": "NSE SME",
     "issue_price": "₹110",
@@ -11282,7 +11282,7 @@ export const fetchIPOs = async () => {
 
   "ipo_objectives": {
     "capital_expenditure": "Purchase of machinery and equipment",
-    "debt_repayment": "N/A",
+    "debt_repayment": null,
     "general_corporate_purposes": "General corporate purposes"
   },
 
@@ -11369,25 +11369,25 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹7",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹117"
   },
 
   "ipo_subscription_data": {
-    "qib_ex_anchor": "N/A",
-    "hni_subscription": "N/A",
-    "retail_subscription": "N/A",
-    "total_subscription": "N/A"
+    "qib_ex_anchor": null,
+    "hni_subscription": null,
+    "retail_subscription": null,
+    "total_subscription": null
   },
 
   "ipo_intermediaries": {
     "registrar": "Integrated Registry Management Services Pvt Ltd",
     "registrar_website": "https://www.integratedindia.in",
     "market_maker": "Basan Equity Broking Ltd",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -11595,26 +11595,26 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "March 2026",
     "estimated_listing_price": "₹548"
   },
 
   "ipo_subscription_data": {
     "anchor": "Allocated before IPO opening",
-    "qib_ex_anchor": "N/A",
-    "hni_subscription": "N/A",
-    "retail_subscription": "N/A",
-    "total_subscription": "N/A"
+    "qib_ex_anchor": null,
+    "hni_subscription": null,
+    "retail_subscription": null,
+    "total_subscription": null
   },
 
   "ipo_intermediaries": {
     "registrar": "Kfin Technologies Ltd.",
     "registrar_website": "https://kfintech.com",
-    "market_maker": "N/A",
-    "company_secretary": "N/A",
-    "compliance_officer": "N/A"
+    "market_maker": null,
+    "company_secretary": null,
+    "compliance_officer": null
   },
 
   "ipo_lead_manager": {
@@ -11841,8 +11841,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 – ₹2 (flat to mild)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹322 – ₹328"
   },
@@ -12024,7 +12024,7 @@ export const fetchIPOs = async () => {
       "pat": "₹3.58 Cr",
       "ebitda": "₹5.69 Cr",
       "net_worth": "₹13.09 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     },
     {
       "period": "30 Sep 2025",
@@ -12033,14 +12033,14 @@ export const fetchIPOs = async () => {
       "pat": "₹5.80 Cr",
       "ebitda": "₹7.79 Cr",
       "net_worth": "₹18.89 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     }
   ],
 
   "grey_market_premium": {
     "gmp_price": "₹0 (flat)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹146 (flat listing)"
   },
@@ -12192,15 +12192,15 @@ export const fetchIPOs = async () => {
   },
 
   "key_performance_indicators": {
-    "roe": "N/A",
-    "roce": "N/A",
-    "ronw": "N/A",
-    "pat_margin": "N/A",
-    "ebitda_margin": "N/A",
-    "eps": "N/A",
-    "nav_per_share": "N/A",
+    "roe": null,
+    "roce": null,
+    "ronw": null,
+    "pat_margin": null,
+    "ebitda_margin": null,
+    "eps": null,
+    "nav_per_share": null,
     "debt_to_equity": "Moderate",
-    "pe_ratio": "N/A",
+    "pe_ratio": null,
     "industry_pe": "20–40x (pharma generics)"
   },
 
@@ -12210,7 +12210,7 @@ export const fetchIPOs = async () => {
       "assets": "₹120–140 Cr (approx)",
       "total_income": "₹180–200 Cr",
       "pat": "₹12–15 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹60–70 Cr",
       "total_borrowing": "Moderate"
     },
@@ -12219,7 +12219,7 @@ export const fetchIPOs = async () => {
       "assets": "₹130–150 Cr",
       "total_income": "₹90–110 Cr",
       "pat": "₹6–8 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹65–75 Cr",
       "total_borrowing": "Moderate"
     }
@@ -12227,8 +12227,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 – ₹5 (~0–4%) pre-listing",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹124 – ₹129"
   },
@@ -12260,7 +12260,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "https://www.bsesme.com/download/354383/SME_IPO%20InPrinciple/DRHPSMPLFINALS_20250929233345.pdf",
     "rhp_link": "https://www.bseindia.com/downloads/ipo/RHP%20&%20GID_190320261837.zip",
     "prospectus_pdf": "https://www.bsesme.com/download/354383/SME_IPO%20BasisOfAllotment/Prospectus_20260325151551.pdf",
-    "investor_presentation": "N/A"
+    "investor_presentation": null
   }
 },
 {
@@ -12382,7 +12382,7 @@ export const fetchIPOs = async () => {
     "roce": "27.1% (Dec 31, 2025) / 48.6% (Mar 31, 2025)",
     "pat_margin": "27.60% (Dec 31, 2025) / 30.60% (Mar 31, 2025)",
     "ebitda_margin": "38.50% (Dec 31, 2025) / 42.10% (Mar 31, 2025)",
-    "debt_to_equity": "N/A",
+    "debt_to_equity": null,
     "eps": "₹7.94 (post-issue)",
     "pe_ratio": "21.65x (post-issue)",
     "price_to_book": "6.01 (pre-IPO)"
@@ -12396,7 +12396,7 @@ export const fetchIPOs = async () => {
       "pat": "₹296.66 Cr",
       "ebitda": "₹395.65 Cr",
       "net_worth": "₹1,217.65 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     },
     {
       "period": "31 Mar 2024",
@@ -12405,7 +12405,7 @@ export const fetchIPOs = async () => {
       "pat": "₹503.23 Cr",
       "ebitda": "₹764.44 Cr",
       "net_worth": "₹1,591.61 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     },
     {
       "period": "31 Mar 2025",
@@ -12414,7 +12414,7 @@ export const fetchIPOs = async () => {
       "pat": "₹666.91 Cr",
       "ebitda": "₹915.71 Cr",
       "net_worth": "₹2,041.85 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     },
     {
       "period": "31 Dec 2025",
@@ -12423,14 +12423,14 @@ export const fetchIPOs = async () => {
       "pat": "₹425.36 Cr",
       "ebitda": "₹593.85 Cr",
       "net_worth": "₹2,153.78 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     }
   ],
 
   "grey_market_premium": {
     "gmp_price": "₹5 – ₹9 (~3–5%)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹177 – ₹181"
   },
@@ -12629,8 +12629,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "Flat / muted (as per latest reports)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹89 – ₹95 (flat to mild premium expected)"
   },
@@ -12664,7 +12664,7 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://www.bsesme.com/download/345988/SME_IPO%20InPrinciple/DRHPTipcoEngineeringIndiaLimited_20250930190405.pdf",
     "rhp_link": "https://www.bseindia.com/downloads/ipo/RHP%20&GID_180320261301.zip",
-    "prospectus_pdf": "N/A",
+    "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/tipco-engineering-anchor-list.pdf"
   }
 },
@@ -12785,7 +12785,7 @@ export const fetchIPOs = async () => {
   "key_performance_indicators": {
     "roe": "29.29% (Sep 30, 2025) / 117.61% (Mar 31, 2025)",
     "roce": "25.67% (Sep 30, 2025) / 87.34% (Mar 31, 2025)",
-    "ronw": "N/A",
+    "ronw": null,
     "pat_margin": "13.38% (Sep 30, 2025) / 13.04% (Mar 31, 2025)",
     "ebitda_margin": "19.13% (Sep 30, 2025) / 18.28% (Mar 31, 2025)",
     "eps": "₹28.90 (pre-IPO)",
@@ -12834,8 +12834,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 (flat)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹555 (flat expected)"
   },
@@ -12843,7 +12843,7 @@ export const fetchIPOs = async () => {
   "ipo_subscription_data": {
     "total_subscription": "1.06x (as of latest update)",
     "qib_ex_anchor": "1.95x",
-    "hni_subscription": "N/A",
+    "hni_subscription": null,
     "retail_subscription": "0.36x"
   },
 
@@ -12866,7 +12866,7 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://nsearchives.nseindia.com/emerge/corporates/content/Registration_26092025223611_DRHP_VIVIDElectro_26092025_Combined.pdf",
     "rhp_link": "https://nsearchives.nseindia.com/emerge/corporates/content/VividElectromechLimited_RHP.zip",
-    "prospectus_pdf": "N/A",
+    "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/vivid-electromech-anchor-allocation.pdf"
   }
 },
@@ -13035,10 +13035,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "Not mentioned on page",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -13071,7 +13071,7 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://www.sebi.gov.in/filings/public-issues/oct-2025/sai-parentarals-limited_97171.html",
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/mar-2026/sai-parenteral-s-limited-rhp_100427.html",
-    "prospectus_pdf": "N/A",
+    "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/sai-parenteral-anchor-allocation-letter.pdf"
   }
 },
@@ -13188,15 +13188,15 @@ export const fetchIPOs = async () => {
   },
 
   "key_performance_indicators": {
-    "roe": "N/A",
-    "roce": "N/A",
-    "ronw": "N/A",
-    "pat_margin": "N/A",
-    "ebitda_margin": "N/A",
-    "eps": "N/A",
-    "nav_per_share": "N/A",
-    "debt_to_equity": "N/A",
-    "pe_ratio": "N/A",
+    "roe": null,
+    "roce": null,
+    "ronw": null,
+    "pat_margin": null,
+    "ebitda_margin": null,
+    "eps": null,
+    "nav_per_share": null,
+    "debt_to_equity": null,
+    "pe_ratio": null,
     "industry_pe": "20–40x (EMS / Electronics)"
   },
 
@@ -13206,7 +13206,7 @@ export const fetchIPOs = async () => {
       "assets": "₹85–100 Cr (approx)",
       "total_income": "₹120–150 Cr",
       "pat": "₹8–12 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹45–55 Cr",
       "total_borrowing": "Moderate"
     },
@@ -13215,7 +13215,7 @@ export const fetchIPOs = async () => {
       "assets": "₹100–120 Cr",
       "total_income": "₹60–80 Cr",
       "pat": "₹4–6 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹50–60 Cr",
       "total_borrowing": "Moderate"
     }
@@ -13223,8 +13223,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 – ₹5 (~0–5%) pre-listing",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹120–125 (actual performance pending)"
   },
@@ -13255,7 +13255,7 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://www.bsesme.com/download/380452/SME_IPO%20InPrinciple/DRHP_Highness_20251001134600.pdf",
     "rhp_link": "https://www.bseindia.com/downloads/ipo/RHP%20&%20GID_200320261927.zip",
-    "prospectus_pdf": "N/A",
+    "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/highness-microelectronics-anchor-report.pdf"
   }
 },
@@ -13376,11 +13376,11 @@ export const fetchIPOs = async () => {
   "key_performance_indicators": {
     "roe": "17.53% (Mar 31, 2025) / 11.60% (Sep 30, 2025)",
     "roce": "27.02% (Mar 31, 2025) / 13.90% (Sep 30, 2025)",
-    "pat_margin": "N/A",
-    "ebitda_margin": "N/A",
+    "pat_margin": null,
+    "ebitda_margin": null,
     "debt_to_equity": "0.24 (Mar 31, 2025) / 0.40 (Sep 30, 2025)",
-    "eps": "N/A",
-    "pe_ratio": "N/A",
+    "eps": null,
+    "pe_ratio": null,
     "industry_pe": "20–40x (power equipment)"
   },
 
@@ -13425,8 +13425,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹1 – ₹2 (~0.25–0.5%)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹396 – ₹397"
   },
@@ -13458,7 +13458,7 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://www.sebi.gov.in/filings/public-issues/aug-2025/powerica-limited_96132.html",
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/mar-2026/powerica-limited-rhp_100434.html",
-    "prospectus_pdf": "N/A",
+    "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/powerica-anchor-allocation-report.pdf"
   }
 },
@@ -13623,8 +13623,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹7 (as per recent reports)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹219 – ₹226"
   },
@@ -13658,7 +13658,7 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://www.sebi.gov.in/filings/public-issues/jul-2025/amir-chand-jagdish-kumar-exports-limited_95027.html",
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_AMIRCHAND.zip",
-    "prospectus_pdf": "N/A",
+    "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/amir_chand_jagdish_kumar_exports_ltd_mainboard_anchor_1774277098.pdf"
   }
 },
@@ -13827,8 +13827,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 (flat as of 24 Mar 2026)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Mar 2026",
     "estimated_listing_price": "₹98 (flat listing expected)"
   },
@@ -13863,7 +13863,7 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://www.bsesme.com/download/331764/SME_IPO%20InPrinciple/DRHPEmiacTechnologiesLimited_20250930205604.pdf",
     "rhp_link": "https://www.bseindia.com/downloads/ipo/RHP&GID-%20Emiac%20technologies%20Limited_250320261939.zip",
-    "prospectus_pdf": "N/A",
+    "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/emiac-technologies-anchor_letter46fd3972-84ff-495a-858a-beff64db2a42.pdf"
   }
 },
@@ -14010,8 +14010,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹0 (flat)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Apr 2026",
     "estimated_listing_price": "₹80 (flat expected)"
   },
@@ -14046,7 +14046,7 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://www.bsesme.com/download/381468/SME_IPO%20InPrinciple/26.DRHP_Safety_20250930234556.pdf",
     "rhp_link": "https://www.bsesme.com/download/381468/SME_IPO%20Open/RHP%20Safety_%20270326_Clean%20version_20260329221600.pdf",
-    "prospectus_pdf": "N/A",
+    "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/safety-control-devices-ipo-anchor-allocation-letter.pdf"
   }
 },
@@ -14213,8 +14213,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹1.5 – ₹2 (~0.86% – 1.14%)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "08 Apr 2026",
     "estimated_listing_price": "₹176.5 – ₹177"
   },
@@ -14246,7 +14246,7 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://www.bseindia.com/downloads/ipo/Surat%20Municipal%20Corporation-%20Offer%20Document%20dated%20September%2018,%202025_20250925190011_011020252305.pdf",
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_OMPOWER.zip",
-    "prospectus_pdf": "N/A",
+    "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/anchor_allocation-om-power-transmission.pdf"
   }
 },
@@ -14354,33 +14354,33 @@ export const fetchIPOs = async () => {
   },
 
   "key_performance_indicators": {
-    "roe": "N/A",
-    "roce": "N/A",
-    "pat_margin": "N/A",
-    "ebitda_margin": "N/A",
-    "debt_to_equity": "N/A",
-    "eps": "N/A",
-    "pe_ratio": "N/A"
+    "roe": null,
+    "roce": null,
+    "pat_margin": null,
+    "ebitda_margin": null,
+    "debt_to_equity": null,
+    "eps": null,
+    "pe_ratio": null
   },
 
   "company_financial_data": [
     {
       "period": "FY25",
-      "assets": "N/A",
+      "assets": null,
       "total_income": "₹152 Cr (approx)",
       "pat": "₹7.07 Cr (approx)",
-      "ebitda": "N/A",
-      "net_worth": "N/A",
-      "total_borrowing": "N/A"
+      "ebitda": null,
+      "net_worth": null,
+      "total_borrowing": null
     }
   ],
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Apr 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -14410,7 +14410,7 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME",
     "rhp_link": "https://www.bseindia.com/downloads/ipo/RHP%20&%20GID_150420261848.zip",
-    "prospectus_pdf": "N/A",
+    "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/mehul-telecom-ipo-anchor-allocation-letter.pdf"
   }
 },
@@ -14527,11 +14527,11 @@ export const fetchIPOs = async () => {
   },
 
   "key_performance_indicators": {
-    "roe": "N/A",
-    "roce": "N/A",
+    "roe": null,
+    "roce": null,
     "pat_margin": "Approx 11-12%",
-    "ebitda_margin": "N/A",
-    "debt_to_equity": "N/A",
+    "ebitda_margin": null,
+    "debt_to_equity": null,
     "eps": "₹13.41 (FY25 approx)",
     "pe_ratio": "Approx 12-13x (at upper band)"
   },
@@ -14539,38 +14539,38 @@ export const fetchIPOs = async () => {
   "company_financial_data": [
     {
       "period": "FY25",
-      "assets": "N/A",
+      "assets": null,
       "total_income": "₹133.69 Cr",
       "pat": "₹15.99 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹48.71 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     },
     {
       "period": "FY24",
-      "assets": "N/A",
+      "assets": null,
       "total_income": "₹104.15 Cr",
       "pat": "₹11.32 Cr",
-      "ebitda": "N/A",
+      "ebitda": null,
       "net_worth": "₹32.73 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     }
   ],
 
   "grey_market_premium": {
     "gmp_price": "₹10 (approx)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Apr 2026",
     "estimated_listing_price": "₹180 – ₹182 (approx)"
   },
 
   "ipo_subscription_data": {
     "total_subscription": "N/A (IPO just opened)",
-    "qib_ex_anchor": "N/A",
-    "hni_subscription": "N/A",
-    "retail_subscription": "N/A",
-    "total_applications": "N/A"
+    "qib_ex_anchor": null,
+    "hni_subscription": null,
+    "retail_subscription": null,
+    "total_applications": null
   },
 
   "ipo_intermediaries": {
@@ -14590,9 +14590,9 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE SME",
+    "drhp_link": null,
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_ADISOFT.zip",
-    "prospectus_pdf": "N/A",
+    "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/adisoft-technologies-ipo-anchor-allocation-letter.pdf"
   }
 },
@@ -14634,7 +14634,7 @@ export const fetchIPOs = async () => {
     "listing_exchange": "NSE SME",
     "issue_price": "₹135",
     "minimum_investment": "₹2,70,000 (1 lot / 2,000 shares)",
-    "market_cap_post_issue": "N/A",
+    "market_cap_post_issue": null,
     "pre_issue_shareholding": "≈96.67%",
     "post_issue_shareholding": "≈71.22%"
   },
@@ -14716,7 +14716,7 @@ export const fetchIPOs = async () => {
     "ebitda_margin": "7.21%",
     "debt_to_equity": "3.65",
     "eps": "₹5.76",
-    "pe_ratio": "N/A"
+    "pe_ratio": null
   },
 
   "company_financial_data": [
@@ -14742,18 +14742,18 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (not stable yet)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Apr 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
     "total_subscription": "N/A (IPO recently opened)",
-    "qib_ex_anchor": "N/A",
-    "hni_subscription": "N/A",
-    "retail_subscription": "N/A",
-    "total_applications": "N/A"
+    "qib_ex_anchor": null,
+    "hni_subscription": null,
+    "retail_subscription": null,
+    "total_applications": null
   },
 
   "ipo_intermediaries": {
@@ -14773,10 +14773,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE SME",
+    "drhp_link": null,
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_AMBAAUTO.zip",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   }
 },
 {
@@ -14816,9 +14816,9 @@ export const fetchIPOs = async () => {
     "listing_exchange": "BSE, NSE",
     "issue_price": "₹144",
     "minimum_investment": "₹14,400 (1 lot / 100 shares)",
-    "market_cap_post_issue": "N/A",
-    "pre_issue_shareholding": "N/A",
-    "post_issue_shareholding": "N/A"
+    "market_cap_post_issue": null,
+    "pre_issue_shareholding": null,
+    "post_issue_shareholding": null
   },
 
   "company_overview": {
@@ -14893,37 +14893,37 @@ export const fetchIPOs = async () => {
     "roce": "Negative",
     "pat_margin": "Negative",
     "ebitda_margin": "Negative",
-    "debt_to_equity": "N/A",
+    "debt_to_equity": null,
     "eps": "Negative",
-    "pe_ratio": "N/A"
+    "pe_ratio": null
   },
 
   "company_financial_data": [
     {
       "period": "Latest Available",
-      "assets": "N/A",
-      "total_income": "N/A",
+      "assets": null,
+      "total_income": null,
       "pat": "Loss making",
       "ebitda": "Negative",
-      "net_worth": "N/A",
-      "total_borrowing": "N/A"
+      "net_worth": null,
+      "total_borrowing": null
     }
   ],
 
   "grey_market_premium": {
-    "gmp_price": "N/A",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "gmp_price": null,
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Apr 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
-    "total_subscription": "N/A",
-    "qib_ex_anchor": "N/A",
-    "hni_subscription": "N/A",
-    "retail_subscription": "N/A",
-    "total_applications": "N/A"
+    "total_subscription": null,
+    "qib_ex_anchor": null,
+    "hni_subscription": null,
+    "retail_subscription": null,
+    "total_applications": null
   },
 
   "ipo_intermediaries": {
@@ -14946,7 +14946,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "Available on BSE/NSE",
     "rhp_link": "https://www.bseindia.com/corporates/download/378749/IPO%20Open/6RedHerringProspectussigned_20260427195413.pdf",
     "prospectus_pdf": "Same as RHP",
-    "investor_presentation": "N/A"
+    "investor_presentation": null
   }
 },
 {
@@ -15101,16 +15101,16 @@ export const fetchIPOs = async () => {
       "pat": "9.06 Cr",
       "ebitda": "13.34 Cr",
       "net_worth": "17.84 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     }
   ],
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Apr 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -15139,8 +15139,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME",
     "rhp_link": "https://cdn.shopify.com/s/files/1/0477/3327/6826/files/RECODE_STUDIOS_LIMITED_RHP.pdf?v=1777437948",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   }
 },
 {
@@ -15302,10 +15302,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "May 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -15332,10 +15332,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE SME",
+    "drhp_link": null,
     "rhp_link": "https://investor.value360india.com/value360pdf/RHP.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   }
 },
 {
@@ -15464,7 +15464,7 @@ export const fetchIPOs = async () => {
       "pat": "1.57 Cr",
       "ebitda": "2.11 Cr",
       "net_worth": "1.62 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     },
     {
       "period": "31 Mar 2024",
@@ -15473,7 +15473,7 @@ export const fetchIPOs = async () => {
       "pat": "5.78 Cr",
       "ebitda": "7.72 Cr",
       "net_worth": "7.39 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     },
     {
       "period": "31 Mar 2025",
@@ -15491,16 +15491,16 @@ export const fetchIPOs = async () => {
       "pat": "10.68 Cr",
       "ebitda": "14.37 Cr",
       "net_worth": "28.05 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     }
   ],
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "May 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -15527,10 +15527,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/red-herring-prospectus-simca.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   }
 },
 {
@@ -15687,10 +15687,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "May 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -15719,7 +15719,7 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME",
     "rhp_link": "https://www.cumulativecapital.group/Admin/UploadedFiles/RHP-Goldline-Pharmaceutical-Limited-May-06,-2026.pdf",
-    "prospectus_pdf": "N/A",
+    "prospectus_pdf": null,
     "investor_presentation": "https://www.chittorgarh.net/reports/anchor-investor/goldline-pharmaceutical-ipo-anchor-allocation-letter.pdf"
   }
 },
@@ -15876,10 +15876,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "May 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -15906,10 +15906,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE SME",
+    "drhp_link": null,
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_RFBL.zip",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   }
 },
 {
@@ -16058,10 +16058,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "May 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -16088,10 +16088,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE SME",
+    "drhp_link": null,
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_TEAMTECH.zip",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   }
 },
 {
@@ -16231,10 +16231,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "May 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -16263,8 +16263,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME",
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/harikanta-overseas-rhp.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   }
 },
 {
@@ -16426,8 +16426,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹63 (approx 18.37%)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "20 May 2026",
     "estimated_listing_price": "₹406 – ₹410"
   },
@@ -16456,10 +16456,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE SME",
+    "drhp_link": null,
     "rhp_link": "https://admin.qlinebiotech.com/uploads/investor/14fb9b2d52e3ffc226eb0e5fb5955322.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -16645,10 +16645,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "May 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -16675,10 +16675,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/rhp_bio_medicallaboratories.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -16868,10 +16868,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "May 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -16900,8 +16900,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME",
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/vegorama-punjabi-angithi-rhp.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -17084,10 +17084,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "May 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -17116,8 +17116,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME",
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/m-r-maniveni-foods-rhp.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -17305,8 +17305,8 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "₹8 (as of 22 May 2026)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "May 2026",
     "estimated_listing_price": "₹71 – ₹75"
   },
@@ -17337,8 +17337,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME",
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/rajnandini-fashion-india-rhp.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -17487,10 +17487,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "May 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -17519,8 +17519,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME",
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/smr-jewels-rhp.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -17698,10 +17698,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "May 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -17730,8 +17730,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME / Chittorgarh",
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/merritronix-rhp.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -17905,10 +17905,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -17937,8 +17937,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on NSE / Chittorgarh",
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_CMRGREEN.zip",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -18113,10 +18113,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -18145,8 +18145,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME",
     "rhp_link": "https://www.bseindia.com/downloads/ipo/RHP_030620261736.zip",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -18319,10 +18319,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -18351,8 +18351,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on NSE / Chittorgarh",
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_HEXAGON.zip",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -18528,10 +18528,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -18560,8 +18560,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on NSE / Chittorgarh",
     "rhp_link": "https://nsearchives.nseindia.com/content/ipo/RHP_GENXAI.zip",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -18744,10 +18744,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -18774,10 +18774,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE SME",
+    "drhp_link": null,
     "rhp_link": "https://affinityglobalcap.in/wp-content/uploads/2026/06/RHP_Utkal.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -18916,7 +18916,7 @@ export const fetchIPOs = async () => {
     "roce": "29.05% (Mar 31, 2026)",
     "pat_margin": "6.77% (Mar 31, 2026)",
     "ebitda_margin": "11.91% (Mar 31, 2026)",
-    "debt_to_equity": "N/A"
+    "debt_to_equity": null
   },
 
   "company_financial_data": [
@@ -18951,10 +18951,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -18983,8 +18983,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME",
     "rhp_link": "https://seil.net.in/wp-content/uploads/2026/06/SUSAN-ELECTRICALS-RHP-FINAL.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -19150,16 +19150,16 @@ export const fetchIPOs = async () => {
       "pat": "0.71 Cr",
       "ebitda": "1.17 Cr",
       "net_worth": "7.26 Cr",
-      "total_borrowing": "N/A"
+      "total_borrowing": null
     }
   ],
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -19188,8 +19188,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME",
     "rhp_link": "https://gyrcapitaladvisors.com/wp-content/uploads/2026/06/rhphorizon.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -19364,10 +19364,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -19394,10 +19394,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE SME",
+    "drhp_link": null,
     "rhp_link": "https://hemadmin.hemsecurities.com/images/Files/offer/1078.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -19573,10 +19573,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -19603,10 +19603,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE SME",
+    "drhp_link": null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/aviencerhp-1.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -19737,11 +19737,11 @@ export const fetchIPOs = async () => {
   },
 
   "key_performance_indicators": {
-    "roe": "N/A",
-    "roce": "N/A",
-    "pat_margin": "N/A",
-    "ebitda_margin": "N/A",
-    "debt_to_equity": "N/A"
+    "roe": null,
+    "roce": null,
+    "pat_margin": null,
+    "ebitda_margin": null,
+    "debt_to_equity": null
   },
 
   "company_financial_data": [
@@ -19785,10 +19785,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -19817,8 +19817,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://www.sebi.gov.in/filings/public-issues/jun-2026/leapfrog-engineering-services-limited_102069.html",
     "rhp_link": "Available on BSE SME / Chittorgarh",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -20000,10 +20000,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -20032,8 +20032,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME",
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/riyaasat-rhp.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -20215,10 +20215,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -20247,8 +20247,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on BSE SME",
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/anubhav-plast-rhp.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -20399,7 +20399,7 @@ export const fetchIPOs = async () => {
 "assets": "472.67 Cr",
 "total_income": "469.37 Cr",
 "pat": "-125.15 Cr",
-"ebitda": "N/A",
+"ebitda": null,
 "net_worth": "329.95 Cr",
 "total_borrowing": "0.00 Cr"
 },
@@ -20408,7 +20408,7 @@ export const fetchIPOs = async () => {
 "assets": "578.69 Cr",
 "total_income": "693.21 Cr",
 "pat": "-194.11 Cr",
-"ebitda": "N/A",
+"ebitda": null,
 "net_worth": "410.46 Cr",
 "total_borrowing": "0.00 Cr"
 },
@@ -20417,7 +20417,7 @@ export const fetchIPOs = async () => {
 "assets": "612.55 Cr",
 "total_income": "119.12 Cr",
 "pat": "-193.35 Cr",
-"ebitda": "N/A",
+"ebitda": null,
 "net_worth": "563.80 Cr",
 "total_borrowing": "0.00 Cr"
 },
@@ -20426,7 +20426,7 @@ export const fetchIPOs = async () => {
 "assets": "900.37 Cr",
 "total_income": "460.11 Cr",
 "pat": "-288.18 Cr",
-"ebitda": "N/A",
+"ebitda": null,
 "net_worth": "743.45 Cr",
 "total_borrowing": "0.00 Cr"
 }
@@ -20434,8 +20434,8 @@ export const fetchIPOs = async () => {
 
 "grey_market_premium": {
 "gmp_price": "Check latest market updates",
-"kostak_rate": "N/A",
-"subject_to_sauda": "N/A",
+"kostak_rate": null,
+"subject_to_sauda": null,
 "gmp_last_updated": "Jun 2026",
 "estimated_listing_price": "Pending"
 },
@@ -20467,7 +20467,7 @@ export const fetchIPOs = async () => {
 "drhp_link": "https://www.icicisecurities.com/console/uploads/actual/TURTLEMINT-FINTECH-SOLUTIONS-LIMITED---RHP_1781540751_81.pdf",
 "rhp_link": "Available in IPO filings",
 "prospectus_pdf": "Pending",
-"investor_presentation": "Pending"
+"investor_presentation":  null
 },
 
 "faq": [
@@ -20649,10 +20649,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -20681,8 +20681,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "https://www.sebi.gov.in/filings/public-issues/jun-2026/advit-jewels-limited-rhp_102061.html",
     "rhp_link": "Available on BSE / NSE",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -20814,7 +20814,7 @@ export const fetchIPOs = async () => {
 
   "key_performance_indicators": {
     "roe": "25.00% (approx Mar 31, 2026)",
-    "roce": "N/A",
+    "roce": null,
     "pat_margin": "4.21% (Mar 31, 2026)",
     "ebitda_margin": "12.02% (Mar 31, 2026)",
     "debt_to_equity": "High"
@@ -20852,10 +20852,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -20882,10 +20882,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available on NSE SME",
+    "drhp_link": null,
     "rhp_link": "https://shreedharspinners.com/wp-content/uploads/2026/06/RHP-Shreedhar-Spinners-Limited.pdf",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -21057,10 +21057,10 @@ export const fetchIPOs = async () => {
 
   "grey_market_premium": {
     "gmp_price": "N/A (pre-listing)",
-    "kostak_rate": "N/A",
-    "subject_to_sauda": "N/A",
+    "kostak_rate": null,
+    "subject_to_sauda": null,
     "gmp_last_updated": "Jun 2026",
-    "estimated_listing_price": "N/A"
+    "estimated_listing_price": null
   },
 
   "ipo_subscription_data": {
@@ -21089,8 +21089,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on SEBI / BSE / NSE",
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jun-2026/waterways-leisure-tourism-limited-rhp_102226.html",
-    "prospectus_pdf": "N/A",
-    "investor_presentation": "N/A"
+    "prospectus_pdf": null,
+    "investor_presentation": null
   },
 
   "faq": [
@@ -21309,7 +21309,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "Pending",
     "rhp_link": "https://www.chittorgarh.net/reports/ncd/rhp_icel.pdf",
     "prospectus_pdf": "Pending",
-    "investor_presentation": "Pending"
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -21525,7 +21525,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "Available on NSE",
     "rhp_link": "Available on NSE",
     "prospectus_pdf": "https://www.jivialrailings.com/assets/Invester-realtion-file/Prospect/Prospectus.pdf",
-    "investor_presentation": "Pending"
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -21750,7 +21750,7 @@ export const fetchIPOs = async () => {
     "drhp_link": "Available (RHP linked on site)",
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/sripriyankarhp.pdf",
     "prospectus_pdf": "Available on company/RHP sources",
-    "investor_presentation": "Pending"
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -21966,10 +21966,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.wealthminenetworks.com/pdf/Red%20Herring%20Prospectus%20dhsl.pdf",
     "prospectus_pdf": "Available via RHP link",
-    "investor_presentation": "Pending"
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -22194,8 +22194,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on SEBI",
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jun-2026/csm-technologies-limited-rhp_102194.html",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -22419,10 +22419,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/crazy-snacks-rhp.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -22648,8 +22648,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on SEBI",
     "rhp_link": "https://aasthaspintex.com/pdf/RHP/RHP_Aastha.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -22874,10 +22874,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/twinkle-papers-ipo-rhp.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -23101,10 +23101,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://adonagrocommodities.com/wp-content/uploads/2026/06/AACL-Red-Herring-Prospectus.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -23327,10 +23327,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://res.cloudinary.com/dmtuhujus/image/upload/v1782227820/Vinit_RHP_23.06.2026_VML_wcxwbv.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -23554,10 +23554,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/atharva-polyplast-ipo-rhp.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -23774,10 +23774,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://kratikal.com/static/IPO-Compliance/kratikal-rhp.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -23997,10 +23997,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://silpl.rathigroup.info/assets/images/ipo/rhp_sampark_bse_22062026_final.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -24223,10 +24223,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://seemaxresources.com/img/ipo/RHP-Seemax-with-binder.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -24451,10 +24451,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://knackpackaging.com/INV/KnackPackagingLimited-RHP.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -24676,10 +24676,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "Available",
     "prospectus_pdf": "https://ifinservices.in/pdf/teja-FINAL-PROSPECTUS.pdf",
-    "investor_presentation": "Pending"
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -24877,7 +24877,7 @@ export const fetchIPOs = async () => {
 
   "ipo_intermediaries": {
     "registrar": "Bigshare Services Pvt. Ltd.",
-    "registrar_website": "Check RHP for details"
+    "registrar_website": "https://www.bigshareonline.com/ipo_allotment.html"
   },
 
   "ipo_lead_manager": {
@@ -24892,10 +24892,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://happysteels.com/wp-content/uploads/2026/07/HappySteelsLtd_RHP.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -25109,8 +25109,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on SEBI site",
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jul-2026/kusumgar-limited-rhp_102510.html",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -25321,10 +25321,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.jjipoadvisors.com/wp-content/uploads/2026/07/RHP_Devson.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -25534,10 +25534,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://laserpowerinfra.com/wp-content/uploads/2026/07/Red-Herring-Prospectus.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -25753,10 +25753,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://gyrcapitaladvisors.com/wp-content/uploads/2026/07/RHP_Millworks-07.07.2026.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -25959,10 +25959,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.sbimf.com/docs/default-source/sbi-funds/offer-documents/rhp-document.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -26165,8 +26165,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on SEBI",
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jul-2026/alpine-texworld-limited-rhp_102719.html",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -26380,10 +26380,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.sotefinbharat.com/wp-content/uploads/2026/07/Sotefin_Bharat_RHP-Final.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -26599,8 +26599,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on SEBI",
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jul-2026/caliber-mining-and-logistics-limited-rhp_102790.html",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -26816,10 +26816,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/rhp_mtf.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -27035,10 +27035,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.malasaree.com/Image/Mala_Saree_RHP.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -27262,8 +27262,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on SEBI",
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jul-2026/indo-mim-limited-rhp_102938.html",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -27475,8 +27475,8 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link": "Available on SEBI",
     "rhp_link": "https://www.sebi.gov.in/filings/public-issues/jul-2026/lohia-corp-limited-rhp_102936.html",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -27693,10 +27693,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://xtranetindia.com/assets/img/pdf/RHP.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -27915,10 +27915,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://silverstorm.in/download/rhp/?wpdmdl=3697",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -28143,10 +28143,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://thepropshopindia.com/ipo/DRHP/RHP_Propshop.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -28368,10 +28368,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://hemadmin.hemsecurities.com/images/Files/offer/3097.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -28578,10 +28578,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://static1.squarespace.com/static/67610de5174d532c12c355c8/t/6a61888f4f35e178022295f1/1784776847928/RHP-With+QR-22-07-2026.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -28803,10 +28803,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/rhp_klassroom.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -29026,10 +29026,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.junipergreenenergy.com/pdfs/initial-public-offering/JuniperGreenEnergyLimited_RHP_23-07-26.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -29249,10 +29249,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.chittorgarh.net/reports/ipo_notes/mv-electrosystems-red_herring_prospectus.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -29469,10 +29469,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.dhavalpackaging.com/storage/attachments/1784875690_6a630aaad0ec9.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -29686,10 +29686,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://www.axiscapital.co.in/contents/Manipal%20Health%20Enterprises%20Limited-%20RHP%20(July%2023,%202026)-1784864230.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -29906,10 +29906,10 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Available",
+    "drhp_link":  null,
     "rhp_link": "https://hrhygiene.com/wp-content/uploads/2026/07/21072026-RHP-HR-Hygiene-Products-Ltd.pdf",
-    "prospectus_pdf": "Available via RHP",
-    "investor_presentation": "Pending"
+    "prospectus_pdf":  null,
+    "investor_presentation":  null
   },
 
   "faq": [
@@ -32751,7 +32751,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
   "depository": "NSDL & CDSL",
   "pan": "AAACB6841Q",
   "cin": "U51909HR2021PLC093155",
-  "rta": "N/A"
+  "rta": null
 },
 
   "financials": {
@@ -33555,7 +33555,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
     "depository": "Only CDSL",
     "pan": "AAJCC8125G",
     "cin": "U52399TG2021PTC155582",
-    "rta": "N/A"
+    "rta": null
   },
 
   "financials": {
@@ -33630,7 +33630,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
   ],
 
   "rta": {
-    "registrar": "N/A",
+    "registrar": null,
     "website": ""
   },
 
@@ -35104,7 +35104,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
     "52WeekLow": "₹42",
     "faceValue": "₹10",
     "bookValue": "2.05",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "20.49",
     "debtToEquity": "0.00",
     "returnOnEquity": "-1.79",
@@ -35855,7 +35855,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
     "52WeekLow": "₹128",
     "faceValue": "₹10",
     "bookValue": "12.95",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "9.88",
     "debtToEquity": "0.00",
     "returnOnEquity": "1.46",
@@ -36055,7 +36055,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
   ],
 
   "rta": {
-    "registrar": "N/A",
+    "registrar": null,
     "website": ""
   },
 
@@ -36324,7 +36324,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
   ],
 
   "rta": {
-    "registrar": "N/A",
+    "registrar": null,
     "website": ""
   },
 
@@ -36672,7 +36672,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
     "52WeekHigh": "₹235000",
     "52WeekLow": "₹112500",
     "faceValue": "₹10",
-    "bookValue": "N/A",
+    "bookValue": null,
     "peRatio": "58.36",
     "pbRatio": "2.04",
     "debtToEquity": "0.36",
@@ -38356,8 +38356,8 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
       { "label": "EPS", "fy22": -0.41, "fy23": -1.09, "fy24": 0.007, "fy25": 0.02 }
     ],
     "keyRatios": [
-      { "label": "Operating Profit Margin (%)", "fy22": -10927, "fy23": -20688.33, "fy24": -56900, "fy25": "N/A" },
-      { "label": "Net Profit Margin (%)", "fy22": -12583.33, "fy23": -67636.67, "fy24": "50000", "fy25": "N/A" },
+      { "label": "Operating Profit Margin (%)", "fy22": -10927, "fy23": -20688.33, "fy24": -56900, "fy25": null },
+      { "label": "Net Profit Margin (%)", "fy22": -12583.33, "fy23": -67636.67, "fy24": "50000", "fy25": null },
       { "label": "Earning Per Share (Diluted)", "fy22": -0.41, "fy23": -1.09, "fy24": 0.007, "fy25": 0.02 }
     ],
     "investorInsight": [
@@ -38873,7 +38873,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
  "52WeekLow": "₹895",
  "faceValue": "₹10",
  "bookValue": "2055.28",
- "peRatio": "N/A",
+ "peRatio": null,
  "pbRatio": "0.44",
  "debtToEquity": "0.1",
  "returnOnEquity": "-2.43",
@@ -40630,7 +40630,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
     "52WeekLow": "₹450",
     "faceValue": "₹10",
     "bookValue": "₹78.89",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "5.7",
     "debtToEquity": "0.05",
     "returnOnEquity": "-18%",
@@ -40931,7 +40931,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
     "52WeekLow": "₹122",
     "faceValue": "₹100",
     "bookValue": "₹44.88",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "2.9",
     "debtToEquity": "2.43",
     "returnOnEquity": "-18.75%",
@@ -41833,7 +41833,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
     "depository": "NSDL & CDSL",
     "pan": "AAICM1334R",
     "cin": "U51909HR2017PLC069490",
-    "rta": "N/A"
+    "rta": null
   },
 
   "financials": {
@@ -41882,7 +41882,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
   ],
 
   "rta": {
-    "registrar": "N/A",
+    "registrar": null,
     "website": ""
   },
 
@@ -43398,7 +43398,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
     "52WeekLow": "₹2500",
     "faceValue": "₹10",
     "bookValue": "1223.11",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "2.53",
     "debtToEquity": "0.52",
     "returnOnEquity": "-0.52",
@@ -43532,7 +43532,7 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
     "52WeekLow": "₹2.75",
     "faceValue": "₹1",
     "bookValue": "0.36",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "18",
     "debtToEquity": "0",
     "returnOnEquity": "Negative",
@@ -44706,10 +44706,10 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
     "52WeekLow": "₹47",
     "faceValue": "₹10",
     "bookValue": "6.91",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "8.39",
     "debtToEquity": "0",
-    "returnOnEquity": "N/A",
+    "returnOnEquity": null,
     "totalOutstandingShares": "81004165",
     "isin": "INE762K01013",
     "depository": "NSDL & CDSL",
@@ -44860,24 +44860,24 @@ The Indian lead industry is driven by strong demand from the battery sector (aut
     "liabilities": [],
     "insights": "No data available."
   },
-  "liabilitiesBreakdown": "N/A",
+  "liabilitiesBreakdown": null,
   "balanceSheetInsights": "No data available.",
   "cashFlow": {
     "data": [],
     "insights": []
   },
   "shareholding": [
-    { "year": "Recent", "promoters": "N/A", "institutional": "N/A", "public": "N/A" }
+    { "year": "Recent", "promoters": null, "institutional": null, "public": null }
   ],
-  "promotersManagement": "N/A",
+  "promotersManagement": null,
   "management": [
-    { "name": "N/A", "role": "", "experience": "" }
+    { "name": null, "role": "", "experience": "" }
   ],
   "rta": {
-    "registrar": "N/A",
+    "registrar": null,
     "website": ""
   },
-  "managementInsight": "N/A",
+  "managementInsight": null,
   "faq": [
     {
       "question": "How to buy Nilliampathy Tea & Produce Company Limited Unlisted Shares?",
@@ -45404,7 +45404,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     ]
   },
   "shareholding": [
-    { "year": "Recent", "promoters": "100% (Otis Worldwide Corporation)", "institutional": "N/A", "public": "N/A" }
+    { "year": "Recent", "promoters": "100% (Otis Worldwide Corporation)", "institutional": null, "public": null }
   ],
   "promotersManagement": "Wholly owned subsidiary of Otis Worldwide Corporation (USA).",
   "management": [
@@ -45482,8 +45482,8 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
       { "label": "EPS", "fy23": 18.94, "fy24": 22.5, "fy25": 22.5 }
     ],
     "keyRatios": [
-      { "label": "Operating Profit Margin (%)", "fy23": "N/A", "fy24": "-165.45", "fy25": "N/A" },
-      { "label": "Net Profit Margin (%)", "fy23": "N/A", "fy24": "85.55", "fy25": "N/A" },
+      { "label": "Operating Profit Margin (%)", "fy23": null, "fy24": "-165.45", "fy25": null },
+      { "label": "Net Profit Margin (%)", "fy23": null, "fy24": "85.55", "fy25": null },
       { "label": "Earning Per Share (Diluted)", "fy23": 18.94, "fy24": 22.5, "fy25": 22.5 }
     ],
     "investorInsight": [
@@ -45843,11 +45843,11 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     "52WeekHigh": "₹550",
     "52WeekLow": "₹475",
     "faceValue": "₹10",
-    "bookValue": "N/A",
-    "peRatio": "N/A",
+    "bookValue": null,
+    "peRatio": null,
     "pbRatio": "154.32",
     "debtToEquity": "0.21",
-    "returnOnEquity": "N/A",
+    "returnOnEquity": null,
     "totalOutstandingShares": "57600000",
     "isin": "Not Available",
     "depository": "NSDL & CDSL",
@@ -45969,7 +45969,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     "52WeekLow": "₹6.25",
     "faceValue": "₹10",
     "bookValue": "1.52",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "3.26",
     "debtToEquity": "0.62",
     "returnOnEquity": "-48.05",
@@ -46615,7 +46615,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     "52WeekLow": "₹275",
     "faceValue": "₹10",
     "bookValue": "422.72",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "1.84",
     "debtToEquity": "1.23",
     "returnOnEquity": "0.22",
@@ -47016,7 +47016,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     "depository": "NSDL & CDSL",
     "pan": "AAACR2101G",
     "cin": "U33120MH1982PLC028800",
-    "rta": "N/A"
+    "rta": null
   },
   "financials": {
     "annualReportSummary": "The company has shown moderate revenue growth with fluctuating margins. While EBITDA improved in FY24, profitability declined in FY25 due to margin pressure and higher costs.",
@@ -47081,7 +47081,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     { "name": "Not Available", "role": "", "experience": "" }
   ],
   "rta": {
-    "registrar": "N/A",
+    "registrar": null,
     "website": ""
   },
   "managementInsight": "Focused on expanding ultrasonic welding solutions and strengthening presence in the automotive sector.",
@@ -48484,18 +48484,18 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     "lotSize": "25 Shares",
     "52WeekHigh": "₹1079",
     "52WeekLow": "₹1079",
-    "faceValue": "N/A",
-    "bookValue": "N/A",
-    "peRatio": "N/A",
+    "faceValue": null,
+    "bookValue": null,
+    "peRatio": null,
     "pbRatio": "0",
-    "debtToEquity": "N/A",
-    "returnOnEquity": "N/A",
+    "debtToEquity": null,
+    "returnOnEquity": null,
     "totalOutstandingShares": "0",
-    "isin": "N/A",
+    "isin": null,
     "depository": "NSDL & CDSL",
-    "pan": "N/A",
-    "cin": "N/A",
-    "rta": "N/A"
+    "pan": null,
+    "cin": null,
+    "rta": null
   },
   "financials": {
     "annualReportSummary": "No financial data is available publicly, making it difficult to evaluate the company's performance or valuation.",
@@ -48530,7 +48530,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     { "name": "Not Available", "role": "", "experience": "" }
   ],
   "rta": {
-    "registrar": "N/A",
+    "registrar": null,
     "website": ""
   },
   "managementInsight": "No publicly available information on management or strategic direction.",
@@ -48707,10 +48707,10 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     "52WeekLow": "₹425",
     "faceValue": "₹10",
     "bookValue": "1249.33",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "0.34",
     "debtToEquity": "1.52",
-    "returnOnEquity": "N/A",
+    "returnOnEquity": null,
     "totalOutstandingShares": "1500000",
     "isin": "INE855Z01016",
     "depository": "NSDL & CDSL",
@@ -48826,18 +48826,18 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     "lotSize": "250 Shares",
     "52WeekHigh": "₹69",
     "52WeekLow": "₹69",
-    "faceValue": "N/A",
-    "bookValue": "N/A",
-    "peRatio": "N/A",
+    "faceValue": null,
+    "bookValue": null,
+    "peRatio": null,
     "pbRatio": "0",
-    "debtToEquity": "N/A",
-    "returnOnEquity": "N/A",
+    "debtToEquity": null,
+    "returnOnEquity": null,
     "totalOutstandingShares": "0",
-    "isin": "N/A",
+    "isin": null,
     "depository": "NSDL & CDSL",
-    "pan": "N/A",
-    "cin": "N/A",
-    "rta": "N/A"
+    "pan": null,
+    "cin": null,
+    "rta": null
   },
   "financials": {
     "annualReportSummary": "No financial data is available publicly, making it impossible to evaluate the company’s performance, profitability, or valuation.",
@@ -48872,7 +48872,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     { "name": "Not Available", "role": "", "experience": "" }
   ],
   "rta": {
-    "registrar": "N/A",
+    "registrar": null,
     "website": ""
   },
   "managementInsight": "No publicly available information on management or strategy.",
@@ -49046,7 +49046,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     "52WeekLow": "₹288",
     "faceValue": "₹2",
     "bookValue": "37.74",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "7.63",
     "debtToEquity": "1",
     "returnOnEquity": "-92.51",
@@ -49424,7 +49424,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     "52WeekLow": "₹32",
     "faceValue": "₹1",
     "bookValue": "1.01",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "3.168",
     "debtToEquity": "0",
     "returnOnEquity": "-24.11",
@@ -49807,7 +49807,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     "52WeekLow": "₹195",
     "faceValue": "₹10",
     "bookValue": "25.43",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "7.67",
     "debtToEquity": "1.93",
     "returnOnEquity": "-47.9",
@@ -49816,7 +49816,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     "depository": "NSDL & CDSL",
     "pan": "AAACU6782E",
     "cin": "U74899DL1983PLC015432",
-    "rta": "N/A"
+    "rta": null
   },
   "financials": {
     "annualReportSummary": "The company has shown declining profitability with significant losses in the latest year. Margins have deteriorated sharply, and the business is facing operational challenges despite a well-known brand presence.",
@@ -49883,7 +49883,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     { "name": "Not Available", "role": "", "experience": "" }
   ],
   "rta": {
-    "registrar": "N/A",
+    "registrar": null,
     "website": ""
   },
   "managementInsight": "Struggling to revive growth despite strong brand recall.",
@@ -49933,7 +49933,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     "52WeekLow": "₹125",
     "faceValue": "₹10",
     "bookValue": "253.42",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "0.47",
     "debtToEquity": "0.74",
     "returnOnEquity": "-16.82",
@@ -50135,7 +50135,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     { "name": "Not Available", "role": "", "experience": "" }
   ],
   "rta": {
-    "registrar": "N/A",
+    "registrar": null,
     "website": ""
   },
   "managementInsight": "Focused on scaling specialty chemical operations but facing margin pressure.",
@@ -50184,7 +50184,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
     "52WeekLow": "₹448",
     "faceValue": "₹2",
     "bookValue": "131.38",
-    "peRatio": "N/A",
+    "peRatio": null,
     "pbRatio": "3.41",
     "debtToEquity": "0.47",
     "returnOnEquity": "-7.77",

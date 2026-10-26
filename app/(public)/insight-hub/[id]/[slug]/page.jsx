@@ -158,7 +158,7 @@ export async function generateStaticParams() {
   try {
     const { data, error } = await supabasePublic
       .from("blogs")
-      .select("id, title, heading, meta_title, category")
+      .select("id, title, heading, category")
       .eq("status", "published")
       .limit(500);
 
@@ -310,17 +310,10 @@ export default async function Page({ params }) {
   // If this record belongs to Corporate Actions, redirect it to its
   // corresponding destination instead of rendering an Insight Hub article.
 if (isCorporateActionCategory(blog.category)) {
-  const corporateActionSlug = getCanonicalSlug(blog);
-
-  if (!corporateActionSlug) {
-    notFound();
-  }
-
   permanentRedirect(
-    `/corporateactions/${encodeURIComponent(String(id))}/${corporateActionSlug}`
+    `/corporateactions/${encodeURIComponent(String(id))}/${slug}`
   );
 }
-
   const canonicalSlug = getCanonicalSlug(blog);
 
   if (!canonicalSlug) {
