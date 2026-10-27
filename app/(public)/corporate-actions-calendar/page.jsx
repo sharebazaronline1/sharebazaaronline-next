@@ -29,7 +29,8 @@ export const metadata = {
   },
 };
 
-export const revalidate = 300;
+// ✅ CHANGED: Increased to 1 hour to reduce ISR writes
+export const revalidate = 3600;
 
 async function getCorporateActions() {
   try {

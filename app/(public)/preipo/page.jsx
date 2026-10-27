@@ -30,7 +30,8 @@ export const metadata = {
   },
 };
 
-export const revalidate = 300;
+// ✅ CHANGED: 7-day revalidation as per caching policy
+export const revalidate = 604800;
 
 const normalizeName = (str = "") => {
   return str

@@ -4432,7 +4432,7 @@ export const fetchIPOs = async () => {
 
   "ipo_documents": {
     "drhp_link": "https://nsearchives.nseindia.com/emerge/corporates/content/AD_IPO_5056_06022025185755.zip",
-    "rhp_link": "Available via NSE SME filings",
+    "rhp_link": null,
     "prospectus_pdf": "https://www.sebi.gov.in/filings/public-issues/jan-2026/victory-electric-vehicles-international-limited_98841.html",
     "investor_presentation": null
   }
@@ -20465,8 +20465,8 @@ export const fetchIPOs = async () => {
 
 "ipo_documents": {
 "drhp_link": "https://www.icicisecurities.com/console/uploads/actual/TURTLEMINT-FINTECH-SOLUTIONS-LIMITED---RHP_1781540751_81.pdf",
-"rhp_link": "Available in IPO filings",
-"prospectus_pdf": "Pending",
+"rhp_link": null,
+"prospectus_pdf":  null,
 "investor_presentation":  null
 },
 
@@ -21306,9 +21306,9 @@ export const fetchIPOs = async () => {
   },
 
   "ipo_documents": {
-    "drhp_link": "Pending",
+    "drhp_link": null,
     "rhp_link": "https://www.chittorgarh.net/reports/ncd/rhp_icel.pdf",
-    "prospectus_pdf": "Pending",
+    "prospectus_pdf":  null,
     "investor_presentation":  null
   },
 
@@ -21968,7 +21968,7 @@ export const fetchIPOs = async () => {
   "ipo_documents": {
     "drhp_link":  null,
     "rhp_link": "https://www.wealthminenetworks.com/pdf/Red%20Herring%20Prospectus%20dhsl.pdf",
-    "prospectus_pdf": "Available via RHP link",
+    "prospectus_pdf": null,
     "investor_presentation":  null
   },
 

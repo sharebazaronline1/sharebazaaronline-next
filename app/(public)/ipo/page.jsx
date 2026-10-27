@@ -30,8 +30,8 @@ export const metadata = {
   },
 };
 
-// Increased to 1 hour
-export const revalidate = 3600;
+// ✅ CHANGED: 7-day revalidation as per caching policy
+export const revalidate = 604800;
 
 const MONTHS = {
   Jan: 0, January: 0, Feb: 1, February: 1, Mar: 2, March: 2,

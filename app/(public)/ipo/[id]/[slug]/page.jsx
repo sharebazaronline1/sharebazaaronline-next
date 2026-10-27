@@ -1,6 +1,6 @@
 // app/ipo/[id]/[slug]/page.jsx
 
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { fetchIPOs } from "@/api/mockApi";
 import IPODetailsClient from "@/components/IPODetailsClient";
 import { cache } from "react"; 
@@ -9,7 +9,8 @@ const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
   "https://www.sharebazaaronline.com";
 
-export const revalidate = 3600;
+export const revalidate = 604800;
+export const dynamicParams = true;
 
 function slugify(text) {
   if (!text) return "";
@@ -17,6 +18,25 @@ function slugify(text) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+// Helper to extract the most accurate name available
+function getIPOName(ipo) {
+  return (
+    ipo.name ||
+    ipo.fullName ||
+    ipo.company_information?.company_name ||
+    ipo.company_name ||
+    "IPO"
+  );
+}
+
+// Helper to enforce the database slug as the authoritative URL path
+function getOfficialSlug(ipo) {
+  if (ipo.slug && ipo.slug.trim() !== "") {
+    return ipo.slug.trim();
+  }
+  return slugify(getIPOName(ipo));
 }
 
 const getIPOData = cache(async (id) => {
@@ -54,25 +74,53 @@ const getIPOData = cache(async (id) => {
   }
 });
 
-export async function generateStaticParams() {
-  try {
-    const ipos = await fetchIPOs();
-    return ipos.map((ipo) => {
-      const name = ipo.name || ipo.fullName || "";
-      const slug = slugify(name);
-      return {
-        id: String(ipo.id),
-        slug,
-      };
-    });
-  } catch (error) {
-    console.error("Error generating static params:", error);
-    return [];
+function buildIPODescription(ipo, ipoName) {
+  const rawDesc = ipo.about_company?.description;
+  let baseDesc = "";
+
+  if (typeof rawDesc === "string" && rawDesc.trim().length > 20) {
+    baseDesc = rawDesc.replace(/\s+/g, " ").trim();
   }
+
+  if (baseDesc.length < 50) {
+    const priceMin = ipo.ipo_basic_details?.price_band_min;
+    const priceMax = ipo.ipo_basic_details?.price_band_max;
+    const lotSize = ipo.ipo_basic_details?.lot_size || ipo.market_lot_details?.retail_minimum?.shares;
+    const openDate = ipo.ipo_basic_details?.issue_open_date || ipo.important_dates?.ipo_open_date;
+
+    const parts = [`${ipoName} IPO complete details.`];
+    
+    if (priceMin && priceMax) parts.push(`Price Band: ₹${priceMin} - ₹${priceMax}.`);
+    if (lotSize) parts.push(`Lot Size: ${lotSize} shares.`);
+    if (openDate) parts.push(`Opens: ${openDate}.`);
+
+    if (parts.length === 1) {
+      parts.push(`Track live GMP, subscription status, allotment, and financial details on ShareBazaarOnline.`);
+    } else {
+      parts.push(`Track live GMP, subscription, and allotment.`);
+    }
+
+    baseDesc = parts.join(" ");
+  }
+
+  if (baseDesc.length > 155) {
+    baseDesc = baseDesc.substring(0, 155);
+    const lastSpace = baseDesc.lastIndexOf(" ");
+    if (lastSpace > 130) {
+      baseDesc = baseDesc.substring(0, lastSpace);
+    }
+    baseDesc = baseDesc.replace(/[,.;:]$/, "") + "...";
+  }
+
+  return baseDesc;
+}
+
+export async function generateStaticParams() {
+  return [];
 }
 
 export async function generateMetadata({ params }) {
-  const { id, slug } = await params;
+  const { id } = await params;
   const ipo = await getIPOData(id);
 
   if (!ipo) {
@@ -82,19 +130,20 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const ipoName = ipo.name || ipo.fullName || "IPO";
+  const ipoName = getIPOName(ipo);
+  const officialSlug = getOfficialSlug(ipo);
+  const canonical = `${SITE_URL}/ipo/${id}/${officialSlug}`;
 
-  const priceBand =
-    ipo.ipo_basic_details?.price_band_min && ipo.ipo_basic_details?.price_band_max
-      ? `₹${ipo.ipo_basic_details.price_band_min} - ₹${ipo.ipo_basic_details.price_band_max}`
-      : "";
+  const description = buildIPODescription(ipo, ipoName);
 
-  const description =
-    typeof ipo.about_company?.description === "string"
-      ? ipo.about_company.description.slice(0, 160)
-      : `Get complete details about ${ipoName} IPO including price band, lot size, financials, GMP, and subscription data.`;
+  const priceMin = ipo.ipo_basic_details?.price_band_min;
+  const priceMax = ipo.ipo_basic_details?.price_band_max;
+  const hasPriceBand = priceMin && priceMax;
 
-  const canonical = `${SITE_URL}/ipo/${id}/${slug}`;
+  // ✅ Clean title construction to avoid dangling commas
+  const pageTitle = hasPriceBand
+    ? `${ipoName} IPO - Price Band ₹${priceMin} - ₹${priceMax}, Lot Size, GMP & Details | ShareBazaarOnline`
+    : `${ipoName} IPO - Lot Size, GMP, Dates & Details | ShareBazaarOnline`;
 
   const imageUrl = ipo.logo
     ? ipo.logo.startsWith("http")
@@ -105,7 +154,7 @@ export async function generateMetadata({ params }) {
   const ipoDate = ipo.ipo_basic_details?.issue_open_date || ipo.created_at || undefined;
 
   return {
-    title: `${ipoName} IPO - Price Band ${priceBand}, Lot Size, GMP & Details | ShareBazaarOnline`,
+    title: pageTitle,
     description,
     alternates: { canonical },
     robots: { index: true, follow: true },
@@ -137,16 +186,20 @@ export default async function Page({ params }) {
     notFound();
   }
 
-  const ipoName = ipo.name || ipo.fullName || "IPO";
-  const canonicalUrl = `${SITE_URL}/ipo/${id}/${slug}`;
+  const ipoName = getIPOName(ipo);
+  const officialSlug = getOfficialSlug(ipo);
+
+  // ✅ ENFORCE CANONICAL URL: Redirect if the requested slug doesn't match the database slug
+  // Handle case-variants safely by comparing lowercased values
+  if (slug.toLowerCase() !== officialSlug.toLowerCase()) {
+    permanentRedirect(`/ipo/${encodeURIComponent(String(id))}/${officialSlug}`);
+  }
+
+  const canonicalUrl = `${SITE_URL}/ipo/${id}/${officialSlug}`;
+  const description = buildIPODescription(ipo, ipoName);
 
   const priceMin = ipo.ipo_basic_details?.price_band_min;
   const priceMax = ipo.ipo_basic_details?.price_band_max;
-
-  const description =
-    typeof ipo.about_company?.description === "string"
-      ? ipo.about_company.description.slice(0, 160)
-      : `Complete details about ${ipoName} IPO including price band, lot size, GMP, financials, and subscription data.`;
 
   const imageUrl = ipo.logo
     ? ipo.logo.startsWith("http")
@@ -256,7 +309,7 @@ export default async function Page({ params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbSchema) }}
       />
-      <IPODetailsClient initialIpo={ipo} id={id} slug={slug} />
+      <IPODetailsClient initialIpo={ipo} id={id} slug={officialSlug} />
     </>
   );
 }

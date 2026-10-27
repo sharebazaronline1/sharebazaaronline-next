@@ -1,3 +1,5 @@
+// app/ipo-calendar/page.jsx
+
 import { createClient } from "@supabase/supabase-js";
 import { fetchIPOs } from "@/api/mockApi";
 import IPOCalendarClient from "@/components/IPOCalendarClient";
@@ -9,7 +11,8 @@ export const metadata = {
   alternates: { canonical: "https://www.sharebazaaronline.com/ipo-calendar" },
 };
 
-export const revalidate = 300;
+// ✅ CHANGED: 7-day revalidation as per caching policy
+export const revalidate = 604800;
 
 export default async function Page() {
   let initialIpos = [];

@@ -89,8 +89,8 @@ export const metadata = {
   },
 };
 
-// Cache the rendered page for 5 minutes so repeat visits are instant.
-export const revalidate = 300;
+// ✅ CHANGED: Increased to 1 hour to reduce ISR writes while keeping blogs fresh
+export const revalidate = 3600;
 
 function slugify(text) {
   if (!text) return "";

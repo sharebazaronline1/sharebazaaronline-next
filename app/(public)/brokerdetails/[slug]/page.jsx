@@ -1,13 +1,12 @@
-
 // app/brokerdetails/[slug]/page.jsx
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import BrokerReviewDetailClient from "@/components/BrokerReviewDetailClient";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
 
-
-function createMetaDescription(content, brokerName) {
+// ✅ Enhanced helper to generate unique meta descriptions
+function createMetaDescription(content, brokerName, brokerData) {
   const cleanContent = (content || "")
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
     .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
@@ -19,34 +18,79 @@ function createMetaDescription(content, brokerName) {
     .replace(/\s+/g, " ")
     .trim();
 
-  const fallback =
-    `Read our ${brokerName} broker review covering brokerage charges, ` +
-    `trading features, platform experience, and ratings.`;
+  let text = cleanContent;
 
-  const text = cleanContent || fallback;
+  // Build a unique fallback if content is missing or too short
+  if (!text || text.length < 50) {
+    const parts = [`Read our detailed ${brokerName} review.`];
+    
+    if (brokerData?.broker_type) {
+      const type = brokerData.broker_type
+        .replace(/operating on.*/i, '')
+        .replace(/\(.*\)/g, '')
+        .trim();
+      if (type) parts.push(`Type: ${type}.`);
+    }
+    
+    if (brokerData?.rating) {
+      parts.push(`Rating: ${parseFloat(brokerData.rating).toFixed(1)}/5.`);
+    }
+    
+    try {
+      const details = typeof brokerData?.details === 'string' 
+        ? JSON.parse(brokerData.details) 
+        : brokerData?.details;
+        
+      if (details?.account_opening_charges?.individual_account_opening_fee) {
+        parts.push(`Account opening fee: ${details.account_opening_charges.individual_account_opening_fee}.`);
+      }
+    } catch (e) {
+      // Ignore JSON parse errors
+    }
+
+    parts.push(`Compare charges, trading platforms, and features on ShareBazaarOnline.`);
+    text = parts.join(" ");
+  }
 
   return text.length > 155
     ? `${text.slice(0, 152).trimEnd()}...`
     : text;
 }
+
 // Server-side function to fetch broker review data
 async function getBrokerReviewData(slug) {
   try {
     const possibleSlugs = [slug, `${slug}-review`, `${slug}review`];
     let reviewData = null;
     let brokerData = null;
+    let officialSlug = slug;
 
-    // Find review
+    // Find review - try variants
     for (const trySlug of possibleSlugs) {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("broker_reviews")
         .select("*")
         .eq("slug", trySlug)
-        .single();
+        .maybeSingle(); // Use maybeSingle to prevent errors on missing rows
 
-      if (!error && data) {
+      if (data) {
         reviewData = data;
+        officialSlug = data.slug; // ✅ Capture the exact slug from DB
         break;
+      }
+    }
+
+    // If still not found, try stripping -review to see if the base slug exists
+    if (!reviewData && (slug.endsWith('-review') || slug.endsWith('review'))) {
+      const base = slug.replace(/-review$/, "").replace(/review$/, "");
+      const { data } = await supabase
+        .from("broker_reviews")
+        .select("*")
+        .eq("slug", base)
+        .maybeSingle();
+      if (data) {
+         reviewData = data;
+         officialSlug = data.slug;
       }
     }
 
@@ -55,11 +99,11 @@ async function getBrokerReviewData(slug) {
     }
 
     // Find broker
-    const baseSlug = slug.replace(/-review$/, "").replace(/review$/, "");
+    const baseSlug = officialSlug.replace(/-review$/, "").replace(/review$/, "");
     const { data: brokerDataResult } = await supabase
       .from("brokers")
       .select("*")
-      .or(`slug.eq.${baseSlug},slug.eq.${slug}`)
+      .or(`slug.eq.${baseSlug},slug.eq.${officialSlug}`)
       .maybeSingle();
 
     if (brokerDataResult) {
@@ -77,6 +121,7 @@ async function getBrokerReviewData(slug) {
       review: reviewData,
       broker: brokerData,
       competitors: competitors || [],
+      officialSlug, // ✅ Return this to sync canonical URLs
     };
   } catch (error) {
     console.error("Error fetching broker review data:", error);
@@ -117,24 +162,22 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const brokerName = data.broker?.name || "Broker";
-  const reviewTitle = data.review.title || `${brokerName} Review`;
+  const { review, broker, officialSlug } = data;
+  const brokerName = broker?.name || "Broker";
+  const reviewTitle = review.title || `${brokerName} Review`;
 
-const description = createMetaDescription(
-  data.review.content,
-  brokerName
-);
-  const canonical = `${SITE_URL}/brokerdetails/${slug}`;
+  const description = createMetaDescription(review.content, brokerName, broker);
 
-  const imageUrl = data.broker?.logo
+  // ✅ Canonical URL matches the exact database slug
+  const canonical = `${SITE_URL}/brokerdetails/${officialSlug}`;
+
+  const imageUrl = broker?.logo
     ? (
-        data.broker.logo.startsWith("http")
-          ? data.broker.logo
-          : `${SITE_URL}${data.broker.logo.startsWith("/") ? "" : "/"}${data.broker.logo}`
+        broker.logo.startsWith("http")
+          ? broker.logo
+          : `${SITE_URL}${broker.logo.startsWith("/") ? "" : "/"}${broker.logo}`
       )
     : `${SITE_URL}/og-image.jpg`;
-
-  const rating = data.broker?.rating || 4.3;
 
   return {
     title: `${reviewTitle} - Broker Review & Ratings 2026 | ShareBazaarOnline`,
@@ -157,10 +200,8 @@ const description = createMetaDescription(
       images: [{ url: imageUrl }],
       siteName: "ShareBazaarOnline",
       locale: "en_IN",
-      publishedTime:
-        data.review.created_at || new Date().toISOString(),
-      modifiedTime:
-        data.review.updated_at || new Date().toISOString(),
+      publishedTime: review.created_at || new Date().toISOString(),
+      modifiedTime: review.updated_at || new Date().toISOString(),
     },
 
     twitter: {
@@ -183,20 +224,19 @@ export default async function Page({ params }) {
     notFound();
   }
 
-  const { review, broker } = data;
+  const { review, broker, officialSlug } = data;
+
+  // ✅ Enforce canonical URL: redirect alternate slugs
+  if (slug.toLowerCase() !== officialSlug.toLowerCase()) {
+    permanentRedirect(`/brokerdetails/${encodeURIComponent(officialSlug)}`);
+  }
 
   const brokerName = broker?.name || "Broker";
+  const reviewTitle = review.title || `${brokerName} Review`;
 
-  const reviewTitle =
-    review.title || `${brokerName} Review`;
+  const description = createMetaDescription(review.content, brokerName, broker);
 
-  const description = createMetaDescription(
-  review.content,
-  brokerName
-);
-
-  const canonicalUrl =
-    `${SITE_URL}/brokerdetails/${slug}`;
+  const canonicalUrl = `${SITE_URL}/brokerdetails/${officialSlug}`;
 
   const imageUrl = broker?.logo
     ? (
@@ -206,56 +246,30 @@ export default async function Page({ params }) {
       )
     : `${SITE_URL}/og-image.jpg`;
 
-  const publishedDate =
-    review.created_at || undefined;
-
-  const modifiedDate =
-    review.updated_at ||
-    review.created_at ||
-    undefined;
-
-  const rating =
-    parseFloat(broker?.rating || review?.rating || 4.3);
+  const publishedDate = review.created_at || undefined;
+  const modifiedDate = review.updated_at || review.created_at || undefined;
+  const rating = parseFloat(broker?.rating || review?.rating || 4.3);
 
   // ==========================================
   // ARTICLE JSON-LD
   // ==========================================
-
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
-
     "@id": `${canonicalUrl}#article`,
-
     headline: reviewTitle,
-
     description,
-
     url: canonicalUrl,
-
     image: [imageUrl],
-
-    ...(publishedDate
-      ? {
-          datePublished: publishedDate,
-        }
-      : {}),
-
-    ...(modifiedDate
-      ? {
-          dateModified: modifiedDate,
-        }
-      : {}),
-
+    ...(publishedDate ? { datePublished: publishedDate } : {}),
+    ...(modifiedDate ? { dateModified: modifiedDate } : {}),
     articleSection: "Broker Reviews",
-
     author: {
       "@type": "Organization",
       "@id": `${SITE_URL}#organization`,
       name: "ShareBazaarOnline",
       url: SITE_URL,
     },
-
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}#organization`,
@@ -266,7 +280,6 @@ export default async function Page({ params }) {
         url: `${SITE_URL}/logo.png`,
       },
     },
-
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": canonicalUrl,
@@ -277,33 +290,24 @@ export default async function Page({ params }) {
   // ==========================================
   // REVIEW JSON-LD
   // ==========================================
-
   const reviewSchema = {
     "@context": "https://schema.org",
     "@type": "Review",
-
     "@id": `${canonicalUrl}#review`,
-
     name: reviewTitle,
-
-    reviewBody:
-      review.content?.slice(0, 500) ||
-      `Complete review of ${brokerName}.`,
-
+    reviewBody: review.content?.slice(0, 500) || `Complete review of ${brokerName}.`,
     reviewRating: {
       "@type": "Rating",
       ratingValue: rating.toFixed(1),
       bestRating: "5",
       worstRating: "1",
     },
-
     author: {
       "@type": "Organization",
       "@id": `${SITE_URL}#organization`,
       name: "ShareBazaarOnline",
       url: SITE_URL,
     },
-
     itemReviewed: {
       "@type": "Product",
       name: `${brokerName} Brokerage Services`,
@@ -312,20 +316,16 @@ export default async function Page({ params }) {
         name: brokerName,
       },
     },
-
     url: canonicalUrl,
   };
 
   // ==========================================
   // BREADCRUMB JSON-LD
   // ==========================================
-
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-
     "@id": `${canonicalUrl}#breadcrumb`,
-
     itemListElement: [
       {
         "@type": "ListItem",
@@ -348,58 +348,29 @@ export default async function Page({ params }) {
     ],
   };
 
-  /*
-   * Safely serialize JSON-LD.
-   *
-   * Prevents a "<" character inside dynamic database content
-   * from interfering with the script element.
-   */
-  const articleSchemaJson = JSON.stringify(articleSchema).replace(
-    /</g,
-    "\\u003c"
-  );
-
-  const reviewSchemaJson = JSON.stringify(reviewSchema).replace(
-    /</g,
-    "\\u003c"
-  );
-
-  const breadcrumbSchemaJson = JSON.stringify(breadcrumbSchema).replace(
-    /</g,
-    "\\u003c"
-  );
+  const articleSchemaJson = JSON.stringify(articleSchema).replace(/</g, "\\u003c");
+  const reviewSchemaJson = JSON.stringify(reviewSchema).replace(/</g, "\\u003c");
+  const breadcrumbSchemaJson = JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c");
 
   return (
     <>
-      {/* Article JSON-LD */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: articleSchemaJson,
-        }}
+        dangerouslySetInnerHTML={{ __html: articleSchemaJson }}
       />
-
-      {/* Review JSON-LD */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: reviewSchemaJson,
-        }}
+        dangerouslySetInnerHTML={{ __html: reviewSchemaJson }}
       />
-
-      {/* Breadcrumb JSON-LD */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: breadcrumbSchemaJson,
-        }}
+        dangerouslySetInnerHTML={{ __html: breadcrumbSchemaJson }}
       />
 
       <BrokerReviewDetailClient
         initialData={data}
-        slug={slug}
+        slug={officialSlug}
       />
     </>
   );
 }
-

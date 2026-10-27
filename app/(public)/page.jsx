@@ -1,4 +1,5 @@
-// app/page.jsx
+
+ // app/page.jsx
 
 import Home from "../../src/components/home/Home";
 
@@ -7,8 +8,8 @@ const siteUrl =
   "https://www.sharebazaaronline.com";
 
 export const metadata = {
-  title:
-    "ShareBazaarOnline | IPO Tracker, Unlisted Shares & Broker Comparison",
+  title: "IPOs, Unlisted Shares & Broker Comparison",
+
   description:
     "Track IPOs, GMP, IPO allotment status, unlisted shares, corporate actions, broker comparisons and investment insights in one place.",
 
@@ -73,8 +74,7 @@ export default function Page() {
     "@type": "WebPage",
     "@id": `${siteUrl}/#webpage`,
     url: `${siteUrl}/`,
-    name:
-      "ShareBazaarOnline | IPO Tracker, Unlisted Shares & Broker Comparison",
+    name: "IPOs, Unlisted Shares & Broker Comparison | ShareBazaarOnline",
     description:
       "Track IPOs, GMP, IPO allotment status, unlisted shares, corporate actions, broker comparisons and investment insights in one place.",
     isPartOf: {

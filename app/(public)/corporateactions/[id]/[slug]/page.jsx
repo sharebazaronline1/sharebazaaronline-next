@@ -112,13 +112,15 @@ const getBlog = cache(async (id) => {
         "| code:",
         error.code
       );
-      return null;
+      // ✅ FIXED: Throw an error instead of returning null to prevent false 404s
+      throw new Error(`Failed to fetch blog ${id}: ${error.message}`);
     }
 
     return data || null;
   } catch (err) {
     console.error("[getBlog] exception:", err?.message || err);
-    return null;
+    // ✅ FIXED: Propagate the error to trigger an error boundary/500 page
+    throw err;
   }
 });
 

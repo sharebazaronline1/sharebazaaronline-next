@@ -4,8 +4,7 @@ import { fetchIPOs, fetchPreIPODetails } from "@/api/mockApi";
 
 const BASE_URL = "https://www.sharebazaaronline.com";
 
-// Regenerate sitemap every 5 minutes
-export const revalidate = 300;
+export const revalidate = 3600;
 
 // Categories that live under /corporateactions, not /insight-hub
 const CORPORATE_ACTION_CATEGORIES = [
@@ -31,9 +30,10 @@ function slugify(text = "") {
  * Safely converts a value to a Date
  */
 function getValidDate(dateStr) {
-  if (!dateStr) return new Date();
+  if (!dateStr) return undefined;
+
   const date = new Date(dateStr);
-  return Number.isNaN(date.getTime()) ? new Date() : date;
+  return Number.isNaN(date.getTime()) ? undefined : date;
 }
 
 export default async function sitemap() {
