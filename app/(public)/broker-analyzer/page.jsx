@@ -6,7 +6,8 @@ const SITE_URL = "https://www.sharebazaaronline.com";
 // Generate metadata for SEO
 export async function generateMetadata() {
   return {
-    title: "Broker Analyzer - Compare Top Stock Brokers in India 2026 | ShareBazaarOnline",
+    // ✅ CHANGED: Removed redundant brand suffix
+    title: "Broker Analyzer: Compare Top Stock Brokers",
     description:
       "Compare top stock brokers in India side by side. Check brokerage charges, account opening fees, ratings, active users, and trading segments. Find the best broker for your trading needs.",
 
@@ -20,7 +21,7 @@ export async function generateMetadata() {
     },
 
     openGraph: {
-      title: "Broker Analyzer - Compare Top Stock Brokers in India",
+      title: "Broker Analyzer: Compare Top Stock Brokers",
       description:
         "Make the right choice by comparing brokerage charges, ratings, and features of India's top stock brokers side by side.",
       url: `${SITE_URL}/broker-analyzer`,
@@ -32,7 +33,7 @@ export async function generateMetadata() {
 
     twitter: {
       card: "summary_large_image",
-      title: "Broker Analyzer - Compare Stock Brokers",
+      title: "Broker Analyzer: Compare Top Stock Brokers",
       description:
         "Compare India's top stock brokers side by side. Check brokerage charges, ratings, and features.",
       images: [`${SITE_URL}/og-image.jpg`],
@@ -53,8 +54,8 @@ export default function BrokerAnalyzerPage() {
 
     url: canonicalUrl,
 
-    name:
-      "Broker Analyzer - Compare Top Stock Brokers in India 2026 | ShareBazaarOnline",
+    // ✅ CHANGED: Matched the new title
+    name: "Broker Analyzer: Compare Top Stock Brokers",
 
     description:
       "Compare top stock brokers in India side by side. Check brokerage charges, account opening fees, ratings, active users, and trading segments.",
@@ -106,12 +107,6 @@ export default function BrokerAnalyzerPage() {
     ],
   };
 
-  /*
-   * Safely serialize JSON-LD.
-   *
-   * Prevents a "<" character inside dynamic values
-   * from interfering with the script element.
-   */
   const webPageSchemaJson = JSON.stringify(webPageSchema).replace(
     /</g,
     "\\u003c"
@@ -124,7 +119,6 @@ export default function BrokerAnalyzerPage() {
 
   return (
     <>
-      {/* WebPage JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -132,7 +126,6 @@ export default function BrokerAnalyzerPage() {
         }}
       />
 
-      {/* Breadcrumb JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

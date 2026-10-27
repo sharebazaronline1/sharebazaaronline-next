@@ -7,14 +7,15 @@ import { supabase } from "@/lib/supabase";
 const SITE_URL = "https://www.sharebazaaronline.com";
 
 export const metadata = {
-  title: "Pre-IPO & Unlisted Shares | ShareBazaarOnline",
+  // ✅ CHANGED: Removed redundant brand suffix
+  title: "Pre-IPO & Unlisted Shares",
   description:
     "Discover pre-IPO and unlisted companies, track pricing and availability before they list. Find private company opportunities and market insights.",
   alternates: {
     canonical: `${SITE_URL}/preipo`,
   },
   openGraph: {
-    title: "Pre-IPO & Unlisted Shares | ShareBazaarOnline",
+    title: "Pre-IPO & Unlisted Shares",
     description:
       "Discover pre-IPO and unlisted companies, track pricing and availability before they list.",
     url: `${SITE_URL}/preipo`,
@@ -24,13 +25,12 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pre-IPO & Unlisted Shares | ShareBazaarOnline",
+    title: "Pre-IPO & Unlisted Shares",
     description:
       "Discover pre-IPO and unlisted companies, track pricing and availability before they list.",
   },
 };
 
-// ✅ CHANGED: 7-day revalidation as per caching policy
 export const revalidate = 604800;
 
 const normalizeName = (str = "") => {
@@ -95,7 +95,7 @@ function buildJsonLd(merged) {
     "@type": "WebPage",
     "@id": `${canonicalUrl}#webpage`,
     url: canonicalUrl,
-    name: "Pre-IPO & Unlisted Shares | ShareBazaarOnline",
+    name: "Pre-IPO & Unlisted Shares", // ✅ CHANGED
     description:
       "Discover pre-IPO and unlisted companies, track pricing and availability before they list. Find private company opportunities and market insights.",
     isPartOf: {

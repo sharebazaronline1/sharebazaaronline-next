@@ -5,6 +5,12 @@ import BrokerReviewDetailClient from "@/components/BrokerReviewDetailClient";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
 
+// ✅ NEW HELPER: Strip brand suffix from DB titles
+function cleanTitle(title) {
+  if (!title) return "";
+  return title.replace(/\s*\|\s*ShareBazaarOnline\s*$/i, "").trim();
+}
+
 // ✅ Enhanced helper to generate unique meta descriptions
 function createMetaDescription(content, brokerName, brokerData) {
   const cleanContent = (content || "")
@@ -20,7 +26,6 @@ function createMetaDescription(content, brokerName, brokerData) {
 
   let text = cleanContent;
 
-  // Build a unique fallback if content is missing or too short
   if (!text || text.length < 50) {
     const parts = [`Read our detailed ${brokerName} review.`];
     
@@ -57,7 +62,6 @@ function createMetaDescription(content, brokerName, brokerData) {
     : text;
 }
 
-// Server-side function to fetch broker review data
 async function getBrokerReviewData(slug) {
   try {
     const possibleSlugs = [slug, `${slug}-review`, `${slug}review`];
@@ -65,22 +69,20 @@ async function getBrokerReviewData(slug) {
     let brokerData = null;
     let officialSlug = slug;
 
-    // Find review - try variants
     for (const trySlug of possibleSlugs) {
       const { data } = await supabase
         .from("broker_reviews")
         .select("*")
         .eq("slug", trySlug)
-        .maybeSingle(); // Use maybeSingle to prevent errors on missing rows
+        .maybeSingle(); 
 
       if (data) {
         reviewData = data;
-        officialSlug = data.slug; // ✅ Capture the exact slug from DB
+        officialSlug = data.slug; 
         break;
       }
     }
 
-    // If still not found, try stripping -review to see if the base slug exists
     if (!reviewData && (slug.endsWith('-review') || slug.endsWith('review'))) {
       const base = slug.replace(/-review$/, "").replace(/review$/, "");
       const { data } = await supabase
@@ -98,7 +100,6 @@ async function getBrokerReviewData(slug) {
       return null;
     }
 
-    // Find broker
     const baseSlug = officialSlug.replace(/-review$/, "").replace(/review$/, "");
     const { data: brokerDataResult } = await supabase
       .from("brokers")
@@ -110,7 +111,6 @@ async function getBrokerReviewData(slug) {
       brokerData = brokerDataResult;
     }
 
-    // Get competitors
     const { data: competitors } = await supabase
       .from("brokers")
       .select("name, slug, logo, rating, active_users")
@@ -121,7 +121,7 @@ async function getBrokerReviewData(slug) {
       review: reviewData,
       broker: brokerData,
       competitors: competitors || [],
-      officialSlug, // ✅ Return this to sync canonical URLs
+      officialSlug, 
     };
   } catch (error) {
     console.error("Error fetching broker review data:", error);
@@ -129,7 +129,6 @@ async function getBrokerReviewData(slug) {
   }
 }
 
-// Generate static params for SSG
 export async function generateStaticParams() {
   try {
     const { data: reviews } = await supabase
@@ -147,14 +146,13 @@ export async function generateStaticParams() {
   }
 }
 
-// Generate metadata for SEO
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const data = await getBrokerReviewData(slug);
 
   if (!data || !data.review) {
     return {
-      title: "Broker Not Found | ShareBazaarOnline",
+      title: "Broker Not Found",
       robots: {
         index: false,
         follow: false,
@@ -164,11 +162,12 @@ export async function generateMetadata({ params }) {
 
   const { review, broker, officialSlug } = data;
   const brokerName = broker?.name || "Broker";
-  const reviewTitle = review.title || `${brokerName} Review`;
+  
+  // ✅ CHANGED: Clean the title and rely on the root template for the brand
+  const reviewTitle = cleanTitle(review.title) || `${brokerName} Review`;
 
   const description = createMetaDescription(review.content, brokerName, broker);
 
-  // ✅ Canonical URL matches the exact database slug
   const canonical = `${SITE_URL}/brokerdetails/${officialSlug}`;
 
   const imageUrl = broker?.logo
@@ -180,7 +179,7 @@ export async function generateMetadata({ params }) {
     : `${SITE_URL}/og-image.jpg`;
 
   return {
-    title: `${reviewTitle} - Broker Review & Ratings 2026 | ShareBazaarOnline`,
+    title: reviewTitle, // Root layout adds | ShareBazaarOnline
     description,
 
     alternates: {
@@ -206,7 +205,7 @@ export async function generateMetadata({ params }) {
 
     twitter: {
       card: "summary_large_image",
-      title: `${reviewTitle} - Broker Review`,
+      title: reviewTitle,
       description,
       images: [imageUrl],
     },
@@ -215,7 +214,6 @@ export async function generateMetadata({ params }) {
   };
 }
 
-// Main page component - SERVER COMPONENT
 export default async function Page({ params }) {
   const { slug } = await params;
   const data = await getBrokerReviewData(slug);
@@ -226,13 +224,12 @@ export default async function Page({ params }) {
 
   const { review, broker, officialSlug } = data;
 
-  // ✅ Enforce canonical URL: redirect alternate slugs
   if (slug.toLowerCase() !== officialSlug.toLowerCase()) {
     permanentRedirect(`/brokerdetails/${encodeURIComponent(officialSlug)}`);
   }
 
   const brokerName = broker?.name || "Broker";
-  const reviewTitle = review.title || `${brokerName} Review`;
+  const reviewTitle = cleanTitle(review.title) || `${brokerName} Review`;
 
   const description = createMetaDescription(review.content, brokerName, broker);
 
@@ -250,9 +247,6 @@ export default async function Page({ params }) {
   const modifiedDate = review.updated_at || review.created_at || undefined;
   const rating = parseFloat(broker?.rating || review?.rating || 4.3);
 
-  // ==========================================
-  // ARTICLE JSON-LD
-  // ==========================================
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -287,9 +281,6 @@ export default async function Page({ params }) {
     },
   };
 
-  // ==========================================
-  // REVIEW JSON-LD
-  // ==========================================
   const reviewSchema = {
     "@context": "https://schema.org",
     "@type": "Review",
@@ -319,9 +310,6 @@ export default async function Page({ params }) {
     url: canonicalUrl,
   };
 
-  // ==========================================
-  // BREADCRUMB JSON-LD
-  // ==========================================
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

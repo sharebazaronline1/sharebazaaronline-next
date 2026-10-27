@@ -8,14 +8,15 @@ const siteUrl =
   "https://www.sharebazaaronline.com";
 
 export const metadata = {
-  title: "IPO Tracker — ShareBazaarOnline",
+  // ✅ CHANGED: Removed redundant brand suffix
+  title: "IPO Tracker",
   description:
     "Live & upcoming IPOs in India — price bands, lot sizes, GMP trends, and subscription insights.",
   alternates: {
     canonical: `${siteUrl}/ipo`,
   },
   openGraph: {
-    title: "IPO Tracker — ShareBazaarOnline",
+    title: "IPO Tracker",
     description:
       "Live & upcoming IPOs in India — price bands, lot sizes, GMP trends, and subscription insights.",
     url: `${siteUrl}/ipo`,
@@ -24,13 +25,12 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "IPO Tracker — ShareBazaarOnline",
+    title: "IPO Tracker",
     description:
       "Live & upcoming IPOs in India — price bands, lot sizes, GMP trends, and subscription insights.",
   },
 };
 
-// ✅ CHANGED: 7-day revalidation as per caching policy
 export const revalidate = 604800;
 
 const MONTHS = {

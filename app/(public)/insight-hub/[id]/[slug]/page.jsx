@@ -17,6 +17,12 @@ const supabasePublic = createClient(
   }
 );
 
+// ✅ NEW HELPER: Strip brand suffix from DB titles
+function cleanTitle(title) {
+  if (!title) return "";
+  return title.replace(/\s*\|\s*ShareBazaarOnline\s*$/i, "").trim();
+}
+
 // Corporate-action categories must not render under Insight Hub.
 const CORPORATE_ACTION_CATEGORIES = [
   "Buyback", "Dividend", "Dividends", "Bonus Issue", "Stock Split",
@@ -158,7 +164,7 @@ export async function generateMetadata({ params }) {
     isCorporateActionCategory(blog.category)
   ) {
     return {
-      title: "Article Not Found | ShareBazaarOnline",
+      title: "Article Not Found",
       robots: { index: false, follow: false },
     };
   }
@@ -167,13 +173,15 @@ export async function generateMetadata({ params }) {
 
   if (!canonicalSlug) {
     return {
-      title: "Article Not Found | ShareBazaarOnline",
+      title: "Article Not Found",
       robots: { index: false, follow: false },
     };
   }
 
+  // ✅ CHANGED: Clean title
   const title =
-    blog.meta_title || blog.heading || blog.title || "ShareBazaarOnline";
+    cleanTitle(blog.meta_title || blog.heading || blog.title) ||
+    "Market Insight";
 
   const description =
     blog.meta_description ||
@@ -234,8 +242,10 @@ export default async function Page({ params }) {
     );
   }
 
+  // ✅ CHANGED: Clean title
   const articleTitle =
-    blog.meta_title || blog.heading || blog.title || "ShareBazaarOnline";
+    cleanTitle(blog.meta_title || blog.heading || blog.title) ||
+    "Market Insight";
 
   const articleDescription =
     blog.meta_description ||
