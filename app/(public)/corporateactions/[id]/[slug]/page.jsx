@@ -11,7 +11,30 @@ const SITE_URL = "https://www.sharebazaaronline.com";
 // ✅ NEW HELPER: Strip brand suffix from DB titles
 function cleanTitle(title) {
   if (!title) return "";
-  return title.replace(/\s*\|\s*ShareBazaarOnline\s*$/i, "").trim();
+  
+  // 1. Remove the brand suffix if it exists
+  let cleaned = title.replace(/\s*\|\s*ShareBazaarOnline\s*$/i, "").trim();
+  
+  // 2. Remove any trailing pipes, dashes, or spaces BEFORE truncating
+  cleaned = cleaned.replace(/[\s|-]+$/, "").trim();
+  
+  // 3. Truncate to a safe length (45 chars)
+  const MAX_LENGTH = 45;
+  
+  if (cleaned.length > MAX_LENGTH) {
+    cleaned = cleaned.substring(0, MAX_LENGTH).trim();
+    
+    // Find the last space to avoid cutting words in half
+    const lastSpace = cleaned.lastIndexOf(" ");
+    if (lastSpace > 0) {
+      cleaned = cleaned.substring(0, lastSpace).trim();
+    }
+    
+    // 4. Final sweep: remove any trailing punctuation that survived truncation
+    cleaned = cleaned.replace(/[,.;:|-]+$/, "").trim();
+  }
+  
+  return cleaned;
 }
 
 const supabasePublic = createClient(
@@ -171,7 +194,7 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  // ✅ CHANGED: Apply cleanTitle
+  // ✅ Uses the updated cleanTitle which truncates the long string
   const title =
     cleanTitle(blog.meta_title || blog.heading || blog.title) ||
     "Corporate Action";
@@ -229,7 +252,7 @@ export default async function Page({ params }) {
   const canonicalUrl =
     `${SITE_URL}/corporateactions/${id}/${canonicalSlug}`;
 
-  // ✅ CHANGED: Apply cleanTitle
+  // ✅ Uses the updated cleanTitle
   const articleTitle =
     cleanTitle(blog.meta_title || blog.heading || blog.title) ||
     "Corporate Action";

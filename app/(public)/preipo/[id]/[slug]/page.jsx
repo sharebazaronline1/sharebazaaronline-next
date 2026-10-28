@@ -95,6 +95,7 @@ export async function generateMetadata({ params }) {
   }
 
   const companyName = data.name;
+  
   const price = data.price
     ? `₹${Number(data.price).toLocaleString("en-IN")}`
     : "";
@@ -118,10 +119,9 @@ export async function generateMetadata({ params }) {
 
   const description = getDescription(overview);
 
-  // ✅ CHANGED: Removed the brand suffix
-  const title = price
-    ? `${companyName} - Share Price ${price}`
-    : `${companyName} - Share Details`;
+  // ✅ CHANGED: Title is now just the company name. 
+  // The root layout will append " | ShareBazaarOnline"
+  const title = companyName;
 
   const canonical = `${SITE_URL}/preipo/${id}/${slug}`;
 

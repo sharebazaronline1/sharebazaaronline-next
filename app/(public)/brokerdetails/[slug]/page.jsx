@@ -5,10 +5,31 @@ import BrokerReviewDetailClient from "@/components/BrokerReviewDetailClient";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
 
-// ✅ NEW HELPER: Strip brand suffix from DB titles
+// ✅ NEW HELPER: Strip brand suffix and safely truncate overly long DB titles
+// ✅ FINAL HELPER: Strictly truncates to guarantee title is under 65 chars
 function cleanTitle(title) {
   if (!title) return "";
-  return title.replace(/\s*\|\s*ShareBazaarOnline\s*$/i, "").trim();
+  
+  // 1. Remove the brand suffix if it exists
+  let cleaned = title.replace(/\s*\|\s*ShareBazaarOnline\s*$/i, "").trim();
+  
+  // 2. Truncate to a strict limit of 40 chars
+  const MAX_LENGTH = 40;
+  
+  if (cleaned.length > MAX_LENGTH) {
+    cleaned = cleaned.substring(0, MAX_LENGTH).trim();
+    
+    // Remove trailing punctuation before cutting at the last space
+    cleaned = cleaned.replace(/[,.;:|-]$/, '').trim();
+    
+    // Find the last space to avoid cutting words in half
+    const lastSpace = cleaned.lastIndexOf(" ");
+    if (lastSpace > 0) {
+      cleaned = cleaned.substring(0, lastSpace).trim();
+    }
+  }
+  
+  return cleaned;
 }
 
 // ✅ Enhanced helper to generate unique meta descriptions
@@ -163,7 +184,7 @@ export async function generateMetadata({ params }) {
   const { review, broker, officialSlug } = data;
   const brokerName = broker?.name || "Broker";
   
-  // ✅ CHANGED: Clean the title and rely on the root template for the brand
+  // ✅ Uses the updated cleanTitle which truncates long text safely
   const reviewTitle = cleanTitle(review.title) || `${brokerName} Review`;
 
   const description = createMetaDescription(review.content, brokerName, broker);

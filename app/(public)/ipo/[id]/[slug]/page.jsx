@@ -32,12 +32,6 @@ function cleanPrice(price) {
   return String(price).replace(/₹/g, "").trim();
 }
 
-// ✅ NEW HELPER: Strip brand suffix from DB titles
-function cleanTitle(title) {
-  if (!title) return "";
-  return title.replace(/\s*\|\s*ShareBazaarOnline\s*$/i, "").trim();
-}
-
 function getIPOName(ipo) {
   return (
     ipo.name ||
@@ -153,17 +147,9 @@ export async function generateMetadata({ params }) {
   const canonical = `${SITE_URL}/ipo/${id}/${officialSlug}`;
   const description = buildIPODescription(ipo, ipoName);
 
-  const priceMin = ipo.ipo_basic_details?.price_band_min;
-  const priceMax = ipo.ipo_basic_details?.price_band_max;
-  const hasPriceBand = priceMin && priceMax;
-  
-  const pMin = cleanPrice(priceMin);
-  const pMax = cleanPrice(priceMax);
-
-  // ✅ CHANGED: Removed brand suffix, cleaned double ₹ and "IPO IPO", shortened string
-  const pageTitle = hasPriceBand
-    ? `${ipoName} IPO - Price Band ₹${pMin} - ₹${pMax}, GMP & Details`
-    : `${ipoName} IPO - Lot Size, GMP & Details`;
+  // ✅ CHANGED: Title is now just the company name + IPO. 
+  // Root layout will append " | ShareBazaarOnline"
+  const pageTitle = `${ipoName} IPO`;
 
   const imageUrl = ipo.logo
     ? ipo.logo.startsWith("http")
@@ -174,7 +160,7 @@ export async function generateMetadata({ params }) {
   const ipoDate = ipo.ipo_basic_details?.issue_open_date || ipo.created_at || undefined;
 
   return {
-    title: pageTitle, // Root layout adds | ShareBazaarOnline
+    title: pageTitle,
     description,
     alternates: { canonical },
     robots: { index: true, follow: true },
