@@ -1,4 +1,4 @@
-// app/privacy-policy/page.jsx
+// app/privacy/page.jsx
 import Link from "next/link";
 import { ChevronRight, Home } from "lucide-react";
 
@@ -9,7 +9,7 @@ export const metadata = {
   title: "Privacy Policy",
   description:
     "ShareBazaarOnline Privacy Policy, how we collect, use, and protect your personal data under India's Digital Personal Data Protection Act, 2023 (DPDP Act).",
-  alternates: { canonical: "/privacy-policy" },
+  alternates: { canonical: "/privacy" },
   robots: { index: true, follow: true },
 };
 
@@ -32,7 +32,7 @@ const SubHeading = ({ children }) => (
 export default function PrivacyPolicyPage() {
   const breadcrumbItems = [
     { name: "Home", url: "/" },
-    { name: "Privacy Policy", url: "/privacy-policy" },
+    { name: "Privacy Policy", url: "/privacy" },
   ];
 
   const definitions = [

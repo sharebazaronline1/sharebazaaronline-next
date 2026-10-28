@@ -31,7 +31,7 @@ export const metadata = {
   },
 };
 
-export const revalidate = 604800;
+export const dynamic = "force-dynamic";
 
 const MONTHS = {
   Jan: 0, January: 0, Feb: 1, February: 1, Mar: 2, March: 2,

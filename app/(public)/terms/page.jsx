@@ -326,7 +326,7 @@ export default function TermsPage() {
             <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
               Our handling of your personal data is governed by our{" "}
               <Link
-                href="/privacy-policy"
+                href="/privacy"
                 className="text-slate-900 font-medium hover:underline"
               >
                 Privacy Policy

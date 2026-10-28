@@ -6,7 +6,7 @@ const SITE_URL = "https://www.sharebazaaronline.com";
 // Generate metadata for SEO
 export async function generateMetadata() {
   return {
-    title: "How to Apply for IPO - Step by Step Guide 2026 | ShareBazaarOnline",
+    title: "How to Apply for IPO",
 
     description:
       "Learn how to apply for IPO online in India through UPI & ASBA. Complete step-by-step guide with multiple bids, allotment process, and important tips for retail investors.",

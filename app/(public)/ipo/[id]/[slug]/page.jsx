@@ -20,7 +20,24 @@ function slugify(text) {
     .replace(/^-+|-+$/g, "");
 }
 
-// Helper to extract the most accurate name available
+// ✅ NEW HELPER: Strip redundant "IPO" from the company name
+function cleanIPOName(name) {
+  if (!name) return "";
+  return name.replace(/\s*IPO\s*$/i, "").trim();
+}
+
+// ✅ NEW HELPER: Remove duplicate currency symbols
+function cleanPrice(price) {
+  if (!price) return "";
+  return String(price).replace(/₹/g, "").trim();
+}
+
+// ✅ NEW HELPER: Strip brand suffix from DB titles
+function cleanTitle(title) {
+  if (!title) return "";
+  return title.replace(/\s*\|\s*ShareBazaarOnline\s*$/i, "").trim();
+}
+
 function getIPOName(ipo) {
   return (
     ipo.name ||
@@ -31,7 +48,6 @@ function getIPOName(ipo) {
   );
 }
 
-// Helper to enforce the database slug as the authoritative URL path
 function getOfficialSlug(ipo) {
   if (ipo.slug && ipo.slug.trim() !== "") {
     return ipo.slug.trim();
@@ -125,25 +141,29 @@ export async function generateMetadata({ params }) {
 
   if (!ipo) {
     return {
-      title: "IPO Not Found | ShareBazaarOnline",
+      title: "IPO Not Found",
       robots: { index: false, follow: false },
     };
   }
 
-  const ipoName = getIPOName(ipo);
+  const rawIpoName = getIPOName(ipo);
+  const ipoName = cleanIPOName(rawIpoName);
+  
   const officialSlug = getOfficialSlug(ipo);
   const canonical = `${SITE_URL}/ipo/${id}/${officialSlug}`;
-
   const description = buildIPODescription(ipo, ipoName);
 
   const priceMin = ipo.ipo_basic_details?.price_band_min;
   const priceMax = ipo.ipo_basic_details?.price_band_max;
   const hasPriceBand = priceMin && priceMax;
+  
+  const pMin = cleanPrice(priceMin);
+  const pMax = cleanPrice(priceMax);
 
-  // ✅ Clean title construction to avoid dangling commas
+  // ✅ CHANGED: Removed brand suffix, cleaned double ₹ and "IPO IPO", shortened string
   const pageTitle = hasPriceBand
-    ? `${ipoName} IPO - Price Band ₹${priceMin} - ₹${priceMax}, Lot Size, GMP & Details | ShareBazaarOnline`
-    : `${ipoName} IPO - Lot Size, GMP, Dates & Details | ShareBazaarOnline`;
+    ? `${ipoName} IPO - Price Band ₹${pMin} - ₹${pMax}, GMP & Details`
+    : `${ipoName} IPO - Lot Size, GMP & Details`;
 
   const imageUrl = ipo.logo
     ? ipo.logo.startsWith("http")
@@ -154,12 +174,12 @@ export async function generateMetadata({ params }) {
   const ipoDate = ipo.ipo_basic_details?.issue_open_date || ipo.created_at || undefined;
 
   return {
-    title: pageTitle,
+    title: pageTitle, // Root layout adds | ShareBazaarOnline
     description,
     alternates: { canonical },
     robots: { index: true, follow: true },
     openGraph: {
-      title: `${ipoName} IPO - Complete Details`,
+      title: pageTitle,
       description,
       url: canonical,
       type: "article",
@@ -171,7 +191,7 @@ export async function generateMetadata({ params }) {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${ipoName} IPO - Price, Lot Size & GMP`,
+      title: pageTitle,
       description,
       images: [imageUrl],
     },
@@ -186,11 +206,10 @@ export default async function Page({ params }) {
     notFound();
   }
 
-  const ipoName = getIPOName(ipo);
+  const rawIpoName = getIPOName(ipo);
+  const ipoName = cleanIPOName(rawIpoName);
   const officialSlug = getOfficialSlug(ipo);
 
-  // ✅ ENFORCE CANONICAL URL: Redirect if the requested slug doesn't match the database slug
-  // Handle case-variants safely by comparing lowercased values
   if (slug.toLowerCase() !== officialSlug.toLowerCase()) {
     permanentRedirect(`/ipo/${encodeURIComponent(String(id))}/${officialSlug}`);
   }

@@ -77,7 +77,7 @@ const UnlistedGuideClient = () => {
   // Breadcrumb items for JSON-LD
   const breadcrumbItems = [
     { name: "Home", url: "/" },
-    { name: "Unlisted Guide", url: "/unlisted-guide" },
+    { name: "Unlisted Guide", url: "/pre-ipo-guide" },
   ];
 
   return (

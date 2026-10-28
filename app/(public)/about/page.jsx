@@ -26,7 +26,7 @@ import BreadcrumbSchema from "@/components/BreadcrumbSchema";
 
 export const metadata = {
   metadataBase: new URL("https://www.sharebazaaronline.com"),
-  title: "About Us",
+   title: "About Us: India's IPO & Unlisted Shares Platform",
   description:
     "Learn about ShareBazaarOnline.com — India's trusted platform for IPO tracking, pre-IPO & unlisted shares research, broker comparison, corporate actions, and market education.",
   alternates: { canonical: "/about" },

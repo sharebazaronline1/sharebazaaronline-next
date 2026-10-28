@@ -11,7 +11,7 @@ export const revalidate = 3600;
 
 export async function generateMetadata() {
   return {
-    title: "Dividends Calendar 2026 — Record Dates, Ex-Dates & Yield | ShareBazaarOnline",
+   title: "Dividends Calendar 2026: Record Dates & Yield",
     description:
       "Track upcoming dividend announcements across Indian listed companies. Get the latest record dates, ex-dividend dates, payout amounts, and yield analysis.",
     alternates: { canonical: `${SITE_URL}/corporateactions/dividends` },

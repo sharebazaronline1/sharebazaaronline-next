@@ -18,11 +18,10 @@ async function getPreIPOData(id) {
     }
 
     try {
-   
-
       const { data: dbData, error: dbError } = await publicSupabase
-  .from("pre_ipo_companies")
-  .select("name, price, lot_size");
+        .from("pre_ipo_companies")
+        .select("name, price, lot_size");
+        
       if (!dbError && dbData && dbData.length > 0) {
         const normalize = (str) =>
           str.toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -59,7 +58,6 @@ async function getPreIPOData(id) {
   }
 }
 
-// Generate static params for SSG
 export async function generateStaticParams() {
   try {
     const mockData = await fetchPreIPODetails();
@@ -88,7 +86,7 @@ export async function generateMetadata({ params }) {
 
   if (!data) {
     return {
-      title: "Company Not Found | ShareBazaarOnline",
+      title: "Company Not Found",
       robots: {
         index: false,
         follow: false,
@@ -120,9 +118,10 @@ export async function generateMetadata({ params }) {
 
   const description = getDescription(overview);
 
+  // ✅ CHANGED: Removed the brand suffix
   const title = price
-    ? `${companyName} - Share Price ${price} | ShareBazaarOnline`
-    : `${companyName} - Share Details | ShareBazaarOnline`;
+    ? `${companyName} - Share Price ${price}`
+    : `${companyName} - Share Details`;
 
   const canonical = `${SITE_URL}/preipo/${id}/${slug}`;
 

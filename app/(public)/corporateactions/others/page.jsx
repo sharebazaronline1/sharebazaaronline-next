@@ -11,7 +11,7 @@ export const revalidate = 3600;
 
 export async function generateMetadata() {
   return {
-    title: "Other Corporate Actions 2026 — Mergers, Delistings | ShareBazaarOnline",
+    title: "Other Corporate Actions",
     description:
       "Track all other corporate actions including mergers, demergers, delistings, open offers, and scheme of arrangements in India.",
     alternates: { canonical: `${SITE_URL}/corporateactions/others` },

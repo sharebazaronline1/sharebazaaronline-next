@@ -1,4 +1,4 @@
-// app/unlisted-guide/page.jsx
+// app/pre-ipo-guide/page.jsx
 
 import UnlistedGuideClient from "@/components/UnlistedGuideClient";
 
@@ -6,13 +6,13 @@ const SITE_URL = "https://www.sharebazaaronline.com";
 
 export const metadata = {
   title:
-    "Unlisted Shares Guide - Pre-IPO Investing, Taxation & Risks | ShareBazaarOnline",
+    "Unlisted Shares Guide",
   description:
     "Complete guide to unlisted shares in India. Learn about pre-IPO investing, valuation, taxation, risks, regulations, and how to buy unlisted shares. Expert insights for investors.",
   keywords:
     "unlisted shares, pre-IPO shares, unlisted shares India, buy unlisted shares, unlisted shares taxation, pre-IPO investing, unlisted shares guide",
   alternates: {
-    canonical: `${SITE_URL}/unlisted-guide`,
+    canonical: `${SITE_URL}/pre-ipo-guide`,
   },
   authors: [
     { name: "Manjunath Talanki", url: `${SITE_URL}/about` },
@@ -21,7 +21,7 @@ export const metadata = {
     title: "Unlisted Shares Guide - Pre-IPO Investing, Taxation & Risks",
     description:
       "Complete guide to unlisted shares in India. Learn about pre-IPO investing, valuation, taxation, risks, and regulations.",
-    url: `${SITE_URL}/unlisted-guide`,
+    url: `${SITE_URL}/pre-ipo-guide`,
     type: "article",
     images: [{ url: `${SITE_URL}/og-image.jpg` }],
     siteName: "ShareBazaarOnline",
@@ -38,7 +38,7 @@ export const metadata = {
 };
 
 export default function UnlistedGuidePage() {
-  const canonicalUrl = `${SITE_URL}/unlisted-guide`;
+  const canonicalUrl = `${SITE_URL}/pre-ipo-guide`;
 
   const articleSchema = {
     "@context": "https://schema.org",

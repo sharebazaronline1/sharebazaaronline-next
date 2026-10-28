@@ -1,4 +1,3 @@
-
 // app/comparebrokers/page.jsx
 import { Suspense } from "react";
 import CompareBrokerClient from "@/components/CompareBrokerClient";
@@ -7,8 +6,7 @@ const SITE_URL = "https://www.sharebazaaronline.com";
 
 export async function generateMetadata() {
   return {
-    title:
-      "Compare Best Stock Brokers in India 2026 - Brokerage Charges & Ratings | ShareBazaarOnline",
+    title: "Compare Best Stock Brokers in India",
 
     description:
       "Compare top stock brokers in India side by side. Check brokerage charges, account opening fees, ratings, active users, and trading segments to find the best broker for your needs.",
@@ -23,8 +21,7 @@ export async function generateMetadata() {
     },
 
     openGraph: {
-      title:
-        "Compare Top Stock Brokers in India - Brokerage & Fees Comparison",
+      title: "Compare Top Stock Brokers in India - Brokerage & Fees Comparison",
 
       description:
         "Make the right choice by comparing brokerage charges, ratings, and features of India's top stock brokers side by side. Find the best broker for your trading needs.",
@@ -45,8 +42,7 @@ export async function generateMetadata() {
     twitter: {
       card: "summary_large_image",
 
-      title:
-        "Compare Stock Brokers - Brokerage & Fees Comparison",
+      title: "Compare Stock Brokers - Brokerage & Fees Comparison",
 
       description:
         "Compare India's top stock brokers side by side. Check brokerage charges, ratings, and features.",
@@ -74,8 +70,7 @@ export default function CompareBrokerPage() {
 
     url: canonicalUrl,
 
-    name:
-      "Compare Best Stock Brokers in India 2026 - Brokerage Charges & Ratings | ShareBazaarOnline",
+    name: "Compare Best Stock Brokers in India 2026 - Brokerage Charges & Ratings | ShareBazaarOnline",
 
     description:
       "Compare top stock brokers in India side by side. Check brokerage charges, account opening fees, ratings, active users, and trading segments.",
@@ -155,7 +150,21 @@ export default function CompareBrokerPage() {
         }}
       />
 
-      <Suspense fallback={null}>
+      {/* ✅ CHANGED: Added a fallback that includes the <h1> so it is present in the initial server HTML */}
+      <Suspense
+        fallback={
+          <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 pt-8 pb-20">
+            <div className="text-center mb-16">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 tracking-tight">
+                Broker Comparison
+              </h1>
+              <p className="mt-4 text-base sm:text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed">
+                Make the right choice by comparing brokerage charges, ratings, and features side by side
+              </p>
+            </div>
+          </div>
+        }
+      >
         <CompareBrokerClient />
       </Suspense>
     </>

@@ -13,7 +13,7 @@ const supabasePublic = createClient(
 );
 
 export const metadata = {
-  title: "Corporate Actions Calendar — Buyback, Dividend, Bonus, Split | ShareBazaarOnline",
+  title: "Corporate Actions Calendar",
   description:
     "Calendar view of corporate actions across Indian listed companies. Track ex-dates for buybacks, dividends, bonus issues, stock splits and rights issues.",
   alternates: { canonical: `${SITE_URL}/corporate-actions-calendar` },

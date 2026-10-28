@@ -8,6 +8,12 @@ import { cache } from "react";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
 
+// ✅ NEW HELPER: Strip brand suffix from DB titles
+function cleanTitle(title) {
+  if (!title) return "";
+  return title.replace(/\s*\|\s*ShareBazaarOnline\s*$/i, "").trim();
+}
+
 const supabasePublic = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -50,7 +56,6 @@ function slugify(text) {
 }
 
 function getCanonicalSlug(blog) {
-  // Match the URL convention used by the article listing.
   return slugify(blog?.heading || blog?.title || "");
 }
 
@@ -112,14 +117,12 @@ const getBlog = cache(async (id) => {
         "| code:",
         error.code
       );
-      // ✅ FIXED: Throw an error instead of returning null to prevent false 404s
       throw new Error(`Failed to fetch blog ${id}: ${error.message}`);
     }
 
     return data || null;
   } catch (err) {
     console.error("[getBlog] exception:", err?.message || err);
-    // ✅ FIXED: Propagate the error to trigger an error boundary/500 page
     throw err;
   }
 });
@@ -154,7 +157,7 @@ export async function generateMetadata({ params }) {
 
   if (!blog || !isCorporateActionCategory(blog.category)) {
     return {
-      title: "Article Not Found | ShareBazaarOnline",
+      title: "Article Not Found",
       robots: { index: false, follow: false },
     };
   }
@@ -163,16 +166,15 @@ export async function generateMetadata({ params }) {
 
   if (!canonicalSlug) {
     return {
-      title: "Article Not Found | ShareBazaarOnline",
+      title: "Article Not Found",
       robots: { index: false, follow: false },
     };
   }
 
+  // ✅ CHANGED: Apply cleanTitle
   const title =
-    blog.meta_title ||
-    blog.heading ||
-    blog.title ||
-    "ShareBazaarOnline";
+    cleanTitle(blog.meta_title || blog.heading || blog.title) ||
+    "Corporate Action";
 
   const description =
     blog.meta_description ||
@@ -218,7 +220,6 @@ export default async function Page({ params }) {
     notFound();
   }
 
-  // Permanently redirect outdated, incorrect, or timestamp-based slugs.
   if (slug !== canonicalSlug) {
     permanentRedirect(
       `/corporateactions/${encodeURIComponent(String(id))}/${canonicalSlug}`
@@ -228,11 +229,10 @@ export default async function Page({ params }) {
   const canonicalUrl =
     `${SITE_URL}/corporateactions/${id}/${canonicalSlug}`;
 
+  // ✅ CHANGED: Apply cleanTitle
   const articleTitle =
-    blog.meta_title ||
-    blog.heading ||
-    blog.title ||
-    "ShareBazaarOnline";
+    cleanTitle(blog.meta_title || blog.heading || blog.title) ||
+    "Corporate Action";
 
   const articleDescription =
     blog.meta_description ||

@@ -139,7 +139,7 @@ export default async function sitemap() {
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/unlisted-guide`,
+      url: `${BASE_URL}/pre-ipo-guide`,
       lastModified: fallbackDate,
       changeFrequency: "monthly",
       priority: 0.7,

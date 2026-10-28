@@ -4254,7 +4254,7 @@ export const fetchIPOs = async () => {
   "open": "07 Jan 2026",
   "close": "09 Jan 2026",
   "listing": "14 Jan 2026",
-  "price": "₹41",
+  "price": "41",
   "lot": 3000,
 
   "about_company": {
@@ -4446,7 +4446,7 @@ export const fetchIPOs = async () => {
   "open": "07 Jan 2026",
   "close": "09 Jan 2026",
   "listing": "14 Jan 2026",
-  "price": "₹168 – ₹174",
+  "price": "168 – 174",
   "lot": 800,
 
   "about_company": {
@@ -4638,7 +4638,7 @@ export const fetchIPOs = async () => {
   "open": "09 Jan 2026",
   "close": "13 Jan 2026",
   "listing": "16 Jan 2026",
-  "price": "₹21 – ₹23",
+  "price": "21 – 23",
   "lot": 600,
 
   "about_company": {
@@ -4835,7 +4835,7 @@ export const fetchIPOs = async () => {
   "open": "09 Jan 2026",
   "close": "13 Jan 2026",
   "listing": "16 Jan 2026",
-  "price": "₹70 – ₹74",
+  "price": "70 – 74",
   "lot": 1600,
 
   "about_company": {
@@ -5028,7 +5028,7 @@ export const fetchIPOs = async () => {
   "open": "12 Jan 2026",
   "close": "14 Jan 2026",
   "listing": "20 Jan 2026",
-  "price": "₹56 – ₹59",
+  "price": "56 – 59",
   "lot": 2000,
 
   "about_company": {
@@ -8043,7 +8043,7 @@ export const fetchIPOs = async () => {
   "open": "24 Feb 2026",
   "close": "26 Feb 2026",
   "listing": "04 Mar 2026",
-  "price": "₹367 – ₹386",
+  "price": "367 – 386",
   "lot": 32,
 
   "about_company": {
@@ -8245,7 +8245,7 @@ export const fetchIPOs = async () => {
   "open": "16 Feb 2026",
   "close": "18 Feb 2026",
   "listing": "24 Feb 2026",
-  "price": "₹205 – ₹216",
+  "price": "205 – 216",
   "lot": 600,
 
   "about_company": {
@@ -8451,7 +8451,7 @@ export const fetchIPOs = async () => {
   "open": "20 Feb 2026",
   "close": "24 Feb 2026",
   "listing": "27 Feb 2026",
-  "price": "₹65 – ₹69",
+  "price": "65 – 69",
   "lot": 2000,
 
   "about_company": {
@@ -8657,7 +8657,7 @@ export const fetchIPOs = async () => {
   "open": "20 Feb 2026",
   "close": "24 Feb 2026",
   "listing": "27 Feb 2026",
-  "price": "₹75 – ₹79",
+  "price": "75 – 79",
   "lot": 189,
 
   "about_company": {
@@ -8863,7 +8863,7 @@ export const fetchIPOs = async () => {
   "open": "23 Feb 2026",
   "close": "25 Feb 2026",
   "listing": "02 Mar 2026",
-  "price": "₹95 – ₹104",
+  "price": "95 – 104",
   "lot": 144,
 
   "about_company": {
@@ -9049,7 +9049,7 @@ export const fetchIPOs = async () => {
   "open": "23 Feb 2026",
   "close": "25 Feb 2026",
   "listing": "02 Mar 2026",
-  "price": "₹75 – ₹80",
+  "price": "75 – 80",
   "lot": 1600,
 
   "about_company": {
@@ -9258,7 +9258,7 @@ export const fetchIPOs = async () => {
   "open": "23 Feb 2026",
   "close": "25 Feb 2026",
   "listing": "02 Mar 2026",
-  "price": "₹121 – ₹127",
+  "price": "121 – 127",
   "lot": 1000,
 
   "about_company": {
@@ -9727,7 +9727,7 @@ export const fetchIPOs = async () => {
   "open": "23 Feb 2026",
   "close": "25 Feb 2026",
   "listing": "02 Mar 2026",
-  "price": "₹1000 – ₹1053",
+  "price": "1000 – 1053",
   "lot": 14,
 
   "about_company": {
@@ -9932,7 +9932,7 @@ export const fetchIPOs = async () => {
   "open": "25 Feb 2026",
   "close": "27 Feb 2026",
   "listing": "05 Mar 2026",
-  "price": "₹216 – ₹227",
+  "price": "216 – 227",
   "lot": 66,
 
   "about_company": {
@@ -10133,7 +10133,7 @@ export const fetchIPOs = async () => {
   "open": "26 Feb 2026",
   "close": "02 Mar 2026",
   "listing": "06 Mar 2026",
-  "price": "₹71 – ₹72",
+  "price": "71 – 72",
   "lot": 1600,
 
   "about_company": {
@@ -10315,7 +10315,7 @@ export const fetchIPOs = async () => {
   "open": "27 Feb 2026",
   "close": "04 Mar 2026",
   "listing": "09 Mar 2026",
-  "price": "₹106 – ₹112",
+  "price": "106 – 112",
   "lot": 1200,
 
   "about_company": {
@@ -10512,7 +10512,7 @@ export const fetchIPOs = async () => {
   "open": "04 Mar 2026",
   "close": "06 Mar 2026",
   "listing": "11 Mar 2026",
-  "price": "₹1287 – ₹1352",
+  "price": "1287 – 1352",
   "lot": 11,
 
   "about_company": {
@@ -11216,7 +11216,7 @@ export const fetchIPOs = async () => {
   "open": "11 Mar 2026",
   "close": "13 Mar 2026",
   "listing": "18 Mar 2026",
-  "price": "₹110",
+  "price": "110",
   "lot": 1200,
 
   "about_company": {
@@ -11686,7 +11686,7 @@ export const fetchIPOs = async () => {
   "open": "16 Mar 2026",
   "close": "18 Mar 2026",
   "listing": "24 Mar 2026",
-  "price": "₹304 – ₹320",
+  "price": "304 – 320",
   "lot": 46,
 
   "about_company": {
@@ -11885,7 +11885,7 @@ export const fetchIPOs = async () => {
   "open": "17 Mar 2026",
   "close": "20 Mar 2026",
   "listing": "25 Mar 2026",
-  "price": "₹139 – ₹146",
+  "price": "139 – 146",
   "lot": 1000,
 
   "about_company": {
@@ -12086,7 +12086,7 @@ export const fetchIPOs = async () => {
   "open": "20 Mar 2026",
   "close": "24 Mar 2026",
   "listing": "30 Mar 2026",
-  "price": "₹117 – ₹124",
+  "price": "117 – 124",
   "lot": 1000,
 
   "about_company": {
@@ -12271,7 +12271,7 @@ export const fetchIPOs = async () => {
   "open": "20 Mar 2026",
   "close": "24 Mar 2026",
   "listing": "30 Mar 2026",
-  "price": "₹163 – ₹172",
+  "price": "163 – 172",
   "lot": 80,
 
   "about_company": {
@@ -12475,7 +12475,7 @@ export const fetchIPOs = async () => {
   "open": "23 Mar 2026",
   "close": "25 Mar 2026",
   "listing": "01 Apr 2026",
-  "price": "₹84 – ₹89",
+  "price": "84 – 89",
   "lot": 1600,
 
   "about_company": {
@@ -12676,7 +12676,7 @@ export const fetchIPOs = async () => {
   "open": "25 Mar 2026",
   "close": "30 Mar 2026",
   "listing": "07 Apr 2026",
-  "price": "₹528 – ₹555",
+  "price": "528 – 555",
   "lot": 240,
 
   "about_company": {
@@ -12878,7 +12878,7 @@ export const fetchIPOs = async () => {
   "open": "24 Mar 2026",
   "close": "27 Mar 2026",
   "listing": "02 Apr 2026",
-  "price": "₹372 – ₹392",
+  "price": "372 – 392",
   "lot": 38,
 
   "about_company": {
@@ -13083,7 +13083,7 @@ export const fetchIPOs = async () => {
   "open": "24 Mar 2026",
   "close": "27 Mar 2026",
   "listing": "03 Apr 2026",
-  "price": "₹114 – ₹120",
+  "price": "114 – 120",
   "lot": 1200,
 
   "about_company": {
@@ -13267,7 +13267,7 @@ export const fetchIPOs = async () => {
   "open": "24 Mar 2026",
   "close": "27 Mar 2026",
   "listing": "02 Apr 2026",
-  "price": "₹375 – ₹395",
+  "price": "375 – 395",
   "lot": 37,
 
   "about_company": {
@@ -13470,7 +13470,7 @@ export const fetchIPOs = async () => {
   "open": "24 Mar 2026",
   "close": "27 Mar 2026",
   "listing": "02 Apr 2026",
-  "price": "₹201 – ₹212",
+  "price": "201 – 212",
   "lot": 70,
 
   "about_company": {
@@ -13670,7 +13670,7 @@ export const fetchIPOs = async () => {
   "open": "27 Mar 2026",
   "close": "08 Apr 2026",
   "listing": "13 Apr 2026",
-  "price": "₹93 – ₹98",
+  "price": "93 – 98",
   "lot": 1200,
 
   "about_company": {
@@ -13875,7 +13875,7 @@ export const fetchIPOs = async () => {
   "open": "06 Apr 2026",
   "close": "08 Apr 2026",
   "listing": "13 Apr 2026",
-  "price": "₹75 – ₹80",
+  "price": "75 – 80",
   "lot": 1600,
 
   "about_company": {
@@ -14059,7 +14059,7 @@ export const fetchIPOs = async () => {
   "open": "09 Apr 2026",
   "close": "13 Apr 2026",
   "listing": "17 Apr 2026",
-  "price": "₹166 – ₹175",
+  "price": "166 – 175",
   "lot": 85,
 
   "about_company": {
@@ -14258,7 +14258,7 @@ export const fetchIPOs = async () => {
   "open": "17 Apr 2026",
   "close": "21 Apr 2026",
   "listing": "24 Apr 2026",
-  "price": "₹96 – ₹98",
+  "price": "96 – 98",
   "lot": 1200,
 
   "about_company": {
@@ -14604,7 +14604,7 @@ export const fetchIPOs = async () => {
   "open": "27 Apr 2026",
   "close": "29 Apr 2026",
   "listing": "05 May 2026",
-  "price": "₹130 – ₹135",
+  "price": "130 – 135",
   "lot": 2000,
 
   "about_company": {

@@ -11,8 +11,7 @@ export const revalidate = 3600;
 
 export async function generateMetadata() {
   return {
-    title:
-      "Corporate Actions - Buyback, Dividends, Bonus, Split | ShareBazaarOnline",
+   title: "Corporate Actions: Buybacks & Dividends",
     description:
       "Track all corporate actions including buybacks, dividends, bonus issues, stock splits, rights issues and more. Stay updated with record dates, ex-dates, and announcements.",
     alternates: {

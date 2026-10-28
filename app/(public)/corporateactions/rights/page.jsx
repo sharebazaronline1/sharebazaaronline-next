@@ -11,7 +11,7 @@ export const revalidate = 3600;
 
 export async function generateMetadata() {
   return {
-    title: "Rights Issue Calendar 2026 — Ratios, Prices, Dates | ShareBazaarOnline",
+    title: "Rights Issue Calendar",
     description:
       "Track all upcoming rights issues in India. Get rights ratios, offer prices, discounts to market price, record dates, and ex-dates.",
     alternates: { canonical: `${SITE_URL}/corporateactions/rights` },

@@ -68,7 +68,7 @@ function isCorporateActionCategory(category) {
   );
 }
 export const metadata = {
-  title: "Insight Hub | ShareBazaarOnline",
+ title: "Insight Hub: Market Analysis & Guides",
   description:
     "Market insights, IPO updates, investment strategies and educational guides.",
   alternates: { canonical: `${SITE_URL}/insight-hub` },

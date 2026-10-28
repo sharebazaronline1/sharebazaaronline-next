@@ -11,7 +11,7 @@ export const revalidate = 3600;
 
 export async function generateMetadata() {
   return {
-    title: "Stock Split Calendar 2026 — Ratios, Record Dates | ShareBazaarOnline",
+    title: "Stock Split Calendar 2026: Ratios & Dates",
     description:
       "Track all upcoming stock splits in India. Get split ratios, old and new face values, record dates, ex-dates, and full analysis.",
     alternates: { canonical: `${SITE_URL}/corporateactions/splits` },

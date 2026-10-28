@@ -11,7 +11,7 @@ export const revalidate = 3600;
 
 export async function generateMetadata() {
   return {
-    title: "Bonus Issue Calendar 2026 — Ratios, Record Dates | ShareBazaarOnline",
+   title: "Bonus Issue Calendar 2026: Ratios & Dates",
     description:
       "Track upcoming bonus issues announced by Indian listed companies. Get bonus ratios, record dates, ex-dates, and full analysis.",
     alternates: { canonical: `${SITE_URL}/corporateactions/bonus` },

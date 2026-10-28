@@ -6,7 +6,7 @@ const SITE_URL = "https://www.sharebazaaronline.com";
 
 export const metadata = {
   title:
-    "IPO Guide 2026 - Complete Guide to IPO Investing in India | ShareBazaarOnline",
+    "IPO Guide:Complete Guide to IPO Investing in India",
   description:
     "Complete IPO guide for Indian investors. Learn about IPO types, allotment process, GMP, SME IPOs, taxation, and how to apply for IPOs online. Get expert insights on ShareBazaarOnline.",
   alternates: {
