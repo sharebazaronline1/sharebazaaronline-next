@@ -171,7 +171,7 @@ export async function generateStaticParams() {
   return [];
 }
 
-export const revalidate = 21600;
+export const dynamic = "force-dynamic";
 export const dynamicParams = true;
 
 export async function generateMetadata({ params }) {
