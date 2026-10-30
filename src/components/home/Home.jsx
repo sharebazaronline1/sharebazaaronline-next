@@ -169,13 +169,13 @@ export default function Home({
                   Explore IPO
                 </button>
                 <button
-                  onClick={() => navigate("/comparebrokers")}
+                  onClick={() => navigate("/compare-brokers")}
                   className="flex-1 sm:flex-none px-4 sm:px-6 md:px-8 py-3 sm:py-3.5 rounded-2xl border border-green-500 bg-white text-green-700 font-bold hover:bg-green-50 transition text-sm sm:text-base"
                 >
                   Compare Brokers
                 </button>
                 <button
-                  onClick={() => navigate("/preipo")}
+                  onClick={() => navigate("/pre-ipo")}
                   className="flex-1 sm:flex-none px-4 sm:px-6 md:px-8 py-3 sm:py-3.5 rounded-2xl bg-[#16A34A] hover:bg-[#15803D] text-white font-bold shadow-lg shadow-green-600/20 transition text-sm sm:text-base"
                 >
                   Pre IPO
@@ -240,7 +240,7 @@ export default function Home({
             </p>
           </div>
           <button
-            onClick={() => navigate("/preipo")}
+            onClick={() => navigate("/pre-ipo")}
             className="hidden lg:flex items-center gap-2 font-semibold text-[#00B14F] hover:text-[#009944] transition text-sm"
           >
             View All →
@@ -251,7 +251,7 @@ export default function Home({
           {unlistedStocks.slice(0, 10).map((stock) => (
             <div
               key={stock.id}
-              onClick={() => navigate(`/preipo/${stock.id}/${slugify(stock.name)}`)}
+              onClick={() => navigate(`/pre-ipo/${stock.id}/${slugify(stock.name)}`)}
               className="min-w-[180px] sm:min-w-[220px] bg-white border border-slate-200 rounded-2xl p-3 sm:p-4 flex items-center gap-3 shadow-sm flex-shrink-0 cursor-pointer active:scale-95 transition-transform"
             >
               <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl border border-slate-100 bg-white flex items-center justify-center flex-shrink-0">
@@ -277,7 +277,7 @@ export default function Home({
           {unlistedStocks.slice(0, 6).map((stock) => (
             <div
               key={stock.id}
-              onClick={() => navigate(`/preipo/${stock.id}/${slugify(stock.name)}`)}
+              onClick={() => navigate(`/pre-ipo/${stock.id}/${slugify(stock.name)}`)}
               className="bg-white border border-slate-200 rounded-2xl px-4 py-5 hover:border-green-300 hover:shadow-md transition-all h-[110px] cursor-pointer"
             >
               <div className="flex items-center gap-3 h-full">
@@ -303,7 +303,7 @@ export default function Home({
 
         <div className="lg:hidden text-center mt-4">
           <button
-            onClick={() => navigate("/preipo")}
+            onClick={() => navigate("/pre-ipo")}
             className="text-[#00B14F] font-semibold text-sm"
           >
             View All →
@@ -340,7 +340,7 @@ export default function Home({
                   </p>
                 </div>
                 <button
-                  onClick={() => navigate("/comparebrokers")}
+                  onClick={() => navigate("/compare-brokers")}
                   className="px-6 sm:px-8 py-2.5 sm:py-3 rounded-xl bg-green-700 hover:bg-green-800 text-white font-semibold transition text-sm sm:text-base"
                 >
                   View All Brokers →
@@ -410,7 +410,7 @@ export default function Home({
                   ))}
                 </div>
                 <button
-                  onClick={() => navigate("/comparebrokers")}
+                  onClick={() => navigate("/compare-brokers")}
                   className="mt-8 w-full py-3.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold transition-all shadow-lg shadow-cyan-500/20"
                 >
                   Compare Brokers →

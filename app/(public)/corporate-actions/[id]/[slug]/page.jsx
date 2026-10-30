@@ -1,4 +1,4 @@
-// app/(public)/corporateactions/[id]/[slug]/page.jsx
+// app/(public)/corporate-actions/[id]/[slug]/page.jsx
 
 import { notFound, permanentRedirect } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
@@ -205,7 +205,7 @@ export async function generateMetadata({ params }) {
     "Read the latest corporate action analysis on ShareBazaarOnline.";
 
   const keywords = normalizeKeywords(blog.keywords);
-  const canonical = `${SITE_URL}/corporateactions/${id}/${canonicalSlug}`;
+  const canonical = `${SITE_URL}/corporate-actions/${id}/${canonicalSlug}`;
 
   return {
     title,
@@ -245,12 +245,12 @@ export default async function Page({ params }) {
 
   if (slug !== canonicalSlug) {
     permanentRedirect(
-      `/corporateactions/${encodeURIComponent(String(id))}/${canonicalSlug}`
+      `/corporate-actions/${encodeURIComponent(String(id))}/${canonicalSlug}`
     );
   }
 
   const canonicalUrl =
-    `${SITE_URL}/corporateactions/${id}/${canonicalSlug}`;
+    `${SITE_URL}/corporate-actions/${id}/${canonicalSlug}`;
 
   // ✅ Uses the updated cleanTitle
   const articleTitle =
@@ -336,7 +336,7 @@ export default async function Page({ params }) {
         "@type": "ListItem",
         position: 2,
         name: "Corporate Actions",
-        item: `${SITE_URL}/corporateactions`,
+        item: `${SITE_URL}/corporate-actions`,
       },
       {
         "@type": "ListItem",
@@ -368,7 +368,7 @@ export default async function Page({ params }) {
         id={id}
         slug={canonicalSlug}
         sectionLabel="Corporate Actions"
-        sectionHref="/corporateactions"
+        sectionHref="/corporate-actions"
       />
     </>
   );

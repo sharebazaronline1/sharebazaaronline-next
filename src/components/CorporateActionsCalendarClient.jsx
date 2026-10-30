@@ -284,7 +284,7 @@ const CorporateActionsCalendarClient = ({ initialRecords = [] }) => {
 
   const handleBlogNavigate = (rec) => {
     if (rec?.blog?.id && rec?.blog?.slug) {
-      router.push(`/corporateactions/${rec.blog.id}/${rec.blog.slug}`);
+      router.push(`/corporate-actions/${rec.blog.id}/${rec.blog.slug}`);
     }
   };
 
@@ -757,7 +757,7 @@ const CorporateActionDetailCard = ({
             </div>
           )}
           <Link
-            href="/corporateactions"
+            href="/corporate-actions"
             className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-slate-800 text-sm font-semibold transition"
           >
             All Actions

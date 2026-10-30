@@ -1,4 +1,4 @@
-// app/comparebrokers/page.jsx
+// app/compare-brokers/page.jsx
 import { Suspense } from "react";
 import CompareBrokerClient from "@/components/CompareBrokerClient";
 
@@ -12,7 +12,7 @@ export async function generateMetadata() {
       "Compare top stock brokers in India side by side. Check brokerage charges, account opening fees, ratings, active users, and trading segments to find the best broker for your needs.",
 
     alternates: {
-      canonical: `${SITE_URL}/comparebrokers`,
+      canonical: `${SITE_URL}/compare-brokers`,
     },
 
     robots: {
@@ -26,7 +26,7 @@ export async function generateMetadata() {
       description:
         "Make the right choice by comparing brokerage charges, ratings, and features of India's top stock brokers side by side. Find the best broker for your trading needs.",
 
-      url: `${SITE_URL}/comparebrokers`,
+      url: `${SITE_URL}/compare-brokers`,
       type: "website",
 
       images: [
@@ -56,7 +56,7 @@ export async function generateMetadata() {
 }
 
 export default function CompareBrokerPage() {
-  const canonicalUrl = `${SITE_URL}/comparebrokers`;
+  const canonicalUrl = `${SITE_URL}/compare-brokers`;
 
   // ==========================================
   // JSON-LD STRUCTURED DATA

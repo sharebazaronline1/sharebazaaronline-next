@@ -367,7 +367,7 @@ const InsightHub = ({ initialBlogs = [] }) => {
             </Link>
 
             <Link
-              href="/preipo"
+              href="/pre-ipo"
               className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
             >
               <div className="flex items-center justify-between">

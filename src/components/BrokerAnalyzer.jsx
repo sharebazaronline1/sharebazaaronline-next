@@ -230,7 +230,7 @@ const BrokerAnalyzer = () => {
                   </Link>
               
                   <Link
-                    href="/preipo"
+                    href="/pre-ipo"
                     className="group relative bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:shadow-lg hover:-translate-y-0.5 hover:border-emerald-400 transition-all duration-200"
                   >
                     <div className="flex items-center justify-between">

@@ -6,7 +6,7 @@ const BASE_URL = "https://www.sharebazaaronline.com";
 
 export const revalidate = 3600;
 
-// Categories that live under /corporateactions, not /insight-hub
+// Categories that live under /corporate-actions, not /insight-hub
 const CORPORATE_ACTION_CATEGORIES = [
   "Buyback",
   "Dividend",
@@ -61,7 +61,7 @@ export default async function sitemap() {
       priority: 0.95,
     },
     {
-      url: `${BASE_URL}/preipo`,
+      url: `${BASE_URL}/pre-ipo`,
       lastModified: fallbackDate,
       changeFrequency: "daily",
       priority: 0.95,
@@ -73,37 +73,37 @@ export default async function sitemap() {
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/corporateactions`,
+      url: `${BASE_URL}/corporate-actions`,
       lastModified: fallbackDate,
       changeFrequency: "daily",
       priority: 0.85,
     },
      {
-      url: `${BASE_URL}/corporateactions/bonus`,
+      url: `${BASE_URL}/corporate-actions/bonus`,
       lastModified: fallbackDate,
       changeFrequency: "daily",
       priority: 0.75,
     },
     {
-      url: `${BASE_URL}/corporateactions/dividends`,
+      url: `${BASE_URL}/corporate-actions/dividends`,
       lastModified: fallbackDate,
       changeFrequency: "daily",
       priority: 0.75,
     },
     {
-      url: `${BASE_URL}/corporateactions/others`,
+      url: `${BASE_URL}/corporate-actions/others`,
       lastModified: fallbackDate,
       changeFrequency: "daily",
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/corporateactions/rights`,
+      url: `${BASE_URL}/corporate-actions/rights`,
       lastModified: fallbackDate,
       changeFrequency: "daily",
       priority: 0.7,
     },
     {
-      url: `${BASE_URL}/corporateactions/splits`,
+      url: `${BASE_URL}/corporate-actions/splits`,
       lastModified: fallbackDate,
       changeFrequency: "daily",
       priority: 0.7,
@@ -121,7 +121,7 @@ export default async function sitemap() {
       priority: 0.8,
     },
     {
-      url: `${BASE_URL}/comparebrokers`,
+      url: `${BASE_URL}/compare-brokers`,
       lastModified: fallbackDate,
       changeFrequency: "weekly",
       priority: 0.8,
@@ -133,7 +133,7 @@ export default async function sitemap() {
       priority: 0.75,
     },
     {
-      url: `${BASE_URL}/ipoguide`,
+      url: `${BASE_URL}/ipo-guide`,
       lastModified: fallbackDate,
       changeFrequency: "monthly",
       priority: 0.7,
@@ -269,7 +269,7 @@ export default async function sitemap() {
       const slug = company.slug || slugify(company.name || "");
       if (!slug) return;
       sitemapEntries.push({
-        url: `${BASE_URL}/preipo/${company.id}/${slug}`,
+        url: `${BASE_URL}/pre-ipo/${company.id}/${slug}`,
         lastModified: getValidDate(company.updated_at),
         changeFrequency: "weekly",
         priority: 0.8,

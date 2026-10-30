@@ -45,7 +45,7 @@ export const buildSearchIndex = (
       Depository ${pre.depository || ""}
     `,
     preview: `Pre IPO • Unlisted Share • Price ${pre.price || "N/A"}`,
-    url: `/preipo/${pre.id}/${slugify(pre.name)}`,
+    url: `/pre-ipo/${pre.id}/${slugify(pre.name)}`,
     anchor: null,
   }));
 
@@ -155,7 +155,7 @@ export const buildSearchIndex = (
       content: fullTextContent,
       preview,
       url: corporateAction
-        ? `/corporateactions/${b.id}/${slugify(title)}`
+        ? `/corporate-actions/${b.id}/${slugify(title)}`
         : `/insight-hub/${b.id}/${slugify(title)}`,
     };
   });
@@ -166,7 +166,7 @@ export const buildSearchIndex = (
     title: u.name,
     content: `Unlisted Share • Price ${u.price || ""}`,
     preview: `Unlisted Share • Price ${u.price || "N/A"}`,
-    url: `/preipo/${u.id}/${slugify(u.name)}`,
+    url: `/pre-ipo/${u.id}/${slugify(u.name)}`,
     anchor: null,
   }));
 

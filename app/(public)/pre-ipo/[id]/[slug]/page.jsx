@@ -1,4 +1,4 @@
-// app/preipo/[id]/[slug]/page.jsx
+// app/pre-ipo/[id]/[slug]/page.jsx
 
 import { notFound } from "next/navigation";
 import { publicSupabase } from "@/lib/supabase/public";
@@ -102,7 +102,7 @@ export async function generateMetadata({ params }) {
 
   const description = getDescription(overview);
   const title = companyName; // Root layout adds | ShareBazaarOnline
-  const canonical = `${SITE_URL}/preipo/${id}/${slug}`;
+  const canonical = `${SITE_URL}/pre-ipo/${id}/${slug}`;
 
   const imageUrl = data.logo
     ? data.logo.startsWith("http") ? data.logo : `${SITE_URL}${data.logo.startsWith("/") ? "" : "/"}${data.logo}`
@@ -138,7 +138,7 @@ export default async function Page({ params }) {
   if (!data) notFound();
 
   const companyName = data.name || "Unlisted Company";
-  const canonicalUrl = `${SITE_URL}/preipo/${id}/${slug}`;
+  const canonicalUrl = `${SITE_URL}/pre-ipo/${id}/${slug}`;
   const price = data.price ? `₹${Number(data.price).toLocaleString("en-IN")}` : "";
 
   const description = data.overview
@@ -181,7 +181,7 @@ export default async function Page({ params }) {
     "@id": `${canonicalUrl}#breadcrumb`,
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
-      { "@type": "ListItem", position: 2, name: "Pre-IPO Stocks", item: `${SITE_URL}/preipo` },
+      { "@type": "ListItem", position: 2, name: "Pre-IPO Stocks", item: `${SITE_URL}/pre-ipo` },
       { "@type": "ListItem", position: 3, name: `${companyName} Unlisted Shares`, item: canonicalUrl },
     ],
   };

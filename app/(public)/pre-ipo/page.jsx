@@ -1,4 +1,4 @@
-// app/preipo/page.jsx
+// app/pre-ipo/page.jsx
 
 import PreIPOList from "../../../src/components/PreIPOList";
 import { fetchPreIPODetails } from "@/api/mockApi";
@@ -12,13 +12,13 @@ export const metadata = {
   description:
     "Discover pre-IPO and unlisted companies, track pricing and availability before they list. Find private company opportunities and market insights.",
   alternates: {
-    canonical: `${SITE_URL}/preipo`,
+    canonical: `${SITE_URL}/pre-ipo`,
   },
   openGraph: {
     title: "Pre-IPO & Unlisted Shares",
     description:
       "Discover pre-IPO and unlisted companies, track pricing and availability before they list.",
-    url: `${SITE_URL}/preipo`,
+    url: `${SITE_URL}/pre-ipo`,
     siteName: "ShareBazaarOnline",
     type: "website",
     locale: "en_IN",
@@ -46,7 +46,7 @@ const normalizeName = (str = "") => {
 };
 
 function buildJsonLd(merged) {
-  const canonicalUrl = `${SITE_URL}/preipo`;
+  const canonicalUrl = `${SITE_URL}/pre-ipo`;
 
   const itemList = {
     "@context": "https://schema.org",
@@ -64,7 +64,7 @@ function buildJsonLd(merged) {
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-+|-+$/g, "");
 
-      const itemUrl = `${SITE_URL}/preipo/${item.id}/${slug}`;
+      const itemUrl = `${SITE_URL}/pre-ipo/${item.id}/${slug}`;
 
       return {
         "@type": "ListItem",

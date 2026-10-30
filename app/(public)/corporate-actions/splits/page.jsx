@@ -1,4 +1,4 @@
-// app/corporateactions/splits/page.jsx
+// app/corporate-actions/splits/page.jsx
 import { fetchCorporateActionsByAliases } from "@/lib/corporateActionData";
 import CorporateActionsClient from "@/components/CorporateActionsClient";
 import { getTabConfig } from "@/lib/corporateActionUtils";
@@ -14,13 +14,13 @@ export async function generateMetadata() {
     title: "Stock Split Calendar 2026: Ratios & Dates",
     description:
       "Track all upcoming stock splits in India. Get split ratios, old and new face values, record dates, ex-dates, and full analysis.",
-    alternates: { canonical: `${SITE_URL}/corporateactions/splits` },
+    alternates: { canonical: `${SITE_URL}/corporate-actions/splits` },
     robots: { index: true, follow: true },
     openGraph: {
       title: "Stock Split Calendar 2026 — Track Ratios & Record Dates",
       description:
         "Track all upcoming stock splits in India. Get split ratios, old and new face values, record dates, ex-dates, and full analysis.",
-      url: `${SITE_URL}/corporateactions/splits`,
+      url: `${SITE_URL}/corporate-actions/splits`,
       type: "website",
       images: [{ url: `${SITE_URL}/og-image.jpg` }],
       siteName: "ShareBazaarOnline",
@@ -38,7 +38,7 @@ export async function generateMetadata() {
 }
 
 export default async function SplitsPage() {
-  const canonicalUrl = `${SITE_URL}/corporateactions/splits`;
+  const canonicalUrl = `${SITE_URL}/corporate-actions/splits`;
   const records = await fetchCorporateActionsByAliases(TAB_CONFIG.aliases);
 
   const webPageSchema = {
@@ -78,7 +78,7 @@ export default async function SplitsPage() {
         "@type": "ListItem",
         position: 2,
         name: "Corporate Actions",
-        item: `${SITE_URL}/corporateactions`,
+        item: `${SITE_URL}/corporate-actions`,
       },
       { "@type": "ListItem", position: 3, name: "Stock Split", item: canonicalUrl },
     ],

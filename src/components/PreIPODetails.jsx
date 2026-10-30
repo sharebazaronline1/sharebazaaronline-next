@@ -59,7 +59,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
         <div className="text-center text-red-600">
           <h2 className="text-2xl font-bold">Company Not Found</h2>
           <Link
-            href="/preipo"
+            href="/pre-ipo"
             className="text-emerald-600 underline mt-4 inline-block"
           >
             ← Back to Unlisted Shares
@@ -82,8 +82,8 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
 
   const breadcrumbItems = [
     { name: "Home", url: "/" },
-    { name: "Unlisted Shares", url: "/preipo" },
-    { name: data.name, url: `/preipo/${id}/${slug}` },
+    { name: "Unlisted Shares", url: "/pre-ipo" },
+    { name: data.name, url: `/pre-ipo/${id}/${slug}` },
   ];
 
   // Helper function to check if data exists
@@ -122,7 +122,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${SITE_URL}/preipo/${id}/${slug}`,
+      "@id": `${SITE_URL}/pre-ipo/${id}/${slug}`,
     },
   };
 
@@ -138,7 +138,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
       price: data.price || 0,
       priceCurrency: "INR",
       availability: "https://schema.org/InStock",
-      url: `${SITE_URL}/preipo/${id}/${slug}`,
+      url: `${SITE_URL}/pre-ipo/${id}/${slug}`,
     },
     brand: {
       "@type": "Brand",
@@ -205,7 +205,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                 <ChevronRight className="w-4 h-4 text-slate-600 shrink-0" />
                 <li>
                   <Link
-                    href="/preipo"
+                    href="/pre-ipo"
                     className="hover:text-emerald-400 transition-colors"
                   >
                     Unlisted Shares
@@ -728,7 +728,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
               {/* BACK BUTTON */}
               <div className="text-center pt-4">
                 <Link
-                  href="/preipo"
+                  href="/pre-ipo"
                   className="inline-flex items-center gap-2 font-semibold text-slate-600 hover:text-slate-900 transition-colors"
                 >
                   <ArrowLeft size={18} />
@@ -769,7 +769,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                   </Link>
 
                   <Link
-                    href="/preipo"
+                    href="/pre-ipo"
                     className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
                   >
                     <div className="flex items-center justify-between">
@@ -849,10 +849,10 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                     accentGlow2: "bg-teal-400/10",
                     shadow: "shadow-emerald-500/20",
                     links: [
-                      { label: "Unlisted Stocks", href: "/preipo" },
-                      { label: "Top Valuations", href: "/preipo" },
+                      { label: "Unlisted Stocks", href: "/pre-ipo" },
+                      { label: "Top Valuations", href: "/pre-ipo" },
                     ],
-                    cta: { label: "View Pre-IPO", href: "/preipo" },
+                    cta: { label: "View Pre-IPO", href: "/pre-ipo" },
                   },
                   {
                     badge: "Brokers",
@@ -870,9 +870,9 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                     shadow: "shadow-blue-500/20",
                     links: [
                       { label: "Broker Analyzer", href: "/broker-analyzer" },
-                      { label: "Compare Charges", href: "/comparebrokers" },
+                      { label: "Compare Charges", href: "/compare-brokers" },
                     ],
-                    cta: { label: "Compare Brokers", href: "/comparebrokers" },
+                    cta: { label: "Compare Brokers", href: "/compare-brokers" },
                   },
                   {
                     badge: "Insight Hub",

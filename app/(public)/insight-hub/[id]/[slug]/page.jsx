@@ -196,7 +196,7 @@ export default async function Page({ params }) {
   if (!blog || blog.status !== "published") notFound();
 
   if (isCorporateActionCategory(blog.category)) {
-    permanentRedirect(`/corporateactions/${encodeURIComponent(String(id))}/${slug}`);
+    permanentRedirect(`/corporate-actions/${encodeURIComponent(String(id))}/${slug}`);
   }
   
   const canonicalSlug = getCanonicalSlug(blog);

@@ -346,7 +346,7 @@ export default async function Page({ params }) {
         "@type": "ListItem",
         position: 2,
         name: "Brokers",
-        item: `${SITE_URL}/comparebrokers`,
+        item: `${SITE_URL}/compare-brokers`,
       },
       {
         "@type": "ListItem",

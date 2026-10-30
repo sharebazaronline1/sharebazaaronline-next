@@ -1,26 +1,26 @@
-// app/corporateactions/dividends/page.jsx
+// app/corporate-actions/rights/page.jsx
 import { fetchCorporateActionsByAliases } from "@/lib/corporateActionData";
 import CorporateActionsClient from "@/components/CorporateActionsClient";
 import { getTabConfig } from "@/lib/corporateActionUtils";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
-const TAB_CONFIG = getTabConfig("dividends");
+const TAB_CONFIG = getTabConfig("rights");
 
 // ✅ CHANGED: Increased to 1 hour to reduce ISR writes
 export const revalidate = 3600;
 
 export async function generateMetadata() {
   return {
-   title: "Dividends Calendar 2026: Record Dates & Yield",
+    title: "Rights Issue Calendar",
     description:
-      "Track upcoming dividend announcements across Indian listed companies. Get the latest record dates, ex-dividend dates, payout amounts, and yield analysis.",
-    alternates: { canonical: `${SITE_URL}/corporateactions/dividends` },
+      "Track all upcoming rights issues in India. Get rights ratios, offer prices, discounts to market price, record dates, and ex-dates.",
+    alternates: { canonical: `${SITE_URL}/corporate-actions/rights` },
     robots: { index: true, follow: true },
     openGraph: {
-      title: "Dividends Calendar 2026 — Track Record Dates & Yields",
+      title: "Rights Issue Calendar 2026 — Track Ratios, Prices & Dates",
       description:
-        "Track upcoming dividend announcements across Indian listed companies. Get the latest record dates, ex-dividend dates, payout amounts, and yield analysis.",
-      url: `${SITE_URL}/corporateactions/dividends`,
+        "Track all upcoming rights issues in India. Get rights ratios, offer prices, discounts to market price, record dates, and ex-dates.",
+      url: `${SITE_URL}/corporate-actions/rights`,
       type: "website",
       images: [{ url: `${SITE_URL}/og-image.jpg` }],
       siteName: "ShareBazaarOnline",
@@ -28,18 +28,17 @@ export async function generateMetadata() {
     },
     twitter: {
       card: "summary_large_image",
-      title: "Dividends Calendar 2026 — Track Record Dates & Yields",
-      description:
-        "Track upcoming dividend announcements across Indian listed companies.",
+      title: "Rights Issue Calendar 2026 — Track Ratios, Prices & Dates",
+      description: "Track all upcoming rights issues in India.",
       images: [`${SITE_URL}/og-image.jpg`],
     },
     keywords:
-      "Dividends, Dividend Calendar, Record Date, Ex-Date, Yield, Dividend Yield, Indian Stocks, ShareBazaarOnline",
+      "Rights Issue, Rights Entitlement, Rights Ratio, Record Date, Ex-Date, Corporate Actions, ShareBazaarOnline",
   };
 }
 
-export default async function DividendsPage() {
-  const canonicalUrl = `${SITE_URL}/corporateactions/dividends`;
+export default async function RightsPage() {
+  const canonicalUrl = `${SITE_URL}/corporate-actions/rights`;
   const records = await fetchCorporateActionsByAliases(TAB_CONFIG.aliases);
 
   const webPageSchema = {
@@ -47,16 +46,16 @@ export default async function DividendsPage() {
     "@type": "WebPage",
     "@id": `${canonicalUrl}#webpage`,
     url: canonicalUrl,
-    name: "Dividends Calendar 2026 — Record Dates, Ex-Dates & Yield | ShareBazaarOnline",
+    name: "Rights Issue Calendar 2026 — Ratios, Prices, Dates | ShareBazaarOnline",
     description:
-      "Track upcoming dividend announcements across Indian listed companies. Get the latest record dates, ex-dividend dates, payout amounts, and yield analysis.",
+      "Track all upcoming rights issues in India. Get rights ratios, offer prices, discounts to market price, record dates, and ex-dates.",
     isPartOf: {
       "@type": "WebSite",
       "@id": `${SITE_URL}#website`,
       name: "ShareBazaarOnline",
       url: SITE_URL,
     },
-    about: { "@type": "Thing", name: "Dividends" },
+    about: { "@type": "Thing", name: "Rights Issues" },
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}#organization`,
@@ -79,14 +78,9 @@ export default async function DividendsPage() {
         "@type": "ListItem",
         position: 2,
         name: "Corporate Actions",
-        item: `${SITE_URL}/corporateactions`,
+        item: `${SITE_URL}/corporate-actions`,
       },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: "Dividends",
-        item: canonicalUrl,
-      },
+      { "@type": "ListItem", position: 3, name: "Rights Issue", item: canonicalUrl },
     ],
   };
 
@@ -104,7 +98,7 @@ export default async function DividendsPage() {
           __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
         }}
       />
-      <CorporateActionsClient activeTab="dividends" records={records} />
+      <CorporateActionsClient activeTab="rights" records={records} />
     </>
   );
 }

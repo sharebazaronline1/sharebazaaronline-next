@@ -557,7 +557,7 @@ const BrokerAnalyzerClient = () => {
                     return (
                       <div
                         key={idx}
-                        onClick={() => router.push(`/comparebrokers?${queryParams}`)}
+                        onClick={() => router.push(`/compare-brokers?${queryParams}`)}
                         className="bg-slate-50 rounded-2xl p-8 text-center border border-transparent hover:border-emerald-500/30 hover:shadow-md cursor-pointer transition-all duration-200 group"
                       >
                         <h4 className="font-bold uppercase tracking-wider text-sm mb-6 text-slate-600 group-hover:text-emerald-600 transition-colors">
@@ -671,7 +671,7 @@ const BrokerAnalyzerClient = () => {
                   </Link>
 
                   <Link
-                    href="/preipo"
+                    href="/pre-ipo"
                     className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
                   >
                     <div className="flex items-center justify-between">
@@ -751,10 +751,10 @@ const BrokerAnalyzerClient = () => {
                     accentGlow2: "bg-teal-400/10",
                     shadow: "shadow-emerald-500/20",
                     links: [
-                      { label: "Unlisted Stocks", href: "/preipo" },
-                      { label: "Top Valuations", href: "/preipo" },
+                      { label: "Unlisted Stocks", href: "/pre-ipo" },
+                      { label: "Top Valuations", href: "/pre-ipo" },
                     ],
-                    cta: { label: "View Pre-IPO", href: "/preipo" },
+                    cta: { label: "View Pre-IPO", href: "/pre-ipo" },
                   },
                   {
                     badge: "Brokers",
@@ -772,9 +772,9 @@ const BrokerAnalyzerClient = () => {
                     shadow: "shadow-blue-500/20",
                     links: [
                       { label: "Broker Analyzer", href: "/broker-analyzer" },
-                      { label: "Compare Charges", href: "/comparebrokers" },
+                      { label: "Compare Charges", href: "/compare-brokers" },
                     ],
-                    cta: { label: "Compare Brokers", href: "/comparebrokers" },
+                    cta: { label: "Compare Brokers", href: "/compare-brokers" },
                   },
                   {
                     badge: "Insight Hub",

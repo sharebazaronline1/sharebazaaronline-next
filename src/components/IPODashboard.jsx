@@ -889,7 +889,7 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
               <p>
                 New to the process? Start with our step-by-step{" "}
                 <Link
-                  href="/ipoguide"
+                  href="/ipo-guide"
                   className="text-emerald-600 font-semibold hover:underline"
                 >
                   IPO Guide
@@ -952,7 +952,7 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
               <p>
                 If any of these terms are new to you, our complete{" "}
                 <Link
-                  href="/ipoguide"
+                  href="/ipo-guide"
                   className="text-emerald-600 font-semibold hover:underline"
                 >
                   IPO Guide
@@ -1000,7 +1000,7 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
                 </Link>
 
                 <Link
-                  href="/preipo"
+                  href="/pre-ipo"
                   className="group bg-white border border-gray-200 rounded-xl px-5 py-4 hover:border-emerald-500 hover:shadow-md transition-all duration-200"
                 >
                   <div className="flex items-center justify-between">
@@ -1080,10 +1080,10 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
                   accentGlow2: "bg-teal-400/10",
                   shadow: "shadow-emerald-500/20",
                   links: [
-                    { label: "Unlisted Stocks", href: "/preipo" },
-                    { label: "Top Valuations", href: "/preipo" },
+                    { label: "Unlisted Stocks", href: "/pre-ipo" },
+                    { label: "Top Valuations", href: "/pre-ipo" },
                   ],
-                  cta: { label: "View Pre-IPO", href: "/preipo" },
+                  cta: { label: "View Pre-IPO", href: "/pre-ipo" },
                 },
                 {
                   badge: "Brokers",
@@ -1101,9 +1101,9 @@ const IPODashboard = ({ initialIpos = [], defaultTab = "Open", now }) => {
                   shadow: "shadow-blue-500/20",
                   links: [
                     { label: "Broker Analyzer", href: "/broker-analyzer" },
-                    { label: "Compare Charges", href: "/comparebrokers" },
+                    { label: "Compare Charges", href: "/compare-brokers" },
                   ],
-                  cta: { label: "Compare Brokers", href: "/comparebrokers" },
+                  cta: { label: "Compare Brokers", href: "/compare-brokers" },
                 },
                 {
                   badge: "Insight Hub",

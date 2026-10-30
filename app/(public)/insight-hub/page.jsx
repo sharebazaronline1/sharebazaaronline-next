@@ -89,8 +89,7 @@ export const metadata = {
   },
 };
 
-// ✅ CHANGED: Increased to 1 hour to reduce ISR writes while keeping blogs fresh
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 function slugify(text) {
   if (!text) return "";

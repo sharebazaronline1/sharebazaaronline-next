@@ -1,4 +1,4 @@
-// app/ipoguide/page.jsx
+// app/ipo-guide/page.jsx
 
 import IPOGuideClient from "@/components/IPOGuideClient";
 
@@ -10,7 +10,7 @@ export const metadata = {
   description:
     "Complete IPO guide for Indian investors. Learn about IPO types, allotment process, GMP, SME IPOs, taxation, and how to apply for IPOs online. Get expert insights on ShareBazaarOnline.",
   alternates: {
-    canonical: `${SITE_URL}/ipoguide`,
+    canonical: `${SITE_URL}/ipo-guide`,
   },
   robots: {
     index: true,
@@ -23,7 +23,7 @@ export const metadata = {
     title: "IPO Guide - Master IPO Investing in India",
     description:
       "Learn everything about IPO investing in India. Complete guide covering IPO types, allotment, GMP, SME IPOs, taxation, and application process.",
-    url: `${SITE_URL}/ipoguide`,
+    url: `${SITE_URL}/ipo-guide`,
     type: "article",
     images: [{ url: `${SITE_URL}/og-image.jpg` }],
     siteName: "ShareBazaarOnline",
@@ -42,7 +42,7 @@ export const metadata = {
 };
 
 export default function IPOGuidePage() {
-  const canonicalUrl = `${SITE_URL}/ipoguide`;
+  const canonicalUrl = `${SITE_URL}/ipo-guide`;
 
   const articleSchema = {
     "@context": "https://schema.org",

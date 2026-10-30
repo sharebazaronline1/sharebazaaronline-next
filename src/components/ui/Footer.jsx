@@ -12,9 +12,9 @@ export default function Footer() {
 
   const productLinks = [
     { label: "IPO Tracker", href: "/ipo" },
-    { label: "Unlisted Shares", href: "/preipo" },
+    { label: "Unlisted Shares", href: "/pre-ipo" },
     { label: "Broker Analyzer", href: "/broker-analyzer" },
-    { label: "Corporate Actions", href: "/corporateactions" },
+    { label: "Corporate Actions", href: "/corporate-actions" },
   ];
 
   const resourceLinks = [
@@ -57,13 +57,13 @@ export default function Footer() {
                 Explore IPOs
               </Link>
               <Link
-                href="/comparebrokers"
+                href="/compare-brokers"
                 className="w-full sm:w-auto px-6 py-4 rounded-xl border border-white/70 text-white font-bold hover:bg-white/10 transition text-center"
               >
                 Compare Brokers
               </Link>
               <Link
-                href="/preipo"
+                href="/pre-ipo"
                 className="w-full sm:w-auto px-6 py-4 rounded-xl bg-green-600 text-white font-bold shadow-lg transition-all hover:scale-[1.02] text-center"
               >
                 Pre-IPO

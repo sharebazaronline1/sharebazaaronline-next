@@ -106,7 +106,7 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-slate-900">Broker Review Not Found</h2>
-          <Link href="/comparebrokers" className="inline-block mt-4 bg-emerald-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-emerald-700 transition">
+          <Link href="/compare-brokers" className="inline-block mt-4 bg-emerald-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-emerald-700 transition">
             Return to Comparison Hub
           </Link>
         </div>
@@ -121,7 +121,7 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
   // Breadcrumb items for JSON-LD
   const breadcrumbItems = [
     { name: "Home", url: "/" },
-    { name: "Brokers", url: "/comparebrokers" },
+    { name: "Brokers", url: "/compare-brokers" },
     { name: `${brokerName} Reviews`, url: `/brokerdetails/${slug}` },
   ];
 
@@ -298,7 +298,7 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
               </li>
               <ChevronRight className="w-4 h-4 text-slate-400" />
               <li>
-                <Link href="/comparebrokers" className="hover:text-emerald-600 transition-colors">
+                <Link href="/compare-brokers" className="hover:text-emerald-600 transition-colors">
                   Brokers
                 </Link>
               </li>
@@ -332,7 +332,7 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
                     Open Demat Account
                   </a>
                   <button 
-                    onClick={() => router.push("/comparebrokers")}
+                    onClick={() => router.push("/compare-brokers")}
                     className="bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium px-4 py-2.5 rounded-lg text-xs transition"
                   >
                     Compare Terminal Matrix
@@ -447,7 +447,7 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
                       <h3 className="text-sm font-bold tracking-tight text-slate-950">Compare Equivalent Ecosystems</h3>
                       <p className="text-xs text-slate-400 mt-0.5">Evaluate structural variance directly with alternative brokerage operations.</p>
                     </div>
-                    <Link href="/comparebrokers" className="text-emerald-600 hover:text-emerald-700 font-semibold text-xs uppercase tracking-wider flex items-center gap-1 transition">
+                    <Link href="/compare-brokers" className="text-emerald-600 hover:text-emerald-700 font-semibold text-xs uppercase tracking-wider flex items-center gap-1 transition">
                       Open Full Matrix Engine <ChevronRight size={14} />
                     </Link>
                   </div>
@@ -479,7 +479,7 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
                         </div>
 
                         <button
-                          onClick={() => router.push(`/comparebrokers?broker1=${item.slug}`)}
+                          onClick={() => router.push(`/compare-brokers?broker1=${item.slug}`)}
                           className="mt-3 w-full bg-slate-50 hover:bg-slate-950 text-slate-600 hover:text-white border border-slate-200 hover:border-slate-950 py-1 rounded-md text-xs font-medium transition text-center"
                         >
                           Compare Matrix
@@ -603,10 +603,10 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
                     accentGlow2: "bg-teal-400/10",
                     shadow: "shadow-emerald-500/20",
                     links: [
-                      { label: "Unlisted Stocks", href: "/preipo" },
-                      { label: "Top Valuations", href: "/preipo" },
+                      { label: "Unlisted Stocks", href: "/pre-ipo" },
+                      { label: "Top Valuations", href: "/pre-ipo" },
                     ],
-                    cta: { label: "View Pre-IPO", href: "/preipo" },
+                    cta: { label: "View Pre-IPO", href: "/pre-ipo" },
                   },
                   {
                     badge: "Brokers",
@@ -624,9 +624,9 @@ const BrokerReviewDetailClient = ({ initialData, slug }) => {
                     shadow: "shadow-blue-500/20",
                     links: [
                       { label: "Broker Analyzer", href: "/broker-analyzer" },
-                      { label: "Compare Charges", href: "/comparebrokers" },
+                      { label: "Compare Charges", href: "/compare-brokers" },
                     ],
-                    cta: { label: "Compare Brokers", href: "/comparebrokers" },
+                    cta: { label: "Compare Brokers", href: "/compare-brokers" },
                   },
                   {
                     badge: "Insight Hub",

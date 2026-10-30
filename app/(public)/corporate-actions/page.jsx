@@ -1,26 +1,28 @@
-// app/corporateactions/bonus/page.jsx
+// app/corporate-actions/page.jsx
 import { fetchCorporateActionsByAliases } from "@/lib/corporateActionData";
 import CorporateActionsClient from "@/components/CorporateActionsClient";
 import { getTabConfig } from "@/lib/corporateActionUtils";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
-const TAB_CONFIG = getTabConfig("bonus");
+const TAB_CONFIG = getTabConfig("buyback");
 
-// ✅ CHANGED: Increased to 1 hour to reduce ISR writes
-export const revalidate = 3600;
+// Increased to 1 hour to reduce ISR writes
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
   return {
-   title: "Bonus Issue Calendar 2026: Ratios & Dates",
+   title: "Corporate Actions: Buybacks & Dividends",
     description:
-      "Track upcoming bonus issues announced by Indian listed companies. Get bonus ratios, record dates, ex-dates, and full analysis.",
-    alternates: { canonical: `${SITE_URL}/corporateactions/bonus` },
+      "Track all corporate actions including buybacks, dividends, bonus issues, stock splits, rights issues and more. Stay updated with record dates, ex-dates, and announcements.",
+    alternates: {
+      canonical: `${SITE_URL}/corporate-actions`,
+    },
     robots: { index: true, follow: true },
     openGraph: {
-      title: "Bonus Issue Calendar 2026 — Track Ratios & Record Dates",
+      title: "Corporate Actions Calendar - Track Buybacks, Dividends & More",
       description:
-        "Track upcoming bonus issues announced by Indian listed companies. Get bonus ratios, record dates, ex-dates, and full analysis.",
-      url: `${SITE_URL}/corporateactions/bonus`,
+        "Track all corporate actions including buybacks, dividends, bonus issues, stock splits, rights issues and more. Stay updated with record dates, ex-dates, and announcements.",
+      url: `${SITE_URL}/corporate-actions`,
       type: "website",
       images: [{ url: `${SITE_URL}/og-image.jpg` }],
       siteName: "ShareBazaarOnline",
@@ -28,18 +30,18 @@ export async function generateMetadata() {
     },
     twitter: {
       card: "summary_large_image",
-      title: "Bonus Issue Calendar 2026 — Track Ratios & Record Dates",
+      title: "Corporate Actions Calendar - Track All Corporate Events",
       description:
-        "Track upcoming bonus issues announced by Indian listed companies.",
+        "Track all corporate actions including buybacks, dividends, bonus issues, stock splits, rights issues and more.",
       images: [`${SITE_URL}/og-image.jpg`],
     },
     keywords:
-      "Bonus Issue, Bonus Shares, Bonus Ratio, Record Date, Ex-Date, Corporate Actions, ShareBazaarOnline",
+      "Corporate Actions, Buyback, Dividends, Bonus Issue, Stock Split, Rights Issue, Record Date, Ex Date, Corporate Events, ShareBazaarOnline",
   };
 }
 
-export default async function BonusPage() {
-  const canonicalUrl = `${SITE_URL}/corporateactions/bonus`;
+export default async function CorporateActionsPage() {
+  const canonicalUrl = `${SITE_URL}/corporate-actions`;
   const records = await fetchCorporateActionsByAliases(TAB_CONFIG.aliases);
 
   const webPageSchema = {
@@ -47,16 +49,16 @@ export default async function BonusPage() {
     "@type": "WebPage",
     "@id": `${canonicalUrl}#webpage`,
     url: canonicalUrl,
-    name: "Bonus Issue Calendar 2026 — Ratios, Record Dates | ShareBazaarOnline",
+    name: "Corporate Actions - Buyback, Dividends, Bonus, Split | ShareBazaarOnline",
     description:
-      "Track upcoming bonus issues announced by Indian listed companies. Get bonus ratios, record dates, ex-dates, and full analysis.",
+      "Track all corporate actions including buybacks, dividends, bonus issues, stock splits, rights issues and more. Stay updated with record dates, ex-dates, and announcements.",
     isPartOf: {
       "@type": "WebSite",
       "@id": `${SITE_URL}#website`,
       name: "ShareBazaarOnline",
       url: SITE_URL,
     },
-    about: { "@type": "Thing", name: "Bonus Issues" },
+    about: { "@type": "Thing", name: "Corporate Actions" },
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}#organization`,
@@ -79,9 +81,8 @@ export default async function BonusPage() {
         "@type": "ListItem",
         position: 2,
         name: "Corporate Actions",
-        item: `${SITE_URL}/corporateactions`,
+        item: canonicalUrl,
       },
-      { "@type": "ListItem", position: 3, name: "Bonus Issue", item: canonicalUrl },
     ],
   };
 
@@ -99,7 +100,7 @@ export default async function BonusPage() {
           __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
         }}
       />
-      <CorporateActionsClient activeTab="bonus" records={records} />
+      <CorporateActionsClient activeTab="buyback" records={records} />
     </>
   );
 }

@@ -519,7 +519,7 @@ const CompareBrokerClient = () => {
   // Breadcrumb items for JSON-LD
   const breadcrumbItems = [
     { name: "Home", url: "/" },
-    { name: "Compare Brokers", url: "/comparebrokers" },
+    { name: "Compare Brokers", url: "/compare-brokers" },
   ];
 
   // Generate Article JSON-LD Schema
@@ -546,7 +546,7 @@ const CompareBrokerClient = () => {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${SITE_URL}/comparebrokers`,
+      "@id": `${SITE_URL}/compare-brokers`,
     },
   };
 

@@ -151,7 +151,7 @@ const supabase = createClient();
               onMouseLeave={() => closeWithDelay(setIpoOpen, ipoTimer)}
             >
               <Link
-                href="/ipoguide"
+                href="/ipo-guide"
                 className="flex items-center gap-1 font-medium text-gray-700 hover:text-text-emerald-800/70 transition"
               >
                 IPO Tracker <span className="text-xl">▾</span>
@@ -196,7 +196,7 @@ const supabase = createClient();
                   }`}
               >
                 <Link
-                  href="/preipo"
+                  href="/pre-ipo"
                   className="block px-4 py-2 text-gray-700 hover:text-text-emerald-800/70 font-normal hover:bg-gray-50 rounded-xl"
                 >
                   Pre-IPO List
@@ -226,7 +226,7 @@ const supabase = createClient();
                   }`}
               >
                 <Link
-                  href="/comparebrokers"
+                  href="/compare-brokers"
                   className="block px-4 py-2 text-gray-700 hover:text-text-emerald-800/70 font-normal hover:bg-gray-50 rounded-xl"
                 >
                   Compare Brokers
@@ -235,7 +235,7 @@ const supabase = createClient();
             </div>
 
             <Link
-              href="/corporateactions"
+              href="/corporate-actions"
               className="text-gray-700 hover:text-text-emerald-800/70 transition"
             >
               Corporate Actions
@@ -387,7 +387,7 @@ const supabase = createClient();
             <div>
               <div className="flex justify-between items-center py-2">
                 <Link
-                  href="/ipoguide"
+                  href="/ipo-guide"
                   onClick={() => setMobileMenuOpen(false)}
                   className="font-medium text-gray-800"
                 >
@@ -433,7 +433,7 @@ const supabase = createClient();
               {mobilePreIPO && (
                 <div className="pl-6 space-y-2 mt-1">
                   <Link
-                    href="/preipo"
+                    href="/pre-ipo"
                     className="block text-gray-600 hover:text-[#1e40af] font-normal"
                     onClick={() => setMobileMenuOpen(false)}
                   >
@@ -463,7 +463,7 @@ const supabase = createClient();
               {mobileBroker && (
                 <div className="pl-6 space-y-2 mt-1">
                   <Link
-                    href="/comparebrokers"
+                    href="/compare-brokers"
                     className="block text-gray-600 hover:text-[#1e40af] font-normal"
                     onClick={() => setMobileMenuOpen(false)}
                   >
@@ -474,7 +474,7 @@ const supabase = createClient();
             </div>
 
             <Link
-              href="/corporateactions"
+              href="/corporate-actions"
               className="block py-2 text-gray-800"
               onClick={() => setMobileMenuOpen(false)}
             >

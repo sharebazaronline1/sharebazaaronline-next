@@ -1,4 +1,4 @@
-// app/corporateactions/others/page.jsx
+// app/corporate-actions/others/page.jsx
 import { fetchCorporateActionsByAliases } from "@/lib/corporateActionData";
 import CorporateActionsClient from "@/components/CorporateActionsClient";
 import { getTabConfig } from "@/lib/corporateActionUtils";
@@ -14,13 +14,13 @@ export async function generateMetadata() {
     title: "Other Corporate Actions",
     description:
       "Track all other corporate actions including mergers, demergers, delistings, open offers, and scheme of arrangements in India.",
-    alternates: { canonical: `${SITE_URL}/corporateactions/others` },
+    alternates: { canonical: `${SITE_URL}/corporate-actions/others` },
     robots: { index: true, follow: true },
     openGraph: {
       title: "Other Corporate Actions 2026 — Mergers, Delistings & More",
       description:
         "Track all other corporate actions including mergers, demergers, delistings, open offers, and scheme of arrangements in India.",
-      url: `${SITE_URL}/corporateactions/others`,
+      url: `${SITE_URL}/corporate-actions/others`,
       type: "website",
       images: [{ url: `${SITE_URL}/og-image.jpg` }],
       siteName: "ShareBazaarOnline",
@@ -39,7 +39,7 @@ export async function generateMetadata() {
 }
 
 export default async function OthersPage() {
-  const canonicalUrl = `${SITE_URL}/corporateactions/others`;
+  const canonicalUrl = `${SITE_URL}/corporate-actions/others`;
   const records = await fetchCorporateActionsByAliases(TAB_CONFIG.aliases);
 
   const webPageSchema = {
@@ -79,7 +79,7 @@ export default async function OthersPage() {
         "@type": "ListItem",
         position: 2,
         name: "Corporate Actions",
-        item: `${SITE_URL}/corporateactions`,
+        item: `${SITE_URL}/corporate-actions`,
       },
       {
         "@type": "ListItem",

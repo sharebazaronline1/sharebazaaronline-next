@@ -1,28 +1,26 @@
-// app/corporateactions/page.jsx
+// app/corporate-actions/dividends/page.jsx
 import { fetchCorporateActionsByAliases } from "@/lib/corporateActionData";
 import CorporateActionsClient from "@/components/CorporateActionsClient";
 import { getTabConfig } from "@/lib/corporateActionUtils";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
-const TAB_CONFIG = getTabConfig("buyback");
+const TAB_CONFIG = getTabConfig("dividends");
 
-// Increased to 1 hour to reduce ISR writes
-export const dynamic = "force-dynamic";
+// ✅ CHANGED: Increased to 1 hour to reduce ISR writes
+export const revalidate = 3600;
 
 export async function generateMetadata() {
   return {
-   title: "Corporate Actions: Buybacks & Dividends",
+   title: "Dividends Calendar 2026: Record Dates & Yield",
     description:
-      "Track all corporate actions including buybacks, dividends, bonus issues, stock splits, rights issues and more. Stay updated with record dates, ex-dates, and announcements.",
-    alternates: {
-      canonical: `${SITE_URL}/corporateactions`,
-    },
+      "Track upcoming dividend announcements across Indian listed companies. Get the latest record dates, ex-dividend dates, payout amounts, and yield analysis.",
+    alternates: { canonical: `${SITE_URL}/corporate-actions/dividends` },
     robots: { index: true, follow: true },
     openGraph: {
-      title: "Corporate Actions Calendar - Track Buybacks, Dividends & More",
+      title: "Dividends Calendar 2026 — Track Record Dates & Yields",
       description:
-        "Track all corporate actions including buybacks, dividends, bonus issues, stock splits, rights issues and more. Stay updated with record dates, ex-dates, and announcements.",
-      url: `${SITE_URL}/corporateactions`,
+        "Track upcoming dividend announcements across Indian listed companies. Get the latest record dates, ex-dividend dates, payout amounts, and yield analysis.",
+      url: `${SITE_URL}/corporate-actions/dividends`,
       type: "website",
       images: [{ url: `${SITE_URL}/og-image.jpg` }],
       siteName: "ShareBazaarOnline",
@@ -30,18 +28,18 @@ export async function generateMetadata() {
     },
     twitter: {
       card: "summary_large_image",
-      title: "Corporate Actions Calendar - Track All Corporate Events",
+      title: "Dividends Calendar 2026 — Track Record Dates & Yields",
       description:
-        "Track all corporate actions including buybacks, dividends, bonus issues, stock splits, rights issues and more.",
+        "Track upcoming dividend announcements across Indian listed companies.",
       images: [`${SITE_URL}/og-image.jpg`],
     },
     keywords:
-      "Corporate Actions, Buyback, Dividends, Bonus Issue, Stock Split, Rights Issue, Record Date, Ex Date, Corporate Events, ShareBazaarOnline",
+      "Dividends, Dividend Calendar, Record Date, Ex-Date, Yield, Dividend Yield, Indian Stocks, ShareBazaarOnline",
   };
 }
 
-export default async function CorporateActionsPage() {
-  const canonicalUrl = `${SITE_URL}/corporateactions`;
+export default async function DividendsPage() {
+  const canonicalUrl = `${SITE_URL}/corporate-actions/dividends`;
   const records = await fetchCorporateActionsByAliases(TAB_CONFIG.aliases);
 
   const webPageSchema = {
@@ -49,16 +47,16 @@ export default async function CorporateActionsPage() {
     "@type": "WebPage",
     "@id": `${canonicalUrl}#webpage`,
     url: canonicalUrl,
-    name: "Corporate Actions - Buyback, Dividends, Bonus, Split | ShareBazaarOnline",
+    name: "Dividends Calendar 2026 — Record Dates, Ex-Dates & Yield | ShareBazaarOnline",
     description:
-      "Track all corporate actions including buybacks, dividends, bonus issues, stock splits, rights issues and more. Stay updated with record dates, ex-dates, and announcements.",
+      "Track upcoming dividend announcements across Indian listed companies. Get the latest record dates, ex-dividend dates, payout amounts, and yield analysis.",
     isPartOf: {
       "@type": "WebSite",
       "@id": `${SITE_URL}#website`,
       name: "ShareBazaarOnline",
       url: SITE_URL,
     },
-    about: { "@type": "Thing", name: "Corporate Actions" },
+    about: { "@type": "Thing", name: "Dividends" },
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}#organization`,
@@ -81,6 +79,12 @@ export default async function CorporateActionsPage() {
         "@type": "ListItem",
         position: 2,
         name: "Corporate Actions",
+        item: `${SITE_URL}/corporate-actions`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: "Dividends",
         item: canonicalUrl,
       },
     ],
@@ -100,7 +104,7 @@ export default async function CorporateActionsPage() {
           __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
         }}
       />
-      <CorporateActionsClient activeTab="buyback" records={records} />
+      <CorporateActionsClient activeTab="dividends" records={records} />
     </>
   );
 }

@@ -1,26 +1,26 @@
-// app/corporateactions/rights/page.jsx
+// app/corporate-actions/bonus/page.jsx
 import { fetchCorporateActionsByAliases } from "@/lib/corporateActionData";
 import CorporateActionsClient from "@/components/CorporateActionsClient";
 import { getTabConfig } from "@/lib/corporateActionUtils";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
-const TAB_CONFIG = getTabConfig("rights");
+const TAB_CONFIG = getTabConfig("bonus");
 
 // ✅ CHANGED: Increased to 1 hour to reduce ISR writes
 export const revalidate = 3600;
 
 export async function generateMetadata() {
   return {
-    title: "Rights Issue Calendar",
+   title: "Bonus Issue Calendar 2026: Ratios & Dates",
     description:
-      "Track all upcoming rights issues in India. Get rights ratios, offer prices, discounts to market price, record dates, and ex-dates.",
-    alternates: { canonical: `${SITE_URL}/corporateactions/rights` },
+      "Track upcoming bonus issues announced by Indian listed companies. Get bonus ratios, record dates, ex-dates, and full analysis.",
+    alternates: { canonical: `${SITE_URL}/corporate-actions/bonus` },
     robots: { index: true, follow: true },
     openGraph: {
-      title: "Rights Issue Calendar 2026 — Track Ratios, Prices & Dates",
+      title: "Bonus Issue Calendar 2026 — Track Ratios & Record Dates",
       description:
-        "Track all upcoming rights issues in India. Get rights ratios, offer prices, discounts to market price, record dates, and ex-dates.",
-      url: `${SITE_URL}/corporateactions/rights`,
+        "Track upcoming bonus issues announced by Indian listed companies. Get bonus ratios, record dates, ex-dates, and full analysis.",
+      url: `${SITE_URL}/corporate-actions/bonus`,
       type: "website",
       images: [{ url: `${SITE_URL}/og-image.jpg` }],
       siteName: "ShareBazaarOnline",
@@ -28,17 +28,18 @@ export async function generateMetadata() {
     },
     twitter: {
       card: "summary_large_image",
-      title: "Rights Issue Calendar 2026 — Track Ratios, Prices & Dates",
-      description: "Track all upcoming rights issues in India.",
+      title: "Bonus Issue Calendar 2026 — Track Ratios & Record Dates",
+      description:
+        "Track upcoming bonus issues announced by Indian listed companies.",
       images: [`${SITE_URL}/og-image.jpg`],
     },
     keywords:
-      "Rights Issue, Rights Entitlement, Rights Ratio, Record Date, Ex-Date, Corporate Actions, ShareBazaarOnline",
+      "Bonus Issue, Bonus Shares, Bonus Ratio, Record Date, Ex-Date, Corporate Actions, ShareBazaarOnline",
   };
 }
 
-export default async function RightsPage() {
-  const canonicalUrl = `${SITE_URL}/corporateactions/rights`;
+export default async function BonusPage() {
+  const canonicalUrl = `${SITE_URL}/corporate-actions/bonus`;
   const records = await fetchCorporateActionsByAliases(TAB_CONFIG.aliases);
 
   const webPageSchema = {
@@ -46,16 +47,16 @@ export default async function RightsPage() {
     "@type": "WebPage",
     "@id": `${canonicalUrl}#webpage`,
     url: canonicalUrl,
-    name: "Rights Issue Calendar 2026 — Ratios, Prices, Dates | ShareBazaarOnline",
+    name: "Bonus Issue Calendar 2026 — Ratios, Record Dates | ShareBazaarOnline",
     description:
-      "Track all upcoming rights issues in India. Get rights ratios, offer prices, discounts to market price, record dates, and ex-dates.",
+      "Track upcoming bonus issues announced by Indian listed companies. Get bonus ratios, record dates, ex-dates, and full analysis.",
     isPartOf: {
       "@type": "WebSite",
       "@id": `${SITE_URL}#website`,
       name: "ShareBazaarOnline",
       url: SITE_URL,
     },
-    about: { "@type": "Thing", name: "Rights Issues" },
+    about: { "@type": "Thing", name: "Bonus Issues" },
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}#organization`,
@@ -78,9 +79,9 @@ export default async function RightsPage() {
         "@type": "ListItem",
         position: 2,
         name: "Corporate Actions",
-        item: `${SITE_URL}/corporateactions`,
+        item: `${SITE_URL}/corporate-actions`,
       },
-      { "@type": "ListItem", position: 3, name: "Rights Issue", item: canonicalUrl },
+      { "@type": "ListItem", position: 3, name: "Bonus Issue", item: canonicalUrl },
     ],
   };
 
@@ -98,7 +99,7 @@ export default async function RightsPage() {
           __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
         }}
       />
-      <CorporateActionsClient activeTab="rights" records={records} />
+      <CorporateActionsClient activeTab="bonus" records={records} />
     </>
   );
 }

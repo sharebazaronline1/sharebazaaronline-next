@@ -219,7 +219,7 @@ const CorporateActionsClient = ({ activeTab = "buyback", records = [] }) => {
 
   const breadcrumbItems = [
     { name: "Home", url: "/" },
-    { name: "Corporate Actions", url: "/corporateactions" },
+    { name: "Corporate Actions", url: "/corporate-actions" },
   ];
 
   return (
@@ -274,7 +274,7 @@ const CorporateActionsClient = ({ activeTab = "buyback", records = [] }) => {
               restructurings, and upcoming eligibility dates. Want to explore
               delistings or mergers?{" "}
               <Link
-                href="/corporateactions/others"
+                href="/corporate-actions/others"
                 className="text-[#16A34A] hover:text-[#15803D] font-bold inline-flex items-center gap-0.5 transition"
               >
                 Track More Actions
@@ -537,7 +537,7 @@ const CorporateActionsClient = ({ activeTab = "buyback", records = [] }) => {
 
     if (canonicalSlug) {
       router.push(
-        `/corporateactions/${row.blog.id}/${canonicalSlug}`
+        `/corporate-actions/${row.blog.id}/${canonicalSlug}`
       );
     }
   }
@@ -872,7 +872,7 @@ const CorporateActionsClient = ({ activeTab = "buyback", records = [] }) => {
               </Link>
 
               <Link
-                href="/preipo"
+                href="/pre-ipo"
                 className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
               >
                 <div className="flex items-center justify-between">
