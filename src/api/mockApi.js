@@ -12265,7 +12265,7 @@ export const fetchIPOs = async () => {
 },
 {
   "id": 61,
-  "name": "CMPDI",
+  "name": "Central Mine Planning & Design Institute",
   "logo": "/images/ipo/cmpdi.png",
   "minInvestment": "₹13,760",
   "open": "20 Mar 2026",
@@ -45944,7 +45944,7 @@ The Indian hospitality sector is witnessing strong tailwinds from rising domesti
 },
  {
   "id": 117,
-  "name": "PharmEasy",
+  "name": "PharmEasy Unlisted shares",
   "price": 6.25,
   "logo": "/images/preipo/image114.png",
   "overview": "PharmEasy is India's leading digital healthcare platform. It provides information, consultations, diagnostic tests, medicines, healthcare packages, and more from registered and trusted pharmacies, leading diagnostic laboratories, and trusted doctors across India. The company started in 2015 with the mission to make healthcare accessible, affordable, and transparent.",

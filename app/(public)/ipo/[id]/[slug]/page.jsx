@@ -9,7 +9,7 @@ const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
   "https://www.sharebazaaronline.com";
 
-export const revalidate = 604800;
+export const dynamic = "force-dynamic";
 export const dynamicParams = true;
 
 // ✅ Added all requested SEO keywords for IPO pages

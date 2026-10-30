@@ -5,7 +5,7 @@ import { fetchIPOs } from "@/api/mockApi";
 import IPOCalendarClient from "@/components/IPOCalendarClient";
 
 export const metadata = {
-  title: "IPO Calendar 2026 | Live, Upcoming & Listing Dates — ShareBazaarOnline",
+  title: "IPO Calendar-Live, Upcoming & Listing Dates",
   description:
     "Track upcoming IPO subscription windows, close dates and listing days in a single calendar view.",
   alternates: { canonical: "https://www.sharebazaaronline.com/ipo-calendar" },
