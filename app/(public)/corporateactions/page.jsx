@@ -7,7 +7,7 @@ const SITE_URL = "https://www.sharebazaaronline.com";
 const TAB_CONFIG = getTabConfig("buyback");
 
 // Increased to 1 hour to reduce ISR writes
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
   return {
