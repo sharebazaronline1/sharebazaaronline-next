@@ -12,6 +12,9 @@ const SITE_URL =
 export const revalidate = 604800;
 export const dynamicParams = true;
 
+// ✅ Added all requested SEO keywords for IPO pages
+const TARGET_KEYWORDS = "current ipo list, latest ipo list, coming up ipo, upcoming ipo, upcoming ipo in india, current ipo in india, open ipo, open ipo list, latest ipo in india, ipo list 2026, upcoming mainboard ipo, upcoming sme ipo, ipo calendar, new ipo, ipo opening date";
+
 function slugify(text) {
   if (!text) return "";
   return text
@@ -104,12 +107,8 @@ function buildIPODescription(ipo, ipoName) {
     if (lotSize) parts.push(`Lot Size: ${lotSize} shares.`);
     if (openDate) parts.push(`Opens: ${openDate}.`);
 
-    if (parts.length === 1) {
-      parts.push(`Track live GMP, subscription status, allotment, and financial details on ShareBazaarOnline.`);
-    } else {
-      parts.push(`Track live GMP, subscription, and allotment.`);
-    }
-
+    // ✅ ADDED KEYWORDS TO THE FALLBACK DESCRIPTION
+    parts.push(`Find the latest IPO list, open IPO, upcoming IPO in India, and IPO opening dates on ShareBazaarOnline.`);
     baseDesc = parts.join(" ");
   }
 
@@ -147,8 +146,7 @@ export async function generateMetadata({ params }) {
   const canonical = `${SITE_URL}/ipo/${id}/${officialSlug}`;
   const description = buildIPODescription(ipo, ipoName);
 
-  // ✅ CHANGED: Title is now just the company name + IPO. 
-  // Root layout will append " | ShareBazaarOnline"
+  // Title is just the company name + IPO. Root layout appends " | ShareBazaarOnline"
   const pageTitle = `${ipoName} IPO`;
 
   const imageUrl = ipo.logo
@@ -162,6 +160,8 @@ export async function generateMetadata({ params }) {
   return {
     title: pageTitle,
     description,
+    // ✅ ADDED KEYWORDS
+    keywords: TARGET_KEYWORDS,
     alternates: { canonical },
     robots: { index: true, follow: true },
     openGraph: {
@@ -218,6 +218,8 @@ export default async function Page({ params }) {
     "@id": `${canonicalUrl}#article`,
     headline: `${ipoName} IPO - Price, Lot Size, GMP & Details`,
     description,
+    // ✅ ADDED KEYWORDS TO JSON-LD
+    keywords: TARGET_KEYWORDS,
     url: canonicalUrl,
     image: [imageUrl],
     articleSection: "IPO",
@@ -251,6 +253,8 @@ export default async function Page({ params }) {
     "@id": `${canonicalUrl}#financialproduct`,
     name: `${ipoName} IPO`,
     description,
+    // ✅ ADDED KEYWORDS TO JSON-LD
+    keywords: TARGET_KEYWORDS,
     url: canonicalUrl,
     category: "IPO",
     brand: {
