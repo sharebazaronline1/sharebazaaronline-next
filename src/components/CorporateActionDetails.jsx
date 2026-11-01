@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Share2, ChevronRight, Home } from "lucide-react";
+import { ArrowLeft, Share2, ChevronRight, Home, ArrowRight } from "lucide-react";
 
 const CorporateActionDetails = ({
   blog,
@@ -109,108 +109,262 @@ const CorporateActionDetails = ({
           </div>
         )}
 
-        {/* Article Content */}
-        <div className="w-full mx-auto">
-          <article
-            className="prose-content corporate-content"
-            dangerouslySetInnerHTML={{ __html: blog.content || "" }}
-          />
-        </div>
+        {/* MAIN GRID - Matches InsightHub layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-        {/* Share + Back */}
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-gray-700">
-              Share this update
-            </span>
-            <button
-              onClick={handleShare}
-              className="p-2 bg-white rounded-full border hover:bg-gray-100 transition"
-              aria-label="Share"
-            >
-              <Share2 size={16} />
-            </button>
+          {/* MAIN CONTENT COLUMN */}
+          <div className="lg:col-span-10">
+
+            {/* Article Content */}
+            <div className="w-full mx-auto">
+              <article
+                className="prose-content corporate-content"
+                dangerouslySetInnerHTML={{ __html: blog.content || "" }}
+              />
+            </div>
+
+            {/* Share + Back */}
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-gray-700">
+                  Share this update
+                </span>
+                <button
+                  onClick={handleShare}
+                  className="p-2 bg-white rounded-full border hover:bg-gray-100 transition"
+                  aria-label="Share"
+                >
+                  <Share2 size={16} />
+                </button>
+              </div>
+
+              <Link
+                href={sectionHref}
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#16A34A] text-white text-sm font-semibold rounded-full hover:bg-[#15803D] transition"
+              >
+                <ArrowLeft size={16} />
+                Back to {sectionLabel}
+              </Link>
+            </div>
+
+            {/* EXPLORE MORE */}
+            <div className="mt-10 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold text-slate-900">
+                  Explore More Investment Opportunities
+                </h3>
+                <p className="text-slate-500 mt-2 text-sm lg:text-base">
+                  Discover IPOs, unlisted shares, and broker comparison tools
+                  curated for smart investors.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <Link
+                  href="/ipo"
+                  className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-lg font-semibold text-slate-900">
+                        Latest IPOs
+                      </p>
+                      <p className="text-sm text-slate-400 mt-1">
+                        Track live & upcoming IPOs
+                      </p>
+                    </div>
+                    <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                      →
+                    </span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/pre-ipo"
+                  className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-lg font-semibold text-slate-900">
+                        Unlisted Shares
+                      </p>
+                      <p className="text-sm text-slate-400 mt-1">
+                        Invest before public listing
+                      </p>
+                    </div>
+                    <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                      →
+                    </span>
+                  </div>
+                </Link>
+
+                <Link
+                  href="/broker-analyzer"
+                  className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-lg font-semibold text-slate-900">
+                        Compare Brokers
+                      </p>
+                      <p className="text-sm text-slate-400 mt-1">
+                        Find the best broker platform
+                      </p>
+                    </div>
+                    <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
+                      →
+                    </span>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
           </div>
 
-          <Link
-            href={sectionHref}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#16A34A] text-white text-sm font-semibold rounded-full hover:bg-[#15803D] transition"
-          >
-            <ArrowLeft size={16} />
-            Back to {sectionLabel}
-          </Link>
-        </div>
+          {/* RIGHT SIDEBAR — Promo cards */}
+          <aside className="hidden lg:block lg:col-span-2">
+            <div className="sticky top-24 space-y-2">
+              {[
+                {
+                  badge: "IPO Insights",
+                  title: "Track Live",
+                  titleAccent: "IPOs & GMP",
+                  description:
+                    "Real-time subscription numbers, GMP trends and upcoming issues.",
+                  accentText: "text-blue-400",
+                  accentBg: "bg-blue-600 hover:bg-blue-700",
+                  accentDot: "bg-blue-400",
+                  accentBorder: "border-blue-400/25",
+                  accentBadgeBg: "bg-blue-400/10",
+                  accentGlow1: "bg-blue-400/15",
+                  accentGlow2: "bg-indigo-400/10",
+                  shadow: "shadow-blue-500/20",
+                  links: [
+                    { label: "Live IPOs", href: "/ipo" },
+                    { label: "Upcoming Issues", href: "/ipo" },
+                  ],
+                  cta: { label: "IPO Tracker", href: "/ipo" },
+                },
+                {
+                  badge: "Pre-IPO",
+                  title: "Explore",
+                  titleAccent: "Unlisted Shares",
+                  description:
+                    "Verified prices and valuations of India's top pre-IPO companies.",
+                  accentText: "text-emerald-400",
+                  accentBg: "bg-emerald-400 hover:bg-emerald-500",
+                  accentDot: "bg-emerald-400",
+                  accentBorder: "border-emerald-400/25",
+                  accentBadgeBg: "bg-emerald-400/10",
+                  accentGlow1: "bg-emerald-400/15",
+                  accentGlow2: "bg-teal-400/10",
+                  shadow: "shadow-emerald-500/20",
+                  links: [
+                    { label: "Unlisted Stocks", href: "/pre-ipo" },
+                    { label: "Top Valuations", href: "/pre-ipo" },
+                  ],
+                  cta: { label: "View Pre-IPO", href: "/pre-ipo" },
+                },
+                {
+                  badge: "Brokers",
+                  title: "Compare",
+                  titleAccent: "Top Brokers",
+                  description:
+                    "Brokerage charges, platform features and account-opening benefits.",
+                  accentText: "text-blue-400",
+                  accentBg: "bg-blue-600 hover:bg-blue-700",
+                  accentDot: "bg-blue-400",
+                  accentBorder: "border-blue-400/25",
+                  accentBadgeBg: "bg-blue-400/10",
+                  accentGlow1: "bg-blue-400/15",
+                  accentGlow2: "bg-indigo-400/10",
+                  shadow: "shadow-blue-500/20",
+                  links: [
+                    { label: "Broker Analyzer", href: "/broker-analyzer" },
+                    { label: "Compare Charges", href: "/compare-brokers" },
+                  ],
+                  cta: { label: "Compare Brokers", href: "/compare-brokers" },
+                },
+                {
+                  badge: "Insight Hub",
+                  title: "Read",
+                  titleAccent: "Market Insights",
+                  description: "Latest stock market news, IPO analysis, and expert financial blogs.",
+                  accentText: "text-emerald-400",
+                  accentBg: "bg-emerald-400 hover:bg-emerald-500",
+                  accentDot: "bg-emerald-400",
+                  accentBorder: "border-emerald-400/25",
+                  accentBadgeBg: "bg-emerald-400/10",
+                  accentGlow1: "bg-emerald-400/15",
+                  accentGlow2: "bg-teal-400/10",
+                  shadow: "shadow-emerald-500/20",
+                  links: [
+                    { label: "Latest News", href: "/insight-hub" },
+                    { label: "IPO Analysis", href: "/insight-hub" },
+                  ],
+                  cta: { label: "Explore Insights", href: "/insight-hub" },
+                },
+              ].map((card, i) => (
+                <div
+                  key={i}
+                  className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#061A40] via-[#0A2558] to-[#0E3A73] p-3 shadow-lg border border-cyan-500/10 text-white"
+                >
+                  {/* Decorative glows */}
+                  <div
+                    className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-3xl pointer-events-none ${card.accentGlow1}`}
+                  />
+                  <div
+                    className={`absolute bottom-0 left-0 w-24 h-24 rounded-full blur-3xl pointer-events-none ${card.accentGlow2}`}
+                  />
 
-        {/* EXPLORE MORE */}
-        <div className="mt-10 bg-gradient-to-br from-white to-slate-50 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-sm">
-          <div className="mb-6">
-            <h3 className="text-2xl font-bold text-slate-900">
-              Explore More Investment Opportunities
-            </h3>
-            <p className="text-slate-500 mt-2 text-sm lg:text-base">
-              Discover IPOs, unlisted shares, and broker comparison tools
-              curated for smart investors.
-            </p>
-          </div>
+                  <div className="relative z-10">
+                    <div
+                      className={`inline-flex items-center px-1.5 py-0.5 rounded-full border text-[9px] font-semibold tracking-wide ${card.accentBadgeBg} ${card.accentBorder} ${card.accentText}`}
+                    >
+                      {card.badge}
+                    </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <Link
-              href="/ipo"
-              className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-lg font-semibold text-slate-900">
-                    Latest IPOs
-                  </p>
-                  <p className="text-sm text-slate-400 mt-1">
-                    Track live & upcoming IPOs
-                  </p>
+                    <h3 className="mt-1.5 text-sm font-black leading-tight">
+                      {card.title}
+                      <span className={`block ${card.accentText}`}>
+                        {card.titleAccent}
+                      </span>
+                    </h3>
+
+                    <p className="mt-1 text-slate-300 text-[10px] leading-snug">
+                      {card.description}
+                    </p>
+
+                    <div className="mt-2 space-y-0.5">
+                      {card.links.map((item) => (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          className="flex items-center gap-2 text-[10px] group"
+                        >
+                          <div
+                            className={`w-1 h-1 rounded-full shrink-0 group-hover:scale-150 transition ${card.accentDot}`}
+                          />
+                          <span className="text-slate-200 group-hover:text-white transition">
+                            {item.label}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+
+                    <Link
+                      href={card.cta.href}
+                      className={`mt-2 w-full py-1 rounded-md text-white font-bold transition-colors text-[10px] text-center inline-flex items-center justify-center gap-1 ${card.accentBg} ${card.shadow}`}
+                    >
+                      {card.cta.label}
+                      <ArrowRight size={12} className="stroke-[2.5]" />
+                    </Link>
+                  </div>
                 </div>
-                <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-                  →
-                </span>
-              </div>
-            </Link>
+              ))}
+            </div>
+          </aside>
 
-            <Link
-              href="/pre-ipo"
-              className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-lg font-semibold text-slate-900">
-                    Unlisted Shares
-                  </p>
-                  <p className="text-sm text-slate-400 mt-1">
-                    Invest before public listing
-                  </p>
-                </div>
-                <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-                  →
-                </span>
-              </div>
-            </Link>
-
-            <Link
-              href="/broker-analyzer"
-              className="group bg-white border border-emerald-100 rounded-xl px-5 py-4 shadow-sm hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-lg font-semibold text-slate-900">
-                    Compare Brokers
-                  </p>
-                  <p className="text-sm text-slate-400 mt-1">
-                    Find the best broker platform
-                  </p>
-                </div>
-                <span className="text-emerald-600 group-hover:translate-x-1 transition font-bold">
-                  →
-                </span>
-              </div>
-            </Link>
-          </div>
         </div>
       </div>
 

@@ -21,9 +21,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 
-import BreadcrumbSchema from "@/components/BreadcrumbSchema";
-
-const SITE_URL = "https://sharebazaaronline.com";
+const SITE_URL = "https://www.sharebazaaronline.com";
 
 /* ================= REUSABLE COMPONENTS ================= */
 const Card = ({ children }) => (
@@ -69,6 +67,8 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
     );
   }
 
+  const isListed = data.listing_status === "listed";
+
   const toggleFaq = (index) => {
     setOpenFaqs((prev) => ({ ...prev, [index]: !prev[index] }));
   };
@@ -80,12 +80,6 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
       ? overviewText.slice(0, 900) + "..."
       : overviewText;
 
-  const breadcrumbItems = [
-    { name: "Home", url: "/" },
-    { name: "Unlisted Shares", url: "/pre-ipo" },
-    { name: data.name, url: `/pre-ipo/${id}/${slug}` },
-  ];
-
   // Helper function to check if data exists
   const hasData = (dataArray) => {
     return dataArray && Array.isArray(dataArray) && dataArray.length > 0;
@@ -94,78 +88,13 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
   // Helper to format values
   const formatValue = (value) => {
     if (value === null || value === undefined || value === "") return "-";
-    if (typeof value === 'number') return value.toLocaleString('en-IN');
+    if (typeof value === "number") return value.toLocaleString("en-IN");
     return value;
-  };
-
-  // Generate Article JSON-LD Schema
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: `${data.name} - Unlisted Share Details`,
-    description: data.overview?.slice(0, 200) || `Complete details about ${data.name} unlisted shares.`,
-    image: data.logo ? `${SITE_URL}${data.logo}` : `${SITE_URL}/og-image.jpg`,
-    datePublished: data.created_at || new Date().toISOString(),
-    dateModified: data.updated_at || new Date().toISOString(),
-    author: {
-      "@type": "Organization",
-      name: "ShareBazaarOnline",
-      url: SITE_URL,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "ShareBazaarOnline",
-      logo: {
-        "@type": "ImageObject",
-        url: `${SITE_URL}/logo.png`,
-      },
-    },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `${SITE_URL}/pre-ipo/${id}/${slug}`,
-    },
-  };
-
-  // Generate Product Schema with absolute URLs
-  const productSchema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: `${data.name} Unlisted Shares`,
-    description: data.overview?.slice(0, 300) || `${data.name} unlisted shares investment opportunity.`,
-    image: data.logo ? `${SITE_URL}${data.logo}` : `${SITE_URL}/og-image.jpg`,
-    offers: {
-      "@type": "Offer",
-      price: data.price || 0,
-      priceCurrency: "INR",
-      availability: "https://schema.org/InStock",
-      url: `${SITE_URL}/pre-ipo/${id}/${slug}`,
-    },
-    brand: {
-      "@type": "Brand",
-      name: data.name,
-    },
   };
 
   return (
     <>
-      {/* JSON-LD Schemas with absolute URLs */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(articleSchema),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(productSchema),
-        }}
-      />
-      
-      {/* Breadcrumb Schema */}
-      <BreadcrumbSchema items={breadcrumbItems} />
-
-      {/* FAQ Schema */}
+      {/* FAQ schema only — Article / Product / Breadcrumb are emitted by the server page */}
       {data.faq && data.faq.length > 0 && (
         <script
           type="application/ld+json"
@@ -224,8 +153,16 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
               {/* LEFT — 8 cols */}
               <div className="lg:col-span-8 space-y-3 text-left">
-                <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[11px] font-semibold px-2.5 py-0.5 rounded-md uppercase tracking-wider">
-                  <Award size={12} /> Unlisted Shares
+                {/* ✅ Badge — emerald for listed, blue for unlisted */}
+                <div
+                  className={`inline-flex items-center gap-2 text-[11px] font-semibold px-2.5 py-0.5 rounded-md uppercase tracking-wider border ${
+                    isListed
+                      ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400"
+                      : "bg-blue-500/10 border-blue-500/20 text-blue-400"
+                  }`}
+                >
+                  <Award size={12} />
+                  {isListed ? "Publicly Listed Company" : "Unlisted Shares"}
                 </div>
 
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white leading-tight">
@@ -240,16 +177,19 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                   )}
 
                 <div className="flex flex-wrap items-center gap-3 pt-1">
-                  <button
-                    onClick={() => router.push("/login")}
-                    className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg text-xs tracking-wide transition-all shadow-md"
-                  >
-                    Buy Now @ ₹{displayPrice}
-                  </button>
+                  {/* ✅ Hide Buy Now for listed companies */}
+                  {!isListed && (
+                    <button
+                      onClick={() => router.push("/login")}
+                      className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2.5 rounded-lg text-xs tracking-wide transition-all shadow-md"
+                    >
+                      Buy Now @ ₹{displayPrice}
+                    </button>
+                  )}
                 </div>
               </div>
 
-              {/* RIGHT — 4 cols, big clean logo, no border, no card */}
+              {/* RIGHT — 4 cols, big clean logo */}
               <div className="lg:col-span-4 flex justify-center lg:justify-end items-center w-full">
                 {data.logo ? (
                   <img
@@ -265,32 +205,77 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
               </div>
             </div>
 
-            {/* Bottom verification row */}
+            {/* ✅ Verification row adapts to listing status */}
             <div className="flex flex-wrap items-center gap-x-6 gap-y-1 pt-3 mt-5 border-t border-slate-800/60 text-[11px] text-slate-400">
-              <span className="flex items-center gap-1.5 font-normal">
-                <CheckCircle2 size={12} className="text-emerald-400" />
-                Verified Unlisted Company
-              </span>
-              <span className="flex items-center gap-1.5 font-normal">
-                <CheckCircle2 size={12} className="text-emerald-400" />
-                Off-market Transfer · NSDL / CDSL
-              </span>
+              {isListed ? (
+                <span className="flex items-center gap-1.5 font-normal">
+                  <CheckCircle2 size={12} className="text-emerald-400" />
+                  Publicly Listed Company
+                </span>
+              ) : (
+                <>
+                  <span className="flex items-center gap-1.5 font-normal">
+                    <CheckCircle2 size={12} className="text-emerald-400" />
+                    Verified Unlisted Company
+                  </span>
+                  <span className="flex items-center gap-1.5 font-normal">
+                    <CheckCircle2 size={12} className="text-emerald-400" />
+                    Off-market Transfer · NSDL / CDSL
+                  </span>
+                </>
+              )}
             </div>
           </div>
         </header>
 
+        {/* ✅ STANDARD LISTING BANNER — clean, no empty stat cells */}
+        {isListed && (
+          <section className="bg-white border-b border-emerald-100">
+            <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-5">
+              <div className="rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-white p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+                <div className="flex items-start gap-3 flex-1">
+                  <div className="bg-emerald-600 text-white p-2.5 rounded-full shrink-0 shadow-sm">
+                    <CheckCircle2 size={20} />
+                  </div>
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h2 className="text-base sm:text-lg font-bold text-emerald-950">
+                        {data.name} is now publicly listed
+                      </h2>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-600 text-white">
+                        Listed
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-600 mt-1">
+                      This company has transitioned from the unlisted market
+                      to the public stock market.
+                    </p>
+                  </div>
+                </div>
+
+                {data.ipo_details_url && (
+                  <a
+                    href={data.ipo_details_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition shrink-0"
+                  >
+                    View IPO Details
+                    <ArrowRight size={16} />
+                  </a>
+                )}
+              </div>
+            </div>
+          </section>
+        )}
+
         <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
             {/* MAIN CONTENT COLUMN */}
             <div className="lg:col-span-10 space-y-6">
-
               {/* COMPANY OVERVIEW */}
               <Card>
-                <SectionHeader
-                  icon={Building2}
-                  title={`About ${data.name}`}
-                />
+                <SectionHeader icon={Building2} title={`About ${data.name}`} />
                 <div className="p-6 text-slate-700 whitespace-pre-line leading-relaxed text-[15px]">
                   {showFullOverview ? overviewText : shortOverview}
                   {overviewText.length > 900 && (
@@ -305,7 +290,6 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
               </Card>
 
               {/* SHARE DETAILS + INCOME STATEMENT — side by side */}
-              {/* SHARE DETAILS (left) + INCOME STATEMENT & KEY RATIOS (right) */}
               <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
                 {/* LEFT COLUMN — SHARE DETAILS */}
                 <Card>
@@ -314,22 +298,30 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                     <table className="w-full text-sm border-collapse table-fixed">
                       <tbody className="divide-y divide-gray-100">
                         {data.shareDetails &&
-                          Object.entries(data.shareDetails).map(([key, value]) => (
-                            <tr key={key} className="hover:bg-slate-50/50">
-                              <td className="px-3 sm:px-4 py-2.5 font-medium text-slate-600 w-1/2 break-words">
-                                {key.replace(/([A-Z])/g, " $1").trim()}
-                              </td>
-                              <td className="px-3 sm:px-4 py-2.5 text-slate-900 text-right font-semibold break-words">
-                                {value || "-"}
-                              </td>
-                            </tr>
-                          ))}
+                          Object.entries(data.shareDetails).map(
+                            ([key, value]) => (
+                              <tr key={key} className="hover:bg-slate-50/50">
+                                <td className="px-3 sm:px-4 py-2.5 font-medium text-slate-600 w-1/2 break-words">
+                                  {/* ✅ Relabel indicative price for listed companies */}
+                                  {isListed &&
+                                  key === "indicativeUnlistedSharePrice"
+                                    ? "Last Indicative Unlisted Price"
+                                    : key
+                                        .replace(/([A-Z])/g, " $1")
+                                        .trim()}
+                                </td>
+                                <td className="px-3 sm:px-4 py-2.5 text-slate-900 text-right font-semibold break-words">
+                                  {value || "-"}
+                                </td>
+                              </tr>
+                            )
+                          )}
                       </tbody>
                     </table>
                   </TableWrapper>
                 </Card>
 
-                {/* RIGHT COLUMN — INCOME STATEMENT + KEY FINANCIAL RATIOS stacked */}
+                {/* RIGHT COLUMN — INCOME STATEMENT + KEY FINANCIAL RATIOS */}
                 <div className="space-y-4">
                   {/* INCOME STATEMENT */}
                   <Card>
@@ -342,21 +334,41 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                         <table className="w-full text-sm">
                           <thead className="bg-slate-100">
                             <tr>
-                              <th className="px-2 sm:px-3 py-2.5 text-left text-slate-700 font-semibold">Particulars</th>
-                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY22</th>
-                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY23</th>
-                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY24</th>
-                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY25</th>
+                              <th className="px-2 sm:px-3 py-2.5 text-left text-slate-700 font-semibold">
+                                Particulars
+                              </th>
+                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">
+                                FY22
+                              </th>
+                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">
+                                FY23
+                              </th>
+                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">
+                                FY24
+                              </th>
+                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">
+                                FY25
+                              </th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-gray-100">
                             {data.financials.incomeStatement.map((r, i) => (
                               <tr key={i} className="hover:bg-slate-50/30">
-                                <td className="px-2 sm:px-3 py-2.5 text-slate-800 font-medium">{r.label}</td>
-                                <td className="px-2 sm:px-3 py-2.5 text-right text-slate-800">{formatValue(r.fy22)}</td>
-                                <td className="px-2 sm:px-3 py-2.5 text-right text-slate-800">{formatValue(r.fy23)}</td>
-                                <td className="px-2 sm:px-3 py-2.5 text-right text-slate-800">{formatValue(r.fy24)}</td>
-                                <td className="px-2 sm:px-3 py-2.5 text-right text-slate-800">{formatValue(r.fy25)}</td>
+                                <td className="px-2 sm:px-3 py-2.5 text-slate-800 font-medium">
+                                  {r.label}
+                                </td>
+                                <td className="px-2 sm:px-3 py-2.5 text-right text-slate-800">
+                                  {formatValue(r.fy22)}
+                                </td>
+                                <td className="px-2 sm:px-3 py-2.5 text-right text-slate-800">
+                                  {formatValue(r.fy23)}
+                                </td>
+                                <td className="px-2 sm:px-3 py-2.5 text-right text-slate-800">
+                                  {formatValue(r.fy24)}
+                                </td>
+                                <td className="px-2 sm:px-3 py-2.5 text-right text-slate-800">
+                                  {formatValue(r.fy25)}
+                                </td>
                               </tr>
                             ))}
                           </tbody>
@@ -369,7 +381,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                     </TableWrapper>
                   </Card>
 
-                  {/* KEY FINANCIAL RATIOS — stacked under Income Statement */}
+                  {/* KEY FINANCIAL RATIOS */}
                   <Card>
                     <SectionHeader
                       icon={BarChart3}
@@ -380,11 +392,21 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                         <table className="w-full text-sm">
                           <thead className="bg-slate-100">
                             <tr>
-                              <th className="px-2 sm:px-3 py-2.5 text-left text-slate-700 font-semibold">Ratio</th>
-                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY22</th>
-                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY23</th>
-                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY24</th>
-                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">FY25</th>
+                              <th className="px-2 sm:px-3 py-2.5 text-left text-slate-700 font-semibold">
+                                Ratio
+                              </th>
+                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">
+                                FY22
+                              </th>
+                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">
+                                FY23
+                              </th>
+                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">
+                                FY24
+                              </th>
+                              <th className="px-2 sm:px-3 py-2.5 text-right text-slate-700 font-semibold">
+                                FY25
+                              </th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-gray-100">
@@ -435,17 +457,25 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
               <Card>
                 <SectionHeader
                   icon={BarChart3}
-                  title={`Why Invest in ${data.name.split(' ').slice(0, 3).join(' ')}`}
+                  title={`Why Invest in ${data.name
+                    .split(" ")
+                    .slice(0, 3)
+                    .join(" ")}`}
                 />
                 <div className="p-6">
-                  {data.financials?.investorInsight && data.financials.investorInsight.length > 0 ? (
+                  {data.financials?.investorInsight &&
+                  data.financials.investorInsight.length > 0 ? (
                     <ul className="list-disc pl-5 space-y-2 text-slate-700">
                       {data.financials.investorInsight.map((insight, idx) => (
-                        <li key={idx} className="text-slate-700">{insight}</li>
+                        <li key={idx} className="text-slate-700">
+                          {insight}
+                        </li>
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-slate-500">Investment insights will be updated soon.</p>
+                    <p className="text-slate-500">
+                      Investment insights will be updated soon.
+                    </p>
                   )}
                 </div>
               </Card>
@@ -462,21 +492,41 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                       <table className="w-full text-sm">
                         <thead className="bg-slate-100">
                           <tr>
-                            <th className="px-4 py-3 text-left text-slate-700 font-semibold">Item</th>
-                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY22</th>
-                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY23</th>
-                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY24</th>
-                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY25</th>
+                            <th className="px-4 py-3 text-left text-slate-700 font-semibold">
+                              Item
+                            </th>
+                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">
+                              FY22
+                            </th>
+                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">
+                              FY23
+                            </th>
+                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">
+                              FY24
+                            </th>
+                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">
+                              FY25
+                            </th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
                           {data.balanceSheet.assets.map((item, i) => (
                             <tr key={i} className="hover:bg-slate-50/30">
-                              <td className="px-4 py-3 text-slate-800 font-medium">{item.label}</td>
-                              <td className="px-4 py-3 text-right text-slate-800">{formatValue(item.fy22)}</td>
-                              <td className="px-4 py-3 text-right text-slate-800">{formatValue(item.fy23)}</td>
-                              <td className="px-4 py-3 text-right text-slate-800">{formatValue(item.fy24)}</td>
-                              <td className="px-4 py-3 text-right text-slate-800">{formatValue(item.fy25)}</td>
+                              <td className="px-4 py-3 text-slate-800 font-medium">
+                                {item.label}
+                              </td>
+                              <td className="px-4 py-3 text-right text-slate-800">
+                                {formatValue(item.fy22)}
+                              </td>
+                              <td className="px-4 py-3 text-right text-slate-800">
+                                {formatValue(item.fy23)}
+                              </td>
+                              <td className="px-4 py-3 text-right text-slate-800">
+                                {formatValue(item.fy24)}
+                              </td>
+                              <td className="px-4 py-3 text-right text-slate-800">
+                                {formatValue(item.fy25)}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -499,21 +549,41 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                       <table className="w-full text-sm">
                         <thead className="bg-slate-100">
                           <tr>
-                            <th className="px-4 py-3 text-left text-slate-700 font-semibold">Item</th>
-                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY22</th>
-                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY23</th>
-                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY24</th>
-                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">FY25</th>
+                            <th className="px-4 py-3 text-left text-slate-700 font-semibold">
+                              Item
+                            </th>
+                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">
+                              FY22
+                            </th>
+                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">
+                              FY23
+                            </th>
+                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">
+                              FY24
+                            </th>
+                            <th className="px-4 py-3 text-right text-slate-700 font-semibold">
+                              FY25
+                            </th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
                           {data.balanceSheet.liabilities.map((item, i) => (
                             <tr key={i} className="hover:bg-slate-50/30">
-                              <td className="px-4 py-3 text-slate-800 font-medium">{item.label}</td>
-                              <td className="px-4 py-3 text-right text-slate-800">{formatValue(item.fy22)}</td>
-                              <td className="px-4 py-3 text-right text-slate-800">{formatValue(item.fy23)}</td>
-                              <td className="px-4 py-3 text-right text-slate-800">{formatValue(item.fy24)}</td>
-                              <td className="px-4 py-3 text-right text-slate-800">{formatValue(item.fy25)}</td>
+                              <td className="px-4 py-3 text-slate-800 font-medium">
+                                {item.label}
+                              </td>
+                              <td className="px-4 py-3 text-right text-slate-800">
+                                {formatValue(item.fy22)}
+                              </td>
+                              <td className="px-4 py-3 text-right text-slate-800">
+                                {formatValue(item.fy23)}
+                              </td>
+                              <td className="px-4 py-3 text-right text-slate-800">
+                                {formatValue(item.fy24)}
+                              </td>
+                              <td className="px-4 py-3 text-right text-slate-800">
+                                {formatValue(item.fy25)}
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -536,7 +606,9 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                 <div className="p-6 text-slate-700 space-y-6">
                   {data.balanceSheet?.insights && (
                     <div>
-                      <h4 className="font-semibold mb-2 text-slate-900">Balance Sheet Insights</h4>
+                      <h4 className="font-semibold mb-2 text-slate-900">
+                        Balance Sheet Insights
+                      </h4>
                       <p className="text-sm leading-relaxed text-slate-600">
                         {data.balanceSheet.insights}
                       </p>
@@ -544,7 +616,9 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                   )}
                   {data.liabilitiesBreakdown && (
                     <div>
-                      <h4 className="font-semibold mb-2 text-slate-900">Liabilities Breakdown</h4>
+                      <h4 className="font-semibold mb-2 text-slate-900">
+                        Liabilities Breakdown
+                      </h4>
                       <p className="text-sm leading-relaxed text-slate-600">
                         {data.liabilitiesBreakdown}
                       </p>
@@ -552,33 +626,41 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                   )}
                   {data.balanceSheetInsights && (
                     <div>
-                      <h4 className="font-semibold mb-2 text-slate-900">Additional Insights</h4>
+                      <h4 className="font-semibold mb-2 text-slate-900">
+                        Additional Insights
+                      </h4>
                       <p className="text-sm leading-relaxed text-slate-600">
                         {data.balanceSheetInsights}
                       </p>
                     </div>
                   )}
-                  {!data.balanceSheet?.insights && !data.liabilitiesBreakdown && !data.balanceSheetInsights && (
-                    <p className="text-slate-500">Balance sheet insights will be updated soon.</p>
-                  )}
+                  {!data.balanceSheet?.insights &&
+                    !data.liabilitiesBreakdown &&
+                    !data.balanceSheetInsights && (
+                      <p className="text-slate-500">
+                        Balance sheet insights will be updated soon.
+                      </p>
+                    )}
                 </div>
               </Card>
 
               {/* CASH FLOW */}
               <Card>
-                <SectionHeader
-                  icon={BarChart3}
-                  title="Cash Flow Insights"
-                />
+                <SectionHeader icon={BarChart3} title="Cash Flow Insights" />
                 <div className="p-6 text-slate-700">
-                  {data.cashFlow?.insights && data.cashFlow.insights.length > 0 ? (
+                  {data.cashFlow?.insights &&
+                  data.cashFlow.insights.length > 0 ? (
                     <ul className="list-disc pl-5 space-y-2">
                       {data.cashFlow.insights.map((insight, idx) => (
-                        <li key={idx} className="text-slate-600">{insight}</li>
+                        <li key={idx} className="text-slate-600">
+                          {insight}
+                        </li>
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-slate-500">Cash flow insights will be updated soon.</p>
+                    <p className="text-slate-500">
+                      Cash flow insights will be updated soon.
+                    </p>
                   )}
                 </div>
               </Card>
@@ -629,22 +711,39 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                 <SectionHeader icon={Users} title="Promoters & Management" />
                 <div className="p-6">
                   {data.promotersManagement && (
-                    <p className="text-slate-700 mb-4">{data.promotersManagement}</p>
+                    <p className="text-slate-700 mb-4">
+                      {data.promotersManagement}
+                    </p>
                   )}
                   {data.management && data.management.length > 0 && (
                     <div className="space-y-3">
-                      <h4 className="font-semibold text-slate-900">Key Management</h4>
+                      <h4 className="font-semibold text-slate-900">
+                        Key Management
+                      </h4>
                       {data.management.map((m, idx) => (
-                        <div key={idx} className="text-sm text-slate-600 border-b border-gray-100 pb-2">
-                          <span className="font-medium text-slate-800">{m.name}</span>
-                          {m.role && <span className="text-slate-500"> - {m.role}</span>}
-                          {m.experience && <div className="text-slate-400 text-xs mt-1">{m.experience}</div>}
+                        <div
+                          key={idx}
+                          className="text-sm text-slate-600 border-b border-gray-100 pb-2"
+                        >
+                          <span className="font-medium text-slate-800">
+                            {m.name}
+                          </span>
+                          {m.role && (
+                            <span className="text-slate-500"> - {m.role}</span>
+                          )}
+                          {m.experience && (
+                            <div className="text-slate-400 text-xs mt-1">
+                              {m.experience}
+                            </div>
+                          )}
                         </div>
                       ))}
                     </div>
                   )}
                   {!data.promotersManagement && !data.management && (
-                    <p className="text-slate-500">Promoter and management details will be updated soon.</p>
+                    <p className="text-slate-500">
+                      Promoter and management details will be updated soon.
+                    </p>
                   )}
                 </div>
               </Card>
@@ -678,10 +777,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
 
               {/* MANAGEMENT ANALYSIS */}
               <Card>
-                <SectionHeader
-                  icon={BarChart3}
-                  title="Management Analysis"
-                />
+                <SectionHeader icon={BarChart3} title="Management Analysis" />
                 <div className="p-6 text-slate-700 whitespace-pre-line leading-relaxed">
                   {data.managementInsight ||
                     "Leadership strategy, vision, execution capability, and corporate governance overview."}
@@ -732,7 +828,9 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                   className="inline-flex items-center gap-2 font-semibold text-slate-600 hover:text-slate-900 transition-colors"
                 >
                   <ArrowLeft size={18} />
-                  Back to All Unlisted Shares
+                  {isListed
+                    ? "Back to All Pre-IPO Companies"
+                    : "Back to All Unlisted Shares"}
                 </Link>
               </div>
 
@@ -807,10 +905,9 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                   </Link>
                 </div>
               </div>
-
             </div>
 
-            {/* RIGHT SIDEBAR — Promo cards */}
+            {/* RIGHT SIDEBAR — Promo cards (unchanged) */}
             <aside className="hidden lg:block lg:col-span-2">
               <div className="sticky top-24 space-y-2">
                 {[
@@ -872,13 +969,17 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                       { label: "Broker Analyzer", href: "/broker-analyzer" },
                       { label: "Compare Charges", href: "/compare-brokers" },
                     ],
-                    cta: { label: "Compare Brokers", href: "/compare-brokers" },
+                    cta: {
+                      label: "Compare Brokers",
+                      href: "/compare-brokers",
+                    },
                   },
                   {
                     badge: "Insight Hub",
                     title: "Read",
                     titleAccent: "Market Insights",
-                    description: "Latest stock market news, IPO analysis, and expert financial blogs.",
+                    description:
+                      "Latest stock market news, IPO analysis, and expert financial blogs.",
                     accentText: "text-emerald-400",
                     accentBg: "bg-emerald-400 hover:bg-emerald-500",
                     accentDot: "bg-emerald-400",
@@ -898,7 +999,6 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                     key={i}
                     className="relative overflow-hidden rounded-xl bg-gradient-to-br from-[#061A40] via-[#0A2558] to-[#0E3A73] p-3 shadow-lg border border-cyan-500/10 text-white"
                   >
-                    {/* Decorative glows */}
                     <div
                       className={`absolute -right-10 -top-10 w-32 h-32 rounded-full blur-3xl pointer-events-none ${card.accentGlow1}`}
                     />
@@ -953,7 +1053,6 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                 ))}
               </div>
             </aside>
-
           </div>
         </div>
       </div>

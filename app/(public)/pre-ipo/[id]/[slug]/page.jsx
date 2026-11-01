@@ -7,25 +7,24 @@ import PreIPODetails from "@/components/PreIPODetails";
 
 const SITE_URL = "https://www.sharebazaaronline.com";
 
-// ✅ NEW HELPER: Strip brand suffix AND truncate long company names
+export const dynamic = "force-dynamic";
+
 function cleanTitle(title) {
   if (!title) return "";
-  
-  // 1. Remove the brand suffix if it exists
+
   let cleaned = title.replace(/\s*\|\s*ShareBazaarOnline\s*$/i, "").trim();
-  
-  // 2. Truncate to a safe limit (45 chars)
+
   const MAX_LENGTH = 45;
-  
+
   if (cleaned.length > MAX_LENGTH) {
     cleaned = cleaned.substring(0, MAX_LENGTH).trim();
-    cleaned = cleaned.replace(/[,.;:|-]$/, '').trim();
+    cleaned = cleaned.replace(/[,.;:|-]$/, "").trim();
     const lastSpace = cleaned.lastIndexOf(" ");
     if (lastSpace > 0) {
       cleaned = cleaned.substring(0, lastSpace).trim();
     }
   }
-  
+
   return cleaned;
 }
 
@@ -36,28 +35,57 @@ async function getPreIPOData(id) {
     if (!selected) return null;
 
     try {
+      // ✅ FIX 1: Ensure we are actually fetching listing_status
       const { data: dbData, error: dbError } = await publicSupabase
         .from("pre_ipo_companies")
-        .select("name, price, lot_size");
-        
-      if (!dbError && dbData && dbData.length > 0) {
-        const normalize = (str) => str.toLowerCase().replace(/[^a-z0-9]/g, "");
-        const dbItem = dbData.find(
-          (d) => normalize(d.name).includes(normalize(selected.name)) || normalize(selected.name).includes(normalize(d.name))
-        );
+        .select("id, name, price, lot_size, listing_status");
 
-        if (dbItem) {
-          return {
-            ...selected,
-            price: Number(dbItem.price),
-            shareDetails: {
-              ...selected.shareDetails,
-              indicativeUnlistedSharePrice: `₹${Number(dbItem.price)}`,
-              lotSize: dbItem.lot_size || selected.shareDetails?.lotSize || "-",
-            },
-          };
-        }
+      if (dbError) {
+        console.error("Supabase error:", dbError);
+        return selected;
       }
+
+      const normalize = (str = "") =>
+        str
+          .toLowerCase()
+          .replace(/\b(limited|ltd|private|pvt)\b/g, "")
+          .replace(/[^a-z0-9]/g, "");
+
+      const selectedName = normalize(selected.name);
+
+      // ✅ FIX 2: Use 'includes' instead of strict '===' 
+      // because DB has "NSE India Limited Unlisted Shares" and mock has "NSE India Limited"
+      const dbItem = (dbData || []).find(
+        (item) =>
+          normalize(item.name).includes(selectedName) ||
+          selectedName.includes(normalize(item.name))
+      );
+
+      if (!dbItem) {
+        console.warn(`No Supabase match for: ${selected.name}`);
+        return selected;
+      }
+
+      // ✅ Merge DB data into the mock data
+      return {
+        ...selected,
+        dbCompanyId: dbItem.id,
+        price:
+          dbItem.price !== null && dbItem.price !== undefined
+            ? Number(dbItem.price)
+            : selected.price,
+        shareDetails: {
+          ...selected.shareDetails,
+          indicativeUnlistedSharePrice:
+            dbItem.price !== null && dbItem.price !== undefined
+              ? `₹${Number(dbItem.price)}`
+              : selected.shareDetails?.indicativeUnlistedSharePrice,
+          lotSize:
+            dbItem.lot_size || selected.shareDetails?.lotSize || "-",
+        },
+        // ✅ This is what triggers the UI indication
+        listing_status: dbItem.listing_status || "unlisted",
+      };
     } catch (supabaseError) {
       console.error("Supabase error:", supabaseError);
     }
@@ -72,7 +100,10 @@ export async function generateStaticParams() {
   try {
     const mockData = await fetchPreIPODetails();
     return mockData.map((company) => {
-      const slug = company.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+      const slug = company.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
       return { id: String(company.id), slug };
     });
   } catch (error) {
@@ -85,15 +116,19 @@ export async function generateMetadata({ params }) {
   const data = await getPreIPOData(id);
 
   if (!data) {
-    return { title: "Company Not Found", robots: { index: false, follow: false } };
+    return {
+      title: "Company Not Found",
+      robots: { index: false, follow: false },
+    };
   }
 
-  // ✅ CHANGED: Clean and truncate the company name
+  const isListed = data.listing_status === "listed";
   const companyName = cleanTitle(data.name);
   const overview = data.overview || "";
 
   const getDescription = (text) => {
-    if (!text) return `Get detailed information about ${companyName} including share price, financials, and investment analysis.`;
+    if (!text)
+      return `Get detailed information about ${companyName} including share price, financials, and investment analysis.`;
     let desc = text.slice(0, 155);
     const lastSpace = desc.lastIndexOf(" ");
     if (lastSpace > 0) desc = desc.slice(0, lastSpace);
@@ -105,7 +140,9 @@ export async function generateMetadata({ params }) {
   const canonical = `${SITE_URL}/pre-ipo/${id}/${slug}`;
 
   const imageUrl = data.logo
-    ? data.logo.startsWith("http") ? data.logo : `${SITE_URL}${data.logo.startsWith("/") ? "" : "/"}${data.logo}`
+    ? data.logo.startsWith("http")
+      ? data.logo
+      : `${SITE_URL}${data.logo.startsWith("/") ? "" : "/"}${data.logo}`
     : `${SITE_URL}/og-image.jpg`;
 
   return {
@@ -114,7 +151,9 @@ export async function generateMetadata({ params }) {
     alternates: { canonical },
     robots: { index: true, follow: true },
     openGraph: {
-      title: `${companyName} - Unlisted Share Details`,
+      title: isListed
+        ? `${companyName} - Listed Company Details`
+        : `${companyName} - Unlisted Share Details`,
       description,
       url: canonical,
       type: "article",
@@ -124,7 +163,9 @@ export async function generateMetadata({ params }) {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${companyName} - Unlisted Shares`,
+      title: isListed
+        ? `${companyName} - Listed Company`
+        : `${companyName} - Unlisted Shares`,
       description,
       images: [imageUrl],
     },
@@ -137,62 +178,131 @@ export default async function Page({ params }) {
 
   if (!data) notFound();
 
+  const isListed = data.listing_status === "listed";
+
   const companyName = data.name || "Unlisted Company";
   const canonicalUrl = `${SITE_URL}/pre-ipo/${id}/${slug}`;
-  const price = data.price ? `₹${Number(data.price).toLocaleString("en-IN")}` : "";
+  const price = data.price
+    ? `₹${Number(data.price).toLocaleString("en-IN")}`
+    : "";
 
   const description = data.overview
     ? data.overview.slice(0, 160)
     : `Detailed information about ${companyName} unlisted shares including share price, financials, valuation, and investment analysis.`;
 
   const imageUrl = data.logo
-    ? data.logo.startsWith("http") ? data.logo : `${SITE_URL}${data.logo.startsWith("/") ? "" : "/"}${data.logo}`
+    ? data.logo.startsWith("http")
+      ? data.logo
+      : `${SITE_URL}${data.logo.startsWith("/") ? "" : "/"}${data.logo}`
     : `${SITE_URL}/og-image.jpg`;
 
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
     "@id": `${canonicalUrl}#article`,
-    headline: price ? `${companyName} - Unlisted Share Price ${price}` : `${companyName} - Unlisted Share Details`,
+    headline: isListed
+      ? `${companyName} - Now Listed on ${
+          data.exchange || "Stock Exchange"
+        }`
+      : price
+      ? `${companyName} - Unlisted Share Price ${price}`
+      : `${companyName} - Unlisted Share Details`,
     description,
     url: canonicalUrl,
     image: [imageUrl],
-    articleSection: "Unlisted Shares",
-    author: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "ShareBazaarOnline", url: SITE_URL },
-    publisher: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "ShareBazaarOnline", url: SITE_URL },
-    mainEntityOfPage: { "@type": "WebPage", "@id": `${canonicalUrl}#webpage` },
+    articleSection: isListed ? "Listed Companies" : "Unlisted Shares",
+    author: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "ShareBazaarOnline",
+      url: SITE_URL,
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "ShareBazaarOnline",
+      url: SITE_URL,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${canonicalUrl}#webpage`,
+    },
   };
 
-  const financialProductSchema = {
-    "@context": "https://schema.org",
-    "@type": "FinancialProduct",
-    "@id": `${canonicalUrl}#financialproduct`,
-    name: `${companyName} Unlisted Shares`,
-    description,
-    url: canonicalUrl,
-    category: "Unlisted Shares",
-    brand: { "@type": "Brand", name: companyName },
-    ...(data.price ? { offers: { "@type": "Offer", priceCurrency: "INR", price: Number(data.price), availability: "https://schema.org/InStock", url: canonicalUrl } } : {}),
-  };
+  // ✅ Only emit the unlisted-share FinancialProduct schema when still unlisted
+  const financialProductSchema = isListed
+    ? null
+    : {
+        "@context": "https://schema.org",
+        "@type": "FinancialProduct",
+        "@id": `${canonicalUrl}#financialproduct`,
+        name: `${companyName} Unlisted Shares`,
+        description,
+        url: canonicalUrl,
+        category: "Unlisted Shares",
+        brand: { "@type": "Brand", name: companyName },
+        ...(data.price
+          ? {
+              offers: {
+                "@type": "Offer",
+                priceCurrency: "INR",
+                price: Number(data.price),
+                availability: "https://schema.org/InStock",
+                url: canonicalUrl,
+              },
+            }
+          : {}),
+      };
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "@id": `${canonicalUrl}#breadcrumb`,
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/` },
-      { "@type": "ListItem", position: 2, name: "Pre-IPO Stocks", item: `${SITE_URL}/pre-ipo` },
-      { "@type": "ListItem", position: 3, name: `${companyName} Unlisted Shares`, item: canonicalUrl },
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${SITE_URL}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Pre-IPO Stocks",
+        item: `${SITE_URL}/pre-ipo`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: isListed
+          ? `${companyName} - Listed Company`
+          : `${companyName} Unlisted Shares`,
+        item: canonicalUrl,
+      },
     ],
   };
 
-  const safeJsonLd = (schema) => JSON.stringify(schema).replace(/</g, "\\u003c");
+  const safeJsonLd = (schema) =>
+    JSON.stringify(schema).replace(/</g, "\\u003c");
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(articleSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(financialProductSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbSchema) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(articleSchema) }}
+      />
+      {financialProductSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: safeJsonLd(financialProductSchema),
+          }}
+        />
+      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(breadcrumbSchema) }}
+      />
       <PreIPODetails data={data} id={id} slug={slug} />
     </>
   );

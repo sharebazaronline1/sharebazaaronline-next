@@ -21,6 +21,9 @@ const AdminPreIPOClient = () => {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // ✅ NEW: which company's listing status is currently being updated
+  const [updatingListingId, setUpdatingListingId] = useState(null);
+
   // Fetch companies
   const fetchCompanies = async () => {
     setLoading(true);
@@ -114,6 +117,46 @@ const AdminPreIPOClient = () => {
     setSaving(false);
   };
 
+  // ✅ NEW: one-click listing status toggle
+  const toggleListingStatus = async (company) => {
+    const isCurrentlyListed = company.listing_status === "listed";
+    const nextStatus = isCurrentlyListed ? "unlisted" : "listed";
+
+    const confirmed = window.confirm(
+      isCurrentlyListed
+        ? `Mark "${company.name}" as UNLISTED?\n\nThe public page will stop showing the listed announcement.`
+        : `Mark "${company.name}" as LISTED?\n\nThe public page will show it as a publicly listed company.`
+    );
+
+    if (!confirmed) return;
+
+    setUpdatingListingId(company.id);
+
+    const { error } = await supabase
+      .from("pre_ipo_companies")
+      .update({
+        listing_status: nextStatus,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", company.id);
+
+    if (error) {
+      console.error("Listing status update failed:", error);
+      alert("Failed to update listing status. Please try again.");
+      setUpdatingListingId(null);
+      return;
+    }
+
+    // Optimistic local update (avoids a full refetch flicker)
+    setCompanies((prev) =>
+      prev.map((c) =>
+        c.id === company.id ? { ...c, listing_status: nextStatus } : c
+      )
+    );
+
+    setUpdatingListingId(null);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <AdminSidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
@@ -194,13 +237,18 @@ const AdminPreIPOClient = () => {
                   <th className="text-right px-6 py-5 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Lot Size
                   </th>
-                  <th className="w-24 px-6 py-5"></th>
+                  {/* ✅ NEW COLUMN HEADER */}
+                  <th className="text-center px-6 py-5 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Listing Status
+                  </th>
+                  <th className="w-44 px-6 py-5"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {loading ? (
                   <tr>
-                    <td colSpan="4" className="py-20 text-center">
+                    {/* ✅ colSpan updated 4 → 5 */}
+                    <td colSpan="5" className="py-20 text-center">
                       <Loader2
                         className="animate-spin mx-auto text-emerald-600"
                         size={36}
@@ -212,81 +260,120 @@ const AdminPreIPOClient = () => {
                   </tr>
                 ) : filtered.length === 0 ? (
                   <tr>
+                    {/* ✅ colSpan updated 4 → 5 */}
                     <td
-                      colSpan="4"
+                      colSpan="5"
                       className="py-20 text-center text-gray-500"
                     >
-                      {search ? "No companies match your search" : "No companies found"}
+                      {search
+                        ? "No companies match your search"
+                        : "No companies found"}
                     </td>
                   </tr>
                 ) : (
-                  filtered.map((company) => (
-                    <tr
-                      key={company.id}
-                      className="hover:bg-emerald-50/60 transition-colors"
-                    >
-                      <td className="px-6 py-5 font-semibold text-gray-900">
-                        {company.name}
-                      </td>
+                  filtered.map((company) => {
+                    const isListed = company.listing_status === "listed";
+                    const isUpdating = updatingListingId === company.id;
 
-                      <td className="px-6 py-5 text-right">
-                        {editingId === company.id ? (
-                          <input
-                            type="number"
-                            value={editPrice}
-                            onChange={(e) => setEditPrice(e.target.value)}
-                            onBlur={() => savePrice(company.id)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") savePrice(company.id);
-                              if (e.key === "Escape") setEditingId(null);
-                            }}
-                            className="w-32 text-right text-lg font-semibold border border-emerald-500 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
-                            autoFocus
-                          />
-                        ) : (
+                    return (
+                      <tr
+                        key={company.id}
+                        className="hover:bg-emerald-50/60 transition-colors"
+                      >
+                        <td className="px-6 py-5 font-semibold text-gray-900">
+                          {company.name}
+                        </td>
+
+                        <td className="px-6 py-5 text-right">
+                          {editingId === company.id ? (
+                            <input
+                              type="number"
+                              value={editPrice}
+                              onChange={(e) => setEditPrice(e.target.value)}
+                              onBlur={() => savePrice(company.id)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") savePrice(company.id);
+                                if (e.key === "Escape") setEditingId(null);
+                              }}
+                              className="w-32 text-right text-lg font-semibold border border-emerald-500 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                              autoFocus
+                            />
+                          ) : (
+                            <span
+                              onDoubleClick={() => handleDoubleClick(company)}
+                              className="text-lg font-semibold cursor-pointer hover:text-emerald-700 transition-colors"
+                            >
+                              ₹{company.price}
+                            </span>
+                          )}
+                        </td>
+
+                        <td className="px-6 py-5 text-right">
+                          {editingLotId === company.id ? (
+                            <input
+                              type="number"
+                              value={editLot}
+                              onChange={(e) => setEditLot(e.target.value)}
+                              onBlur={() => saveLot(company.id)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") saveLot(company.id);
+                                if (e.key === "Escape") setEditingLotId(null);
+                              }}
+                              className="w-28 text-right text-lg font-semibold border border-blue-500 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                              autoFocus
+                            />
+                          ) : (
+                            <span
+                              onDoubleClick={() =>
+                                handleLotDoubleClick(company)
+                              }
+                              className="text-lg font-semibold cursor-pointer hover:text-blue-700 transition-colors"
+                            >
+                              {company.lot_size || "-"}
+                            </span>
+                          )}
+                        </td>
+
+                        {/* ✅ Listing Status badge */}
+                        <td className="px-6 py-5 text-center">
                           <span
-                            onDoubleClick={() => handleDoubleClick(company)}
-                            className="text-lg font-semibold cursor-pointer hover:text-emerald-700 transition-colors"
+                            className={`inline-flex px-3 py-1 rounded-full text-xs font-semibold ${
+                              isListed
+                                ? "bg-emerald-100 text-emerald-700"
+                                : "bg-gray-100 text-gray-600"
+                            }`}
                           >
-                            ₹{company.price}
+                            {isListed ? "Listed" : "Unlisted"}
                           </span>
-                        )}
-                      </td>
+                        </td>
 
-                      <td className="px-6 py-5 text-right">
-                        {editingLotId === company.id ? (
-                          <input
-                            type="number"
-                            value={editLot}
-                            onChange={(e) => setEditLot(e.target.value)}
-                            onBlur={() => saveLot(company.id)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") saveLot(company.id);
-                              if (e.key === "Escape") setEditingLotId(null);
-                            }}
-                            className="w-28 text-right text-lg font-semibold border border-blue-500 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                            autoFocus
-                          />
-                        ) : (
-                          <span
-                            onDoubleClick={() => handleLotDoubleClick(company)}
-                            className="text-lg font-semibold cursor-pointer hover:text-blue-700 transition-colors"
+                        {/* ✅ One-click toggle action */}
+                        <td className="px-6 py-5 text-center">
+                          <button
+                            onClick={() => toggleListingStatus(company)}
+                            disabled={isUpdating}
+                            className={`inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition disabled:opacity-60 ${
+                              isListed
+                                ? "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
+                                : "bg-slate-900 text-white hover:bg-slate-700"
+                            }`}
                           >
-                            {company.lot_size || "-"}
-                          </span>
-                        )}
-                      </td>
-
-                      <td className="px-6 py-5 text-center">
-                        {saving && (
-                          <Loader2
-                            className="animate-spin mx-auto text-emerald-600"
-                            size={20}
-                          />
-                        )}
-                      </td>
-                    </tr>
-                  ))
+                            {isUpdating && (
+                              <Loader2
+                                className="animate-spin"
+                                size={14}
+                              />
+                            )}
+                            {isUpdating
+                              ? "Updating..."
+                              : isListed
+                              ? "Mark as Unlisted"
+                              : "Mark as Listed"}
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
                 )}
               </tbody>
             </table>
