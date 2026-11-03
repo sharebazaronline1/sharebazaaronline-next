@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-import { FaTwitter, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa';
+import { FaTwitter, FaInstagram,FaFacebook, FaLinkedin, FaYoutube } from 'react-icons/fa';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -148,18 +148,31 @@ export default function Footer() {
                         <FaTwitter size={18} />
                       </a>
                       <a
-                        href="#"
+                        href="https://www.instagram.com/sharebazaronlineofficial/"
+                        target="_blank"
                         aria-label="Instagram"
+                        rel="noopener noreferrer"
                         className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-green-400 hover:border-green-500/50 transition"
                       >
                         <FaInstagram size={18} />
                       </a>
                       <a
-                        href="#"
+                        href="https://www.linkedin.com/company/sharebazaronline/"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         aria-label="LinkedIn"
                         className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-green-400 hover:border-green-500/50 transition"
                       >
                         <FaLinkedin size={18} />
+                      </a>
+                       <a
+                        href="https://www.facebook.com/ShareBazaarOnlineOfficial/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Facebook"
+                        className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-slate-400 hover:text-green-400 hover:border-green-500/50 transition"
+                      >
+                        <FaFacebook size={18} />
                       </a>
                       <a
                         href="https://www.youtube.com/@sharebazaronline9156"
