@@ -21,7 +21,7 @@ const AdminPreIPOClient = () => {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // ✅ NEW: which company's listing status is currently being updated
+  // ✅ which company's listing status is currently being updated
   const [updatingListingId, setUpdatingListingId] = useState(null);
 
   // Fetch companies
@@ -117,7 +117,7 @@ const AdminPreIPOClient = () => {
     setSaving(false);
   };
 
-  // ✅ NEW: one-click listing status toggle
+  // ✅ one-click listing status toggle
   const toggleListingStatus = async (company) => {
     const isCurrentlyListed = company.listing_status === "listed";
     const nextStatus = isCurrentlyListed ? "unlisted" : "listed";
@@ -237,7 +237,7 @@ const AdminPreIPOClient = () => {
                   <th className="text-right px-6 py-5 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Lot Size
                   </th>
-                  {/* ✅ NEW COLUMN HEADER */}
+                  {/* ✅ COLUMN HEADER */}
                   <th className="text-center px-6 py-5 text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Listing Status
                   </th>
@@ -247,7 +247,6 @@ const AdminPreIPOClient = () => {
               <tbody className="divide-y divide-gray-100">
                 {loading ? (
                   <tr>
-                    {/* ✅ colSpan updated 4 → 5 */}
                     <td colSpan="5" className="py-20 text-center">
                       <Loader2
                         className="animate-spin mx-auto text-emerald-600"
@@ -260,7 +259,6 @@ const AdminPreIPOClient = () => {
                   </tr>
                 ) : filtered.length === 0 ? (
                   <tr>
-                    {/* ✅ colSpan updated 4 → 5 */}
                     <td
                       colSpan="5"
                       className="py-20 text-center text-gray-500"
@@ -334,28 +332,28 @@ const AdminPreIPOClient = () => {
                           )}
                         </td>
 
-                        {/* ✅ Listing Status badge */}
+                        {/* ✅ Listing Status badge: Red for Unlisted, Green for Listed */}
                         <td className="px-6 py-5 text-center">
                           <span
                             className={`inline-flex px-3 py-1 rounded-full text-xs font-semibold ${
                               isListed
-                                ? "bg-emerald-100 text-emerald-700"
-                                : "bg-gray-100 text-gray-600"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-red-100 text-red-700"
                             }`}
                           >
                             {isListed ? "Listed" : "Unlisted"}
                           </span>
                         </td>
 
-                        {/* ✅ One-click toggle action */}
+                        {/* ✅ One-click toggle action: Blue button */}
                         <td className="px-6 py-5 text-center">
                           <button
                             onClick={() => toggleListingStatus(company)}
                             disabled={isUpdating}
                             className={`inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition disabled:opacity-60 ${
                               isListed
-                                ? "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
-                                : "bg-slate-900 text-white hover:bg-slate-700"
+                                ? "bg-white border border-blue-300 text-blue-700 hover:bg-blue-50"
+                                : "bg-blue-600 text-white hover:bg-blue-700"
                             }`}
                           >
                             {isUpdating && (

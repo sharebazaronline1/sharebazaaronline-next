@@ -228,21 +228,21 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
           </div>
         </header>
 
-        {/* ✅ STANDARD LISTING BANNER — clean, no empty stat cells */}
+       {/* ✅ STANDARD LISTING BANNER — clean, no empty stat cells */}
         {isListed && (
-          <section className="bg-white border-b border-emerald-100">
+          <section className="bg-white border-b border-blue-100">
             <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-5">
-              <div className="rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-white p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4">
+              <div className="rounded-xl border border-blue-200 bg-gradient-to-r from-blue-50 to-white p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4">
                 <div className="flex items-start gap-3 flex-1">
-                  <div className="bg-emerald-600 text-white p-2.5 rounded-full shrink-0 shadow-sm">
+                  <div className="bg-blue-600 text-white p-2.5 rounded-full shrink-0 shadow-sm">
                     <CheckCircle2 size={20} />
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="text-base sm:text-lg font-bold text-emerald-950">
+                      <h2 className="text-base sm:text-lg font-bold text-blue-950">
                         {data.name} is now publicly listed
                       </h2>
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-600 text-white">
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-600 text-white">
                         Listed
                       </span>
                     </div>
@@ -258,7 +258,7 @@ const PreIPODetails = ({ data: initialData, id, slug }) => {
                     href={data.ipo_details_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition shrink-0"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition shrink-0"
                   >
                     View IPO Details
                     <ArrowRight size={16} />
